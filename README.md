@@ -97,6 +97,19 @@ Publishing requires **all** of: an actor with the `publisher` or `admin` role,
 This is enforced in a `beforeChange` hook, so it holds for the Admin UI, REST,
 GraphQL, the Local API and MCP alike — UI restrictions alone are not relied on.
 
+**To publish a document in Payload Admin**, in the sidebar:
+
+1. Set **Review status** to `approved` (a publisher or admin; editors and AI
+   can only reach `needs_review`).
+2. Under **Translation status**, set every locale listed in **Dirty locales**
+   to `approved` — that list is what you have edited since the last publish.
+3. Click **Publish**.
+
+Skipping either step is refused server-side, and the error names the exact
+condition that blocked it (which status, which locale). A locale you never
+translated stays unapproved on purpose: it simply does not render, rather
+than falling back to another language.
+
 ### Localization
 
 - One document per entity with field-level localization (fr / en / es).

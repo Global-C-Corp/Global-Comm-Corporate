@@ -1,8 +1,19 @@
-import { Forbidden, ValidationError } from 'payload'
+import { APIError, ValidationError } from 'payload'
 import type { CollectionBeforeChangeHook, GlobalBeforeChangeHook } from 'payload'
 import { canPublish, canTransitionReviewStatus, isReviewStatus } from '@/access/editorialStateMachine'
 import { getRole } from '@/access/predicates'
-import { locales, translationStatusKey, type Locale } from '@/i18n/locale'
+import { locales, localeNames, translationStatusKey, type Locale } from '@/i18n/locale'
+
+/**
+ * The publish gate refuses for four quite different reasons. Saying which one
+ * applied — and what to do about it — is the difference between a workflow an
+ * editor can follow and one that looks broken (CLAUDE.md §121).
+ */
+class EditorialWorkflowError extends APIError {
+  constructor(message: string, status = 400) {
+    super(message, status, undefined, true)
+  }
+}
 
 /**
  * Fields that never represent editorial content by themselves. A change
@@ -47,10 +58,14 @@ export function applyEditorialGuard({ data, originalDoc, role, requestLocale, op
 
   if (typeof data.reviewStatus === 'string' && data.reviewStatus !== previousReviewStatus) {
     if (!isReviewStatus(data.reviewStatus)) {
-      throw new Forbidden()
+      throw new EditorialWorkflowError(`“${data.reviewStatus}” is not a valid review status.`)
     }
     if (!canTransitionReviewStatus(role, previousReviewStatus, data.reviewStatus)) {
-      throw new Forbidden()
+      throw new EditorialWorkflowError(
+        `Your role (${role ?? 'none'}) cannot move the review status from “${previousReviewStatus ?? 'new'}” to ` +
+          `“${data.reviewStatus}”. Editors and AI submit work for review; only a publisher or admin approves it.`,
+        403,
+      )
     }
   }
 
@@ -83,7 +98,11 @@ export function applyEditorialGuard({ data, originalDoc, role, requestLocale, op
     data.slug !== originalDoc.slug &&
     !canPublish(role)
   ) {
-    throw new Forbidden()
+    throw new EditorialWorkflowError(
+      'Changing the slug of a published document changes a live URL and needs a redirect. ' +
+        'Only a publisher or admin can do that.',
+      403,
+    )
   }
 
   const effectiveReviewStatus = (data.reviewStatus as string | undefined) ?? previousReviewStatus
@@ -97,14 +116,26 @@ export function applyEditorialGuard({ data, originalDoc, role, requestLocale, op
   // an explicit publish request) — never by directly writing the field.
   if (data._status === 'published') {
     if (!canPublish(role)) {
-      throw new Forbidden()
+      throw new EditorialWorkflowError(
+        `Only a publisher or admin can publish. Your role is ${role ?? 'none'}.`,
+        403,
+      )
     }
     if (effectiveReviewStatus !== 'approved') {
-      throw new Forbidden()
+      throw new EditorialWorkflowError(
+        `This document cannot be published while its review status is “${effectiveReviewStatus ?? 'new'}”. ` +
+          'Set Review status to “approved” first, then publish.',
+      )
     }
     for (const locale of existingDirty) {
-      if (effectiveTranslationStatus[translationStatusKey(locale as Locale)] !== 'approved') {
-        throw new Forbidden()
+      const status = effectiveTranslationStatus[translationStatusKey(locale as Locale)] ?? 'missing'
+      if (status !== 'approved') {
+        throw new EditorialWorkflowError(
+          `The ${localeNames[locale as Locale]} (${locale.toUpperCase()}) translation is “${status}”, not approved. ` +
+            `Every locale edited since the last publish (${Array.from(existingDirty)
+              .map((entry) => entry.toUpperCase())
+              .join(', ')}) must be approved under Translation status before this document can be published.`,
+        )
       }
     }
     // A successful publish clears dirtyLocales — everything live is now clean.

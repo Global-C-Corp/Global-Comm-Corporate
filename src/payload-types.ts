@@ -387,14 +387,20 @@ export interface Service {
   } | null;
   featured?: boolean | null;
   displayOrder?: number | null;
+  /**
+   * Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.
+   */
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
+  /**
+   * Every locale listed in “Dirty locales” must be set to “approved” here before this document can be published.
+   */
   translationStatus?: {
     frStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
-   * Locales changed since the last publish. Managed automatically.
+   * Locales changed since the last publish, tracked automatically. Each must be approved above before publishing.
    */
   dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
   /**
@@ -530,14 +536,20 @@ export interface Industry {
   relatedServices?: (number | Service)[] | null;
   featured?: boolean | null;
   displayOrder?: number | null;
+  /**
+   * Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.
+   */
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
+  /**
+   * Every locale listed in “Dirty locales” must be set to “approved” here before this document can be published.
+   */
   translationStatus?: {
     frStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
-   * Locales changed since the last publish. Managed automatically.
+   * Locales changed since the last publish, tracked automatically. Each must be approved above before publishing.
    */
   dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
   /**
@@ -665,14 +677,20 @@ export interface Client {
   location?: string | null;
   featured?: boolean | null;
   displayOrder?: number | null;
+  /**
+   * Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.
+   */
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
+  /**
+   * Every locale listed in “Dirty locales” must be set to “approved” here before this document can be published.
+   */
   translationStatus?: {
     frStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
-   * Locales changed since the last publish. Managed automatically.
+   * Locales changed since the last publish, tracked automatically. Each must be approved above before publishing.
    */
   dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
   /**
@@ -838,14 +856,20 @@ export interface Project {
       }[]
     | null;
   relatedTestimonials?: (number | Testimonial)[] | null;
+  /**
+   * Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.
+   */
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
+  /**
+   * Every locale listed in “Dirty locales” must be set to “approved” here before this document can be published.
+   */
   translationStatus?: {
     frStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
-   * Locales changed since the last publish. Managed automatically.
+   * Locales changed since the last publish, tracked automatically. Each must be approved above before publishing.
    */
   dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
   /**
@@ -939,14 +963,20 @@ export interface Testimonial {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.
+   */
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
+  /**
+   * Every locale listed in “Dirty locales” must be set to “approved” here before this document can be published.
+   */
   translationStatus?: {
     frStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
-   * Locales changed since the last publish. Managed automatically.
+   * Locales changed since the last publish, tracked automatically. Each must be approved above before publishing.
    */
   dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
   /**
@@ -2210,14 +2240,20 @@ export interface HomePage {
     label?: string | null;
     url?: string | null;
   };
+  /**
+   * Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.
+   */
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
+  /**
+   * Every locale listed in “Dirty locales” must be set to “approved” here before this document can be published.
+   */
   translationStatus?: {
     frStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
-   * Locales changed since the last publish. Managed automatically.
+   * Locales changed since the last publish, tracked automatically. Each must be approved above before publishing.
    */
   dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
   /**
@@ -2274,14 +2310,20 @@ export interface ServicesPage {
     label?: string | null;
     url?: string | null;
   };
+  /**
+   * Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.
+   */
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
+  /**
+   * Every locale listed in “Dirty locales” must be set to “approved” here before this document can be published.
+   */
   translationStatus?: {
     frStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
-   * Locales changed since the last publish. Managed automatically.
+   * Locales changed since the last publish, tracked automatically. Each must be approved above before publishing.
    */
   dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
   /**
@@ -2337,14 +2379,20 @@ export interface WorkPage {
     label?: string | null;
     url?: string | null;
   };
+  /**
+   * Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.
+   */
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
+  /**
+   * Every locale listed in “Dirty locales” must be set to “approved” here before this document can be published.
+   */
   translationStatus?: {
     frStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
-   * Locales changed since the last publish. Managed automatically.
+   * Locales changed since the last publish, tracked automatically. Each must be approved above before publishing.
    */
   dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
   /**
@@ -2448,14 +2496,20 @@ export interface CompanyPage {
     label?: string | null;
     url?: string | null;
   };
+  /**
+   * Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.
+   */
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
+  /**
+   * Every locale listed in “Dirty locales” must be set to “approved” here before this document can be published.
+   */
   translationStatus?: {
     frStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
-   * Locales changed since the last publish. Managed automatically.
+   * Locales changed since the last publish, tracked automatically. Each must be approved above before publishing.
    */
   dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
   /**
@@ -2511,14 +2565,20 @@ export interface ContactPage {
   officeLocation?: string | null;
   formIntro?: string | null;
   closingText?: string | null;
+  /**
+   * Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.
+   */
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
+  /**
+   * Every locale listed in “Dirty locales” must be set to “approved” here before this document can be published.
+   */
   translationStatus?: {
     frStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
-   * Locales changed since the last publish. Managed automatically.
+   * Locales changed since the last publish, tracked automatically. Each must be approved above before publishing.
    */
   dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
   /**

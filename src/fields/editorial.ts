@@ -15,12 +15,18 @@ export const editorialFields: Field[] = [
     options: reviewStatuses.map((value) => ({ label: value, value })),
     admin: {
       position: 'sidebar',
+      description:
+        'Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.',
     },
   },
   {
     name: 'translationStatus',
     type: 'group',
-    admin: { position: 'sidebar' },
+    admin: {
+      position: 'sidebar',
+      description:
+        'Every locale listed in “Dirty locales” must be set to “approved” here before this document can be published.',
+    },
     fields: locales.map((locale) => ({
       name: translationStatusKey(locale),
       label: locale.toUpperCase(),
@@ -41,7 +47,8 @@ export const editorialFields: Field[] = [
     options: locales.map((locale) => ({ label: locale, value: locale })),
     admin: {
       position: 'sidebar',
-      description: 'Locales changed since the last publish. Managed automatically.',
+      description:
+        'Locales changed since the last publish, tracked automatically. Each must be approved above before publishing.',
       readOnly: true,
     },
   },
