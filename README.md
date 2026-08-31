@@ -1,67 +1,176 @@
-# Payload Blank Template
+# Global Communication Corporate™
 
-This template comes configured with the bare minimum to get started on anything you need.
+Multilingual corporate platform: one Next.js + Payload application serving the
+public site (fr / en / es), the CMS, and an MCP control plane that lets Claude
+and ChatGPT act as **editorial operators — never publishers**.
 
-## Quick start
+`CLAUDE.md` is the canonical specification for this repository. Where this
+README and `CLAUDE.md` disagree, `CLAUDE.md` wins.
 
-This template can be deployed directly from our Cloud hosting and it will setup MongoDB and cloud S3 object storage for media.
+---
 
-## Quick Start - local setup
+## Stack
 
-To spin up this template locally, follow these steps:
+| Concern | Choice |
+| --- | --- |
+| Frontend | Next.js 16 App Router, Server Components by default |
+| CMS | Payload 3.88 (Local API, drafts, versions, access control) |
+| Database | PostgreSQL via `@payloadcms/db-postgres` (Neon or compatible) |
+| Media | Persistent object storage (Vercel Blob in production) |
+| AI ↔ CMS | Payload MCP plugin at `/api/mcp`, bearer API keys |
+| Tests | Vitest (unit / integration / contract), Playwright (E2E) |
+| Deployment | Vercel |
 
-### Clone
+---
 
-After you click the `Deploy` button above, you'll want to have standalone copy of this repo on your machine. If you've already cloned this repo, skip to [Development](#development).
+## Getting started
 
-### Development
+```bash
+pnpm install
+cp .env.example .env          # then fill in the values
+pnpm run verify:env
+pnpm run migrate              # create the schema
+pnpm run seed                 # controlled vocabulary + site defaults, as drafts
+pnpm dev
+```
 
-1. First [clone the repo](#clone) if you have not done so already
-2. `cd my-project && cp .env.example .env` to copy the example environment variables. You'll need to add the `MONGODB_URL` from your Cloud project to your `.env` if you want to use S3 storage and the MongoDB database that was created for you.
+- Public site: <http://localhost:3000/fr>
+- Admin: <http://localhost:3000/admin>
 
-3. `pnpm install && pnpm dev` to install dependencies and start the dev server
-4. open `http://localhost:3000` to open the app in your browser
+Create the first admin user by setting `SEED_ADMIN_EMAIL` and
+`SEED_ADMIN_PASSWORD` before running `pnpm run seed`, or through the Payload
+admin sign-up screen on a fresh database.
 
-That's it! Changes made in `./src` will be reflected in your app. Follow the on-screen instructions to login and create your first admin user. Then check out [Production](#production) once you're ready to build and serve your app, and [Deployment](#deployment) when you're ready to go live.
+`pnpm run seed` writes **drafts**. Publishing is a human act. For a local or
+CI environment that needs public content (for example to run the E2E suite),
+run `pnpm run seed -- --publish`.
 
-#### Docker (Optional)
+---
 
-If you prefer to use Docker for local development instead of a local MongoDB instance, the provided docker-compose.yml file can be used.
+## Scripts
 
-To do so, follow these steps:
+| Script | Purpose |
+| --- | --- |
+| `pnpm dev` | Development server |
+| `pnpm build` / `pnpm start` | Production build / serve |
+| `pnpm run typecheck` | `tsc --noEmit` |
+| `pnpm run lint` | ESLint (flat config) |
+| `pnpm run verify:env` | Environment validation |
+| `pnpm run migrate` / `migrate:create` / `migrate:status` | Database migrations |
+| `pnpm run seed` | Idempotent vocabulary + globals seed |
+| `pnpm run content:health` | Content completeness report |
+| `pnpm run test:unit` / `test:int` / `test:contract` / `test:e2e` | Test suites |
+| `pnpm run generate:types` | Regenerate `src/payload-types.ts` |
 
-- Modify the `MONGODB_URL` in your `.env` file to `mongodb://127.0.0.1/<dbname>`
-- Modify the `docker-compose.yml` file's `MONGODB_URL` to match the above `<dbname>`
-- Run `docker-compose up` to start the database, optionally pass `-d` to run in the background.
+---
 
-## How it works
+## Architecture
 
-The Payload config is tailored specifically to the needs of most websites. It is pre-configured in the following ways:
+```
+src/
+  app/(frontend)/[locale]/…   public site — one route tree, three locales
+  app/(payload)/…             admin + Payload REST/GraphQL/MCP endpoints
+  collections/ globals/       content model
+  access/                     roles, predicates, editorial state machine
+  hooks/                      publish guard, revalidation
+  fields/                     shared field factories (SEO, editorial, slug)
+  services/cms/               all request-facing Payload queries
+  services/seo/               route builder, canonical, hreflang, metadata
+  services/content-ops/       the only path by which AI writes content
+  services/inquiries/         contact form handling
+  mcp/tools/                  thin MCP handlers over content-ops
+  i18n/                       locales, dictionaries, terminology glossary
+```
 
-### Collections
+### Editorial workflow
 
-See the [Collections](https://payloadcms.com/docs/configuration/collections) docs for details on how to extend this functionality.
+```
+AI draft ──► needs_review ──► approved ──► published
+   ▲              │                          ▲
+   └── revision_requested ◄──────────────────┘
+        (AI and editors may draft and submit; only publisher/admin
+         approve, and only publisher/admin publish)
+```
 
-- #### Users (Authentication)
+Publishing requires **all** of: an actor with the `publisher` or `admin` role,
+`reviewStatus === 'approved'`, and every locale in `dirtyLocales` approved.
+This is enforced in a `beforeChange` hook, so it holds for the Admin UI, REST,
+GraphQL, the Local API and MCP alike — UI restrictions alone are not relied on.
 
-  Users are auth-enabled collections that have access to the admin panel.
+### Localization
 
-  For additional help, see the official [Auth Example](https://github.com/payloadcms/payload/tree/3.x/examples/auth) or the [Authentication](https://payloadcms.com/docs/authentication/overview#authentication-overview) docs.
+- One document per entity with field-level localization (fr / en / es).
+- Public reads always use `fallbackLocale: false`: a missing Spanish
+  translation renders no Spanish page, never French content on a Spanish URL.
+- A locale is public only when the document is published **and** that locale's
+  `translationStatus` is `approved` — centralized in `isLocalePublic()`.
+- Slugs are localized; the language switcher resolves the equivalent entity's
+  slug and never links to an unavailable translation.
 
-- #### Media
+### SEO
 
-  This is the uploads enabled collection. It features pre-configured sizes, focal point and manual resizing to help you manage your pictures.
+One route builder (`src/services/seo/urls.ts`) feeds canonical URLs, hreflang,
+the language switcher, the sitemap, internal links, OG URLs and redirects.
+Every indexable page is self-canonical on `https://globalcomm.ma`; tracking
+parameters are stripped; `og:url` equals the canonical URL; hreflang is emitted
+only for publicly approved translations; non-production deployments are
+`noindex`.
 
-### Docker
+---
 
-Alternatively, you can use [Docker](https://www.docker.com) to spin up this template locally. To do so, follow these steps:
+## AI / MCP
 
-1. Follow [steps 1 and 2 from above](#development), the docker-compose file will automatically use the `.env` file in your project root
-1. Next run `docker-compose up`
-1. Follow [steps 4 and 5 from above](#development) to login and create your first admin user
+The MCP endpoint is `/api/mcp`, authenticated with `Authorization: Bearer <key>`.
+Keys are managed in Payload Admin and are bound to a user — create one with the
+`ai_editor` role.
 
-That's it! The Docker instance will help you get up and running quickly while also standardizing the development environment across your teams.
+**Reads**: generic `find` on editorial collections and page globals.
+**Writes**: only through these tools, each backed by `src/services/content-ops`:
 
-## Questions
+`draftClient` · `draftProject` · `draftTestimonial` · `classifyProject` ·
+`translateContent` · `prepareSEO` · `auditContent` · `submitForReview`
 
-If you have any issues or questions, reach out to us on [Discord](https://discord.com/invite/payload) or start a [GitHub discussion](https://github.com/payloadcms/payload/discussions).
+Every AI write is forced to a draft, stamped with provenance, checked against
+a field whitelist, and appended to the immutable `ai-audit-logs` collection.
+
+AI can never publish, approve, delete, create or rename taxonomy, manage users
+or keys, read inquiries, or set a canonical override. Unknown taxonomy terms
+become `taxonomySuggestions` for a human. A metric without a source is dropped
+rather than estimated, and a testimonial requires a source and attribution with
+its original wording preserved.
+
+`translateContent` takes the translated strings from the MCP client — the
+server does not call a model. Its job is to enforce which fields may be
+translated, normalize approved terminology, preserve shared facts, and mark the
+target locale as an AI draft awaiting review.
+
+---
+
+## Preview
+
+`/preview?secret=…&collection=…&slug=…&locale=…` enables Next.js Draft Mode.
+It requires **both** the `PREVIEW_SECRET` and an authenticated Payload user, so
+a leaked link alone exposes nothing. Preview responses are always `noindex`.
+Payload's preview button and Live Preview are wired for the three localized
+collections and the five page globals.
+
+---
+
+## Deployment
+
+See [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md).
+
+---
+
+## Testing
+
+```bash
+pnpm run test:unit       # pure logic — no database
+pnpm run test:int        # access control + localization against Postgres
+pnpm run test:contract   # the eight AI tools and their guarantees
+pnpm run test:e2e        # Playwright against a running site
+```
+
+Integration, contract and E2E suites need a database; they read `.env.test`
+first, then `.env`. The E2E suite expects published content
+(`pnpm run seed -- --publish`).
