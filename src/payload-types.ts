@@ -388,7 +388,7 @@ export interface Service {
   featured?: boolean | null;
   displayOrder?: number | null;
   /**
-   * Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.
+   * Where this document sits in the editorial process — separate from whether it is live. Publishing requires “Approved”; editors and AI submit for review, and a publisher or admin approves.
    */
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
   /**
@@ -542,7 +542,7 @@ export interface Industry {
   featured?: boolean | null;
   displayOrder?: number | null;
   /**
-   * Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.
+   * Where this document sits in the editorial process — separate from whether it is live. Publishing requires “Approved”; editors and AI submit for review, and a publisher or admin approves.
    */
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
   /**
@@ -688,7 +688,7 @@ export interface Client {
   featured?: boolean | null;
   displayOrder?: number | null;
   /**
-   * Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.
+   * Where this document sits in the editorial process — separate from whether it is live. Publishing requires “Approved”; editors and AI submit for review, and a publisher or admin approves.
    */
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
   /**
@@ -872,7 +872,7 @@ export interface Project {
     | null;
   relatedTestimonials?: (number | Testimonial)[] | null;
   /**
-   * Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.
+   * Where this document sits in the editorial process — separate from whether it is live. Publishing requires “Approved”; editors and AI submit for review, and a publisher or admin approves.
    */
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
   /**
@@ -984,7 +984,7 @@ export interface Testimonial {
       }[]
     | null;
   /**
-   * Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.
+   * Where this document sits in the editorial process — separate from whether it is live. Publishing requires “Approved”; editors and AI submit for review, and a publisher or admin approves.
    */
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
   /**
@@ -2276,7 +2276,7 @@ export interface HomePage {
     url?: string | null;
   };
   /**
-   * Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.
+   * Where this document sits in the editorial process — separate from whether it is live. Publishing requires “Approved”; editors and AI submit for review, and a publisher or admin approves.
    */
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
   /**
@@ -2351,7 +2351,7 @@ export interface ServicesPage {
     url?: string | null;
   };
   /**
-   * Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.
+   * Where this document sits in the editorial process — separate from whether it is live. Publishing requires “Approved”; editors and AI submit for review, and a publisher or admin approves.
    */
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
   /**
@@ -2425,7 +2425,7 @@ export interface WorkPage {
     url?: string | null;
   };
   /**
-   * Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.
+   * Where this document sits in the editorial process — separate from whether it is live. Publishing requires “Approved”; editors and AI submit for review, and a publisher or admin approves.
    */
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
   /**
@@ -2547,7 +2547,7 @@ export interface CompanyPage {
     url?: string | null;
   };
   /**
-   * Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.
+   * Where this document sits in the editorial process — separate from whether it is live. Publishing requires “Approved”; editors and AI submit for review, and a publisher or admin approves.
    */
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
   /**
@@ -2621,7 +2621,7 @@ export interface ContactPage {
   formIntro?: string | null;
   closingText?: string | null;
   /**
-   * Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.
+   * Where this document sits in the editorial process — separate from whether it is live. Publishing requires “Approved”; editors and AI submit for review, and a publisher or admin approves.
    */
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
   /**

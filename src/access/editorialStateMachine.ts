@@ -14,6 +14,23 @@ export const reviewStatuses = [
 
 export type ReviewStatus = (typeof reviewStatuses)[number]
 
+/**
+ * Editorial stage names for the Admin UI (CLAUDE.md §26).
+ *
+ * `_status` (draft | published) and `reviewStatus` are independent axes, and
+ * naming positions on both of them "draft" made the model unreadable: an
+ * `editorial_draft` that is also a Payload `draft` says nothing about which
+ * one an editor needs to change. Stored values are unchanged — these are
+ * labels only, so no migration and no rewrite of existing rows.
+ */
+export const reviewStatusLabels: Record<ReviewStatus, string> = {
+  ai_draft: 'Written by AI',
+  editorial_draft: 'In progress',
+  needs_review: 'Submitted for review',
+  revision_requested: 'Changes requested',
+  approved: 'Approved',
+}
+
 export function isReviewStatus(value: unknown): value is ReviewStatus {
   return typeof value === 'string' && (reviewStatuses as readonly string[]).includes(value)
 }

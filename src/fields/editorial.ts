@@ -1,6 +1,6 @@
 import type { Field } from 'payload'
 import { locales, translationStatusKey } from '@/i18n/locale'
-import { defaultReviewStatus, reviewStatuses } from '@/access/editorialStateMachine'
+import { defaultReviewStatus, reviewStatusLabels, reviewStatuses } from '@/access/editorialStateMachine'
 
 /**
  * Shared editorial-workflow fields (CLAUDE.md §16, §26, §106-§107).
@@ -12,16 +12,19 @@ export const editorialFields: Field[] = [
     type: 'select',
     required: true,
     defaultValue: ({ user }) => defaultReviewStatus((user as { role?: string } | undefined)?.role as never),
-    options: reviewStatuses.map((value) => ({ label: value, value })),
+    options: reviewStatuses.map((value) => ({ label: reviewStatusLabels[value], value })),
+    label: 'Editorial stage',
     admin: {
       position: 'sidebar',
       description:
-        'Publishing requires “approved”. Editors and AI submit for review; only a publisher or admin approves.',
+        'Where this document sits in the editorial process — separate from whether it is live. ' +
+        'Publishing requires “Approved”; editors and AI submit for review, and a publisher or admin approves.',
     },
   },
   {
     name: 'translationStatus',
     type: 'group',
+    label: 'Translation approval',
     admin: {
       position: 'sidebar',
       description:
@@ -57,6 +60,7 @@ export const editorialFields: Field[] = [
   },
   {
     name: 'dirtyLocales',
+    label: 'Locales awaiting approval',
     type: 'select',
     hasMany: true,
     options: locales.map((locale) => ({ label: locale, value: locale })),
