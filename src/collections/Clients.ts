@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { collectionPublishGate } from '@/lib/adminComponents'
 import { revalidateCollection, revalidateOnDelete } from '@/hooks/revalidate'
 import { isAdminOnlyDelete, isEditorOrAI, publicReadPublishedOnly } from '@/access/predicates'
 import { editorialFields } from '@/fields/editorial'
@@ -17,6 +18,7 @@ export const Clients: CollectionConfig = {
     update: isEditorOrAI,
   },
   admin: {
+    ...collectionPublishGate,
     useAsTitle: 'name',
     defaultColumns: ['name', 'featured', 'reviewStatus', '_status'],
     group: 'Content',

@@ -1,0 +1,66 @@
+.gc-publish-gate {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.5rem;
+  min-width: 22rem;
+  max-width: 26rem;
+
+  &__blocked {
+    margin: 0;
+    width: 100%;
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  &__reasons {
+    border: 1px solid var(--theme-elevation-150);
+    border-radius: 3px;
+    padding: 0.85rem 1rem;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    background: var(--theme-elevation-50);
+    color: var(--theme-elevation-800);
+    white-space: normal;
+
+    ul {
+      margin: 0.4rem 0 0;
+      padding-left: 1.1rem;
+      list-style: disc;
+    }
+
+    li {
+      margin-bottom: 0.25rem;
+    }
+  }
+
+  &__heading {
+    margin: 0;
+    font-weight: 600;
+  }
+
+  &__action {
+    margin: 0.75rem 0 0;
+  }
+
+  &__confirm {
+    margin-top: 0.75rem;
+    border-top: 1px solid var(--theme-elevation-150);
+    padding-top: 0.75rem;
+
+    > p {
+      margin: 0;
+      font-weight: 600;
+    }
+
+    .btn {
+      margin: 0.6rem 0.4rem 0 0;
+    }
+  }
+
+  &__note {
+    margin: 0.6rem 0 0;
+    color: var(--theme-elevation-600);
+    font-weight: 400;
+  }
+}

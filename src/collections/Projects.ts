@@ -1,4 +1,5 @@
 import type { CollectionConfig, Field } from 'payload'
+import { collectionPublishGate } from '@/lib/adminComponents'
 import { revalidateCollection, revalidateOnDelete } from '@/hooks/revalidate'
 import { isAdminOnlyDelete, isEditorOrAI, publicReadPublishedOnly } from '@/access/predicates'
 import { collectionPreview } from '@/lib/adminPreview'
@@ -40,6 +41,7 @@ export const Projects: CollectionConfig = {
     update: isEditorOrAI,
   },
   admin: {
+    ...collectionPublishGate,
     ...collectionPreview('projects'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'client', 'year', 'featured', 'reviewStatus', '_status'],

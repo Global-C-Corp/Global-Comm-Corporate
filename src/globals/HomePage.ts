@@ -1,4 +1,5 @@
 import type { GlobalConfig } from 'payload'
+import { globalPublishGate } from '@/lib/adminComponents'
 import { revalidateGlobal } from '@/hooks/revalidate'
 import { isEditorOrAI, publicReadPublishedOnly } from '@/access/predicates'
 import { globalPreview } from '@/lib/adminPreview'
@@ -14,6 +15,7 @@ export const HomePage: GlobalConfig = {
     update: isEditorOrAI,
   },
   admin: {
+    ...globalPublishGate,
     ...globalPreview('home-page'),
     group: 'Pages',
   },

@@ -1,4 +1,5 @@
 import type { CollectionBeforeValidateHook, CollectionConfig, Field } from 'payload'
+import { collectionPublishGate } from '@/lib/adminComponents'
 import { revalidateCollection, revalidateOnDelete } from '@/hooks/revalidate'
 import { ValidationError } from 'payload'
 import { isAdminOnlyDelete, isEditorOrAI, publicReadPublishedOnly } from '@/access/predicates'
@@ -46,6 +47,7 @@ export const Testimonials: CollectionConfig = {
     update: isEditorOrAI,
   },
   admin: {
+    ...collectionPublishGate,
     useAsTitle: 'internalTitle',
     defaultColumns: ['internalTitle', 'personName', 'organizationName', 'reviewStatus', '_status'],
     group: 'Content',
