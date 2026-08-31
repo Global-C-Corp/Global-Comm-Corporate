@@ -2,6 +2,7 @@ import { APIError, ValidationError } from 'payload'
 import type { CollectionBeforeChangeHook, GlobalBeforeChangeHook } from 'payload'
 import { canPublish, canTransitionReviewStatus, isReviewStatus } from '@/access/editorialStateMachine'
 import { getRole } from '@/access/predicates'
+import { hasContentChange } from '@/lib/contentChange'
 import { locales, localeNames, translationStatusKey, type Locale } from '@/i18n/locale'
 
 /**
@@ -92,7 +93,11 @@ export function applyEditorialGuard({ data, originalDoc, role, userId, requestLo
   }
 
   // Track which locale is being edited in this request (CLAUDE.md §16).
-  const touchedNonBookkeepingField = Object.keys(data).some((key) => !BOOKKEEPING_FIELDS.has(key))
+  // Payload passes the whole merged document here, so this compares values
+  // against what is stored rather than trusting which keys are present —
+  // otherwise opening a document in a locale and saving would mark it dirty
+  // and manufacture approval work.
+  const touchedNonBookkeepingField = hasContentChange(data, originalDoc, BOOKKEEPING_FIELDS)
   const existingDirty = new Set(originalDoc?.dirtyLocales ?? [])
   if (touchedNonBookkeepingField && requestLocale && (locales as readonly string[]).includes(requestLocale)) {
     existingDirty.add(requestLocale)
