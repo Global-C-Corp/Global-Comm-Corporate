@@ -45,3 +45,37 @@ export async function cleanupTestUser(): Promise<void> {
     },
   })
 }
+
+/**
+ * A client draft with nothing approved, for exercising the publish gate.
+ * Returns its id.
+ *
+ * The editorial guard reads the acting user's role on every write, including
+ * writes made with overrideAccess, so this runs as the seeded admin — the
+ * same pattern scripts/seed.ts uses (§85).
+ */
+export async function seedBlockedClient(): Promise<number> {
+  const payload = await getPayload({ config })
+
+  const admins = await payload.find({
+    collection: 'users',
+    where: { email: { equals: testUser.email } },
+    limit: 1,
+    overrideAccess: true,
+  })
+  const actor = admins.docs[0]
+
+  const doc = await payload.create({
+    collection: 'clients',
+    locale: 'fr',
+    data: {
+      name: `Publish gate ${Date.now()}`,
+      sourceReferences: [{ type: 'user_provided', label: 'Kickoff brief' }],
+    },
+    draft: true,
+    overrideAccess: true,
+    user: actor as never,
+  })
+
+  return doc.id
+}
