@@ -293,6 +293,9 @@ export interface Media {
 export interface Service {
   id: number;
   name: string;
+  /**
+   * Auto-derived from the title. Changing it on a published page requires a publisher.
+   */
   slug: string;
   parent?: (number | null) | Service;
   aliases?:
@@ -460,6 +463,9 @@ export interface Service {
 export interface Industry {
   id: number;
   name: string;
+  /**
+   * Auto-derived from the title. Changing it on a published page requires a publisher.
+   */
   slug: string;
   aliases?:
     | {
@@ -600,6 +606,9 @@ export interface Industry {
 export interface ProjectType {
   id: number;
   name: string;
+  /**
+   * Auto-derived from the title. Changing it on a published page requires a publisher.
+   */
   slug: string;
   /**
    * Internal only — never rendered publicly.
@@ -616,6 +625,9 @@ export interface ProjectType {
 export interface ContextTag {
   id: number;
   name: string;
+  /**
+   * Auto-derived from the title. Changing it on a published page requires a publisher.
+   */
   slug: string;
   /**
    * Internal only — never rendered publicly.
@@ -729,6 +741,9 @@ export interface Client {
 export interface Project {
   id: number;
   title: string;
+  /**
+   * Auto-derived from the title. Changing it on a published page requires a publisher.
+   */
   slug: string;
   client: number | Client;
   year?: number | null;

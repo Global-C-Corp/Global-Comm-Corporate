@@ -1,4 +1,4 @@
-import { Forbidden } from 'payload'
+import { Forbidden, ValidationError } from 'payload'
 import type { CollectionBeforeChangeHook, GlobalBeforeChangeHook } from 'payload'
 import { canPublish, canTransitionReviewStatus, isReviewStatus } from '@/access/editorialStateMachine'
 import { getRole } from '@/access/predicates'
@@ -22,6 +22,8 @@ const BOOKKEEPING_FIELDS = new Set([
 ])
 
 type EditorialDoc = {
+  _status?: string | null
+  slug?: string | null
   reviewStatus?: string
   translationStatus?: Record<string, string>
   dirtyLocales?: string[]
@@ -57,6 +59,31 @@ export function applyEditorialGuard({ data, originalDoc, role, requestLocale, op
   const existingDirty = new Set(originalDoc?.dirtyLocales ?? [])
   if (touchedNonBookkeepingField && requestLocale && (locales as readonly string[]).includes(requestLocale)) {
     existingDirty.add(requestLocale)
+  }
+
+  // CLAUDE.md §36, §105 — a metric value always carries its source. Payload
+  // skips field validation on draft saves, so this invariant is enforced here
+  // for every write path rather than only at publish time.
+  if (Array.isArray(data.metrics)) {
+    const unsupported = (data.metrics as { value?: unknown; sourceNote?: unknown }[]).some(
+      (metric) => Boolean(metric?.value) && !metric?.sourceNote,
+    )
+    if (unsupported) {
+      throw new ValidationError({
+        errors: [{ path: 'metrics', message: 'A metric value requires a sourceNote citing where it came from.' }],
+      })
+    }
+  }
+
+  // Changing a published slug changes a live URL (CLAUDE.md §70).
+  if (
+    typeof data.slug === 'string' &&
+    originalDoc?._status === 'published' &&
+    typeof originalDoc.slug === 'string' &&
+    data.slug !== originalDoc.slug &&
+    !canPublish(role)
+  ) {
+    throw new Forbidden()
   }
 
   const effectiveReviewStatus = (data.reviewStatus as string | undefined) ?? previousReviewStatus

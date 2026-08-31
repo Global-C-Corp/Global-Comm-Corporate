@@ -21,10 +21,15 @@ const ROUTE_PATTERNS = {
 type RouteKey = keyof typeof ROUTE_PATTERNS
 
 function revalidateRoutes(keys: RouteKey[]) {
-  for (const key of keys) {
-    revalidatePath(ROUTE_PATTERNS[key], 'page')
+  try {
+    for (const key of keys) {
+      revalidatePath(ROUTE_PATTERNS[key], 'page')
+    }
+    revalidatePath('/sitemap.xml')
+  } catch {
+    // Payload writes also happen outside a Next.js request scope (seed
+    // scripts, migrations, tests), where there is no cache to invalidate.
   }
-  revalidatePath('/sitemap.xml')
 }
 
 const AFFECTED_ROUTES: Record<string, RouteKey[]> = {
