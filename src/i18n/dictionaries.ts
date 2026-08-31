@@ -9,6 +9,23 @@ export type Dictionary = {
     menu: string
     close: string
   }
+  sections: {
+    selectedClients: string
+    whatWeDo: string
+    selectedWork: string
+    industries: string
+    testimonials: string
+    capabilities: string
+    relatedServices: string
+    challenge: string
+    approach: string
+    deliverables: string
+    outcome: string
+    metrics: string
+    relatedWork: string
+    clientProblem: string
+    method: string
+  }
   actions: {
     next: string
     previous: string
@@ -40,6 +57,23 @@ export type Dictionary = {
 const dictionaries: Record<Locale, Dictionary> = {
   fr: {
     nav: { menu: 'Menu', close: 'Fermer' },
+    sections: {
+      selectedClients: 'Clients sélectionnés',
+      whatWeDo: 'Ce que nous faisons',
+      selectedWork: 'Réalisations sélectionnées',
+      industries: 'Secteurs',
+      testimonials: 'Témoignages',
+      capabilities: 'Expertises',
+      relatedServices: 'Services associés',
+      challenge: 'Enjeu',
+      approach: 'Approche',
+      deliverables: 'Livrables',
+      outcome: 'Résultat',
+      metrics: 'Indicateurs vérifiés',
+      relatedWork: 'Projets associés',
+      clientProblem: 'Problématique client',
+      method: 'Méthode',
+    },
     actions: {
       next: 'Suivant',
       previous: 'Précédent',
@@ -66,6 +100,23 @@ const dictionaries: Record<Locale, Dictionary> = {
   },
   en: {
     nav: { menu: 'Menu', close: 'Close' },
+    sections: {
+      selectedClients: 'Selected clients',
+      whatWeDo: 'What we do',
+      selectedWork: 'Selected work',
+      industries: 'Industries',
+      testimonials: 'Testimonials',
+      capabilities: 'Capabilities',
+      relatedServices: 'Related services',
+      challenge: 'Challenge',
+      approach: 'Approach',
+      deliverables: 'Deliverables',
+      outcome: 'Outcome',
+      metrics: 'Verified metrics',
+      relatedWork: 'Related work',
+      clientProblem: 'Client problem',
+      method: 'Method',
+    },
     actions: {
       next: 'Next',
       previous: 'Previous',
@@ -92,6 +143,23 @@ const dictionaries: Record<Locale, Dictionary> = {
   },
   es: {
     nav: { menu: 'Menú', close: 'Cerrar' },
+    sections: {
+      selectedClients: 'Clientes seleccionados',
+      whatWeDo: 'Lo que hacemos',
+      selectedWork: 'Trabajos seleccionados',
+      industries: 'Sectores',
+      testimonials: 'Testimonios',
+      capabilities: 'Capacidades',
+      relatedServices: 'Servicios relacionados',
+      challenge: 'Desafío',
+      approach: 'Enfoque',
+      deliverables: 'Entregables',
+      outcome: 'Resultado',
+      metrics: 'Métricas verificadas',
+      relatedWork: 'Proyectos relacionados',
+      clientProblem: 'Problema del cliente',
+      method: 'Método',
+    },
     actions: {
       next: 'Siguiente',
       previous: 'Anterior',

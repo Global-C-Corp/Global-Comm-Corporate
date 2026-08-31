@@ -5,6 +5,8 @@ import { getPayloadClient } from './context'
 
 type LocalizedSlugCollection = 'services' | 'projects' | 'industries'
 
+type PageGlobalSlug = 'home-page' | 'services-page' | 'work-page' | 'company-page' | 'contact-page'
+
 type SlugDoc = {
   _status?: string
   slug?: string | null
@@ -43,6 +45,35 @@ export async function getLocalizedAvailability(
         }
       } catch {
         // Not readable anonymously (unpublished) — not a public locale.
+        availability[locale] = { isPublic: false }
+      }
+    }),
+  )
+
+  return availability
+}
+
+/** Same invariant for the static page globals, whose routes carry no slug. */
+export async function getGlobalAvailability(slug: PageGlobalSlug): Promise<LocaleAvailability> {
+  const payload = await getPayloadClient()
+  const availability: LocaleAvailability = {}
+
+  await Promise.all(
+    locales.map(async (locale) => {
+      try {
+        const doc = (await payload.findGlobal({
+          slug,
+          locale,
+          fallbackLocale: false,
+          draft: false,
+          depth: 0,
+          overrideAccess: false,
+        })) as SlugDoc
+
+        availability[locale] = {
+          isPublic: isLocalePublic(doc, locale) && !doc.meta?.robots?.noIndex,
+        }
+      } catch {
         availability[locale] = { isPublic: false }
       }
     }),

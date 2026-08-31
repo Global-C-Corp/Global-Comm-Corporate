@@ -1,3 +1,4 @@
+import { cache } from 'react'
 import type {
   CompanyPage,
   ContactPage,
@@ -7,6 +8,7 @@ import type {
   SiteSetting,
   WorkPage,
 } from '@/payload-types'
+import type { Locale } from '@/i18n/locale'
 import { isLocalePublic, type PublishableDoc } from '@/lib/publication'
 import { baseQueryOptions, getPayloadClient, type QueryContext } from './context'
 
@@ -59,3 +61,13 @@ export async function getNavigation(ctx: QueryContext): Promise<Navigation | nul
     return null
   }
 }
+
+/**
+ * Header and footer need the same two globals on every page; `cache` dedupes
+ * them to one fetch per request.
+ */
+export const getSiteChrome = cache(async (locale: Locale, draft: boolean) => {
+  const ctx: QueryContext = { locale, draft }
+  const [settings, navigation] = await Promise.all([getSiteSettings(ctx), getNavigation(ctx)])
+  return { settings, navigation }
+})
