@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { applyFieldWhitelist, detectConflict, filterEvidencedMetrics } from '@/services/content-ops/guards'
 import { isLocalePublic } from '@/lib/publication'
+import { logCmsFailure } from '@/lib/log'
 import { slugify } from '@/lib/slugify'
 import { localizeNavHref } from '@/lib/nav'
 import { translateApprovedTerm } from '@/i18n/terminology'
@@ -95,5 +96,35 @@ describe('slug and nav helpers', () => {
 describe('terminology glossary', () => {
   it('normalizes approved terms when translating', () => {
     expect(translateApprovedTerm('We handle Lead Generation for you', 'en', 'fr')).toContain('Génération de leads')
+  })
+})
+
+describe('CMS failure logging', () => {
+  const captureLog = (error: unknown): string[] => {
+    const lines: string[] = []
+    const original = console.error
+    console.error = (...args: unknown[]) => lines.push(args.join(' '))
+    try {
+      logCmsFailure('scope', error)
+    } finally {
+      console.error = original
+    }
+    return lines
+  }
+
+  it('stays quiet for a document that is simply not public', () => {
+    expect(captureLog(Object.assign(new Error('nope'), { name: 'Forbidden', status: 403 }))).toHaveLength(0)
+    expect(captureLog(Object.assign(new Error('gone'), { name: 'NotFound', status: 404 }))).toHaveLength(0)
+  })
+
+  it('stays quiet for an editorial workflow refusal', () => {
+    // Subclasses APIError, so it would otherwise read as an outage.
+    expect(captureLog(Object.assign(new Error('not approved'), { name: 'EditorialWorkflowError', status: 400 })))
+      .toHaveLength(0)
+  })
+
+  it('reports a real failure as an incident', () => {
+    expect(captureLog(new Error('relation "clients" does not exist'))).toHaveLength(1)
+    expect(captureLog(Object.assign(new Error('boom'), { name: 'APIError', status: 500 }))).toHaveLength(1)
   })
 })

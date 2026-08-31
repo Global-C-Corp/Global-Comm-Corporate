@@ -6,11 +6,21 @@
  * from ordinary unpublished content.
  */
 
-/** Access/visibility outcomes that are part of normal operation. */
+/**
+ * Outcomes that are part of normal operation rather than incidents.
+ *
+ * Keyed on the HTTP status Payload assigns rather than the error's class
+ * name: any 4xx from an APIError is the server correctly declining a
+ * request — Forbidden, NotFound, and the editorial workflow refusals, which
+ * subclass APIError and would otherwise be recorded as outages if a write
+ * path ever routed through this logger. 5xx and non-API errors (an
+ * unreachable database, a missing table) stay incidents.
+ */
 function isExpectedAccessError(error: unknown): boolean {
   if (!error || typeof error !== 'object') return false
   const { name, status } = error as { name?: string; status?: number }
-  return name === 'Forbidden' || name === 'NotFound' || status === 403 || status === 404
+  if (typeof status === 'number' && status >= 400 && status < 500) return true
+  return name === 'Forbidden' || name === 'NotFound'
 }
 
 export function logCmsFailure(scope: string, error: unknown): void {
