@@ -2,7 +2,7 @@ import { Forbidden } from 'payload'
 import type { CollectionBeforeChangeHook, GlobalBeforeChangeHook } from 'payload'
 import { canPublish, canTransitionReviewStatus, isReviewStatus } from '@/access/editorialStateMachine'
 import { getRole } from '@/access/predicates'
-import { locales } from '@/i18n/locale'
+import { locales, translationStatusKey, type Locale } from '@/i18n/locale'
 
 /**
  * Fields that never represent editorial content by themselves. A change
@@ -76,7 +76,7 @@ export function applyEditorialGuard({ data, originalDoc, role, requestLocale, op
       throw new Forbidden()
     }
     for (const locale of existingDirty) {
-      if (effectiveTranslationStatus[locale] !== 'approved') {
+      if (effectiveTranslationStatus[translationStatusKey(locale as Locale)] !== 'approved') {
         throw new Forbidden()
       }
     }

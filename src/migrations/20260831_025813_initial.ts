@@ -8,18 +8,18 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum_services_dirty_locales" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_services_source_references_type" AS ENUM('user_provided', 'uploaded_document', 'existing_cms', 'public_url', 'human_verified');
   CREATE TYPE "public"."enum_services_review_status" AS ENUM('ai_draft', 'editorial_draft', 'needs_review', 'revision_requested', 'approved');
-  CREATE TYPE "public"."enum_services_translation_status_fr" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum_services_translation_status_en" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum_services_translation_status_es" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_services_translation_status_fr_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_services_translation_status_en_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_services_translation_status_es_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
   CREATE TYPE "public"."enum_services_ai_meta_source_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_services_ai_meta_target_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_services_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__services_v_version_dirty_locales" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__services_v_version_source_references_type" AS ENUM('user_provided', 'uploaded_document', 'existing_cms', 'public_url', 'human_verified');
   CREATE TYPE "public"."enum__services_v_version_review_status" AS ENUM('ai_draft', 'editorial_draft', 'needs_review', 'revision_requested', 'approved');
-  CREATE TYPE "public"."enum__services_v_version_translation_status_fr" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum__services_v_version_translation_status_en" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum__services_v_version_translation_status_es" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__services_v_version_translation_status_fr_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__services_v_version_translation_status_en_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__services_v_version_translation_status_es_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
   CREATE TYPE "public"."enum__services_v_version_ai_meta_source_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__services_v_version_ai_meta_target_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__services_v_version_status" AS ENUM('draft', 'published');
@@ -27,18 +27,18 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum_industries_dirty_locales" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_industries_source_references_type" AS ENUM('user_provided', 'uploaded_document', 'existing_cms', 'public_url', 'human_verified');
   CREATE TYPE "public"."enum_industries_review_status" AS ENUM('ai_draft', 'editorial_draft', 'needs_review', 'revision_requested', 'approved');
-  CREATE TYPE "public"."enum_industries_translation_status_fr" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum_industries_translation_status_en" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum_industries_translation_status_es" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_industries_translation_status_fr_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_industries_translation_status_en_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_industries_translation_status_es_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
   CREATE TYPE "public"."enum_industries_ai_meta_source_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_industries_ai_meta_target_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_industries_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__industries_v_version_dirty_locales" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__industries_v_version_source_references_type" AS ENUM('user_provided', 'uploaded_document', 'existing_cms', 'public_url', 'human_verified');
   CREATE TYPE "public"."enum__industries_v_version_review_status" AS ENUM('ai_draft', 'editorial_draft', 'needs_review', 'revision_requested', 'approved');
-  CREATE TYPE "public"."enum__industries_v_version_translation_status_fr" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum__industries_v_version_translation_status_en" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum__industries_v_version_translation_status_es" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__industries_v_version_translation_status_fr_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__industries_v_version_translation_status_en_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__industries_v_version_translation_status_es_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
   CREATE TYPE "public"."enum__industries_v_version_ai_meta_source_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__industries_v_version_ai_meta_target_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__industries_v_version_status" AS ENUM('draft', 'published');
@@ -46,18 +46,18 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum_clients_dirty_locales" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_clients_source_references_type" AS ENUM('user_provided', 'uploaded_document', 'existing_cms', 'public_url', 'human_verified');
   CREATE TYPE "public"."enum_clients_review_status" AS ENUM('ai_draft', 'editorial_draft', 'needs_review', 'revision_requested', 'approved');
-  CREATE TYPE "public"."enum_clients_translation_status_fr" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum_clients_translation_status_en" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum_clients_translation_status_es" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_clients_translation_status_fr_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_clients_translation_status_en_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_clients_translation_status_es_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
   CREATE TYPE "public"."enum_clients_ai_meta_source_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_clients_ai_meta_target_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_clients_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__clients_v_version_dirty_locales" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__clients_v_version_source_references_type" AS ENUM('user_provided', 'uploaded_document', 'existing_cms', 'public_url', 'human_verified');
   CREATE TYPE "public"."enum__clients_v_version_review_status" AS ENUM('ai_draft', 'editorial_draft', 'needs_review', 'revision_requested', 'approved');
-  CREATE TYPE "public"."enum__clients_v_version_translation_status_fr" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum__clients_v_version_translation_status_en" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum__clients_v_version_translation_status_es" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__clients_v_version_translation_status_fr_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__clients_v_version_translation_status_en_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__clients_v_version_translation_status_es_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
   CREATE TYPE "public"."enum__clients_v_version_ai_meta_source_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__clients_v_version_ai_meta_target_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__clients_v_version_status" AS ENUM('draft', 'published');
@@ -65,18 +65,18 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum_projects_dirty_locales" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_projects_source_references_type" AS ENUM('user_provided', 'uploaded_document', 'existing_cms', 'public_url', 'human_verified');
   CREATE TYPE "public"."enum_projects_review_status" AS ENUM('ai_draft', 'editorial_draft', 'needs_review', 'revision_requested', 'approved');
-  CREATE TYPE "public"."enum_projects_translation_status_fr" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum_projects_translation_status_en" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum_projects_translation_status_es" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_projects_translation_status_fr_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_projects_translation_status_en_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_projects_translation_status_es_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
   CREATE TYPE "public"."enum_projects_ai_meta_source_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_projects_ai_meta_target_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_projects_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__projects_v_version_dirty_locales" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__projects_v_version_source_references_type" AS ENUM('user_provided', 'uploaded_document', 'existing_cms', 'public_url', 'human_verified');
   CREATE TYPE "public"."enum__projects_v_version_review_status" AS ENUM('ai_draft', 'editorial_draft', 'needs_review', 'revision_requested', 'approved');
-  CREATE TYPE "public"."enum__projects_v_version_translation_status_fr" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum__projects_v_version_translation_status_en" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum__projects_v_version_translation_status_es" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__projects_v_version_translation_status_fr_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__projects_v_version_translation_status_en_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__projects_v_version_translation_status_es_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
   CREATE TYPE "public"."enum__projects_v_version_ai_meta_source_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__projects_v_version_ai_meta_target_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__projects_v_version_status" AS ENUM('draft', 'published');
@@ -85,9 +85,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum_testimonials_dirty_locales" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_testimonials_original_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_testimonials_review_status" AS ENUM('ai_draft', 'editorial_draft', 'needs_review', 'revision_requested', 'approved');
-  CREATE TYPE "public"."enum_testimonials_translation_status_fr" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum_testimonials_translation_status_en" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum_testimonials_translation_status_es" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_testimonials_translation_status_fr_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_testimonials_translation_status_en_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_testimonials_translation_status_es_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
   CREATE TYPE "public"."enum_testimonials_ai_meta_source_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_testimonials_ai_meta_target_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_testimonials_status" AS ENUM('draft', 'published');
@@ -95,9 +95,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum__testimonials_v_version_dirty_locales" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__testimonials_v_version_original_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__testimonials_v_version_review_status" AS ENUM('ai_draft', 'editorial_draft', 'needs_review', 'revision_requested', 'approved');
-  CREATE TYPE "public"."enum__testimonials_v_version_translation_status_fr" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum__testimonials_v_version_translation_status_en" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum__testimonials_v_version_translation_status_es" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__testimonials_v_version_translation_status_fr_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__testimonials_v_version_translation_status_en_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__testimonials_v_version_translation_status_es_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
   CREATE TYPE "public"."enum__testimonials_v_version_ai_meta_source_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__testimonials_v_version_ai_meta_target_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__testimonials_v_version_status" AS ENUM('draft', 'published');
@@ -111,85 +111,85 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TYPE "public"."enum__navigation_v_published_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_home_page_dirty_locales" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_home_page_review_status" AS ENUM('ai_draft', 'editorial_draft', 'needs_review', 'revision_requested', 'approved');
-  CREATE TYPE "public"."enum_home_page_translation_status_fr" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum_home_page_translation_status_en" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum_home_page_translation_status_es" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_home_page_translation_status_fr_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_home_page_translation_status_en_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_home_page_translation_status_es_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
   CREATE TYPE "public"."enum_home_page_ai_meta_source_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_home_page_ai_meta_target_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_home_page_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__home_page_v_version_dirty_locales" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__home_page_v_version_review_status" AS ENUM('ai_draft', 'editorial_draft', 'needs_review', 'revision_requested', 'approved');
-  CREATE TYPE "public"."enum__home_page_v_version_translation_status_fr" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum__home_page_v_version_translation_status_en" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum__home_page_v_version_translation_status_es" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__home_page_v_version_translation_status_fr_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__home_page_v_version_translation_status_en_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__home_page_v_version_translation_status_es_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
   CREATE TYPE "public"."enum__home_page_v_version_ai_meta_source_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__home_page_v_version_ai_meta_target_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__home_page_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__home_page_v_published_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_services_page_dirty_locales" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_services_page_review_status" AS ENUM('ai_draft', 'editorial_draft', 'needs_review', 'revision_requested', 'approved');
-  CREATE TYPE "public"."enum_services_page_translation_status_fr" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum_services_page_translation_status_en" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum_services_page_translation_status_es" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_services_page_translation_status_fr_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_services_page_translation_status_en_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_services_page_translation_status_es_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
   CREATE TYPE "public"."enum_services_page_ai_meta_source_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_services_page_ai_meta_target_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_services_page_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__services_page_v_version_dirty_locales" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__services_page_v_version_review_status" AS ENUM('ai_draft', 'editorial_draft', 'needs_review', 'revision_requested', 'approved');
-  CREATE TYPE "public"."enum__services_page_v_version_translation_status_fr" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum__services_page_v_version_translation_status_en" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum__services_page_v_version_translation_status_es" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__services_page_v_version_translation_status_fr_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__services_page_v_version_translation_status_en_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__services_page_v_version_translation_status_es_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
   CREATE TYPE "public"."enum__services_page_v_version_ai_meta_source_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__services_page_v_version_ai_meta_target_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__services_page_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__services_page_v_published_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_work_page_dirty_locales" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_work_page_review_status" AS ENUM('ai_draft', 'editorial_draft', 'needs_review', 'revision_requested', 'approved');
-  CREATE TYPE "public"."enum_work_page_translation_status_fr" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum_work_page_translation_status_en" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum_work_page_translation_status_es" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_work_page_translation_status_fr_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_work_page_translation_status_en_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_work_page_translation_status_es_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
   CREATE TYPE "public"."enum_work_page_ai_meta_source_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_work_page_ai_meta_target_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_work_page_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__work_page_v_version_dirty_locales" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__work_page_v_version_review_status" AS ENUM('ai_draft', 'editorial_draft', 'needs_review', 'revision_requested', 'approved');
-  CREATE TYPE "public"."enum__work_page_v_version_translation_status_fr" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum__work_page_v_version_translation_status_en" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum__work_page_v_version_translation_status_es" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__work_page_v_version_translation_status_fr_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__work_page_v_version_translation_status_en_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__work_page_v_version_translation_status_es_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
   CREATE TYPE "public"."enum__work_page_v_version_ai_meta_source_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__work_page_v_version_ai_meta_target_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__work_page_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__work_page_v_published_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_company_page_dirty_locales" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_company_page_review_status" AS ENUM('ai_draft', 'editorial_draft', 'needs_review', 'revision_requested', 'approved');
-  CREATE TYPE "public"."enum_company_page_translation_status_fr" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum_company_page_translation_status_en" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum_company_page_translation_status_es" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_company_page_translation_status_fr_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_company_page_translation_status_en_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_company_page_translation_status_es_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
   CREATE TYPE "public"."enum_company_page_ai_meta_source_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_company_page_ai_meta_target_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_company_page_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__company_page_v_version_dirty_locales" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__company_page_v_version_review_status" AS ENUM('ai_draft', 'editorial_draft', 'needs_review', 'revision_requested', 'approved');
-  CREATE TYPE "public"."enum__company_page_v_version_translation_status_fr" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum__company_page_v_version_translation_status_en" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum__company_page_v_version_translation_status_es" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__company_page_v_version_translation_status_fr_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__company_page_v_version_translation_status_en_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__company_page_v_version_translation_status_es_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
   CREATE TYPE "public"."enum__company_page_v_version_ai_meta_source_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__company_page_v_version_ai_meta_target_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__company_page_v_version_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__company_page_v_published_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_contact_page_dirty_locales" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_contact_page_review_status" AS ENUM('ai_draft', 'editorial_draft', 'needs_review', 'revision_requested', 'approved');
-  CREATE TYPE "public"."enum_contact_page_translation_status_fr" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum_contact_page_translation_status_en" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum_contact_page_translation_status_es" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_contact_page_translation_status_fr_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_contact_page_translation_status_en_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum_contact_page_translation_status_es_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
   CREATE TYPE "public"."enum_contact_page_ai_meta_source_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_contact_page_ai_meta_target_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum_contact_page_status" AS ENUM('draft', 'published');
   CREATE TYPE "public"."enum__contact_page_v_version_dirty_locales" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__contact_page_v_version_review_status" AS ENUM('ai_draft', 'editorial_draft', 'needs_review', 'revision_requested', 'approved');
-  CREATE TYPE "public"."enum__contact_page_v_version_translation_status_fr" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum__contact_page_v_version_translation_status_en" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
-  CREATE TYPE "public"."enum__contact_page_v_version_translation_status_es" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__contact_page_v_version_translation_status_fr_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__contact_page_v_version_translation_status_en_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
+  CREATE TYPE "public"."enum__contact_page_v_version_translation_status_es_status" AS ENUM('missing', 'ai_draft', 'needs_review', 'approved');
   CREATE TYPE "public"."enum__contact_page_v_version_ai_meta_source_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__contact_page_v_version_ai_meta_target_locale" AS ENUM('fr', 'en', 'es');
   CREATE TYPE "public"."enum__contact_page_v_version_status" AS ENUM('draft', 'published');
@@ -330,9 +330,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"featured" boolean DEFAULT false,
   	"display_order" numeric DEFAULT 0,
   	"review_status" "enum_services_review_status",
-  	"translation_status_fr" "enum_services_translation_status_fr" DEFAULT 'missing',
-  	"translation_status_en" "enum_services_translation_status_en" DEFAULT 'missing',
-  	"translation_status_es" "enum_services_translation_status_es" DEFAULT 'missing',
+  	"translation_status_fr_status" "enum_services_translation_status_fr_status" DEFAULT 'missing',
+  	"translation_status_en_status" "enum_services_translation_status_en_status" DEFAULT 'missing',
+  	"translation_status_es_status" "enum_services_translation_status_es_status" DEFAULT 'missing',
   	"ai_meta_generated_by_a_i" boolean DEFAULT false,
   	"ai_meta_provider" varchar,
   	"ai_meta_model" varchar,
@@ -416,9 +416,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_featured" boolean DEFAULT false,
   	"version_display_order" numeric DEFAULT 0,
   	"version_review_status" "enum__services_v_version_review_status",
-  	"version_translation_status_fr" "enum__services_v_version_translation_status_fr" DEFAULT 'missing',
-  	"version_translation_status_en" "enum__services_v_version_translation_status_en" DEFAULT 'missing',
-  	"version_translation_status_es" "enum__services_v_version_translation_status_es" DEFAULT 'missing',
+  	"version_translation_status_fr_status" "enum__services_v_version_translation_status_fr_status" DEFAULT 'missing',
+  	"version_translation_status_en_status" "enum__services_v_version_translation_status_en_status" DEFAULT 'missing',
+  	"version_translation_status_es_status" "enum__services_v_version_translation_status_es_status" DEFAULT 'missing',
   	"version_ai_meta_generated_by_a_i" boolean DEFAULT false,
   	"version_ai_meta_provider" varchar,
   	"version_ai_meta_model" varchar,
@@ -502,9 +502,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"featured" boolean DEFAULT false,
   	"display_order" numeric DEFAULT 0,
   	"review_status" "enum_industries_review_status",
-  	"translation_status_fr" "enum_industries_translation_status_fr" DEFAULT 'missing',
-  	"translation_status_en" "enum_industries_translation_status_en" DEFAULT 'missing',
-  	"translation_status_es" "enum_industries_translation_status_es" DEFAULT 'missing',
+  	"translation_status_fr_status" "enum_industries_translation_status_fr_status" DEFAULT 'missing',
+  	"translation_status_en_status" "enum_industries_translation_status_en_status" DEFAULT 'missing',
+  	"translation_status_es_status" "enum_industries_translation_status_es_status" DEFAULT 'missing',
   	"ai_meta_generated_by_a_i" boolean DEFAULT false,
   	"ai_meta_provider" varchar,
   	"ai_meta_model" varchar,
@@ -593,9 +593,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_featured" boolean DEFAULT false,
   	"version_display_order" numeric DEFAULT 0,
   	"version_review_status" "enum__industries_v_version_review_status",
-  	"version_translation_status_fr" "enum__industries_v_version_translation_status_fr" DEFAULT 'missing',
-  	"version_translation_status_en" "enum__industries_v_version_translation_status_en" DEFAULT 'missing',
-  	"version_translation_status_es" "enum__industries_v_version_translation_status_es" DEFAULT 'missing',
+  	"version_translation_status_fr_status" "enum__industries_v_version_translation_status_fr_status" DEFAULT 'missing',
+  	"version_translation_status_en_status" "enum__industries_v_version_translation_status_en_status" DEFAULT 'missing',
+  	"version_translation_status_es_status" "enum__industries_v_version_translation_status_es_status" DEFAULT 'missing',
   	"version_ai_meta_generated_by_a_i" boolean DEFAULT false,
   	"version_ai_meta_provider" varchar,
   	"version_ai_meta_model" varchar,
@@ -710,9 +710,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"featured" boolean DEFAULT false,
   	"display_order" numeric DEFAULT 0,
   	"review_status" "enum_clients_review_status",
-  	"translation_status_fr" "enum_clients_translation_status_fr" DEFAULT 'missing',
-  	"translation_status_en" "enum_clients_translation_status_en" DEFAULT 'missing',
-  	"translation_status_es" "enum_clients_translation_status_es" DEFAULT 'missing',
+  	"translation_status_fr_status" "enum_clients_translation_status_fr_status" DEFAULT 'missing',
+  	"translation_status_en_status" "enum_clients_translation_status_en_status" DEFAULT 'missing',
+  	"translation_status_es_status" "enum_clients_translation_status_es_status" DEFAULT 'missing',
   	"ai_meta_generated_by_a_i" boolean DEFAULT false,
   	"ai_meta_provider" varchar,
   	"ai_meta_model" varchar,
@@ -790,9 +790,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_featured" boolean DEFAULT false,
   	"version_display_order" numeric DEFAULT 0,
   	"version_review_status" "enum__clients_v_version_review_status",
-  	"version_translation_status_fr" "enum__clients_v_version_translation_status_fr" DEFAULT 'missing',
-  	"version_translation_status_en" "enum__clients_v_version_translation_status_en" DEFAULT 'missing',
-  	"version_translation_status_es" "enum__clients_v_version_translation_status_es" DEFAULT 'missing',
+  	"version_translation_status_fr_status" "enum__clients_v_version_translation_status_fr_status" DEFAULT 'missing',
+  	"version_translation_status_en_status" "enum__clients_v_version_translation_status_en_status" DEFAULT 'missing',
+  	"version_translation_status_es_status" "enum__clients_v_version_translation_status_es_status" DEFAULT 'missing',
   	"version_ai_meta_generated_by_a_i" boolean DEFAULT false,
   	"version_ai_meta_provider" varchar,
   	"version_ai_meta_model" varchar,
@@ -896,9 +896,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"hero_media_id" integer,
   	"featured_media_id" integer,
   	"review_status" "enum_projects_review_status",
-  	"translation_status_fr" "enum_projects_translation_status_fr" DEFAULT 'missing',
-  	"translation_status_en" "enum_projects_translation_status_en" DEFAULT 'missing',
-  	"translation_status_es" "enum_projects_translation_status_es" DEFAULT 'missing',
+  	"translation_status_fr_status" "enum_projects_translation_status_fr_status" DEFAULT 'missing',
+  	"translation_status_en_status" "enum_projects_translation_status_en_status" DEFAULT 'missing',
+  	"translation_status_es_status" "enum_projects_translation_status_es_status" DEFAULT 'missing',
   	"ai_meta_generated_by_a_i" boolean DEFAULT false,
   	"ai_meta_provider" varchar,
   	"ai_meta_model" varchar,
@@ -1013,9 +1013,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_hero_media_id" integer,
   	"version_featured_media_id" integer,
   	"version_review_status" "enum__projects_v_version_review_status",
-  	"version_translation_status_fr" "enum__projects_v_version_translation_status_fr" DEFAULT 'missing',
-  	"version_translation_status_en" "enum__projects_v_version_translation_status_en" DEFAULT 'missing',
-  	"version_translation_status_es" "enum__projects_v_version_translation_status_es" DEFAULT 'missing',
+  	"version_translation_status_fr_status" "enum__projects_v_version_translation_status_fr_status" DEFAULT 'missing',
+  	"version_translation_status_en_status" "enum__projects_v_version_translation_status_en_status" DEFAULT 'missing',
+  	"version_translation_status_es_status" "enum__projects_v_version_translation_status_es_status" DEFAULT 'missing',
   	"version_ai_meta_generated_by_a_i" boolean DEFAULT false,
   	"version_ai_meta_provider" varchar,
   	"version_ai_meta_model" varchar,
@@ -1112,9 +1112,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"featured" boolean DEFAULT false,
   	"display_order" numeric DEFAULT 0,
   	"review_status" "enum_testimonials_review_status",
-  	"translation_status_fr" "enum_testimonials_translation_status_fr" DEFAULT 'missing',
-  	"translation_status_en" "enum_testimonials_translation_status_en" DEFAULT 'missing',
-  	"translation_status_es" "enum_testimonials_translation_status_es" DEFAULT 'missing',
+  	"translation_status_fr_status" "enum_testimonials_translation_status_fr_status" DEFAULT 'missing',
+  	"translation_status_en_status" "enum_testimonials_translation_status_en_status" DEFAULT 'missing',
+  	"translation_status_es_status" "enum_testimonials_translation_status_es_status" DEFAULT 'missing',
   	"ai_meta_generated_by_a_i" boolean DEFAULT false,
   	"ai_meta_provider" varchar,
   	"ai_meta_model" varchar,
@@ -1189,9 +1189,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_featured" boolean DEFAULT false,
   	"version_display_order" numeric DEFAULT 0,
   	"version_review_status" "enum__testimonials_v_version_review_status",
-  	"version_translation_status_fr" "enum__testimonials_v_version_translation_status_fr" DEFAULT 'missing',
-  	"version_translation_status_en" "enum__testimonials_v_version_translation_status_en" DEFAULT 'missing',
-  	"version_translation_status_es" "enum__testimonials_v_version_translation_status_es" DEFAULT 'missing',
+  	"version_translation_status_fr_status" "enum__testimonials_v_version_translation_status_fr_status" DEFAULT 'missing',
+  	"version_translation_status_en_status" "enum__testimonials_v_version_translation_status_en_status" DEFAULT 'missing',
+  	"version_translation_status_es_status" "enum__testimonials_v_version_translation_status_es_status" DEFAULT 'missing',
   	"version_ai_meta_generated_by_a_i" boolean DEFAULT false,
   	"version_ai_meta_provider" varchar,
   	"version_ai_meta_model" varchar,
@@ -1495,9 +1495,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"secondary_c_t_a_url" varchar,
   	"closing_c_t_a_url" varchar,
   	"review_status" "enum_home_page_review_status",
-  	"translation_status_fr" "enum_home_page_translation_status_fr" DEFAULT 'missing',
-  	"translation_status_en" "enum_home_page_translation_status_en" DEFAULT 'missing',
-  	"translation_status_es" "enum_home_page_translation_status_es" DEFAULT 'missing',
+  	"translation_status_fr_status" "enum_home_page_translation_status_fr_status" DEFAULT 'missing',
+  	"translation_status_en_status" "enum_home_page_translation_status_en_status" DEFAULT 'missing',
+  	"translation_status_es_status" "enum_home_page_translation_status_es_status" DEFAULT 'missing',
   	"ai_meta_generated_by_a_i" boolean DEFAULT false,
   	"ai_meta_provider" varchar,
   	"ai_meta_model" varchar,
@@ -1560,9 +1560,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"version_secondary_c_t_a_url" varchar,
   	"version_closing_c_t_a_url" varchar,
   	"version_review_status" "enum__home_page_v_version_review_status",
-  	"version_translation_status_fr" "enum__home_page_v_version_translation_status_fr" DEFAULT 'missing',
-  	"version_translation_status_en" "enum__home_page_v_version_translation_status_en" DEFAULT 'missing',
-  	"version_translation_status_es" "enum__home_page_v_version_translation_status_es" DEFAULT 'missing',
+  	"version_translation_status_fr_status" "enum__home_page_v_version_translation_status_fr_status" DEFAULT 'missing',
+  	"version_translation_status_en_status" "enum__home_page_v_version_translation_status_en_status" DEFAULT 'missing',
+  	"version_translation_status_es_status" "enum__home_page_v_version_translation_status_es_status" DEFAULT 'missing',
   	"version_ai_meta_generated_by_a_i" boolean DEFAULT false,
   	"version_ai_meta_provider" varchar,
   	"version_ai_meta_model" varchar,
@@ -1628,9 +1628,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"closing_c_t_a_url" varchar,
   	"review_status" "enum_services_page_review_status",
-  	"translation_status_fr" "enum_services_page_translation_status_fr" DEFAULT 'missing',
-  	"translation_status_en" "enum_services_page_translation_status_en" DEFAULT 'missing',
-  	"translation_status_es" "enum_services_page_translation_status_es" DEFAULT 'missing',
+  	"translation_status_fr_status" "enum_services_page_translation_status_fr_status" DEFAULT 'missing',
+  	"translation_status_en_status" "enum_services_page_translation_status_en_status" DEFAULT 'missing',
+  	"translation_status_es_status" "enum_services_page_translation_status_es_status" DEFAULT 'missing',
   	"ai_meta_generated_by_a_i" boolean DEFAULT false,
   	"ai_meta_provider" varchar,
   	"ai_meta_model" varchar,
@@ -1684,9 +1684,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"version_closing_c_t_a_url" varchar,
   	"version_review_status" "enum__services_page_v_version_review_status",
-  	"version_translation_status_fr" "enum__services_page_v_version_translation_status_fr" DEFAULT 'missing',
-  	"version_translation_status_en" "enum__services_page_v_version_translation_status_en" DEFAULT 'missing',
-  	"version_translation_status_es" "enum__services_page_v_version_translation_status_es" DEFAULT 'missing',
+  	"version_translation_status_fr_status" "enum__services_page_v_version_translation_status_fr_status" DEFAULT 'missing',
+  	"version_translation_status_en_status" "enum__services_page_v_version_translation_status_en_status" DEFAULT 'missing',
+  	"version_translation_status_es_status" "enum__services_page_v_version_translation_status_es_status" DEFAULT 'missing',
   	"version_ai_meta_generated_by_a_i" boolean DEFAULT false,
   	"version_ai_meta_provider" varchar,
   	"version_ai_meta_model" varchar,
@@ -1745,9 +1745,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"closing_c_t_a_url" varchar,
   	"review_status" "enum_work_page_review_status",
-  	"translation_status_fr" "enum_work_page_translation_status_fr" DEFAULT 'missing',
-  	"translation_status_en" "enum_work_page_translation_status_en" DEFAULT 'missing',
-  	"translation_status_es" "enum_work_page_translation_status_es" DEFAULT 'missing',
+  	"translation_status_fr_status" "enum_work_page_translation_status_fr_status" DEFAULT 'missing',
+  	"translation_status_en_status" "enum_work_page_translation_status_en_status" DEFAULT 'missing',
+  	"translation_status_es_status" "enum_work_page_translation_status_es_status" DEFAULT 'missing',
   	"ai_meta_generated_by_a_i" boolean DEFAULT false,
   	"ai_meta_provider" varchar,
   	"ai_meta_model" varchar,
@@ -1793,9 +1793,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"version_closing_c_t_a_url" varchar,
   	"version_review_status" "enum__work_page_v_version_review_status",
-  	"version_translation_status_fr" "enum__work_page_v_version_translation_status_fr" DEFAULT 'missing',
-  	"version_translation_status_en" "enum__work_page_v_version_translation_status_en" DEFAULT 'missing',
-  	"version_translation_status_es" "enum__work_page_v_version_translation_status_es" DEFAULT 'missing',
+  	"version_translation_status_fr_status" "enum__work_page_v_version_translation_status_fr_status" DEFAULT 'missing',
+  	"version_translation_status_en_status" "enum__work_page_v_version_translation_status_en_status" DEFAULT 'missing',
+  	"version_translation_status_es_status" "enum__work_page_v_version_translation_status_es_status" DEFAULT 'missing',
   	"version_ai_meta_generated_by_a_i" boolean DEFAULT false,
   	"version_ai_meta_provider" varchar,
   	"version_ai_meta_model" varchar,
@@ -1846,9 +1846,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"closing_c_t_a_url" varchar,
   	"review_status" "enum_company_page_review_status",
-  	"translation_status_fr" "enum_company_page_translation_status_fr" DEFAULT 'missing',
-  	"translation_status_en" "enum_company_page_translation_status_en" DEFAULT 'missing',
-  	"translation_status_es" "enum_company_page_translation_status_es" DEFAULT 'missing',
+  	"translation_status_fr_status" "enum_company_page_translation_status_fr_status" DEFAULT 'missing',
+  	"translation_status_en_status" "enum_company_page_translation_status_en_status" DEFAULT 'missing',
+  	"translation_status_es_status" "enum_company_page_translation_status_es_status" DEFAULT 'missing',
   	"ai_meta_generated_by_a_i" boolean DEFAULT false,
   	"ai_meta_provider" varchar,
   	"ai_meta_model" varchar,
@@ -1907,9 +1907,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   	"id" serial PRIMARY KEY NOT NULL,
   	"version_closing_c_t_a_url" varchar,
   	"version_review_status" "enum__company_page_v_version_review_status",
-  	"version_translation_status_fr" "enum__company_page_v_version_translation_status_fr" DEFAULT 'missing',
-  	"version_translation_status_en" "enum__company_page_v_version_translation_status_en" DEFAULT 'missing',
-  	"version_translation_status_es" "enum__company_page_v_version_translation_status_es" DEFAULT 'missing',
+  	"version_translation_status_fr_status" "enum__company_page_v_version_translation_status_fr_status" DEFAULT 'missing',
+  	"version_translation_status_en_status" "enum__company_page_v_version_translation_status_en_status" DEFAULT 'missing',
+  	"version_translation_status_es_status" "enum__company_page_v_version_translation_status_es_status" DEFAULT 'missing',
   	"version_ai_meta_generated_by_a_i" boolean DEFAULT false,
   	"version_ai_meta_provider" varchar,
   	"version_ai_meta_model" varchar,
@@ -1972,9 +1972,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE "contact_page" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"review_status" "enum_contact_page_review_status",
-  	"translation_status_fr" "enum_contact_page_translation_status_fr" DEFAULT 'missing',
-  	"translation_status_en" "enum_contact_page_translation_status_en" DEFAULT 'missing',
-  	"translation_status_es" "enum_contact_page_translation_status_es" DEFAULT 'missing',
+  	"translation_status_fr_status" "enum_contact_page_translation_status_fr_status" DEFAULT 'missing',
+  	"translation_status_en_status" "enum_contact_page_translation_status_en_status" DEFAULT 'missing',
+  	"translation_status_es_status" "enum_contact_page_translation_status_es_status" DEFAULT 'missing',
   	"ai_meta_generated_by_a_i" boolean DEFAULT false,
   	"ai_meta_provider" varchar,
   	"ai_meta_model" varchar,
@@ -2022,9 +2022,9 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   CREATE TABLE "_contact_page_v" (
   	"id" serial PRIMARY KEY NOT NULL,
   	"version_review_status" "enum__contact_page_v_version_review_status",
-  	"version_translation_status_fr" "enum__contact_page_v_version_translation_status_fr" DEFAULT 'missing',
-  	"version_translation_status_en" "enum__contact_page_v_version_translation_status_en" DEFAULT 'missing',
-  	"version_translation_status_es" "enum__contact_page_v_version_translation_status_es" DEFAULT 'missing',
+  	"version_translation_status_fr_status" "enum__contact_page_v_version_translation_status_fr_status" DEFAULT 'missing',
+  	"version_translation_status_en_status" "enum__contact_page_v_version_translation_status_en_status" DEFAULT 'missing',
+  	"version_translation_status_es_status" "enum__contact_page_v_version_translation_status_es_status" DEFAULT 'missing',
   	"version_ai_meta_generated_by_a_i" boolean DEFAULT false,
   	"version_ai_meta_provider" varchar,
   	"version_ai_meta_model" varchar,
@@ -2927,18 +2927,18 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum_services_dirty_locales";
   DROP TYPE "public"."enum_services_source_references_type";
   DROP TYPE "public"."enum_services_review_status";
-  DROP TYPE "public"."enum_services_translation_status_fr";
-  DROP TYPE "public"."enum_services_translation_status_en";
-  DROP TYPE "public"."enum_services_translation_status_es";
+  DROP TYPE "public"."enum_services_translation_status_fr_status";
+  DROP TYPE "public"."enum_services_translation_status_en_status";
+  DROP TYPE "public"."enum_services_translation_status_es_status";
   DROP TYPE "public"."enum_services_ai_meta_source_locale";
   DROP TYPE "public"."enum_services_ai_meta_target_locale";
   DROP TYPE "public"."enum_services_status";
   DROP TYPE "public"."enum__services_v_version_dirty_locales";
   DROP TYPE "public"."enum__services_v_version_source_references_type";
   DROP TYPE "public"."enum__services_v_version_review_status";
-  DROP TYPE "public"."enum__services_v_version_translation_status_fr";
-  DROP TYPE "public"."enum__services_v_version_translation_status_en";
-  DROP TYPE "public"."enum__services_v_version_translation_status_es";
+  DROP TYPE "public"."enum__services_v_version_translation_status_fr_status";
+  DROP TYPE "public"."enum__services_v_version_translation_status_en_status";
+  DROP TYPE "public"."enum__services_v_version_translation_status_es_status";
   DROP TYPE "public"."enum__services_v_version_ai_meta_source_locale";
   DROP TYPE "public"."enum__services_v_version_ai_meta_target_locale";
   DROP TYPE "public"."enum__services_v_version_status";
@@ -2946,18 +2946,18 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum_industries_dirty_locales";
   DROP TYPE "public"."enum_industries_source_references_type";
   DROP TYPE "public"."enum_industries_review_status";
-  DROP TYPE "public"."enum_industries_translation_status_fr";
-  DROP TYPE "public"."enum_industries_translation_status_en";
-  DROP TYPE "public"."enum_industries_translation_status_es";
+  DROP TYPE "public"."enum_industries_translation_status_fr_status";
+  DROP TYPE "public"."enum_industries_translation_status_en_status";
+  DROP TYPE "public"."enum_industries_translation_status_es_status";
   DROP TYPE "public"."enum_industries_ai_meta_source_locale";
   DROP TYPE "public"."enum_industries_ai_meta_target_locale";
   DROP TYPE "public"."enum_industries_status";
   DROP TYPE "public"."enum__industries_v_version_dirty_locales";
   DROP TYPE "public"."enum__industries_v_version_source_references_type";
   DROP TYPE "public"."enum__industries_v_version_review_status";
-  DROP TYPE "public"."enum__industries_v_version_translation_status_fr";
-  DROP TYPE "public"."enum__industries_v_version_translation_status_en";
-  DROP TYPE "public"."enum__industries_v_version_translation_status_es";
+  DROP TYPE "public"."enum__industries_v_version_translation_status_fr_status";
+  DROP TYPE "public"."enum__industries_v_version_translation_status_en_status";
+  DROP TYPE "public"."enum__industries_v_version_translation_status_es_status";
   DROP TYPE "public"."enum__industries_v_version_ai_meta_source_locale";
   DROP TYPE "public"."enum__industries_v_version_ai_meta_target_locale";
   DROP TYPE "public"."enum__industries_v_version_status";
@@ -2965,18 +2965,18 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum_clients_dirty_locales";
   DROP TYPE "public"."enum_clients_source_references_type";
   DROP TYPE "public"."enum_clients_review_status";
-  DROP TYPE "public"."enum_clients_translation_status_fr";
-  DROP TYPE "public"."enum_clients_translation_status_en";
-  DROP TYPE "public"."enum_clients_translation_status_es";
+  DROP TYPE "public"."enum_clients_translation_status_fr_status";
+  DROP TYPE "public"."enum_clients_translation_status_en_status";
+  DROP TYPE "public"."enum_clients_translation_status_es_status";
   DROP TYPE "public"."enum_clients_ai_meta_source_locale";
   DROP TYPE "public"."enum_clients_ai_meta_target_locale";
   DROP TYPE "public"."enum_clients_status";
   DROP TYPE "public"."enum__clients_v_version_dirty_locales";
   DROP TYPE "public"."enum__clients_v_version_source_references_type";
   DROP TYPE "public"."enum__clients_v_version_review_status";
-  DROP TYPE "public"."enum__clients_v_version_translation_status_fr";
-  DROP TYPE "public"."enum__clients_v_version_translation_status_en";
-  DROP TYPE "public"."enum__clients_v_version_translation_status_es";
+  DROP TYPE "public"."enum__clients_v_version_translation_status_fr_status";
+  DROP TYPE "public"."enum__clients_v_version_translation_status_en_status";
+  DROP TYPE "public"."enum__clients_v_version_translation_status_es_status";
   DROP TYPE "public"."enum__clients_v_version_ai_meta_source_locale";
   DROP TYPE "public"."enum__clients_v_version_ai_meta_target_locale";
   DROP TYPE "public"."enum__clients_v_version_status";
@@ -2984,18 +2984,18 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum_projects_dirty_locales";
   DROP TYPE "public"."enum_projects_source_references_type";
   DROP TYPE "public"."enum_projects_review_status";
-  DROP TYPE "public"."enum_projects_translation_status_fr";
-  DROP TYPE "public"."enum_projects_translation_status_en";
-  DROP TYPE "public"."enum_projects_translation_status_es";
+  DROP TYPE "public"."enum_projects_translation_status_fr_status";
+  DROP TYPE "public"."enum_projects_translation_status_en_status";
+  DROP TYPE "public"."enum_projects_translation_status_es_status";
   DROP TYPE "public"."enum_projects_ai_meta_source_locale";
   DROP TYPE "public"."enum_projects_ai_meta_target_locale";
   DROP TYPE "public"."enum_projects_status";
   DROP TYPE "public"."enum__projects_v_version_dirty_locales";
   DROP TYPE "public"."enum__projects_v_version_source_references_type";
   DROP TYPE "public"."enum__projects_v_version_review_status";
-  DROP TYPE "public"."enum__projects_v_version_translation_status_fr";
-  DROP TYPE "public"."enum__projects_v_version_translation_status_en";
-  DROP TYPE "public"."enum__projects_v_version_translation_status_es";
+  DROP TYPE "public"."enum__projects_v_version_translation_status_fr_status";
+  DROP TYPE "public"."enum__projects_v_version_translation_status_en_status";
+  DROP TYPE "public"."enum__projects_v_version_translation_status_es_status";
   DROP TYPE "public"."enum__projects_v_version_ai_meta_source_locale";
   DROP TYPE "public"."enum__projects_v_version_ai_meta_target_locale";
   DROP TYPE "public"."enum__projects_v_version_status";
@@ -3004,9 +3004,9 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum_testimonials_dirty_locales";
   DROP TYPE "public"."enum_testimonials_original_locale";
   DROP TYPE "public"."enum_testimonials_review_status";
-  DROP TYPE "public"."enum_testimonials_translation_status_fr";
-  DROP TYPE "public"."enum_testimonials_translation_status_en";
-  DROP TYPE "public"."enum_testimonials_translation_status_es";
+  DROP TYPE "public"."enum_testimonials_translation_status_fr_status";
+  DROP TYPE "public"."enum_testimonials_translation_status_en_status";
+  DROP TYPE "public"."enum_testimonials_translation_status_es_status";
   DROP TYPE "public"."enum_testimonials_ai_meta_source_locale";
   DROP TYPE "public"."enum_testimonials_ai_meta_target_locale";
   DROP TYPE "public"."enum_testimonials_status";
@@ -3014,9 +3014,9 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum__testimonials_v_version_dirty_locales";
   DROP TYPE "public"."enum__testimonials_v_version_original_locale";
   DROP TYPE "public"."enum__testimonials_v_version_review_status";
-  DROP TYPE "public"."enum__testimonials_v_version_translation_status_fr";
-  DROP TYPE "public"."enum__testimonials_v_version_translation_status_en";
-  DROP TYPE "public"."enum__testimonials_v_version_translation_status_es";
+  DROP TYPE "public"."enum__testimonials_v_version_translation_status_fr_status";
+  DROP TYPE "public"."enum__testimonials_v_version_translation_status_en_status";
+  DROP TYPE "public"."enum__testimonials_v_version_translation_status_es_status";
   DROP TYPE "public"."enum__testimonials_v_version_ai_meta_source_locale";
   DROP TYPE "public"."enum__testimonials_v_version_ai_meta_target_locale";
   DROP TYPE "public"."enum__testimonials_v_version_status";
@@ -3030,85 +3030,85 @@ export async function down({ db, payload, req }: MigrateDownArgs): Promise<void>
   DROP TYPE "public"."enum__navigation_v_published_locale";
   DROP TYPE "public"."enum_home_page_dirty_locales";
   DROP TYPE "public"."enum_home_page_review_status";
-  DROP TYPE "public"."enum_home_page_translation_status_fr";
-  DROP TYPE "public"."enum_home_page_translation_status_en";
-  DROP TYPE "public"."enum_home_page_translation_status_es";
+  DROP TYPE "public"."enum_home_page_translation_status_fr_status";
+  DROP TYPE "public"."enum_home_page_translation_status_en_status";
+  DROP TYPE "public"."enum_home_page_translation_status_es_status";
   DROP TYPE "public"."enum_home_page_ai_meta_source_locale";
   DROP TYPE "public"."enum_home_page_ai_meta_target_locale";
   DROP TYPE "public"."enum_home_page_status";
   DROP TYPE "public"."enum__home_page_v_version_dirty_locales";
   DROP TYPE "public"."enum__home_page_v_version_review_status";
-  DROP TYPE "public"."enum__home_page_v_version_translation_status_fr";
-  DROP TYPE "public"."enum__home_page_v_version_translation_status_en";
-  DROP TYPE "public"."enum__home_page_v_version_translation_status_es";
+  DROP TYPE "public"."enum__home_page_v_version_translation_status_fr_status";
+  DROP TYPE "public"."enum__home_page_v_version_translation_status_en_status";
+  DROP TYPE "public"."enum__home_page_v_version_translation_status_es_status";
   DROP TYPE "public"."enum__home_page_v_version_ai_meta_source_locale";
   DROP TYPE "public"."enum__home_page_v_version_ai_meta_target_locale";
   DROP TYPE "public"."enum__home_page_v_version_status";
   DROP TYPE "public"."enum__home_page_v_published_locale";
   DROP TYPE "public"."enum_services_page_dirty_locales";
   DROP TYPE "public"."enum_services_page_review_status";
-  DROP TYPE "public"."enum_services_page_translation_status_fr";
-  DROP TYPE "public"."enum_services_page_translation_status_en";
-  DROP TYPE "public"."enum_services_page_translation_status_es";
+  DROP TYPE "public"."enum_services_page_translation_status_fr_status";
+  DROP TYPE "public"."enum_services_page_translation_status_en_status";
+  DROP TYPE "public"."enum_services_page_translation_status_es_status";
   DROP TYPE "public"."enum_services_page_ai_meta_source_locale";
   DROP TYPE "public"."enum_services_page_ai_meta_target_locale";
   DROP TYPE "public"."enum_services_page_status";
   DROP TYPE "public"."enum__services_page_v_version_dirty_locales";
   DROP TYPE "public"."enum__services_page_v_version_review_status";
-  DROP TYPE "public"."enum__services_page_v_version_translation_status_fr";
-  DROP TYPE "public"."enum__services_page_v_version_translation_status_en";
-  DROP TYPE "public"."enum__services_page_v_version_translation_status_es";
+  DROP TYPE "public"."enum__services_page_v_version_translation_status_fr_status";
+  DROP TYPE "public"."enum__services_page_v_version_translation_status_en_status";
+  DROP TYPE "public"."enum__services_page_v_version_translation_status_es_status";
   DROP TYPE "public"."enum__services_page_v_version_ai_meta_source_locale";
   DROP TYPE "public"."enum__services_page_v_version_ai_meta_target_locale";
   DROP TYPE "public"."enum__services_page_v_version_status";
   DROP TYPE "public"."enum__services_page_v_published_locale";
   DROP TYPE "public"."enum_work_page_dirty_locales";
   DROP TYPE "public"."enum_work_page_review_status";
-  DROP TYPE "public"."enum_work_page_translation_status_fr";
-  DROP TYPE "public"."enum_work_page_translation_status_en";
-  DROP TYPE "public"."enum_work_page_translation_status_es";
+  DROP TYPE "public"."enum_work_page_translation_status_fr_status";
+  DROP TYPE "public"."enum_work_page_translation_status_en_status";
+  DROP TYPE "public"."enum_work_page_translation_status_es_status";
   DROP TYPE "public"."enum_work_page_ai_meta_source_locale";
   DROP TYPE "public"."enum_work_page_ai_meta_target_locale";
   DROP TYPE "public"."enum_work_page_status";
   DROP TYPE "public"."enum__work_page_v_version_dirty_locales";
   DROP TYPE "public"."enum__work_page_v_version_review_status";
-  DROP TYPE "public"."enum__work_page_v_version_translation_status_fr";
-  DROP TYPE "public"."enum__work_page_v_version_translation_status_en";
-  DROP TYPE "public"."enum__work_page_v_version_translation_status_es";
+  DROP TYPE "public"."enum__work_page_v_version_translation_status_fr_status";
+  DROP TYPE "public"."enum__work_page_v_version_translation_status_en_status";
+  DROP TYPE "public"."enum__work_page_v_version_translation_status_es_status";
   DROP TYPE "public"."enum__work_page_v_version_ai_meta_source_locale";
   DROP TYPE "public"."enum__work_page_v_version_ai_meta_target_locale";
   DROP TYPE "public"."enum__work_page_v_version_status";
   DROP TYPE "public"."enum__work_page_v_published_locale";
   DROP TYPE "public"."enum_company_page_dirty_locales";
   DROP TYPE "public"."enum_company_page_review_status";
-  DROP TYPE "public"."enum_company_page_translation_status_fr";
-  DROP TYPE "public"."enum_company_page_translation_status_en";
-  DROP TYPE "public"."enum_company_page_translation_status_es";
+  DROP TYPE "public"."enum_company_page_translation_status_fr_status";
+  DROP TYPE "public"."enum_company_page_translation_status_en_status";
+  DROP TYPE "public"."enum_company_page_translation_status_es_status";
   DROP TYPE "public"."enum_company_page_ai_meta_source_locale";
   DROP TYPE "public"."enum_company_page_ai_meta_target_locale";
   DROP TYPE "public"."enum_company_page_status";
   DROP TYPE "public"."enum__company_page_v_version_dirty_locales";
   DROP TYPE "public"."enum__company_page_v_version_review_status";
-  DROP TYPE "public"."enum__company_page_v_version_translation_status_fr";
-  DROP TYPE "public"."enum__company_page_v_version_translation_status_en";
-  DROP TYPE "public"."enum__company_page_v_version_translation_status_es";
+  DROP TYPE "public"."enum__company_page_v_version_translation_status_fr_status";
+  DROP TYPE "public"."enum__company_page_v_version_translation_status_en_status";
+  DROP TYPE "public"."enum__company_page_v_version_translation_status_es_status";
   DROP TYPE "public"."enum__company_page_v_version_ai_meta_source_locale";
   DROP TYPE "public"."enum__company_page_v_version_ai_meta_target_locale";
   DROP TYPE "public"."enum__company_page_v_version_status";
   DROP TYPE "public"."enum__company_page_v_published_locale";
   DROP TYPE "public"."enum_contact_page_dirty_locales";
   DROP TYPE "public"."enum_contact_page_review_status";
-  DROP TYPE "public"."enum_contact_page_translation_status_fr";
-  DROP TYPE "public"."enum_contact_page_translation_status_en";
-  DROP TYPE "public"."enum_contact_page_translation_status_es";
+  DROP TYPE "public"."enum_contact_page_translation_status_fr_status";
+  DROP TYPE "public"."enum_contact_page_translation_status_en_status";
+  DROP TYPE "public"."enum_contact_page_translation_status_es_status";
   DROP TYPE "public"."enum_contact_page_ai_meta_source_locale";
   DROP TYPE "public"."enum_contact_page_ai_meta_target_locale";
   DROP TYPE "public"."enum_contact_page_status";
   DROP TYPE "public"."enum__contact_page_v_version_dirty_locales";
   DROP TYPE "public"."enum__contact_page_v_version_review_status";
-  DROP TYPE "public"."enum__contact_page_v_version_translation_status_fr";
-  DROP TYPE "public"."enum__contact_page_v_version_translation_status_en";
-  DROP TYPE "public"."enum__contact_page_v_version_translation_status_es";
+  DROP TYPE "public"."enum__contact_page_v_version_translation_status_fr_status";
+  DROP TYPE "public"."enum__contact_page_v_version_translation_status_en_status";
+  DROP TYPE "public"."enum__contact_page_v_version_translation_status_es_status";
   DROP TYPE "public"."enum__contact_page_v_version_ai_meta_source_locale";
   DROP TYPE "public"."enum__contact_page_v_version_ai_meta_target_locale";
   DROP TYPE "public"."enum__contact_page_v_version_status";

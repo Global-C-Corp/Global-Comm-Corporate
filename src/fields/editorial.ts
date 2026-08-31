@@ -1,5 +1,5 @@
 import type { Field } from 'payload'
-import { locales } from '@/i18n/locale'
+import { locales, translationStatusKey } from '@/i18n/locale'
 import { defaultReviewStatus, reviewStatuses } from '@/access/editorialStateMachine'
 
 /**
@@ -22,7 +22,8 @@ export const editorialFields: Field[] = [
     type: 'group',
     admin: { position: 'sidebar' },
     fields: locales.map((locale) => ({
-      name: locale,
+      name: translationStatusKey(locale),
+      label: locale.toUpperCase(),
       type: 'select',
       defaultValue: 'missing',
       options: [

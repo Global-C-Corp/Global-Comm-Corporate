@@ -1,5 +1,5 @@
 import type { CollectionConfig } from 'payload'
-import { isAdminOnlyDelete, isPublisherOrAdmin, publicReadPublishedOnly } from '@/access/predicates'
+import { isAdminOnlyDelete, isPublisherOrAdmin } from '@/access/predicates'
 import { localizedSlugField } from '@/fields/slug'
 import { governed } from '@/fields/taxonomyGovernance'
 
@@ -12,7 +12,8 @@ export const ContextTags: CollectionConfig = {
   access: {
     create: isPublisherOrAdmin,
     delete: isAdminOnlyDelete,
-    read: publicReadPublishedOnly,
+    // Controlled vocabulary has no draft state, so there is no _status to filter on.
+    read: () => true,
     update: isPublisherOrAdmin,
   },
   admin: {

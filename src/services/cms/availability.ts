@@ -1,4 +1,4 @@
-import { locales, type Locale } from '@/i18n/locale'
+import { locales } from '@/i18n/locale'
 import { isLocalePublic } from '@/lib/publication'
 import type { LocaleAvailability } from '@/services/seo/hreflang'
 import { getPayloadClient } from './context'
@@ -10,7 +10,7 @@ type PageGlobalSlug = 'home-page' | 'services-page' | 'work-page' | 'company-pag
 type SlugDoc = {
   _status?: string
   slug?: string | null
-  translationStatus?: Partial<Record<Locale, string>>
+  translationStatus?: Record<string, string | null | undefined> | null
   meta?: { robots?: { noIndex?: boolean | null } | null } | null
 }
 

@@ -365,9 +365,9 @@ export interface Service {
   displayOrder?: number | null;
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
   translationStatus?: {
-    fr?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
-    en?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
-    es?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    frStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
    * Locales changed since the last publish. Managed automatically.
@@ -505,9 +505,9 @@ export interface Industry {
   displayOrder?: number | null;
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
   translationStatus?: {
-    fr?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
-    en?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
-    es?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    frStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
    * Locales changed since the last publish. Managed automatically.
@@ -634,9 +634,9 @@ export interface Client {
   displayOrder?: number | null;
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
   translationStatus?: {
-    fr?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
-    en?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
-    es?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    frStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
    * Locales changed since the last publish. Managed automatically.
@@ -804,9 +804,9 @@ export interface Project {
   relatedTestimonials?: (number | Testimonial)[] | null;
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
   translationStatus?: {
-    fr?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
-    en?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
-    es?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    frStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
    * Locales changed since the last publish. Managed automatically.
@@ -905,9 +905,9 @@ export interface Testimonial {
     | null;
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
   translationStatus?: {
-    fr?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
-    en?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
-    es?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    frStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
    * Locales changed since the last publish. Managed automatically.
@@ -1303,9 +1303,9 @@ export interface ServicesSelect<T extends boolean = true> {
   translationStatus?:
     | T
     | {
-        fr?: T;
-        en?: T;
-        es?: T;
+        frStatus?: T;
+        enStatus?: T;
+        esStatus?: T;
       };
   dirtyLocales?: T;
   taxonomySuggestions?:
@@ -1389,9 +1389,9 @@ export interface IndustriesSelect<T extends boolean = true> {
   translationStatus?:
     | T
     | {
-        fr?: T;
-        en?: T;
-        es?: T;
+        frStatus?: T;
+        enStatus?: T;
+        esStatus?: T;
       };
   dirtyLocales?: T;
   taxonomySuggestions?:
@@ -1490,9 +1490,9 @@ export interface ClientsSelect<T extends boolean = true> {
   translationStatus?:
     | T
     | {
-        fr?: T;
-        en?: T;
-        es?: T;
+        frStatus?: T;
+        enStatus?: T;
+        esStatus?: T;
       };
   dirtyLocales?: T;
   taxonomySuggestions?:
@@ -1595,9 +1595,9 @@ export interface ProjectsSelect<T extends boolean = true> {
   translationStatus?:
     | T
     | {
-        fr?: T;
-        en?: T;
-        es?: T;
+        frStatus?: T;
+        enStatus?: T;
+        esStatus?: T;
       };
   dirtyLocales?: T;
   taxonomySuggestions?:
@@ -1687,9 +1687,9 @@ export interface TestimonialsSelect<T extends boolean = true> {
   translationStatus?:
     | T
     | {
-        fr?: T;
-        en?: T;
-        es?: T;
+        frStatus?: T;
+        enStatus?: T;
+        esStatus?: T;
       };
   dirtyLocales?: T;
   taxonomySuggestions?:
@@ -1930,9 +1930,9 @@ export interface HomePage {
   };
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
   translationStatus?: {
-    fr?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
-    en?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
-    es?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    frStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
    * Locales changed since the last publish. Managed automatically.
@@ -1994,9 +1994,9 @@ export interface ServicesPage {
   };
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
   translationStatus?: {
-    fr?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
-    en?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
-    es?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    frStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
    * Locales changed since the last publish. Managed automatically.
@@ -2057,9 +2057,9 @@ export interface WorkPage {
   };
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
   translationStatus?: {
-    fr?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
-    en?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
-    es?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    frStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
    * Locales changed since the last publish. Managed automatically.
@@ -2168,9 +2168,9 @@ export interface CompanyPage {
   };
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
   translationStatus?: {
-    fr?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
-    en?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
-    es?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    frStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
    * Locales changed since the last publish. Managed automatically.
@@ -2231,9 +2231,9 @@ export interface ContactPage {
   closingText?: string | null;
   reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
   translationStatus?: {
-    fr?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
-    en?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
-    es?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    frStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
    * Locales changed since the last publish. Managed automatically.
@@ -2386,9 +2386,9 @@ export interface HomePageSelect<T extends boolean = true> {
   translationStatus?:
     | T
     | {
-        fr?: T;
-        en?: T;
-        es?: T;
+        frStatus?: T;
+        enStatus?: T;
+        esStatus?: T;
       };
   dirtyLocales?: T;
   aiMeta?:
@@ -2450,9 +2450,9 @@ export interface ServicesPageSelect<T extends boolean = true> {
   translationStatus?:
     | T
     | {
-        fr?: T;
-        en?: T;
-        es?: T;
+        frStatus?: T;
+        enStatus?: T;
+        esStatus?: T;
       };
   dirtyLocales?: T;
   aiMeta?:
@@ -2513,9 +2513,9 @@ export interface WorkPageSelect<T extends boolean = true> {
   translationStatus?:
     | T
     | {
-        fr?: T;
-        en?: T;
-        es?: T;
+        frStatus?: T;
+        enStatus?: T;
+        esStatus?: T;
       };
   dirtyLocales?: T;
   aiMeta?:
@@ -2582,9 +2582,9 @@ export interface CompanyPageSelect<T extends boolean = true> {
   translationStatus?:
     | T
     | {
-        fr?: T;
-        en?: T;
-        es?: T;
+        frStatus?: T;
+        enStatus?: T;
+        esStatus?: T;
       };
   dirtyLocales?: T;
   aiMeta?:
@@ -2643,9 +2643,9 @@ export interface ContactPageSelect<T extends boolean = true> {
   translationStatus?:
     | T
     | {
-        fr?: T;
-        en?: T;
-        es?: T;
+        frStatus?: T;
+        enStatus?: T;
+        esStatus?: T;
       };
   dirtyLocales?: T;
   aiMeta?:

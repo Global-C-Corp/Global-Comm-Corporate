@@ -1,7 +1,7 @@
 import type { PayloadRequest, TypedUser, Where } from 'payload'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
-import type { Locale } from '@/i18n/locale'
+import { translationStatusKey, type Locale } from '@/i18n/locale'
 
 export async function getPayloadClient() {
   return getPayload({ config: configPromise })
@@ -41,7 +41,7 @@ export function baseQueryOptions(ctx: QueryContext) {
 export function approvedLocaleWhere(ctx: QueryContext): Where | undefined {
   if (ctx.draft) return undefined
   return {
-    [`translationStatus.${ctx.locale}`]: {
+    [`translationStatus.${translationStatusKey(ctx.locale)}`]: {
       equals: 'approved',
     },
   }

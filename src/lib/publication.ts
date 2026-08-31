@@ -1,8 +1,8 @@
-import type { Locale } from '@/i18n/locale'
+import { translationStatusKey, type Locale } from '@/i18n/locale'
 
 export type PublishableDoc = {
   _status?: string | null
-  translationStatus?: Partial<Record<Locale, string | null | undefined>> | null
+  translationStatus?: Record<string, string | null | undefined> | null
 }
 
 /**
@@ -17,7 +17,7 @@ export function isLocalePublic(
 ): boolean {
   return (
     doc._status === 'published' &&
-    doc.translationStatus?.[locale] === 'approved' &&
+    doc.translationStatus?.[translationStatusKey(locale)] === 'approved' &&
     hasRequiredFields(doc, locale)
   )
 }

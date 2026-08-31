@@ -1266,25 +1266,25 @@
           "primaryKey": false,
           "notNull": false
         },
-        "translation_status_fr": {
-          "name": "translation_status_fr",
-          "type": "enum_services_translation_status_fr",
+        "translation_status_fr_status": {
+          "name": "translation_status_fr_status",
+          "type": "enum_services_translation_status_fr_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "translation_status_en": {
-          "name": "translation_status_en",
-          "type": "enum_services_translation_status_en",
+        "translation_status_en_status": {
+          "name": "translation_status_en_status",
+          "type": "enum_services_translation_status_en_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "translation_status_es": {
-          "name": "translation_status_es",
-          "type": "enum_services_translation_status_es",
+        "translation_status_es_status": {
+          "name": "translation_status_es_status",
+          "type": "enum_services_translation_status_es_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -2219,25 +2219,25 @@
           "primaryKey": false,
           "notNull": false
         },
-        "version_translation_status_fr": {
-          "name": "version_translation_status_fr",
-          "type": "enum__services_v_version_translation_status_fr",
+        "version_translation_status_fr_status": {
+          "name": "version_translation_status_fr_status",
+          "type": "enum__services_v_version_translation_status_fr_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "version_translation_status_en": {
-          "name": "version_translation_status_en",
-          "type": "enum__services_v_version_translation_status_en",
+        "version_translation_status_en_status": {
+          "name": "version_translation_status_en_status",
+          "type": "enum__services_v_version_translation_status_en_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "version_translation_status_es": {
-          "name": "version_translation_status_es",
-          "type": "enum__services_v_version_translation_status_es",
+        "version_translation_status_es_status": {
+          "name": "version_translation_status_es_status",
+          "type": "enum__services_v_version_translation_status_es_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -3276,25 +3276,25 @@
           "primaryKey": false,
           "notNull": false
         },
-        "translation_status_fr": {
-          "name": "translation_status_fr",
-          "type": "enum_industries_translation_status_fr",
+        "translation_status_fr_status": {
+          "name": "translation_status_fr_status",
+          "type": "enum_industries_translation_status_fr_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "translation_status_en": {
-          "name": "translation_status_en",
-          "type": "enum_industries_translation_status_en",
+        "translation_status_en_status": {
+          "name": "translation_status_en_status",
+          "type": "enum_industries_translation_status_en_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "translation_status_es": {
-          "name": "translation_status_es",
-          "type": "enum_industries_translation_status_es",
+        "translation_status_es_status": {
+          "name": "translation_status_es_status",
+          "type": "enum_industries_translation_status_es_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -4314,25 +4314,25 @@
           "primaryKey": false,
           "notNull": false
         },
-        "version_translation_status_fr": {
-          "name": "version_translation_status_fr",
-          "type": "enum__industries_v_version_translation_status_fr",
+        "version_translation_status_fr_status": {
+          "name": "version_translation_status_fr_status",
+          "type": "enum__industries_v_version_translation_status_fr_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "version_translation_status_en": {
-          "name": "version_translation_status_en",
-          "type": "enum__industries_v_version_translation_status_en",
+        "version_translation_status_en_status": {
+          "name": "version_translation_status_en_status",
+          "type": "enum__industries_v_version_translation_status_en_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "version_translation_status_es": {
-          "name": "version_translation_status_es",
-          "type": "enum__industries_v_version_translation_status_es",
+        "version_translation_status_es_status": {
+          "name": "version_translation_status_es_status",
+          "type": "enum__industries_v_version_translation_status_es_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -5719,25 +5719,25 @@
           "primaryKey": false,
           "notNull": false
         },
-        "translation_status_fr": {
-          "name": "translation_status_fr",
-          "type": "enum_clients_translation_status_fr",
+        "translation_status_fr_status": {
+          "name": "translation_status_fr_status",
+          "type": "enum_clients_translation_status_fr_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "translation_status_en": {
-          "name": "translation_status_en",
-          "type": "enum_clients_translation_status_en",
+        "translation_status_en_status": {
+          "name": "translation_status_en_status",
+          "type": "enum_clients_translation_status_en_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "translation_status_es": {
-          "name": "translation_status_es",
-          "type": "enum_clients_translation_status_es",
+        "translation_status_es_status": {
+          "name": "translation_status_es_status",
+          "type": "enum_clients_translation_status_es_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -6614,25 +6614,25 @@
           "primaryKey": false,
           "notNull": false
         },
-        "version_translation_status_fr": {
-          "name": "version_translation_status_fr",
-          "type": "enum__clients_v_version_translation_status_fr",
+        "version_translation_status_fr_status": {
+          "name": "version_translation_status_fr_status",
+          "type": "enum__clients_v_version_translation_status_fr_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "version_translation_status_en": {
-          "name": "version_translation_status_en",
-          "type": "enum__clients_v_version_translation_status_en",
+        "version_translation_status_en_status": {
+          "name": "version_translation_status_en_status",
+          "type": "enum__clients_v_version_translation_status_en_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "version_translation_status_es": {
-          "name": "version_translation_status_es",
-          "type": "enum__clients_v_version_translation_status_es",
+        "version_translation_status_es_status": {
+          "name": "version_translation_status_es_status",
+          "type": "enum__clients_v_version_translation_status_es_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -7909,25 +7909,25 @@
           "primaryKey": false,
           "notNull": false
         },
-        "translation_status_fr": {
-          "name": "translation_status_fr",
-          "type": "enum_projects_translation_status_fr",
+        "translation_status_fr_status": {
+          "name": "translation_status_fr_status",
+          "type": "enum_projects_translation_status_fr_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "translation_status_en": {
-          "name": "translation_status_en",
-          "type": "enum_projects_translation_status_en",
+        "translation_status_en_status": {
+          "name": "translation_status_en_status",
+          "type": "enum_projects_translation_status_en_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "translation_status_es": {
-          "name": "translation_status_es",
-          "type": "enum_projects_translation_status_es",
+        "translation_status_es_status": {
+          "name": "translation_status_es_status",
+          "type": "enum_projects_translation_status_es_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -9355,25 +9355,25 @@
           "primaryKey": false,
           "notNull": false
         },
-        "version_translation_status_fr": {
-          "name": "version_translation_status_fr",
-          "type": "enum__projects_v_version_translation_status_fr",
+        "version_translation_status_fr_status": {
+          "name": "version_translation_status_fr_status",
+          "type": "enum__projects_v_version_translation_status_fr_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "version_translation_status_en": {
-          "name": "version_translation_status_en",
-          "type": "enum__projects_v_version_translation_status_en",
+        "version_translation_status_en_status": {
+          "name": "version_translation_status_en_status",
+          "type": "enum__projects_v_version_translation_status_en_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "version_translation_status_es": {
-          "name": "version_translation_status_es",
-          "type": "enum__projects_v_version_translation_status_es",
+        "version_translation_status_es_status": {
+          "name": "version_translation_status_es_status",
+          "type": "enum__projects_v_version_translation_status_es_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -10658,25 +10658,25 @@
           "primaryKey": false,
           "notNull": false
         },
-        "translation_status_fr": {
-          "name": "translation_status_fr",
-          "type": "enum_testimonials_translation_status_fr",
+        "translation_status_fr_status": {
+          "name": "translation_status_fr_status",
+          "type": "enum_testimonials_translation_status_fr_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "translation_status_en": {
-          "name": "translation_status_en",
-          "type": "enum_testimonials_translation_status_en",
+        "translation_status_en_status": {
+          "name": "translation_status_en_status",
+          "type": "enum_testimonials_translation_status_en_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "translation_status_es": {
-          "name": "translation_status_es",
-          "type": "enum_testimonials_translation_status_es",
+        "translation_status_es_status": {
+          "name": "translation_status_es_status",
+          "type": "enum_testimonials_translation_status_es_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -11537,25 +11537,25 @@
           "primaryKey": false,
           "notNull": false
         },
-        "version_translation_status_fr": {
-          "name": "version_translation_status_fr",
-          "type": "enum__testimonials_v_version_translation_status_fr",
+        "version_translation_status_fr_status": {
+          "name": "version_translation_status_fr_status",
+          "type": "enum__testimonials_v_version_translation_status_fr_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "version_translation_status_en": {
-          "name": "version_translation_status_en",
-          "type": "enum__testimonials_v_version_translation_status_en",
+        "version_translation_status_en_status": {
+          "name": "version_translation_status_en_status",
+          "type": "enum__testimonials_v_version_translation_status_en_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "version_translation_status_es": {
-          "name": "version_translation_status_es",
-          "type": "enum__testimonials_v_version_translation_status_es",
+        "version_translation_status_es_status": {
+          "name": "version_translation_status_es_status",
+          "type": "enum__testimonials_v_version_translation_status_es_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -15396,25 +15396,25 @@
           "primaryKey": false,
           "notNull": false
         },
-        "translation_status_fr": {
-          "name": "translation_status_fr",
-          "type": "enum_home_page_translation_status_fr",
+        "translation_status_fr_status": {
+          "name": "translation_status_fr_status",
+          "type": "enum_home_page_translation_status_fr_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "translation_status_en": {
-          "name": "translation_status_en",
-          "type": "enum_home_page_translation_status_en",
+        "translation_status_en_status": {
+          "name": "translation_status_en_status",
+          "type": "enum_home_page_translation_status_en_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "translation_status_es": {
-          "name": "translation_status_es",
-          "type": "enum_home_page_translation_status_es",
+        "translation_status_es_status": {
+          "name": "translation_status_es_status",
+          "type": "enum_home_page_translation_status_es_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -16142,25 +16142,25 @@
           "primaryKey": false,
           "notNull": false
         },
-        "version_translation_status_fr": {
-          "name": "version_translation_status_fr",
-          "type": "enum__home_page_v_version_translation_status_fr",
+        "version_translation_status_fr_status": {
+          "name": "version_translation_status_fr_status",
+          "type": "enum__home_page_v_version_translation_status_fr_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "version_translation_status_en": {
-          "name": "version_translation_status_en",
-          "type": "enum__home_page_v_version_translation_status_en",
+        "version_translation_status_en_status": {
+          "name": "version_translation_status_en_status",
+          "type": "enum__home_page_v_version_translation_status_en_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "version_translation_status_es": {
-          "name": "version_translation_status_es",
-          "type": "enum__home_page_v_version_translation_status_es",
+        "version_translation_status_es_status": {
+          "name": "version_translation_status_es_status",
+          "type": "enum__home_page_v_version_translation_status_es_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -16984,25 +16984,25 @@
           "primaryKey": false,
           "notNull": false
         },
-        "translation_status_fr": {
-          "name": "translation_status_fr",
-          "type": "enum_services_page_translation_status_fr",
+        "translation_status_fr_status": {
+          "name": "translation_status_fr_status",
+          "type": "enum_services_page_translation_status_fr_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "translation_status_en": {
-          "name": "translation_status_en",
-          "type": "enum_services_page_translation_status_en",
+        "translation_status_en_status": {
+          "name": "translation_status_en_status",
+          "type": "enum_services_page_translation_status_en_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "translation_status_es": {
-          "name": "translation_status_es",
-          "type": "enum_services_page_translation_status_es",
+        "translation_status_es_status": {
+          "name": "translation_status_es_status",
+          "type": "enum_services_page_translation_status_es_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -17592,25 +17592,25 @@
           "primaryKey": false,
           "notNull": false
         },
-        "version_translation_status_fr": {
-          "name": "version_translation_status_fr",
-          "type": "enum__services_page_v_version_translation_status_fr",
+        "version_translation_status_fr_status": {
+          "name": "version_translation_status_fr_status",
+          "type": "enum__services_page_v_version_translation_status_fr_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "version_translation_status_en": {
-          "name": "version_translation_status_en",
-          "type": "enum__services_page_v_version_translation_status_en",
+        "version_translation_status_en_status": {
+          "name": "version_translation_status_en_status",
+          "type": "enum__services_page_v_version_translation_status_en_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "version_translation_status_es": {
-          "name": "version_translation_status_es",
-          "type": "enum__services_page_v_version_translation_status_es",
+        "version_translation_status_es_status": {
+          "name": "version_translation_status_es_status",
+          "type": "enum__services_page_v_version_translation_status_es_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -18308,25 +18308,25 @@
           "primaryKey": false,
           "notNull": false
         },
-        "translation_status_fr": {
-          "name": "translation_status_fr",
-          "type": "enum_work_page_translation_status_fr",
+        "translation_status_fr_status": {
+          "name": "translation_status_fr_status",
+          "type": "enum_work_page_translation_status_fr_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "translation_status_en": {
-          "name": "translation_status_en",
-          "type": "enum_work_page_translation_status_en",
+        "translation_status_en_status": {
+          "name": "translation_status_en_status",
+          "type": "enum_work_page_translation_status_en_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "translation_status_es": {
-          "name": "translation_status_es",
-          "type": "enum_work_page_translation_status_es",
+        "translation_status_es_status": {
+          "name": "translation_status_es_status",
+          "type": "enum_work_page_translation_status_es_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -18785,25 +18785,25 @@
           "primaryKey": false,
           "notNull": false
         },
-        "version_translation_status_fr": {
-          "name": "version_translation_status_fr",
-          "type": "enum__work_page_v_version_translation_status_fr",
+        "version_translation_status_fr_status": {
+          "name": "version_translation_status_fr_status",
+          "type": "enum__work_page_v_version_translation_status_fr_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "version_translation_status_en": {
-          "name": "version_translation_status_en",
-          "type": "enum__work_page_v_version_translation_status_en",
+        "version_translation_status_en_status": {
+          "name": "version_translation_status_en_status",
+          "type": "enum__work_page_v_version_translation_status_en_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "version_translation_status_es": {
-          "name": "version_translation_status_es",
-          "type": "enum__work_page_v_version_translation_status_es",
+        "version_translation_status_es_status": {
+          "name": "version_translation_status_es_status",
+          "type": "enum__work_page_v_version_translation_status_es_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -19370,25 +19370,25 @@
           "primaryKey": false,
           "notNull": false
         },
-        "translation_status_fr": {
-          "name": "translation_status_fr",
-          "type": "enum_company_page_translation_status_fr",
+        "translation_status_fr_status": {
+          "name": "translation_status_fr_status",
+          "type": "enum_company_page_translation_status_fr_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "translation_status_en": {
-          "name": "translation_status_en",
-          "type": "enum_company_page_translation_status_en",
+        "translation_status_en_status": {
+          "name": "translation_status_en_status",
+          "type": "enum_company_page_translation_status_en_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "translation_status_es": {
-          "name": "translation_status_es",
-          "type": "enum_company_page_translation_status_es",
+        "translation_status_es_status": {
+          "name": "translation_status_es_status",
+          "type": "enum_company_page_translation_status_es_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -20064,25 +20064,25 @@
           "primaryKey": false,
           "notNull": false
         },
-        "version_translation_status_fr": {
-          "name": "version_translation_status_fr",
-          "type": "enum__company_page_v_version_translation_status_fr",
+        "version_translation_status_fr_status": {
+          "name": "version_translation_status_fr_status",
+          "type": "enum__company_page_v_version_translation_status_fr_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "version_translation_status_en": {
-          "name": "version_translation_status_en",
-          "type": "enum__company_page_v_version_translation_status_en",
+        "version_translation_status_en_status": {
+          "name": "version_translation_status_en_status",
+          "type": "enum__company_page_v_version_translation_status_en_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "version_translation_status_es": {
-          "name": "version_translation_status_es",
-          "type": "enum__company_page_v_version_translation_status_es",
+        "version_translation_status_es_status": {
+          "name": "version_translation_status_es_status",
+          "type": "enum__company_page_v_version_translation_status_es_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -20860,25 +20860,25 @@
           "primaryKey": false,
           "notNull": false
         },
-        "translation_status_fr": {
-          "name": "translation_status_fr",
-          "type": "enum_contact_page_translation_status_fr",
+        "translation_status_fr_status": {
+          "name": "translation_status_fr_status",
+          "type": "enum_contact_page_translation_status_fr_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "translation_status_en": {
-          "name": "translation_status_en",
-          "type": "enum_contact_page_translation_status_en",
+        "translation_status_en_status": {
+          "name": "translation_status_en_status",
+          "type": "enum_contact_page_translation_status_en_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "translation_status_es": {
-          "name": "translation_status_es",
-          "type": "enum_contact_page_translation_status_es",
+        "translation_status_es_status": {
+          "name": "translation_status_es_status",
+          "type": "enum_contact_page_translation_status_es_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -21349,25 +21349,25 @@
           "primaryKey": false,
           "notNull": false
         },
-        "version_translation_status_fr": {
-          "name": "version_translation_status_fr",
-          "type": "enum__contact_page_v_version_translation_status_fr",
+        "version_translation_status_fr_status": {
+          "name": "version_translation_status_fr_status",
+          "type": "enum__contact_page_v_version_translation_status_fr_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "version_translation_status_en": {
-          "name": "version_translation_status_en",
-          "type": "enum__contact_page_v_version_translation_status_en",
+        "version_translation_status_en_status": {
+          "name": "version_translation_status_en_status",
+          "type": "enum__contact_page_v_version_translation_status_en_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
           "default": "'missing'"
         },
-        "version_translation_status_es": {
-          "name": "version_translation_status_es",
-          "type": "enum__contact_page_v_version_translation_status_es",
+        "version_translation_status_es_status": {
+          "name": "version_translation_status_es_status",
+          "type": "enum__contact_page_v_version_translation_status_es_status",
           "typeSchema": "public",
           "primaryKey": false,
           "notNull": false,
@@ -21909,8 +21909,8 @@
         "approved"
       ]
     },
-    "public.enum_services_translation_status_fr": {
-      "name": "enum_services_translation_status_fr",
+    "public.enum_services_translation_status_fr_status": {
+      "name": "enum_services_translation_status_fr_status",
       "schema": "public",
       "values": [
         "missing",
@@ -21919,8 +21919,8 @@
         "approved"
       ]
     },
-    "public.enum_services_translation_status_en": {
-      "name": "enum_services_translation_status_en",
+    "public.enum_services_translation_status_en_status": {
+      "name": "enum_services_translation_status_en_status",
       "schema": "public",
       "values": [
         "missing",
@@ -21929,8 +21929,8 @@
         "approved"
       ]
     },
-    "public.enum_services_translation_status_es": {
-      "name": "enum_services_translation_status_es",
+    "public.enum_services_translation_status_es_status": {
+      "name": "enum_services_translation_status_es_status",
       "schema": "public",
       "values": [
         "missing",
@@ -21996,8 +21996,8 @@
         "approved"
       ]
     },
-    "public.enum__services_v_version_translation_status_fr": {
-      "name": "enum__services_v_version_translation_status_fr",
+    "public.enum__services_v_version_translation_status_fr_status": {
+      "name": "enum__services_v_version_translation_status_fr_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22006,8 +22006,8 @@
         "approved"
       ]
     },
-    "public.enum__services_v_version_translation_status_en": {
-      "name": "enum__services_v_version_translation_status_en",
+    "public.enum__services_v_version_translation_status_en_status": {
+      "name": "enum__services_v_version_translation_status_en_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22016,8 +22016,8 @@
         "approved"
       ]
     },
-    "public.enum__services_v_version_translation_status_es": {
-      "name": "enum__services_v_version_translation_status_es",
+    "public.enum__services_v_version_translation_status_es_status": {
+      "name": "enum__services_v_version_translation_status_es_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22092,8 +22092,8 @@
         "approved"
       ]
     },
-    "public.enum_industries_translation_status_fr": {
-      "name": "enum_industries_translation_status_fr",
+    "public.enum_industries_translation_status_fr_status": {
+      "name": "enum_industries_translation_status_fr_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22102,8 +22102,8 @@
         "approved"
       ]
     },
-    "public.enum_industries_translation_status_en": {
-      "name": "enum_industries_translation_status_en",
+    "public.enum_industries_translation_status_en_status": {
+      "name": "enum_industries_translation_status_en_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22112,8 +22112,8 @@
         "approved"
       ]
     },
-    "public.enum_industries_translation_status_es": {
-      "name": "enum_industries_translation_status_es",
+    "public.enum_industries_translation_status_es_status": {
+      "name": "enum_industries_translation_status_es_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22179,8 +22179,8 @@
         "approved"
       ]
     },
-    "public.enum__industries_v_version_translation_status_fr": {
-      "name": "enum__industries_v_version_translation_status_fr",
+    "public.enum__industries_v_version_translation_status_fr_status": {
+      "name": "enum__industries_v_version_translation_status_fr_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22189,8 +22189,8 @@
         "approved"
       ]
     },
-    "public.enum__industries_v_version_translation_status_en": {
-      "name": "enum__industries_v_version_translation_status_en",
+    "public.enum__industries_v_version_translation_status_en_status": {
+      "name": "enum__industries_v_version_translation_status_en_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22199,8 +22199,8 @@
         "approved"
       ]
     },
-    "public.enum__industries_v_version_translation_status_es": {
-      "name": "enum__industries_v_version_translation_status_es",
+    "public.enum__industries_v_version_translation_status_es_status": {
+      "name": "enum__industries_v_version_translation_status_es_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22275,8 +22275,8 @@
         "approved"
       ]
     },
-    "public.enum_clients_translation_status_fr": {
-      "name": "enum_clients_translation_status_fr",
+    "public.enum_clients_translation_status_fr_status": {
+      "name": "enum_clients_translation_status_fr_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22285,8 +22285,8 @@
         "approved"
       ]
     },
-    "public.enum_clients_translation_status_en": {
-      "name": "enum_clients_translation_status_en",
+    "public.enum_clients_translation_status_en_status": {
+      "name": "enum_clients_translation_status_en_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22295,8 +22295,8 @@
         "approved"
       ]
     },
-    "public.enum_clients_translation_status_es": {
-      "name": "enum_clients_translation_status_es",
+    "public.enum_clients_translation_status_es_status": {
+      "name": "enum_clients_translation_status_es_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22362,8 +22362,8 @@
         "approved"
       ]
     },
-    "public.enum__clients_v_version_translation_status_fr": {
-      "name": "enum__clients_v_version_translation_status_fr",
+    "public.enum__clients_v_version_translation_status_fr_status": {
+      "name": "enum__clients_v_version_translation_status_fr_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22372,8 +22372,8 @@
         "approved"
       ]
     },
-    "public.enum__clients_v_version_translation_status_en": {
-      "name": "enum__clients_v_version_translation_status_en",
+    "public.enum__clients_v_version_translation_status_en_status": {
+      "name": "enum__clients_v_version_translation_status_en_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22382,8 +22382,8 @@
         "approved"
       ]
     },
-    "public.enum__clients_v_version_translation_status_es": {
-      "name": "enum__clients_v_version_translation_status_es",
+    "public.enum__clients_v_version_translation_status_es_status": {
+      "name": "enum__clients_v_version_translation_status_es_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22458,8 +22458,8 @@
         "approved"
       ]
     },
-    "public.enum_projects_translation_status_fr": {
-      "name": "enum_projects_translation_status_fr",
+    "public.enum_projects_translation_status_fr_status": {
+      "name": "enum_projects_translation_status_fr_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22468,8 +22468,8 @@
         "approved"
       ]
     },
-    "public.enum_projects_translation_status_en": {
-      "name": "enum_projects_translation_status_en",
+    "public.enum_projects_translation_status_en_status": {
+      "name": "enum_projects_translation_status_en_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22478,8 +22478,8 @@
         "approved"
       ]
     },
-    "public.enum_projects_translation_status_es": {
-      "name": "enum_projects_translation_status_es",
+    "public.enum_projects_translation_status_es_status": {
+      "name": "enum_projects_translation_status_es_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22545,8 +22545,8 @@
         "approved"
       ]
     },
-    "public.enum__projects_v_version_translation_status_fr": {
-      "name": "enum__projects_v_version_translation_status_fr",
+    "public.enum__projects_v_version_translation_status_fr_status": {
+      "name": "enum__projects_v_version_translation_status_fr_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22555,8 +22555,8 @@
         "approved"
       ]
     },
-    "public.enum__projects_v_version_translation_status_en": {
-      "name": "enum__projects_v_version_translation_status_en",
+    "public.enum__projects_v_version_translation_status_en_status": {
+      "name": "enum__projects_v_version_translation_status_en_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22565,8 +22565,8 @@
         "approved"
       ]
     },
-    "public.enum__projects_v_version_translation_status_es": {
-      "name": "enum__projects_v_version_translation_status_es",
+    "public.enum__projects_v_version_translation_status_es_status": {
+      "name": "enum__projects_v_version_translation_status_es_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22650,8 +22650,8 @@
         "approved"
       ]
     },
-    "public.enum_testimonials_translation_status_fr": {
-      "name": "enum_testimonials_translation_status_fr",
+    "public.enum_testimonials_translation_status_fr_status": {
+      "name": "enum_testimonials_translation_status_fr_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22660,8 +22660,8 @@
         "approved"
       ]
     },
-    "public.enum_testimonials_translation_status_en": {
-      "name": "enum_testimonials_translation_status_en",
+    "public.enum_testimonials_translation_status_en_status": {
+      "name": "enum_testimonials_translation_status_en_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22670,8 +22670,8 @@
         "approved"
       ]
     },
-    "public.enum_testimonials_translation_status_es": {
-      "name": "enum_testimonials_translation_status_es",
+    "public.enum_testimonials_translation_status_es_status": {
+      "name": "enum_testimonials_translation_status_es_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22746,8 +22746,8 @@
         "approved"
       ]
     },
-    "public.enum__testimonials_v_version_translation_status_fr": {
-      "name": "enum__testimonials_v_version_translation_status_fr",
+    "public.enum__testimonials_v_version_translation_status_fr_status": {
+      "name": "enum__testimonials_v_version_translation_status_fr_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22756,8 +22756,8 @@
         "approved"
       ]
     },
-    "public.enum__testimonials_v_version_translation_status_en": {
-      "name": "enum__testimonials_v_version_translation_status_en",
+    "public.enum__testimonials_v_version_translation_status_en_status": {
+      "name": "enum__testimonials_v_version_translation_status_en_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22766,8 +22766,8 @@
         "approved"
       ]
     },
-    "public.enum__testimonials_v_version_translation_status_es": {
-      "name": "enum__testimonials_v_version_translation_status_es",
+    "public.enum__testimonials_v_version_translation_status_es_status": {
+      "name": "enum__testimonials_v_version_translation_status_es_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22893,8 +22893,8 @@
         "approved"
       ]
     },
-    "public.enum_home_page_translation_status_fr": {
-      "name": "enum_home_page_translation_status_fr",
+    "public.enum_home_page_translation_status_fr_status": {
+      "name": "enum_home_page_translation_status_fr_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22903,8 +22903,8 @@
         "approved"
       ]
     },
-    "public.enum_home_page_translation_status_en": {
-      "name": "enum_home_page_translation_status_en",
+    "public.enum_home_page_translation_status_en_status": {
+      "name": "enum_home_page_translation_status_en_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22913,8 +22913,8 @@
         "approved"
       ]
     },
-    "public.enum_home_page_translation_status_es": {
-      "name": "enum_home_page_translation_status_es",
+    "public.enum_home_page_translation_status_es_status": {
+      "name": "enum_home_page_translation_status_es_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22969,8 +22969,8 @@
         "approved"
       ]
     },
-    "public.enum__home_page_v_version_translation_status_fr": {
-      "name": "enum__home_page_v_version_translation_status_fr",
+    "public.enum__home_page_v_version_translation_status_fr_status": {
+      "name": "enum__home_page_v_version_translation_status_fr_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22979,8 +22979,8 @@
         "approved"
       ]
     },
-    "public.enum__home_page_v_version_translation_status_en": {
-      "name": "enum__home_page_v_version_translation_status_en",
+    "public.enum__home_page_v_version_translation_status_en_status": {
+      "name": "enum__home_page_v_version_translation_status_en_status",
       "schema": "public",
       "values": [
         "missing",
@@ -22989,8 +22989,8 @@
         "approved"
       ]
     },
-    "public.enum__home_page_v_version_translation_status_es": {
-      "name": "enum__home_page_v_version_translation_status_es",
+    "public.enum__home_page_v_version_translation_status_es_status": {
+      "name": "enum__home_page_v_version_translation_status_es_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23054,8 +23054,8 @@
         "approved"
       ]
     },
-    "public.enum_services_page_translation_status_fr": {
-      "name": "enum_services_page_translation_status_fr",
+    "public.enum_services_page_translation_status_fr_status": {
+      "name": "enum_services_page_translation_status_fr_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23064,8 +23064,8 @@
         "approved"
       ]
     },
-    "public.enum_services_page_translation_status_en": {
-      "name": "enum_services_page_translation_status_en",
+    "public.enum_services_page_translation_status_en_status": {
+      "name": "enum_services_page_translation_status_en_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23074,8 +23074,8 @@
         "approved"
       ]
     },
-    "public.enum_services_page_translation_status_es": {
-      "name": "enum_services_page_translation_status_es",
+    "public.enum_services_page_translation_status_es_status": {
+      "name": "enum_services_page_translation_status_es_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23130,8 +23130,8 @@
         "approved"
       ]
     },
-    "public.enum__services_page_v_version_translation_status_fr": {
-      "name": "enum__services_page_v_version_translation_status_fr",
+    "public.enum__services_page_v_version_translation_status_fr_status": {
+      "name": "enum__services_page_v_version_translation_status_fr_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23140,8 +23140,8 @@
         "approved"
       ]
     },
-    "public.enum__services_page_v_version_translation_status_en": {
-      "name": "enum__services_page_v_version_translation_status_en",
+    "public.enum__services_page_v_version_translation_status_en_status": {
+      "name": "enum__services_page_v_version_translation_status_en_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23150,8 +23150,8 @@
         "approved"
       ]
     },
-    "public.enum__services_page_v_version_translation_status_es": {
-      "name": "enum__services_page_v_version_translation_status_es",
+    "public.enum__services_page_v_version_translation_status_es_status": {
+      "name": "enum__services_page_v_version_translation_status_es_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23215,8 +23215,8 @@
         "approved"
       ]
     },
-    "public.enum_work_page_translation_status_fr": {
-      "name": "enum_work_page_translation_status_fr",
+    "public.enum_work_page_translation_status_fr_status": {
+      "name": "enum_work_page_translation_status_fr_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23225,8 +23225,8 @@
         "approved"
       ]
     },
-    "public.enum_work_page_translation_status_en": {
-      "name": "enum_work_page_translation_status_en",
+    "public.enum_work_page_translation_status_en_status": {
+      "name": "enum_work_page_translation_status_en_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23235,8 +23235,8 @@
         "approved"
       ]
     },
-    "public.enum_work_page_translation_status_es": {
-      "name": "enum_work_page_translation_status_es",
+    "public.enum_work_page_translation_status_es_status": {
+      "name": "enum_work_page_translation_status_es_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23291,8 +23291,8 @@
         "approved"
       ]
     },
-    "public.enum__work_page_v_version_translation_status_fr": {
-      "name": "enum__work_page_v_version_translation_status_fr",
+    "public.enum__work_page_v_version_translation_status_fr_status": {
+      "name": "enum__work_page_v_version_translation_status_fr_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23301,8 +23301,8 @@
         "approved"
       ]
     },
-    "public.enum__work_page_v_version_translation_status_en": {
-      "name": "enum__work_page_v_version_translation_status_en",
+    "public.enum__work_page_v_version_translation_status_en_status": {
+      "name": "enum__work_page_v_version_translation_status_en_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23311,8 +23311,8 @@
         "approved"
       ]
     },
-    "public.enum__work_page_v_version_translation_status_es": {
-      "name": "enum__work_page_v_version_translation_status_es",
+    "public.enum__work_page_v_version_translation_status_es_status": {
+      "name": "enum__work_page_v_version_translation_status_es_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23376,8 +23376,8 @@
         "approved"
       ]
     },
-    "public.enum_company_page_translation_status_fr": {
-      "name": "enum_company_page_translation_status_fr",
+    "public.enum_company_page_translation_status_fr_status": {
+      "name": "enum_company_page_translation_status_fr_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23386,8 +23386,8 @@
         "approved"
       ]
     },
-    "public.enum_company_page_translation_status_en": {
-      "name": "enum_company_page_translation_status_en",
+    "public.enum_company_page_translation_status_en_status": {
+      "name": "enum_company_page_translation_status_en_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23396,8 +23396,8 @@
         "approved"
       ]
     },
-    "public.enum_company_page_translation_status_es": {
-      "name": "enum_company_page_translation_status_es",
+    "public.enum_company_page_translation_status_es_status": {
+      "name": "enum_company_page_translation_status_es_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23452,8 +23452,8 @@
         "approved"
       ]
     },
-    "public.enum__company_page_v_version_translation_status_fr": {
-      "name": "enum__company_page_v_version_translation_status_fr",
+    "public.enum__company_page_v_version_translation_status_fr_status": {
+      "name": "enum__company_page_v_version_translation_status_fr_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23462,8 +23462,8 @@
         "approved"
       ]
     },
-    "public.enum__company_page_v_version_translation_status_en": {
-      "name": "enum__company_page_v_version_translation_status_en",
+    "public.enum__company_page_v_version_translation_status_en_status": {
+      "name": "enum__company_page_v_version_translation_status_en_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23472,8 +23472,8 @@
         "approved"
       ]
     },
-    "public.enum__company_page_v_version_translation_status_es": {
-      "name": "enum__company_page_v_version_translation_status_es",
+    "public.enum__company_page_v_version_translation_status_es_status": {
+      "name": "enum__company_page_v_version_translation_status_es_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23537,8 +23537,8 @@
         "approved"
       ]
     },
-    "public.enum_contact_page_translation_status_fr": {
-      "name": "enum_contact_page_translation_status_fr",
+    "public.enum_contact_page_translation_status_fr_status": {
+      "name": "enum_contact_page_translation_status_fr_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23547,8 +23547,8 @@
         "approved"
       ]
     },
-    "public.enum_contact_page_translation_status_en": {
-      "name": "enum_contact_page_translation_status_en",
+    "public.enum_contact_page_translation_status_en_status": {
+      "name": "enum_contact_page_translation_status_en_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23557,8 +23557,8 @@
         "approved"
       ]
     },
-    "public.enum_contact_page_translation_status_es": {
-      "name": "enum_contact_page_translation_status_es",
+    "public.enum_contact_page_translation_status_es_status": {
+      "name": "enum_contact_page_translation_status_es_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23613,8 +23613,8 @@
         "approved"
       ]
     },
-    "public.enum__contact_page_v_version_translation_status_fr": {
-      "name": "enum__contact_page_v_version_translation_status_fr",
+    "public.enum__contact_page_v_version_translation_status_fr_status": {
+      "name": "enum__contact_page_v_version_translation_status_fr_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23623,8 +23623,8 @@
         "approved"
       ]
     },
-    "public.enum__contact_page_v_version_translation_status_en": {
-      "name": "enum__contact_page_v_version_translation_status_en",
+    "public.enum__contact_page_v_version_translation_status_en_status": {
+      "name": "enum__contact_page_v_version_translation_status_en_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23633,8 +23633,8 @@
         "approved"
       ]
     },
-    "public.enum__contact_page_v_version_translation_status_es": {
-      "name": "enum__contact_page_v_version_translation_status_es",
+    "public.enum__contact_page_v_version_translation_status_es_status": {
+      "name": "enum__contact_page_v_version_translation_status_es_status",
       "schema": "public",
       "values": [
         "missing",
@@ -23689,6 +23689,6 @@
     "tables": {},
     "columns": {}
   },
-  "id": "8e904d2a-3472-400c-8d20-1b328ca66d71",
+  "id": "f6615f88-4b33-4ea7-b6ff-a262610e79e0",
   "prevId": "00000000-0000-0000-0000-000000000000"
 }

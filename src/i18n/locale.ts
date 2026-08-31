@@ -20,6 +20,15 @@ export const localeNames: Record<Locale, string> = {
   es: 'Español',
 }
 
+/**
+ * Field name holding a locale's translation status. Payload strips a
+ * trailing `.<locale>` from query paths when resolving localized fields, so
+ * these subfields cannot be named after the locale codes themselves.
+ */
+export function translationStatusKey<L extends Locale>(locale: L): `${L}Status` {
+  return `${locale}Status`
+}
+
 export function isLocale(value: string): value is Locale {
   return (locales as readonly string[]).includes(value)
 }
