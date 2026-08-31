@@ -40,16 +40,35 @@ const editorTransitions: Transition[] = [
   { from: 'revision_requested', to: 'needs_review' },
 ]
 
+/**
+ * §26 enumerates the publisher's review-gate transitions
+ * (needs_review → revision_requested | approved, approved → published), but
+ * that list is not exhaustive: §23 also grants a publisher `create`,
+ * `update`, `review`, `request revision` and `approve` without qualifying
+ * whose document it is. Treating §26 as a whitelist left a publisher unable
+ * to move a draft they had just created — a role named for an action that
+ * could not perform it. A publisher therefore reviews any draft, whoever
+ * authored it, and remains the approval authority §23 describes.
+ */
 const publisherTransitions: Transition[] = [
   { from: undefined, to: 'editorial_draft' },
   { from: 'editorial_draft', to: 'editorial_draft' },
+  { from: 'editorial_draft', to: 'needs_review' },
+  { from: 'editorial_draft', to: 'revision_requested' },
+  { from: 'editorial_draft', to: 'approved' },
   { from: 'ai_draft', to: 'ai_draft' },
+  { from: 'ai_draft', to: 'needs_review' },
+  { from: 'ai_draft', to: 'revision_requested' },
+  { from: 'ai_draft', to: 'approved' },
   { from: 'needs_review', to: 'needs_review' },
   { from: 'needs_review', to: 'revision_requested' },
   { from: 'needs_review', to: 'approved' },
   { from: 'approved', to: 'approved' },
   { from: 'approved', to: 'needs_review' },
+  { from: 'approved', to: 'revision_requested' },
   { from: 'revision_requested', to: 'revision_requested' },
+  { from: 'revision_requested', to: 'needs_review' },
+  { from: 'revision_requested', to: 'approved' },
 ]
 
 /**
