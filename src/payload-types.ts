@@ -64,6 +64,7 @@ export type SupportedTimezones =
 export interface Config {
   auth: {
     users: UserAuthOperations;
+    'payload-mcp-api-keys': PayloadMcpApiKeyAuthOperations;
   };
   blocks: {};
   collections: {
@@ -79,6 +80,7 @@ export interface Config {
     inquiries: Inquiry;
     'ai-audit-logs': AiAuditLog;
     redirects: Redirect;
+    'payload-mcp-api-keys': PayloadMcpApiKey;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -98,6 +100,7 @@ export interface Config {
     inquiries: InquiriesSelect<false> | InquiriesSelect<true>;
     'ai-audit-logs': AiAuditLogsSelect<false> | AiAuditLogsSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
+    'payload-mcp-api-keys': PayloadMcpApiKeysSelect<false> | PayloadMcpApiKeysSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -129,13 +132,31 @@ export interface Config {
   widgets: {
     collections: CollectionsWidget;
   };
-  user: User;
+  user: User | PayloadMcpApiKey;
   jobs: {
     tasks: unknown;
     workflows: unknown;
   };
 }
 export interface UserAuthOperations {
+  forgotPassword: {
+    email: string;
+    password: string;
+  };
+  login: {
+    email: string;
+    password: string;
+  };
+  registerFirstUser: {
+    email: string;
+    password: string;
+  };
+  unlock: {
+    email: string;
+    password: string;
+  };
+}
+export interface PayloadMcpApiKeyAuthOperations {
   forgotPassword: {
     email: string;
     password: string;
@@ -1039,6 +1060,145 @@ export interface Redirect {
   createdAt: string;
 }
 /**
+ * API keys control which collections, resources, tools, and prompts MCP clients can access
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-mcp-api-keys".
+ */
+export interface PayloadMcpApiKey {
+  id: number;
+  /**
+   * The user that the API key is associated with.
+   */
+  user: number | User;
+  /**
+   * A useful label for the API key.
+   */
+  label?: string | null;
+  /**
+   * The purpose of the API key.
+   */
+  description?: string | null;
+  services?: {
+    /**
+     * Allow clients to find services.
+     */
+    find?: boolean | null;
+  };
+  industries?: {
+    /**
+     * Allow clients to find industries.
+     */
+    find?: boolean | null;
+  };
+  projectTypes?: {
+    /**
+     * Allow clients to find project-types.
+     */
+    find?: boolean | null;
+  };
+  contextTags?: {
+    /**
+     * Allow clients to find context-tags.
+     */
+    find?: boolean | null;
+  };
+  clients?: {
+    /**
+     * Allow clients to find clients.
+     */
+    find?: boolean | null;
+  };
+  projects?: {
+    /**
+     * Allow clients to find projects.
+     */
+    find?: boolean | null;
+  };
+  testimonials?: {
+    /**
+     * Allow clients to find testimonials.
+     */
+    find?: boolean | null;
+  };
+  media?: {
+    /**
+     * Allow clients to find media.
+     */
+    find?: boolean | null;
+  };
+  homePage?: {
+    /**
+     * Allow clients to find home-page global.
+     */
+    find?: boolean | null;
+  };
+  servicesPage?: {
+    /**
+     * Allow clients to find services-page global.
+     */
+    find?: boolean | null;
+  };
+  workPage?: {
+    /**
+     * Allow clients to find work-page global.
+     */
+    find?: boolean | null;
+  };
+  companyPage?: {
+    /**
+     * Allow clients to find company-page global.
+     */
+    find?: boolean | null;
+  };
+  contactPage?: {
+    /**
+     * Allow clients to find contact-page global.
+     */
+    find?: boolean | null;
+  };
+  'payload-mcp-tool'?: {
+    /**
+     * Create or update a Client as an AI draft. Matches an existing client by id, domain, then exact name; reports ambiguity instead of merging. Requires at least one source reference. Never publishes.
+     */
+    draftClient?: boolean | null;
+    /**
+     * Create or update a Project as an AI draft. Resolves the client, assigns only existing taxonomy terms (unknown terms are returned as suggestions), and drops any metric that has no source. Never publishes.
+     */
+    draftProject?: boolean | null;
+    /**
+     * Create or update a Testimonial as an AI draft. Requires a source and attribution; stores the original wording verbatim in its original locale. Never invent a testimonial.
+     */
+    draftTestimonial?: boolean | null;
+    /**
+     * Set a Project's services, industries, project types and context tags from existing vocabulary only. Unrecognized terms are recorded as taxonomy suggestions for a human.
+     */
+    classifyProject?: boolean | null;
+    /**
+     * Write supplied translations into a target locale for the localized fields of one document. Shared facts, relationships and metrics are never touched. Marks the target locale as an AI draft.
+     */
+    translateContent?: boolean | null;
+    /**
+     * Prepare SEO and OpenGraph metadata (and robots flags) for one locale of a document. Cannot set a canonical override.
+     */
+    prepareSEO?: boolean | null;
+    /**
+     * Read-only report of missing SEO, media, classification, evidence, proof and translations, plus unreviewed AI drafts.
+     */
+    auditContent?: boolean | null;
+    /**
+     * Move an AI draft or a revision-requested document to needs_review. Never approves or publishes.
+     */
+    submitForReview?: boolean | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  enableAPIKey?: boolean | null;
+  apiKey?: string | null;
+  apiKeyIndex?: string | null;
+  collection: 'payload-mcp-api-keys';
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -1109,12 +1269,21 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'redirects';
         value: number | Redirect;
+      } | null)
+    | ({
+        relationTo: 'payload-mcp-api-keys';
+        value: number | PayloadMcpApiKey;
       } | null);
   globalSlug?: string | null;
-  user: {
-    relationTo: 'users';
-    value: number | User;
-  };
+  user:
+    | {
+        relationTo: 'users';
+        value: number | User;
+      }
+    | {
+        relationTo: 'payload-mcp-api-keys';
+        value: number | PayloadMcpApiKey;
+      };
   updatedAt: string;
   createdAt: string;
 }
@@ -1124,10 +1293,15 @@ export interface PayloadLockedDocument {
  */
 export interface PayloadPreference {
   id: number;
-  user: {
-    relationTo: 'users';
-    value: number | User;
-  };
+  user:
+    | {
+        relationTo: 'users';
+        value: number | User;
+      }
+    | {
+        relationTo: 'payload-mcp-api-keys';
+        value: number | PayloadMcpApiKey;
+      };
   key?: string | null;
   value?:
     | {
@@ -1792,6 +1966,97 @@ export interface RedirectsSelect<T extends boolean = true> {
   type?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-mcp-api-keys_select".
+ */
+export interface PayloadMcpApiKeysSelect<T extends boolean = true> {
+  user?: T;
+  label?: T;
+  description?: T;
+  services?:
+    | T
+    | {
+        find?: T;
+      };
+  industries?:
+    | T
+    | {
+        find?: T;
+      };
+  projectTypes?:
+    | T
+    | {
+        find?: T;
+      };
+  contextTags?:
+    | T
+    | {
+        find?: T;
+      };
+  clients?:
+    | T
+    | {
+        find?: T;
+      };
+  projects?:
+    | T
+    | {
+        find?: T;
+      };
+  testimonials?:
+    | T
+    | {
+        find?: T;
+      };
+  media?:
+    | T
+    | {
+        find?: T;
+      };
+  homePage?:
+    | T
+    | {
+        find?: T;
+      };
+  servicesPage?:
+    | T
+    | {
+        find?: T;
+      };
+  workPage?:
+    | T
+    | {
+        find?: T;
+      };
+  companyPage?:
+    | T
+    | {
+        find?: T;
+      };
+  contactPage?:
+    | T
+    | {
+        find?: T;
+      };
+  'payload-mcp-tool'?:
+    | T
+    | {
+        draftClient?: T;
+        draftProject?: T;
+        draftTestimonial?: T;
+        classifyProject?: T;
+        translateContent?: T;
+        prepareSEO?: T;
+        auditContent?: T;
+        submitForReview?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  enableAPIKey?: T;
+  apiKey?: T;
+  apiKeyIndex?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
