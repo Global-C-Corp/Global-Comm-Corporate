@@ -41,6 +41,21 @@ export const editorialFields: Field[] = [
     })),
   },
   {
+    name: 'approvedBy',
+    type: 'relationship',
+    relationTo: 'users',
+    admin: {
+      position: 'sidebar',
+      readOnly: true,
+      description: 'Who approved this document, recorded automatically when review status becomes approved.',
+    },
+  },
+  {
+    name: 'approvedAt',
+    type: 'date',
+    admin: { position: 'sidebar', readOnly: true },
+  },
+  {
     name: 'dirtyLocales',
     type: 'select',
     hasMany: true,

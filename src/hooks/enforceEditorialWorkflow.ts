@@ -16,15 +16,33 @@ class EditorialWorkflowError extends APIError {
 }
 
 /**
+ * Request-level opt-in for the compound approve-and-publish action.
+ *
+ * §18 and §27 require that review and every dirty locale be approved before
+ * a document publishes. They do not require those approvals to arrive as
+ * separate saves: an actor who may set both fields and then publish can
+ * already reach that end state, three round trips later. This flag lets one
+ * authorized request carry the preconditions it satisfies.
+ *
+ * It is deliberately explicit rather than implied by every publish, so a
+ * bare `_status: 'published'` through REST, GraphQL, the Local API or an MCP
+ * tool still meets the strict gate unchanged.
+ */
+export const APPROVE_AND_PUBLISH = '_approveAndPublish'
+
+/**
  * Fields that never represent editorial content by themselves. A change
  * limited to these fields does not mark a locale dirty (CLAUDE.md §16).
  */
 const BOOKKEEPING_FIELDS = new Set([
   'id',
   '_status',
+  APPROVE_AND_PUBLISH,
   'reviewStatus',
   'translationStatus',
   'dirtyLocales',
+  'approvedBy',
+  'approvedAt',
   'taxonomySuggestions',
   'sourceReferences',
   'aiMeta',
@@ -33,6 +51,8 @@ const BOOKKEEPING_FIELDS = new Set([
 ])
 
 type EditorialDoc = {
+  approvedBy?: unknown
+  approvedAt?: string | null
   _status?: string | null
   slug?: string | null
   reviewStatus?: string
@@ -44,6 +64,8 @@ type GuardArgs = {
   data: Record<string, unknown> & EditorialDoc
   originalDoc?: (Record<string, unknown> & EditorialDoc) | null
   role: ReturnType<typeof getRole>
+  /** Recorded as the approver when this request moves review to approved. */
+  userId?: number | string | null
   requestLocale?: string | null
   operation: 'create' | 'update'
 }
@@ -53,7 +75,7 @@ type GuardArgs = {
  * REST, GraphQL, Local API, or an MCP tool). UI restrictions alone are
  * insufficient (§27) — this is the server-side authority.
  */
-export function applyEditorialGuard({ data, originalDoc, role, requestLocale, operation }: GuardArgs) {
+export function applyEditorialGuard({ data, originalDoc, role, userId, requestLocale, operation }: GuardArgs) {
   const previousReviewStatus = isReviewStatus(originalDoc?.reviewStatus) ? originalDoc?.reviewStatus : undefined
 
   if (typeof data.reviewStatus === 'string' && data.reviewStatus !== previousReviewStatus) {
@@ -105,11 +127,14 @@ export function applyEditorialGuard({ data, originalDoc, role, requestLocale, op
     )
   }
 
-  const effectiveReviewStatus = (data.reviewStatus as string | undefined) ?? previousReviewStatus
+  let effectiveReviewStatus = (data.reviewStatus as string | undefined) ?? previousReviewStatus
   const effectiveTranslationStatus = {
     ...(originalDoc?.translationStatus ?? {}),
     ...(data.translationStatus as Record<string, string> | undefined),
   }
+
+  const requestedApproveAndPublish = data[APPROVE_AND_PUBLISH] === true
+  delete data[APPROVE_AND_PUBLISH]
 
   // Publishing gate (CLAUDE.md §27): _status is set to 'published' by Payload
   // when an operation is called with draft:false (Admin "Publish" button, or
@@ -121,6 +146,33 @@ export function applyEditorialGuard({ data, originalDoc, role, requestLocale, op
         403,
       )
     }
+
+    // The compound action satisfies the preconditions in this same request,
+    // but only ones this role could have satisfied on its own: approval is
+    // still checked against the transition table, and only locales already
+    // marked dirty are approved, so publishing FR never publishes EN or ES.
+    if (requestedApproveAndPublish) {
+      if (effectiveReviewStatus !== 'approved') {
+        if (!canTransitionReviewStatus(role, previousReviewStatus, 'approved')) {
+          throw new EditorialWorkflowError(
+            `Your role (${role ?? 'none'}) cannot move the review status from ` +
+              `“${previousReviewStatus ?? 'new'}” to “approved”, so it cannot approve and publish in one step.`,
+            403,
+          )
+        }
+        data.reviewStatus = 'approved'
+        effectiveReviewStatus = 'approved'
+      }
+
+      for (const locale of existingDirty) {
+        const key = translationStatusKey(locale as Locale)
+        if (effectiveTranslationStatus[key] !== 'approved') {
+          effectiveTranslationStatus[key] = 'approved'
+        }
+      }
+      data.translationStatus = { ...effectiveTranslationStatus }
+    }
+
     if (effectiveReviewStatus !== 'approved') {
       throw new EditorialWorkflowError(
         `This document cannot be published while its review status is “${effectiveReviewStatus ?? 'new'}”. ` +
@@ -144,6 +196,15 @@ export function applyEditorialGuard({ data, originalDoc, role, requestLocale, op
     data.dirtyLocales = Array.from(existingDirty)
   }
 
+  // Payload's version rows carry no author, so approval provenance is stored
+  // on the document itself. It is written on whichever request moves review to
+  // approved, so the manual path and the compound action record it alike, in
+  // the same version snapshot as the publish.
+  if (data.reviewStatus === 'approved' && previousReviewStatus !== 'approved') {
+    data.approvedBy = userId ?? null
+    data.approvedAt = new Date().toISOString()
+  }
+
   if (operation === 'create' && !data.reviewStatus) {
     data.reviewStatus = role === 'ai_editor' ? 'ai_draft' : 'editorial_draft'
   }
@@ -161,6 +222,7 @@ export const enforceEditorialWorkflowCollection: CollectionBeforeChangeHook = ({
     data,
     originalDoc,
     role: getRole(req),
+    userId: req.user?.id,
     requestLocale: req.locale,
     operation,
   })
@@ -171,6 +233,7 @@ export const enforceEditorialWorkflowGlobal: GlobalBeforeChangeHook = ({ data, o
     data,
     originalDoc,
     role: getRole(req),
+    userId: req.user?.id,
     requestLocale: req.locale,
     operation: originalDoc ? 'update' : 'create',
   })

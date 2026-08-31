@@ -400,6 +400,11 @@ export interface Service {
     esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
+   * Who approved this document, recorded automatically when review status becomes approved.
+   */
+  approvedBy?: (number | null) | User;
+  approvedAt?: string | null;
+  /**
    * Locales changed since the last publish, tracked automatically. Each must be approved above before publishing.
    */
   dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
@@ -549,6 +554,11 @@ export interface Industry {
     esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
+   * Who approved this document, recorded automatically when review status becomes approved.
+   */
+  approvedBy?: (number | null) | User;
+  approvedAt?: string | null;
+  /**
    * Locales changed since the last publish, tracked automatically. Each must be approved above before publishing.
    */
   dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
@@ -689,6 +699,11 @@ export interface Client {
     enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
+  /**
+   * Who approved this document, recorded automatically when review status becomes approved.
+   */
+  approvedBy?: (number | null) | User;
+  approvedAt?: string | null;
   /**
    * Locales changed since the last publish, tracked automatically. Each must be approved above before publishing.
    */
@@ -869,6 +884,11 @@ export interface Project {
     esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
+   * Who approved this document, recorded automatically when review status becomes approved.
+   */
+  approvedBy?: (number | null) | User;
+  approvedAt?: string | null;
+  /**
    * Locales changed since the last publish, tracked automatically. Each must be approved above before publishing.
    */
   dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
@@ -975,6 +995,11 @@ export interface Testimonial {
     enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
+  /**
+   * Who approved this document, recorded automatically when review status becomes approved.
+   */
+  approvedBy?: (number | null) | User;
+  approvedAt?: string | null;
   /**
    * Locales changed since the last publish, tracked automatically. Each must be approved above before publishing.
    */
@@ -1527,6 +1552,8 @@ export interface ServicesSelect<T extends boolean = true> {
         enStatus?: T;
         esStatus?: T;
       };
+  approvedBy?: T;
+  approvedAt?: T;
   dirtyLocales?: T;
   taxonomySuggestions?:
     | T
@@ -1613,6 +1640,8 @@ export interface IndustriesSelect<T extends boolean = true> {
         enStatus?: T;
         esStatus?: T;
       };
+  approvedBy?: T;
+  approvedAt?: T;
   dirtyLocales?: T;
   taxonomySuggestions?:
     | T
@@ -1714,6 +1743,8 @@ export interface ClientsSelect<T extends boolean = true> {
         enStatus?: T;
         esStatus?: T;
       };
+  approvedBy?: T;
+  approvedAt?: T;
   dirtyLocales?: T;
   taxonomySuggestions?:
     | T
@@ -1819,6 +1850,8 @@ export interface ProjectsSelect<T extends boolean = true> {
         enStatus?: T;
         esStatus?: T;
       };
+  approvedBy?: T;
+  approvedAt?: T;
   dirtyLocales?: T;
   taxonomySuggestions?:
     | T
@@ -1911,6 +1944,8 @@ export interface TestimonialsSelect<T extends boolean = true> {
         enStatus?: T;
         esStatus?: T;
       };
+  approvedBy?: T;
+  approvedAt?: T;
   dirtyLocales?: T;
   taxonomySuggestions?:
     | T
@@ -2253,6 +2288,11 @@ export interface HomePage {
     esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
+   * Who approved this document, recorded automatically when review status becomes approved.
+   */
+  approvedBy?: (number | null) | User;
+  approvedAt?: string | null;
+  /**
    * Locales changed since the last publish, tracked automatically. Each must be approved above before publishing.
    */
   dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
@@ -2323,6 +2363,11 @@ export interface ServicesPage {
     esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
+   * Who approved this document, recorded automatically when review status becomes approved.
+   */
+  approvedBy?: (number | null) | User;
+  approvedAt?: string | null;
+  /**
    * Locales changed since the last publish, tracked automatically. Each must be approved above before publishing.
    */
   dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
@@ -2391,6 +2436,11 @@ export interface WorkPage {
     enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
+  /**
+   * Who approved this document, recorded automatically when review status becomes approved.
+   */
+  approvedBy?: (number | null) | User;
+  approvedAt?: string | null;
   /**
    * Locales changed since the last publish, tracked automatically. Each must be approved above before publishing.
    */
@@ -2509,6 +2559,11 @@ export interface CompanyPage {
     esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
   /**
+   * Who approved this document, recorded automatically when review status becomes approved.
+   */
+  approvedBy?: (number | null) | User;
+  approvedAt?: string | null;
+  /**
    * Locales changed since the last publish, tracked automatically. Each must be approved above before publishing.
    */
   dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
@@ -2577,6 +2632,11 @@ export interface ContactPage {
     enStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
     esStatus?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
   };
+  /**
+   * Who approved this document, recorded automatically when review status becomes approved.
+   */
+  approvedBy?: (number | null) | User;
+  approvedAt?: string | null;
   /**
    * Locales changed since the last publish, tracked automatically. Each must be approved above before publishing.
    */
@@ -2732,6 +2792,8 @@ export interface HomePageSelect<T extends boolean = true> {
         enStatus?: T;
         esStatus?: T;
       };
+  approvedBy?: T;
+  approvedAt?: T;
   dirtyLocales?: T;
   aiMeta?:
     | T
@@ -2796,6 +2858,8 @@ export interface ServicesPageSelect<T extends boolean = true> {
         enStatus?: T;
         esStatus?: T;
       };
+  approvedBy?: T;
+  approvedAt?: T;
   dirtyLocales?: T;
   aiMeta?:
     | T
@@ -2859,6 +2923,8 @@ export interface WorkPageSelect<T extends boolean = true> {
         enStatus?: T;
         esStatus?: T;
       };
+  approvedBy?: T;
+  approvedAt?: T;
   dirtyLocales?: T;
   aiMeta?:
     | T
@@ -2928,6 +2994,8 @@ export interface CompanyPageSelect<T extends boolean = true> {
         enStatus?: T;
         esStatus?: T;
       };
+  approvedBy?: T;
+  approvedAt?: T;
   dirtyLocales?: T;
   aiMeta?:
     | T
@@ -2989,6 +3057,8 @@ export interface ContactPageSelect<T extends boolean = true> {
         enStatus?: T;
         esStatus?: T;
       };
+  approvedBy?: T;
+  approvedAt?: T;
   dirtyLocales?: T;
   aiMeta?:
     | T

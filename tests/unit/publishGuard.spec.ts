@@ -159,3 +159,120 @@ describe('publish guard error messages', () => {
     ).toThrow(/changes a live URL.*publisher or admin/is)
   })
 })
+
+/**
+ * CLAUDE.md §18/§27 require review and per-locale approval before publishing;
+ * they do not require three separate saves to record them. The compound
+ * action lets one authorized request carry the preconditions it satisfies,
+ * deriving its authority from the same transition table, and refusing
+ * whenever a plain publish would have refused.
+ */
+describe('approve-and-publish as one action', () => {
+  const seededGlobal = {
+    reviewStatus: 'editorial_draft',
+    translationStatus: { frStatus: 'missing', enStatus: 'missing', esStatus: 'missing' },
+    dirtyLocales: ['fr'],
+  }
+
+  it('lets an admin approve and publish in one operation', () => {
+    const data = applyEditorialGuard({
+      data: { _status: 'published', _approveAndPublish: true },
+      originalDoc: seededGlobal,
+      role: 'admin',
+      operation: 'update',
+    })
+
+    expect(data._status).toBe('published')
+    expect(data.reviewStatus).toBe('approved')
+    expect(data.translationStatus).toMatchObject({ frStatus: 'approved' })
+    expect(data.dirtyLocales).toEqual([])
+  })
+
+  it('lets a publisher approve and publish in one operation', () => {
+    const data = applyEditorialGuard({
+      data: { _status: 'published', _approveAndPublish: true },
+      originalDoc: seededGlobal,
+      role: 'publisher',
+      operation: 'update',
+    })
+
+    expect(data.reviewStatus).toBe('approved')
+    expect(data.translationStatus).toMatchObject({ frStatus: 'approved' })
+  })
+
+  it('approves only the dirty locales, never the untouched ones', () => {
+    const data = applyEditorialGuard({
+      data: { _status: 'published', _approveAndPublish: true },
+      originalDoc: {
+        reviewStatus: 'needs_review',
+        translationStatus: { frStatus: 'needs_review', enStatus: 'missing', esStatus: 'missing' },
+        dirtyLocales: ['fr'],
+      },
+      role: 'publisher',
+      operation: 'update',
+    })
+
+    expect(data.translationStatus).toMatchObject({
+      frStatus: 'approved',
+      enStatus: 'missing',
+      esStatus: 'missing',
+    })
+  })
+
+  it('refuses an editor with the role message, before approving anything', () => {
+    expect(() =>
+      applyEditorialGuard({
+        data: { _status: 'published', _approveAndPublish: true },
+        originalDoc: seededGlobal,
+        role: 'editor',
+        operation: 'update',
+      }),
+    ).toThrow(/only a publisher or admin can publish/i)
+  })
+
+  it('refuses AI outright', () => {
+    expect(() =>
+      applyEditorialGuard({
+        data: { _status: 'published', _approveAndPublish: true },
+        originalDoc: { ...seededGlobal, reviewStatus: 'ai_draft' },
+        role: 'ai_editor',
+        operation: 'update',
+      }),
+    ).toThrow(/only a publisher or admin can publish/i)
+  })
+
+  it('leaves a bare publish, with no flag, refused exactly as before', () => {
+    expect(() =>
+      applyEditorialGuard({
+        data: { _status: 'published' },
+        originalDoc: seededGlobal,
+        role: 'admin',
+        operation: 'update',
+      }),
+    ).toThrow(/review status is “editorial_draft”/i)
+  })
+
+  it('does not leak the request flag into the stored document', () => {
+    const data = applyEditorialGuard({
+      data: { _status: 'published', _approveAndPublish: true },
+      originalDoc: seededGlobal,
+      role: 'admin',
+      operation: 'update',
+    })
+
+    expect('_approveAndPublish' in data).toBe(false)
+  })
+
+  it('ignores the flag when the request is not a publish', () => {
+    const data = applyEditorialGuard({
+      data: { _approveAndPublish: true, heroHeading: 'x' },
+      originalDoc: seededGlobal,
+      role: 'admin',
+      requestLocale: 'fr',
+      operation: 'update',
+    })
+
+    expect(data.reviewStatus).toBeUndefined()
+    expect(data._status).toBeUndefined()
+  })
+})
