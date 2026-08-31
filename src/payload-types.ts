@@ -69,6 +69,16 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
+    services: Service;
+    industries: Industry;
+    'project-types': ProjectType;
+    'context-tags': ContextTag;
+    clients: Client;
+    projects: Project;
+    testimonials: Testimonial;
+    inquiries: Inquiry;
+    'ai-audit-logs': AiAuditLog;
+    redirects: Redirect;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -78,6 +88,16 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    services: ServicesSelect<false> | ServicesSelect<true>;
+    industries: IndustriesSelect<false> | IndustriesSelect<true>;
+    'project-types': ProjectTypesSelect<false> | ProjectTypesSelect<true>;
+    'context-tags': ContextTagsSelect<false> | ContextTagsSelect<true>;
+    clients: ClientsSelect<false> | ClientsSelect<true>;
+    projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    testimonials: TestimonialsSelect<false> | TestimonialsSelect<true>;
+    inquiries: InquiriesSelect<false> | InquiriesSelect<true>;
+    'ai-audit-logs': AiAuditLogsSelect<false> | AiAuditLogsSelect<true>;
+    redirects: RedirectsSelect<false> | RedirectsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -86,10 +106,26 @@ export interface Config {
   db: {
     defaultIDType: number;
   };
-  fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
-  locale: null;
+  fallbackLocale: ('false' | 'none' | 'null') | false | null | ('fr' | 'en' | 'es') | ('fr' | 'en' | 'es')[];
+  globals: {
+    'site-settings': SiteSetting;
+    navigation: Navigation;
+    'home-page': HomePage;
+    'services-page': ServicesPage;
+    'work-page': WorkPage;
+    'company-page': CompanyPage;
+    'contact-page': ContactPage;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    navigation: NavigationSelect<false> | NavigationSelect<true>;
+    'home-page': HomePageSelect<false> | HomePageSelect<true>;
+    'services-page': ServicesPageSelect<false> | ServicesPageSelect<true>;
+    'work-page': WorkPageSelect<false> | WorkPageSelect<true>;
+    'company-page': CompanyPageSelect<false> | CompanyPageSelect<true>;
+    'contact-page': ContactPageSelect<false> | ContactPageSelect<true>;
+  };
+  locale: 'fr' | 'en' | 'es';
   widgets: {
     collections: CollectionsWidget;
   };
@@ -123,6 +159,8 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: number;
+  name?: string | null;
+  role: 'admin' | 'publisher' | 'editor' | 'ai_editor';
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -149,6 +187,14 @@ export interface User {
 export interface Media {
   id: number;
   alt: string;
+  caption?: string | null;
+  credit?: string | null;
+  copyrightOwner?: string | null;
+  usageRights?: ('full_ownership' | 'licensed' | 'client_provided' | 'stock' | 'unknown') | null;
+  usageExpiration?: string | null;
+  clientApproved?: boolean | null;
+  source?: string | null;
+  internalNotes?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -160,6 +206,836 @@ export interface Media {
   height?: number | null;
   focalX?: number | null;
   focalY?: number | null;
+  sizes?: {
+    logo?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    thumbnail?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    projectCard?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    projectFeature?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    hero?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    openGraph?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    portrait?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: number;
+  name: string;
+  slug: string;
+  parent?: (number | null) | Service;
+  aliases?:
+    | {
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Internal only — never rendered publicly.
+   */
+  internalDefinition?: string | null;
+  shortDescription?: string | null;
+  longDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  heroMedia?: (number | null) | Media;
+  clientProblem?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  approach?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  deliverables?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  outcomes?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  featured?: boolean | null;
+  displayOrder?: number | null;
+  reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
+  translationStatus?: {
+    fr?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    en?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    es?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+  };
+  /**
+   * Locales changed since the last publish. Managed automatically.
+   */
+  dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
+  /**
+   * Unrecognized classification terms suggested by AI, pending human review (CLAUDE.md §33, §109).
+   */
+  taxonomySuggestions?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  sourceReferences?:
+    | {
+        type: 'user_provided' | 'uploaded_document' | 'existing_cms' | 'public_url' | 'human_verified';
+        label: string;
+        url?: string | null;
+        note?: string | null;
+        capturedAt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * CLAUDE.md §106 — never stores hidden chain-of-thought.
+   */
+  aiMeta?: {
+    generatedByAI?: boolean | null;
+    provider?: string | null;
+    model?: string | null;
+    operation?: string | null;
+    generatedAt?: string | null;
+    runId?: string | null;
+    actorUser?: (number | null) | User;
+    sourceLocale?: ('fr' | 'en' | 'es') | null;
+    targetLocale?: ('fr' | 'en' | 'es') | null;
+    lastAIUpdate?: string | null;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    openGraph?: {
+      title?: string | null;
+      description?: string | null;
+      image?: (number | null) | Media;
+    };
+    robots?: {
+      noIndex?: boolean | null;
+      noFollow?: boolean | null;
+    };
+    /**
+     * Absolute HTTPS URL. Publisher/admin only. Never set for ordinary pages — canonicals are computed automatically.
+     */
+    canonicalOverride?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "industries".
+ */
+export interface Industry {
+  id: number;
+  name: string;
+  slug: string;
+  aliases?:
+    | {
+        value: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Internal only — never rendered publicly.
+   */
+  internalDefinition?: string | null;
+  shortDescription?: string | null;
+  longDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  heroMedia?: (number | null) | Media;
+  challenges?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  capabilities?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  /**
+   * Powers the "Relevant Capabilities" section on the industry page (CLAUDE.md §79).
+   */
+  relatedServices?: (number | Service)[] | null;
+  featured?: boolean | null;
+  displayOrder?: number | null;
+  reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
+  translationStatus?: {
+    fr?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    en?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    es?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+  };
+  /**
+   * Locales changed since the last publish. Managed automatically.
+   */
+  dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
+  /**
+   * Unrecognized classification terms suggested by AI, pending human review (CLAUDE.md §33, §109).
+   */
+  taxonomySuggestions?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  sourceReferences?:
+    | {
+        type: 'user_provided' | 'uploaded_document' | 'existing_cms' | 'public_url' | 'human_verified';
+        label: string;
+        url?: string | null;
+        note?: string | null;
+        capturedAt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * CLAUDE.md §106 — never stores hidden chain-of-thought.
+   */
+  aiMeta?: {
+    generatedByAI?: boolean | null;
+    provider?: string | null;
+    model?: string | null;
+    operation?: string | null;
+    generatedAt?: string | null;
+    runId?: string | null;
+    actorUser?: (number | null) | User;
+    sourceLocale?: ('fr' | 'en' | 'es') | null;
+    targetLocale?: ('fr' | 'en' | 'es') | null;
+    lastAIUpdate?: string | null;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    openGraph?: {
+      title?: string | null;
+      description?: string | null;
+      image?: (number | null) | Media;
+    };
+    robots?: {
+      noIndex?: boolean | null;
+      noFollow?: boolean | null;
+    };
+    /**
+     * Absolute HTTPS URL. Publisher/admin only. Never set for ordinary pages — canonicals are computed automatically.
+     */
+    canonicalOverride?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "project-types".
+ */
+export interface ProjectType {
+  id: number;
+  name: string;
+  slug: string;
+  /**
+   * Internal only — never rendered publicly.
+   */
+  internalDefinition?: string | null;
+  displayOrder?: number | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "context-tags".
+ */
+export interface ContextTag {
+  id: number;
+  name: string;
+  slug: string;
+  /**
+   * Internal only — never rendered publicly.
+   */
+  internalDefinition?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "clients".
+ */
+export interface Client {
+  id: number;
+  name: string;
+  logo?: (number | null) | Media;
+  websiteURL?: string | null;
+  shortDescription?: string | null;
+  longDescription?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  industries?: (number | Industry)[] | null;
+  location?: string | null;
+  featured?: boolean | null;
+  displayOrder?: number | null;
+  reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
+  translationStatus?: {
+    fr?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    en?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    es?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+  };
+  /**
+   * Locales changed since the last publish. Managed automatically.
+   */
+  dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
+  /**
+   * Unrecognized classification terms suggested by AI, pending human review (CLAUDE.md §33, §109).
+   */
+  taxonomySuggestions?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  sourceReferences?:
+    | {
+        type: 'user_provided' | 'uploaded_document' | 'existing_cms' | 'public_url' | 'human_verified';
+        label: string;
+        url?: string | null;
+        note?: string | null;
+        capturedAt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * CLAUDE.md §106 — never stores hidden chain-of-thought.
+   */
+  aiMeta?: {
+    generatedByAI?: boolean | null;
+    provider?: string | null;
+    model?: string | null;
+    operation?: string | null;
+    generatedAt?: string | null;
+    runId?: string | null;
+    actorUser?: (number | null) | User;
+    sourceLocale?: ('fr' | 'en' | 'es') | null;
+    targetLocale?: ('fr' | 'en' | 'es') | null;
+    lastAIUpdate?: string | null;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    openGraph?: {
+      title?: string | null;
+      description?: string | null;
+      image?: (number | null) | Media;
+    };
+    robots?: {
+      noIndex?: boolean | null;
+      noFollow?: boolean | null;
+    };
+    /**
+     * Absolute HTTPS URL. Publisher/admin only. Never set for ordinary pages — canonicals are computed automatically.
+     */
+    canonicalOverride?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: number;
+  title: string;
+  slug: string;
+  client: number | Client;
+  year?: number | null;
+  location?: string | null;
+  externalURL?: string | null;
+  featured?: boolean | null;
+  displayOrder?: number | null;
+  shortStatement?: string | null;
+  excerpt?: string | null;
+  services?: (number | Service)[] | null;
+  industries?: (number | Industry)[] | null;
+  projectTypes?: (number | ProjectType)[] | null;
+  contextTags?: (number | ContextTag)[] | null;
+  challenge?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  approach?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  deliverables?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  outcome?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  resultsNote?: string | null;
+  heroMedia?: (number | null) | Media;
+  featuredMedia?: (number | null) | Media;
+  gallery?:
+    | {
+        media: number | Media;
+        id?: string | null;
+      }[]
+    | null;
+  metrics?:
+    | {
+        /**
+         * Leave empty rather than estimating a plausible number (CLAUDE.md §36).
+         */
+        value?: string | null;
+        label: string;
+        sourceNote?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  relatedTestimonials?: (number | Testimonial)[] | null;
+  reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
+  translationStatus?: {
+    fr?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    en?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    es?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+  };
+  /**
+   * Locales changed since the last publish. Managed automatically.
+   */
+  dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
+  /**
+   * Unrecognized classification terms suggested by AI, pending human review (CLAUDE.md §33, §109).
+   */
+  taxonomySuggestions?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  sourceReferences?:
+    | {
+        type: 'user_provided' | 'uploaded_document' | 'existing_cms' | 'public_url' | 'human_verified';
+        label: string;
+        url?: string | null;
+        note?: string | null;
+        capturedAt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * CLAUDE.md §106 — never stores hidden chain-of-thought.
+   */
+  aiMeta?: {
+    generatedByAI?: boolean | null;
+    provider?: string | null;
+    model?: string | null;
+    operation?: string | null;
+    generatedAt?: string | null;
+    runId?: string | null;
+    actorUser?: (number | null) | User;
+    sourceLocale?: ('fr' | 'en' | 'es') | null;
+    targetLocale?: ('fr' | 'en' | 'es') | null;
+    lastAIUpdate?: string | null;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    openGraph?: {
+      title?: string | null;
+      description?: string | null;
+      image?: (number | null) | Media;
+    };
+    robots?: {
+      noIndex?: boolean | null;
+      noFollow?: boolean | null;
+    };
+    /**
+     * Absolute HTTPS URL. Publisher/admin only. Never set for ordinary pages — canonicals are computed automatically.
+     */
+    canonicalOverride?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials".
+ */
+export interface Testimonial {
+  id: number;
+  /**
+   * Not rendered publicly.
+   */
+  internalTitle: string;
+  originalQuote: string;
+  originalLocale: 'fr' | 'en' | 'es';
+  translatedQuote?: string | null;
+  personName?: string | null;
+  personRole?: string | null;
+  organizationName?: string | null;
+  client?: (number | null) | Client;
+  project?: (number | null) | Project;
+  personPhoto?: (number | null) | Media;
+  organizationLogo?: (number | null) | Media;
+  featured?: boolean | null;
+  displayOrder?: number | null;
+  sourceReferences?:
+    | {
+        type: 'user_provided' | 'uploaded_document' | 'existing_cms' | 'public_url' | 'human_verified';
+        label: string;
+        url?: string | null;
+        note?: string | null;
+        capturedAt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
+  translationStatus?: {
+    fr?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    en?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    es?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+  };
+  /**
+   * Locales changed since the last publish. Managed automatically.
+   */
+  dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
+  /**
+   * Unrecognized classification terms suggested by AI, pending human review (CLAUDE.md §33, §109).
+   */
+  taxonomySuggestions?:
+    | {
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * CLAUDE.md §106 — never stores hidden chain-of-thought.
+   */
+  aiMeta?: {
+    generatedByAI?: boolean | null;
+    provider?: string | null;
+    model?: string | null;
+    operation?: string | null;
+    generatedAt?: string | null;
+    runId?: string | null;
+    actorUser?: (number | null) | User;
+    sourceLocale?: ('fr' | 'en' | 'es') | null;
+    targetLocale?: ('fr' | 'en' | 'es') | null;
+    lastAIUpdate?: string | null;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    openGraph?: {
+      title?: string | null;
+      description?: string | null;
+      image?: (number | null) | Media;
+    };
+    robots?: {
+      noIndex?: boolean | null;
+      noFollow?: boolean | null;
+    };
+    /**
+     * Absolute HTTPS URL. Publisher/admin only. Never set for ordinary pages — canonicals are computed automatically.
+     */
+    canonicalOverride?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inquiries".
+ */
+export interface Inquiry {
+  id: number;
+  name: string;
+  company: string;
+  email: string;
+  phone?: string | null;
+  website?: string | null;
+  projectType?: (number | null) | ProjectType;
+  estimatedBudget?: string | null;
+  desiredStart?: string | null;
+  message: string;
+  consent: boolean;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ai-audit-logs".
+ */
+export interface AiAuditLog {
+  id: number;
+  timestamp: string;
+  actor?: (number | null) | User;
+  apiKeyReference?: string | null;
+  tool: string;
+  action: string;
+  targetCollection?: string | null;
+  targetDocument?: string | null;
+  result: 'success' | 'rejected' | 'error';
+  correlationId: string;
+  changedFields?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  locale?: ('fr' | 'en' | 'es') | null;
+  errorCode?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "redirects".
+ */
+export interface Redirect {
+  id: number;
+  from: string;
+  to?: {
+    type?: ('reference' | 'custom') | null;
+    reference?:
+      | ({
+          relationTo: 'services';
+          value: number | Service;
+        } | null)
+      | ({
+          relationTo: 'industries';
+          value: number | Industry;
+        } | null)
+      | ({
+          relationTo: 'projects';
+          value: number | Project;
+        } | null);
+    url?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -192,6 +1068,46 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'services';
+        value: number | Service;
+      } | null)
+    | ({
+        relationTo: 'industries';
+        value: number | Industry;
+      } | null)
+    | ({
+        relationTo: 'project-types';
+        value: number | ProjectType;
+      } | null)
+    | ({
+        relationTo: 'context-tags';
+        value: number | ContextTag;
+      } | null)
+    | ({
+        relationTo: 'clients';
+        value: number | Client;
+      } | null)
+    | ({
+        relationTo: 'projects';
+        value: number | Project;
+      } | null)
+    | ({
+        relationTo: 'testimonials';
+        value: number | Testimonial;
+      } | null)
+    | ({
+        relationTo: 'inquiries';
+        value: number | Inquiry;
+      } | null)
+    | ({
+        relationTo: 'ai-audit-logs';
+        value: number | AiAuditLog;
+      } | null)
+    | ({
+        relationTo: 'redirects';
+        value: number | Redirect;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -240,6 +1156,8 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -263,6 +1181,14 @@ export interface UsersSelect<T extends boolean = true> {
  */
 export interface MediaSelect<T extends boolean = true> {
   alt?: T;
+  caption?: T;
+  credit?: T;
+  copyrightOwner?: T;
+  usageRights?: T;
+  usageExpiration?: T;
+  clientApproved?: T;
+  source?: T;
+  internalNotes?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;
@@ -274,6 +1200,596 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+  sizes?:
+    | T
+    | {
+        logo?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        thumbnail?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        projectCard?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        projectFeature?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        hero?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        openGraph?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        portrait?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+      };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services_select".
+ */
+export interface ServicesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  parent?: T;
+  aliases?:
+    | T
+    | {
+        value?: T;
+        id?: T;
+      };
+  internalDefinition?: T;
+  shortDescription?: T;
+  longDescription?: T;
+  heroMedia?: T;
+  clientProblem?: T;
+  approach?: T;
+  deliverables?: T;
+  outcomes?: T;
+  featured?: T;
+  displayOrder?: T;
+  reviewStatus?: T;
+  translationStatus?:
+    | T
+    | {
+        fr?: T;
+        en?: T;
+        es?: T;
+      };
+  dirtyLocales?: T;
+  taxonomySuggestions?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  sourceReferences?:
+    | T
+    | {
+        type?: T;
+        label?: T;
+        url?: T;
+        note?: T;
+        capturedAt?: T;
+        id?: T;
+      };
+  aiMeta?:
+    | T
+    | {
+        generatedByAI?: T;
+        provider?: T;
+        model?: T;
+        operation?: T;
+        generatedAt?: T;
+        runId?: T;
+        actorUser?: T;
+        sourceLocale?: T;
+        targetLocale?: T;
+        lastAIUpdate?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        openGraph?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              image?: T;
+            };
+        robots?:
+          | T
+          | {
+              noIndex?: T;
+              noFollow?: T;
+            };
+        canonicalOverride?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "industries_select".
+ */
+export interface IndustriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  aliases?:
+    | T
+    | {
+        value?: T;
+        id?: T;
+      };
+  internalDefinition?: T;
+  shortDescription?: T;
+  longDescription?: T;
+  heroMedia?: T;
+  challenges?: T;
+  capabilities?: T;
+  relatedServices?: T;
+  featured?: T;
+  displayOrder?: T;
+  reviewStatus?: T;
+  translationStatus?:
+    | T
+    | {
+        fr?: T;
+        en?: T;
+        es?: T;
+      };
+  dirtyLocales?: T;
+  taxonomySuggestions?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  sourceReferences?:
+    | T
+    | {
+        type?: T;
+        label?: T;
+        url?: T;
+        note?: T;
+        capturedAt?: T;
+        id?: T;
+      };
+  aiMeta?:
+    | T
+    | {
+        generatedByAI?: T;
+        provider?: T;
+        model?: T;
+        operation?: T;
+        generatedAt?: T;
+        runId?: T;
+        actorUser?: T;
+        sourceLocale?: T;
+        targetLocale?: T;
+        lastAIUpdate?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        openGraph?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              image?: T;
+            };
+        robots?:
+          | T
+          | {
+              noIndex?: T;
+              noFollow?: T;
+            };
+        canonicalOverride?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "project-types_select".
+ */
+export interface ProjectTypesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  internalDefinition?: T;
+  displayOrder?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "context-tags_select".
+ */
+export interface ContextTagsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  internalDefinition?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "clients_select".
+ */
+export interface ClientsSelect<T extends boolean = true> {
+  name?: T;
+  logo?: T;
+  websiteURL?: T;
+  shortDescription?: T;
+  longDescription?: T;
+  industries?: T;
+  location?: T;
+  featured?: T;
+  displayOrder?: T;
+  reviewStatus?: T;
+  translationStatus?:
+    | T
+    | {
+        fr?: T;
+        en?: T;
+        es?: T;
+      };
+  dirtyLocales?: T;
+  taxonomySuggestions?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  sourceReferences?:
+    | T
+    | {
+        type?: T;
+        label?: T;
+        url?: T;
+        note?: T;
+        capturedAt?: T;
+        id?: T;
+      };
+  aiMeta?:
+    | T
+    | {
+        generatedByAI?: T;
+        provider?: T;
+        model?: T;
+        operation?: T;
+        generatedAt?: T;
+        runId?: T;
+        actorUser?: T;
+        sourceLocale?: T;
+        targetLocale?: T;
+        lastAIUpdate?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        openGraph?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              image?: T;
+            };
+        robots?:
+          | T
+          | {
+              noIndex?: T;
+              noFollow?: T;
+            };
+        canonicalOverride?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects_select".
+ */
+export interface ProjectsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  client?: T;
+  year?: T;
+  location?: T;
+  externalURL?: T;
+  featured?: T;
+  displayOrder?: T;
+  shortStatement?: T;
+  excerpt?: T;
+  services?: T;
+  industries?: T;
+  projectTypes?: T;
+  contextTags?: T;
+  challenge?: T;
+  approach?: T;
+  deliverables?: T;
+  outcome?: T;
+  resultsNote?: T;
+  heroMedia?: T;
+  featuredMedia?: T;
+  gallery?:
+    | T
+    | {
+        media?: T;
+        id?: T;
+      };
+  metrics?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        sourceNote?: T;
+        id?: T;
+      };
+  relatedTestimonials?: T;
+  reviewStatus?: T;
+  translationStatus?:
+    | T
+    | {
+        fr?: T;
+        en?: T;
+        es?: T;
+      };
+  dirtyLocales?: T;
+  taxonomySuggestions?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  sourceReferences?:
+    | T
+    | {
+        type?: T;
+        label?: T;
+        url?: T;
+        note?: T;
+        capturedAt?: T;
+        id?: T;
+      };
+  aiMeta?:
+    | T
+    | {
+        generatedByAI?: T;
+        provider?: T;
+        model?: T;
+        operation?: T;
+        generatedAt?: T;
+        runId?: T;
+        actorUser?: T;
+        sourceLocale?: T;
+        targetLocale?: T;
+        lastAIUpdate?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        openGraph?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              image?: T;
+            };
+        robots?:
+          | T
+          | {
+              noIndex?: T;
+              noFollow?: T;
+            };
+        canonicalOverride?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "testimonials_select".
+ */
+export interface TestimonialsSelect<T extends boolean = true> {
+  internalTitle?: T;
+  originalQuote?: T;
+  originalLocale?: T;
+  translatedQuote?: T;
+  personName?: T;
+  personRole?: T;
+  organizationName?: T;
+  client?: T;
+  project?: T;
+  personPhoto?: T;
+  organizationLogo?: T;
+  featured?: T;
+  displayOrder?: T;
+  sourceReferences?:
+    | T
+    | {
+        type?: T;
+        label?: T;
+        url?: T;
+        note?: T;
+        capturedAt?: T;
+        id?: T;
+      };
+  reviewStatus?: T;
+  translationStatus?:
+    | T
+    | {
+        fr?: T;
+        en?: T;
+        es?: T;
+      };
+  dirtyLocales?: T;
+  taxonomySuggestions?:
+    | T
+    | {
+        label?: T;
+        id?: T;
+      };
+  aiMeta?:
+    | T
+    | {
+        generatedByAI?: T;
+        provider?: T;
+        model?: T;
+        operation?: T;
+        generatedAt?: T;
+        runId?: T;
+        actorUser?: T;
+        sourceLocale?: T;
+        targetLocale?: T;
+        lastAIUpdate?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        openGraph?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              image?: T;
+            };
+        robots?:
+          | T
+          | {
+              noIndex?: T;
+              noFollow?: T;
+            };
+        canonicalOverride?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "inquiries_select".
+ */
+export interface InquiriesSelect<T extends boolean = true> {
+  name?: T;
+  company?: T;
+  email?: T;
+  phone?: T;
+  website?: T;
+  projectType?: T;
+  estimatedBudget?: T;
+  desiredStart?: T;
+  message?: T;
+  consent?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ai-audit-logs_select".
+ */
+export interface AiAuditLogsSelect<T extends boolean = true> {
+  timestamp?: T;
+  actor?: T;
+  apiKeyReference?: T;
+  tool?: T;
+  action?: T;
+  targetCollection?: T;
+  targetDocument?: T;
+  result?: T;
+  correlationId?: T;
+  changedFields?: T;
+  locale?: T;
+  errorCode?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "redirects_select".
+ */
+export interface RedirectsSelect<T extends boolean = true> {
+  from?: T;
+  to?:
+    | T
+    | {
+        type?: T;
+        reference?: T;
+        url?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -314,6 +1830,863 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  companyName: string;
+  shortName?: string | null;
+  siteURL: string;
+  tagline?: string | null;
+  primaryEmail?: string | null;
+  primaryPhone?: string | null;
+  address?: string | null;
+  socialLinks?:
+    | {
+        platform: 'linkedin' | 'instagram' | 'facebook' | 'x' | 'youtube';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  organizationLogo?: (number | null) | Media;
+  defaultSEO?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  defaultOGImage?: (number | null) | Media;
+  copyrightText?: string | null;
+  /**
+   * Public analytics configuration only — never secrets.
+   */
+  analytics?: {
+    plausibleDomain?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation".
+ */
+export interface Navigation {
+  id: number;
+  primaryNavigation?:
+    | {
+        label: string;
+        url: string;
+        opensInNewTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  footerNavigation?:
+    | {
+        label: string;
+        url: string;
+        opensInNewTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  legalNavigation?:
+    | {
+        label: string;
+        url: string;
+        opensInNewTab?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page".
+ */
+export interface HomePage {
+  id: number;
+  heroEyebrow?: string | null;
+  heroHeading?: string | null;
+  heroBody?: string | null;
+  primaryCTA?: {
+    label?: string | null;
+    url?: string | null;
+  };
+  secondaryCTA?: {
+    label?: string | null;
+    url?: string | null;
+  };
+  featuredClients?: (number | Client)[] | null;
+  featuredProjects?: (number | Project)[] | null;
+  featuredIndustries?: (number | Industry)[] | null;
+  featuredTestimonials?: (number | Testimonial)[] | null;
+  methodHeading?: string | null;
+  methodIntro?: string | null;
+  closingCTA?: {
+    label?: string | null;
+    url?: string | null;
+  };
+  reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
+  translationStatus?: {
+    fr?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    en?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    es?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+  };
+  /**
+   * Locales changed since the last publish. Managed automatically.
+   */
+  dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
+  /**
+   * CLAUDE.md §106 — never stores hidden chain-of-thought.
+   */
+  aiMeta?: {
+    generatedByAI?: boolean | null;
+    provider?: string | null;
+    model?: string | null;
+    operation?: string | null;
+    generatedAt?: string | null;
+    runId?: string | null;
+    actorUser?: (number | null) | User;
+    sourceLocale?: ('fr' | 'en' | 'es') | null;
+    targetLocale?: ('fr' | 'en' | 'es') | null;
+    lastAIUpdate?: string | null;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    openGraph?: {
+      title?: string | null;
+      description?: string | null;
+      image?: (number | null) | Media;
+    };
+    robots?: {
+      noIndex?: boolean | null;
+      noFollow?: boolean | null;
+    };
+    /**
+     * Absolute HTTPS URL. Publisher/admin only. Never set for ordinary pages — canonicals are computed automatically.
+     */
+    canonicalOverride?: string | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services-page".
+ */
+export interface ServicesPage {
+  id: number;
+  eyebrow?: string | null;
+  heading?: string | null;
+  intro?: string | null;
+  featuredProjects?: (number | Project)[] | null;
+  closingCTA?: {
+    label?: string | null;
+    url?: string | null;
+  };
+  reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
+  translationStatus?: {
+    fr?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    en?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    es?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+  };
+  /**
+   * Locales changed since the last publish. Managed automatically.
+   */
+  dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
+  /**
+   * CLAUDE.md §106 — never stores hidden chain-of-thought.
+   */
+  aiMeta?: {
+    generatedByAI?: boolean | null;
+    provider?: string | null;
+    model?: string | null;
+    operation?: string | null;
+    generatedAt?: string | null;
+    runId?: string | null;
+    actorUser?: (number | null) | User;
+    sourceLocale?: ('fr' | 'en' | 'es') | null;
+    targetLocale?: ('fr' | 'en' | 'es') | null;
+    lastAIUpdate?: string | null;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    openGraph?: {
+      title?: string | null;
+      description?: string | null;
+      image?: (number | null) | Media;
+    };
+    robots?: {
+      noIndex?: boolean | null;
+      noFollow?: boolean | null;
+    };
+    /**
+     * Absolute HTTPS URL. Publisher/admin only. Never set for ordinary pages — canonicals are computed automatically.
+     */
+    canonicalOverride?: string | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "work-page".
+ */
+export interface WorkPage {
+  id: number;
+  eyebrow?: string | null;
+  heading?: string | null;
+  intro?: string | null;
+  closingCTA?: {
+    label?: string | null;
+    url?: string | null;
+  };
+  reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
+  translationStatus?: {
+    fr?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    en?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    es?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+  };
+  /**
+   * Locales changed since the last publish. Managed automatically.
+   */
+  dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
+  /**
+   * CLAUDE.md §106 — never stores hidden chain-of-thought.
+   */
+  aiMeta?: {
+    generatedByAI?: boolean | null;
+    provider?: string | null;
+    model?: string | null;
+    operation?: string | null;
+    generatedAt?: string | null;
+    runId?: string | null;
+    actorUser?: (number | null) | User;
+    sourceLocale?: ('fr' | 'en' | 'es') | null;
+    targetLocale?: ('fr' | 'en' | 'es') | null;
+    lastAIUpdate?: string | null;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    openGraph?: {
+      title?: string | null;
+      description?: string | null;
+      image?: (number | null) | Media;
+    };
+    robots?: {
+      noIndex?: boolean | null;
+      noFollow?: boolean | null;
+    };
+    /**
+     * Absolute HTTPS URL. Publisher/admin only. Never set for ordinary pages — canonicals are computed automatically.
+     */
+    canonicalOverride?: string | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "company-page".
+ */
+export interface CompanyPage {
+  id: number;
+  eyebrow?: string | null;
+  heading?: string | null;
+  intro?: string | null;
+  whoWeAre?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  whatWeBelieve?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  howWeWork?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  selectedClients?: (number | Client)[] | null;
+  selectedIndustries?: (number | Industry)[] | null;
+  selectedTestimonials?: (number | Testimonial)[] | null;
+  closingCTA?: {
+    label?: string | null;
+    url?: string | null;
+  };
+  reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
+  translationStatus?: {
+    fr?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    en?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    es?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+  };
+  /**
+   * Locales changed since the last publish. Managed automatically.
+   */
+  dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
+  /**
+   * CLAUDE.md §106 — never stores hidden chain-of-thought.
+   */
+  aiMeta?: {
+    generatedByAI?: boolean | null;
+    provider?: string | null;
+    model?: string | null;
+    operation?: string | null;
+    generatedAt?: string | null;
+    runId?: string | null;
+    actorUser?: (number | null) | User;
+    sourceLocale?: ('fr' | 'en' | 'es') | null;
+    targetLocale?: ('fr' | 'en' | 'es') | null;
+    lastAIUpdate?: string | null;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    openGraph?: {
+      title?: string | null;
+      description?: string | null;
+      image?: (number | null) | Media;
+    };
+    robots?: {
+      noIndex?: boolean | null;
+      noFollow?: boolean | null;
+    };
+    /**
+     * Absolute HTTPS URL. Publisher/admin only. Never set for ordinary pages — canonicals are computed automatically.
+     */
+    canonicalOverride?: string | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-page".
+ */
+export interface ContactPage {
+  id: number;
+  eyebrow?: string | null;
+  heading?: string | null;
+  intro?: string | null;
+  directContact?: string | null;
+  officeLocation?: string | null;
+  formIntro?: string | null;
+  closingText?: string | null;
+  reviewStatus: 'ai_draft' | 'editorial_draft' | 'needs_review' | 'revision_requested' | 'approved';
+  translationStatus?: {
+    fr?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    en?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+    es?: ('missing' | 'ai_draft' | 'needs_review' | 'approved') | null;
+  };
+  /**
+   * Locales changed since the last publish. Managed automatically.
+   */
+  dirtyLocales?: ('fr' | 'en' | 'es')[] | null;
+  /**
+   * CLAUDE.md §106 — never stores hidden chain-of-thought.
+   */
+  aiMeta?: {
+    generatedByAI?: boolean | null;
+    provider?: string | null;
+    model?: string | null;
+    operation?: string | null;
+    generatedAt?: string | null;
+    runId?: string | null;
+    actorUser?: (number | null) | User;
+    sourceLocale?: ('fr' | 'en' | 'es') | null;
+    targetLocale?: ('fr' | 'en' | 'es') | null;
+    lastAIUpdate?: string | null;
+  };
+  meta?: {
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Maximum upload file size: 12MB. Recommended file size for images is <500KB.
+     */
+    image?: (number | null) | Media;
+    openGraph?: {
+      title?: string | null;
+      description?: string | null;
+      image?: (number | null) | Media;
+    };
+    robots?: {
+      noIndex?: boolean | null;
+      noFollow?: boolean | null;
+    };
+    /**
+     * Absolute HTTPS URL. Publisher/admin only. Never set for ordinary pages — canonicals are computed automatically.
+     */
+    canonicalOverride?: string | null;
+  };
+  _status?: ('draft' | 'published') | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  companyName?: T;
+  shortName?: T;
+  siteURL?: T;
+  tagline?: T;
+  primaryEmail?: T;
+  primaryPhone?: T;
+  address?: T;
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  organizationLogo?: T;
+  defaultSEO?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  defaultOGImage?: T;
+  copyrightText?: T;
+  analytics?:
+    | T
+    | {
+        plausibleDomain?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "navigation_select".
+ */
+export interface NavigationSelect<T extends boolean = true> {
+  primaryNavigation?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        opensInNewTab?: T;
+        id?: T;
+      };
+  footerNavigation?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        opensInNewTab?: T;
+        id?: T;
+      };
+  legalNavigation?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        opensInNewTab?: T;
+        id?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page_select".
+ */
+export interface HomePageSelect<T extends boolean = true> {
+  heroEyebrow?: T;
+  heroHeading?: T;
+  heroBody?: T;
+  primaryCTA?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  secondaryCTA?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  featuredClients?: T;
+  featuredProjects?: T;
+  featuredIndustries?: T;
+  featuredTestimonials?: T;
+  methodHeading?: T;
+  methodIntro?: T;
+  closingCTA?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  reviewStatus?: T;
+  translationStatus?:
+    | T
+    | {
+        fr?: T;
+        en?: T;
+        es?: T;
+      };
+  dirtyLocales?: T;
+  aiMeta?:
+    | T
+    | {
+        generatedByAI?: T;
+        provider?: T;
+        model?: T;
+        operation?: T;
+        generatedAt?: T;
+        runId?: T;
+        actorUser?: T;
+        sourceLocale?: T;
+        targetLocale?: T;
+        lastAIUpdate?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        openGraph?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              image?: T;
+            };
+        robots?:
+          | T
+          | {
+              noIndex?: T;
+              noFollow?: T;
+            };
+        canonicalOverride?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services-page_select".
+ */
+export interface ServicesPageSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  intro?: T;
+  featuredProjects?: T;
+  closingCTA?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  reviewStatus?: T;
+  translationStatus?:
+    | T
+    | {
+        fr?: T;
+        en?: T;
+        es?: T;
+      };
+  dirtyLocales?: T;
+  aiMeta?:
+    | T
+    | {
+        generatedByAI?: T;
+        provider?: T;
+        model?: T;
+        operation?: T;
+        generatedAt?: T;
+        runId?: T;
+        actorUser?: T;
+        sourceLocale?: T;
+        targetLocale?: T;
+        lastAIUpdate?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        openGraph?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              image?: T;
+            };
+        robots?:
+          | T
+          | {
+              noIndex?: T;
+              noFollow?: T;
+            };
+        canonicalOverride?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "work-page_select".
+ */
+export interface WorkPageSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  intro?: T;
+  closingCTA?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  reviewStatus?: T;
+  translationStatus?:
+    | T
+    | {
+        fr?: T;
+        en?: T;
+        es?: T;
+      };
+  dirtyLocales?: T;
+  aiMeta?:
+    | T
+    | {
+        generatedByAI?: T;
+        provider?: T;
+        model?: T;
+        operation?: T;
+        generatedAt?: T;
+        runId?: T;
+        actorUser?: T;
+        sourceLocale?: T;
+        targetLocale?: T;
+        lastAIUpdate?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        openGraph?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              image?: T;
+            };
+        robots?:
+          | T
+          | {
+              noIndex?: T;
+              noFollow?: T;
+            };
+        canonicalOverride?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "company-page_select".
+ */
+export interface CompanyPageSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  intro?: T;
+  whoWeAre?: T;
+  whatWeBelieve?: T;
+  howWeWork?: T;
+  selectedClients?: T;
+  selectedIndustries?: T;
+  selectedTestimonials?: T;
+  closingCTA?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  reviewStatus?: T;
+  translationStatus?:
+    | T
+    | {
+        fr?: T;
+        en?: T;
+        es?: T;
+      };
+  dirtyLocales?: T;
+  aiMeta?:
+    | T
+    | {
+        generatedByAI?: T;
+        provider?: T;
+        model?: T;
+        operation?: T;
+        generatedAt?: T;
+        runId?: T;
+        actorUser?: T;
+        sourceLocale?: T;
+        targetLocale?: T;
+        lastAIUpdate?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        openGraph?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              image?: T;
+            };
+        robots?:
+          | T
+          | {
+              noIndex?: T;
+              noFollow?: T;
+            };
+        canonicalOverride?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-page_select".
+ */
+export interface ContactPageSelect<T extends boolean = true> {
+  eyebrow?: T;
+  heading?: T;
+  intro?: T;
+  directContact?: T;
+  officeLocation?: T;
+  formIntro?: T;
+  closingText?: T;
+  reviewStatus?: T;
+  translationStatus?:
+    | T
+    | {
+        fr?: T;
+        en?: T;
+        es?: T;
+      };
+  dirtyLocales?: T;
+  aiMeta?:
+    | T
+    | {
+        generatedByAI?: T;
+        provider?: T;
+        model?: T;
+        operation?: T;
+        generatedAt?: T;
+        runId?: T;
+        actorUser?: T;
+        sourceLocale?: T;
+        targetLocale?: T;
+        lastAIUpdate?: T;
+      };
+  meta?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        image?: T;
+        openGraph?:
+          | T
+          | {
+              title?: T;
+              description?: T;
+              image?: T;
+            };
+        robots?:
+          | T
+          | {
+              noIndex?: T;
+              noFollow?: T;
+            };
+        canonicalOverride?: T;
+      };
+  _status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
