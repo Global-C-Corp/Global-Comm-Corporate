@@ -1,7 +1,7 @@
 {
   "name": "global-comm-corporate",
   "version": "1.0.0",
-  "description": "Global Communication Corporate — multilingual Next.js + Payload platform",
+  "description": "Global Communication Corporate \u2014 multilingual Next.js + Payload platform",
   "license": "UNLICENSED",
   "private": true,
   "type": "module",
@@ -25,7 +25,8 @@
     "test:unit": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts tests/unit",
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts tests/integration",
     "test:contract": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts tests/contract",
-    "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" playwright test --config=playwright.config.ts"
+    "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" playwright test --config=playwright.config.ts",
+    "launch:report": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/launch-report.ts"
   },
   "dependencies": {
     "@payloadcms/db-postgres": "3.88.0",

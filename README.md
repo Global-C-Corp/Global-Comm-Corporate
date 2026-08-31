@@ -59,6 +59,7 @@ run `pnpm run seed -- --publish`.
 | `pnpm run migrate` / `migrate:create` / `migrate:status` | Database migrations |
 | `pnpm run seed` | Idempotent vocabulary + globals seed |
 | `pnpm run content:health` | Content completeness report |
+| `pnpm run launch:report` | What is blocking launch, per document × locale |
 | `pnpm run test:unit` / `test:int` / `test:contract` / `test:e2e` | Test suites |
 | `pnpm run generate:types` | Regenerate `src/payload-types.ts` |
 
@@ -97,18 +98,31 @@ Publishing requires **all** of: an actor with the `publisher` or `admin` role,
 This is enforced in a `beforeChange` hook, so it holds for the Admin UI, REST,
 GraphQL, the Local API and MCP alike — UI restrictions alone are not relied on.
 
-**To publish a document in Payload Admin**, in the sidebar:
+**To publish in Payload Admin**: the publish control lists any unmet
+condition — the editorial stage, and each edited locale whose translation is
+not approved. If your role can satisfy them, **Approve and publish** does all
+of it in one confirmed action, naming exactly what it will change. If it
+cannot, it says who does it next.
 
-1. Set **Review status** to `approved` (a publisher or admin; editors and AI
-   can only reach `needs_review`).
-2. Under **Translation status**, set every locale listed in **Dirty locales**
-   to `approved` — that list is what you have edited since the last publish.
-3. Click **Publish**.
+Doing it by hand works too: set **Editorial stage** to Approved, set each
+locale under **Translation approval** to Approved, then Publish.
 
-Skipping either step is refused server-side, and the error names the exact
-condition that blocked it (which status, which locale). A locale you never
-translated stays unapproved on purpose: it simply does not render, rather
-than falling back to another language.
+Either way the server decides. A publish that arrives without those
+preconditions — from the API, an MCP tool, or a browser with JavaScript
+disabled — is refused, and the error names the condition that blocked it.
+A locale you never translated stays unapproved on purpose: it does not
+render, rather than falling back to another language.
+
+**For a launch**, `pnpm run launch:report` lists every document × locale with
+what is blocking it (`--blocked-by=review|translation|unpublished`, `--json`).
+Adding `--as=<email> --approve-and-publish` runs the same guard per document
+and reports each result, so a partial failure is visible:
+
+```
+✓ clients #8 — Acme rebrand
+✗ clients #5 — Northwind — The following field is invalid: Source References 1 > Type
+8 published, 1 refused.
+```
 
 ### Localization
 
