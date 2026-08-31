@@ -1,3 +1,4 @@
+import { logCmsFailure } from '@/lib/log'
 import { locales } from '@/i18n/locale'
 import { isLocalePublic } from '@/lib/publication'
 import type { LocaleAvailability } from '@/services/seo/hreflang'
@@ -43,8 +44,9 @@ export async function getLocalizedAvailability(
           isPublic: isLocalePublic(doc, locale) && !doc.meta?.robots?.noIndex,
           slug: doc.slug ?? undefined,
         }
-      } catch {
+      } catch (error) {
         // Not readable anonymously (unpublished) — not a public locale.
+        logCmsFailure(`availability(${collection}, ${locale})`, error)
         availability[locale] = { isPublic: false }
       }
     }),
@@ -73,7 +75,8 @@ export async function getGlobalAvailability(slug: PageGlobalSlug): Promise<Local
         availability[locale] = {
           isPublic: isLocalePublic(doc, locale) && !doc.meta?.robots?.noIndex,
         }
-      } catch {
+      } catch (error) {
+        logCmsFailure(`availability(${slug}, ${locale})`, error)
         availability[locale] = { isPublic: false }
       }
     }),

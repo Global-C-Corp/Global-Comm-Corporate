@@ -9,6 +9,7 @@ import type {
   WorkPage,
 } from '@/payload-types'
 import type { Locale } from '@/i18n/locale'
+import { logCmsFailure } from '@/lib/log'
 import { isLocalePublic, type PublishableDoc } from '@/lib/publication'
 import { baseQueryOptions, getPayloadClient, type QueryContext } from './context'
 
@@ -29,7 +30,8 @@ async function getPageGlobal<T extends PublishableDoc>(ctx: QueryContext, slug: 
     if (!doc) return null
     if (!ctx.draft && !isLocalePublic(doc, ctx.locale)) return null
     return doc
-  } catch {
+  } catch (error) {
+    logCmsFailure(`findGlobal(${slug})`, error)
     return null
   }
 }
@@ -57,7 +59,8 @@ export async function getNavigation(ctx: QueryContext): Promise<Navigation | nul
       ...baseQueryOptions(ctx),
       depth: 0,
     })
-  } catch {
+  } catch (error) {
+    logCmsFailure('findGlobal(navigation)', error)
     return null
   }
 }

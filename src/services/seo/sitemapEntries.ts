@@ -1,3 +1,4 @@
+import { logCmsFailure } from '@/lib/log'
 import { locales, translationStatusKey, type Locale } from '@/i18n/locale'
 import { getPayloadClient } from '@/services/cms/context'
 import { buildAbsoluteURL, type Route } from './urls'
@@ -48,8 +49,9 @@ export async function buildSitemapEntries(): Promise<Entry[]> {
             lastModified: doc.updatedAt ? new Date(doc.updatedAt) : undefined,
           })
         }
-      } catch {
+      } catch (error) {
         // Not publicly readable — excluded from the sitemap.
+        logCmsFailure(`sitemap(${global}, ${locale})`, error)
       }
     }
 
