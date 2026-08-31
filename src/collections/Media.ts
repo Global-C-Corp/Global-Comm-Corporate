@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { revalidateCollection, revalidateOnDelete } from '@/hooks/revalidate'
 import { isAdminOnlyDelete, isEditorOrAI, publicReadPublishedOnly } from '@/access/predicates'
 
 /**
@@ -27,6 +28,10 @@ export const Media: CollectionConfig = {
       { name: 'portrait', width: 600, height: 800, fit: 'cover' },
     ],
     mimeTypes: ['image/png', 'image/jpeg', 'image/webp', 'image/avif', 'image/svg+xml'],
+  },
+  hooks: {
+    afterChange: [revalidateCollection('media')],
+    afterDelete: [revalidateOnDelete('media')],
   },
   fields: [
     {

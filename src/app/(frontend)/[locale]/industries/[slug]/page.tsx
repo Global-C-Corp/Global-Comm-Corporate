@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
 import { SiteHeader } from '@/components/layout/SiteHeader'
 import { ProjectCard } from '@/components/project/ProjectCard'
 import { RichText } from '@/components/ui/RichText'
 import { Section, SectionHeader } from '@/components/ui/Sections'
 import { getDictionary } from '@/i18n/dictionaries'
+import { redirectOrNotFound } from '@/lib/routing'
 import { populated } from '@/lib/relations'
 import type { Service } from '@/payload-types'
 import { getLocalizedAvailability } from '@/services/cms/availability'
@@ -49,7 +49,7 @@ export default async function IndustryDetailRoute({
   const { ctx, draft } = await getPageContext(locale)
 
   const industry = await getIndustryBySlug(ctx, slug)
-  if (!industry) notFound()
+  if (!industry) return redirectOrNotFound(buildPath(ctx.locale, { type: 'industry', slug }), ctx.locale)
 
   const t = getDictionary(ctx.locale)
   const route: Route = { type: 'industry', slug }

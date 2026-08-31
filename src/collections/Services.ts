@@ -1,5 +1,7 @@
 import type { CollectionConfig } from 'payload'
+import { revalidateCollection, revalidateOnDelete } from '@/hooks/revalidate'
 import { isAdminOnlyDelete, isEditorOrAI, publicReadPublishedOnly } from '@/access/predicates'
+import { collectionPreview } from '@/lib/adminPreview'
 import { editorialFields } from '@/fields/editorial'
 import { localizedSlugField } from '@/fields/slug'
 import { governed } from '@/fields/taxonomyGovernance'
@@ -18,6 +20,7 @@ export const Services: CollectionConfig = {
     update: isEditorOrAI,
   },
   admin: {
+    ...collectionPreview('services'),
     useAsTitle: 'name',
     defaultColumns: ['name', 'parent', 'featured', 'reviewStatus', '_status'],
     group: 'Content',
@@ -27,6 +30,8 @@ export const Services: CollectionConfig = {
     maxPerDoc: 50,
   },
   hooks: {
+    afterChange: [revalidateCollection('services')],
+    afterDelete: [revalidateOnDelete('services')],
     beforeChange: [enforceEditorialWorkflowCollection],
   },
   fields: [

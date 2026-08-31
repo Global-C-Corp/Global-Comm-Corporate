@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { revalidateCollection, revalidateOnDelete } from '@/hooks/revalidate'
 import { isAdminOnlyDelete, isPublisherOrAdmin } from '@/access/predicates'
 import { localizedSlugField } from '@/fields/slug'
 import { governed } from '@/fields/taxonomyGovernance'
@@ -21,6 +22,10 @@ export const ProjectTypes: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     group: 'Taxonomy',
+  },
+  hooks: {
+    afterChange: [revalidateCollection('project-types')],
+    afterDelete: [revalidateOnDelete('project-types')],
   },
   fields: [
     governed({ name: 'name', type: 'text', required: true, localized: true }),

@@ -1,5 +1,7 @@
 import type { GlobalConfig } from 'payload'
+import { revalidateGlobal } from '@/hooks/revalidate'
 import { isEditorOrAI, publicReadPublishedOnly } from '@/access/predicates'
+import { globalPreview } from '@/lib/adminPreview'
 import { ctaField } from '@/fields/cta'
 import { pageGlobalEditorialFields } from '@/fields/editorial'
 import { enforceEditorialWorkflowGlobal } from '@/hooks/enforceEditorialWorkflow'
@@ -12,6 +14,7 @@ export const CompanyPage: GlobalConfig = {
     update: isEditorOrAI,
   },
   admin: {
+    ...globalPreview('company-page'),
     group: 'Pages',
   },
   versions: {
@@ -19,6 +22,7 @@ export const CompanyPage: GlobalConfig = {
     max: 50,
   },
   hooks: {
+    afterChange: [revalidateGlobal('company-page')],
     beforeChange: [enforceEditorialWorkflowGlobal],
   },
   fields: [

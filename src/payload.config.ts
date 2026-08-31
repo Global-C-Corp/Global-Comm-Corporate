@@ -54,6 +54,7 @@ const plugins: Plugin[] = [
   }),
   redirectsPlugin({
     collections: ['services', 'industries', 'projects'],
+    redirectTypes: ['301', '302'],
   }),
 ]
 

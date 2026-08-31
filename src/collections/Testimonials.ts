@@ -1,4 +1,5 @@
 import type { CollectionBeforeValidateHook, CollectionConfig, Field } from 'payload'
+import { revalidateCollection, revalidateOnDelete } from '@/hooks/revalidate'
 import { ValidationError } from 'payload'
 import { isAdminOnlyDelete, isEditorOrAI, publicReadPublishedOnly } from '@/access/predicates'
 import { editorialFields } from '@/fields/editorial'
@@ -54,6 +55,8 @@ export const Testimonials: CollectionConfig = {
     maxPerDoc: 50,
   },
   hooks: {
+    afterChange: [revalidateCollection('testimonials')],
+    afterDelete: [revalidateOnDelete('testimonials')],
     beforeValidate: [requireSourceAndAttribution],
     beforeChange: [enforceEditorialWorkflowCollection],
   },

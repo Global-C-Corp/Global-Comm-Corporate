@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { revalidateCollection, revalidateOnDelete } from '@/hooks/revalidate'
 import { isAdminOnlyDelete, isEditorOrAI, publicReadPublishedOnly } from '@/access/predicates'
 import { editorialFields } from '@/fields/editorial'
 import { enforceEditorialWorkflowCollection } from '@/hooks/enforceEditorialWorkflow'
@@ -25,6 +26,8 @@ export const Clients: CollectionConfig = {
     maxPerDoc: 50,
   },
   hooks: {
+    afterChange: [revalidateCollection('clients')],
+    afterDelete: [revalidateOnDelete('clients')],
     beforeChange: [enforceEditorialWorkflowCollection],
   },
   fields: [

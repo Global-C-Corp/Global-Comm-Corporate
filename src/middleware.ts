@@ -28,5 +28,7 @@ export function middleware(request: NextRequest) {
 
 export const config = {
   // Payload admin, API routes, static assets and files are never localized.
-  matcher: ['/((?!admin|api|_next/static|_next/image|media|favicon.ico|robots.txt|sitemap.xml|.*\\..*).*)'],
+  matcher: [
+    '/((?!admin|api|preview|_next/static|_next/image|media|favicon.ico|robots.txt|sitemap.xml|.*\\..*).*)',
+  ],
 }

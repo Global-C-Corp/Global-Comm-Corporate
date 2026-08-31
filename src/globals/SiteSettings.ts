@@ -1,4 +1,5 @@
 import type { GlobalConfig } from 'payload'
+import { revalidateGlobal } from '@/hooks/revalidate'
 import { isAdmin } from '@/access/predicates'
 
 /** CLAUDE.md §39. Never store secrets here — this is editable via Payload Admin. */
@@ -10,6 +11,9 @@ export const SiteSettings: GlobalConfig = {
   },
   admin: {
     group: 'Site',
+  },
+  hooks: {
+    afterChange: [revalidateGlobal('site-settings')],
   },
   fields: [
     { name: 'companyName', type: 'text', required: true, defaultValue: 'Global Communication Corporate' },

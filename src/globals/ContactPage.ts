@@ -1,5 +1,7 @@
 import type { GlobalConfig } from 'payload'
+import { revalidateGlobal } from '@/hooks/revalidate'
 import { isEditorOrAI, publicReadPublishedOnly } from '@/access/predicates'
+import { globalPreview } from '@/lib/adminPreview'
 import { pageGlobalEditorialFields } from '@/fields/editorial'
 import { enforceEditorialWorkflowGlobal } from '@/hooks/enforceEditorialWorkflow'
 
@@ -11,6 +13,7 @@ export const ContactPage: GlobalConfig = {
     update: isEditorOrAI,
   },
   admin: {
+    ...globalPreview('contact-page'),
     group: 'Pages',
   },
   versions: {
@@ -18,6 +21,7 @@ export const ContactPage: GlobalConfig = {
     max: 50,
   },
   hooks: {
+    afterChange: [revalidateGlobal('contact-page')],
     beforeChange: [enforceEditorialWorkflowGlobal],
   },
   fields: [

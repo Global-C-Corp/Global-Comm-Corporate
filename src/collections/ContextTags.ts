@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { revalidateCollection, revalidateOnDelete } from '@/hooks/revalidate'
 import { isAdminOnlyDelete, isPublisherOrAdmin } from '@/access/predicates'
 import { localizedSlugField } from '@/fields/slug'
 import { governed } from '@/fields/taxonomyGovernance'
@@ -19,6 +20,10 @@ export const ContextTags: CollectionConfig = {
   admin: {
     useAsTitle: 'name',
     group: 'Taxonomy',
+  },
+  hooks: {
+    afterChange: [revalidateCollection('context-tags')],
+    afterDelete: [revalidateOnDelete('context-tags')],
   },
   fields: [
     governed({ name: 'name', type: 'text', required: true, localized: true }),

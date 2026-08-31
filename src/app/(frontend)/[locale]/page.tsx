@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { SiteHeader } from '@/components/layout/SiteHeader'
+import { JsonLd, organizationSchema } from '@/components/seo/JsonLd'
 import { ProjectCard } from '@/components/project/ProjectCard'
 import { ServiceCard } from '@/components/service/ServiceCard'
 import { TestimonialBlock } from '@/components/testimonial/TestimonialBlock'
@@ -10,7 +11,7 @@ import { mediaURL } from '@/lib/media'
 import { populated } from '@/lib/relations'
 import type { Client, Industry, Project, Testimonial } from '@/payload-types'
 import { getGlobalAvailability } from '@/services/cms/availability'
-import { getHomePage } from '@/services/cms/globals'
+import { getHomePage, getSiteChrome } from '@/services/cms/globals'
 import { getPageContext } from '@/services/cms/pageContext'
 import { getFeaturedProjects } from '@/services/cms/projects'
 import { getFeaturedClients, getFeaturedTestimonials } from '@/services/cms/proof'
@@ -59,6 +60,8 @@ export default async function HomePageRoute({ params }: { params: Promise<{ loca
     getGlobalAvailability('home-page'),
   ])
 
+  const { settings } = await getSiteChrome(ctx.locale, draft)
+
   const clients = selectedClients.length > 0 ? selectedClients : fallbackClients
   const projects = selectedProjects.length > 0 ? selectedProjects : fallbackProjects
   const quotes = testimonials.length > 0 ? testimonials : fallbackTestimonials
@@ -66,6 +69,7 @@ export default async function HomePageRoute({ params }: { params: Promise<{ loca
   return (
     <>
       <SiteHeader locale={ctx.locale} route={route} availability={availability} draft={draft} />
+      <JsonLd data={organizationSchema(settings, ctx.locale)} />
 
       <main id="main">
         <div className="gc-container gc-hero">

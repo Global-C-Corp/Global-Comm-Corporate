@@ -1,17 +1,18 @@
 import type { Metadata } from 'next'
-import { notFound } from 'next/navigation'
 import { SiteHeader } from '@/components/layout/SiteHeader'
+import { breadcrumbSchema, JsonLd } from '@/components/seo/JsonLd'
 import { ProjectCard } from '@/components/project/ProjectCard'
 import { ServiceCard } from '@/components/service/ServiceCard'
 import { RichText } from '@/components/ui/RichText'
 import { Section, SectionHeader } from '@/components/ui/Sections'
 import { getDictionary } from '@/i18n/dictionaries'
+import { redirectOrNotFound } from '@/lib/routing'
 import { getLocalizedAvailability } from '@/services/cms/availability'
 import { getPageContext } from '@/services/cms/pageContext'
 import { getProjectsByRelation } from '@/services/cms/projects'
 import { getChildServices, getServiceBySlug } from '@/services/cms/services'
 import { resolvePageSEO } from '@/services/seo/resolvePageSEO'
-import type { Route } from '@/services/seo/urls'
+import { buildPath, type Route } from '@/services/seo/urls'
 
 export async function generateMetadata({
   params,
@@ -49,7 +50,7 @@ export default async function ServiceDetailRoute({
   const { ctx, draft } = await getPageContext(locale)
 
   const service = await getServiceBySlug(ctx, slug)
-  if (!service) notFound()
+  if (!service) return redirectOrNotFound(buildPath(ctx.locale, { type: 'service', slug }), ctx.locale)
 
   const t = getDictionary(ctx.locale)
   const route: Route = { type: 'service', slug }
@@ -63,6 +64,12 @@ export default async function ServiceDetailRoute({
   return (
     <>
       <SiteHeader locale={ctx.locale} route={route} availability={availability} draft={draft} />
+      <JsonLd
+        data={breadcrumbSchema(ctx.locale, [
+          { name: t.sections.capabilities, route: { type: 'services' } },
+          { name: service.name, route },
+        ])}
+      />
 
       <main id="main">
         <div className="gc-container gc-page-header">

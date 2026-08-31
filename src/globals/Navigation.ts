@@ -1,4 +1,5 @@
 import type { GlobalConfig } from 'payload'
+import { revalidateGlobal } from '@/hooks/revalidate'
 import { isEditorUp, publicReadPublishedOnly } from '@/access/predicates'
 import { navItemsField } from '@/fields/navItem'
 
@@ -15,6 +16,9 @@ export const Navigation: GlobalConfig = {
   versions: {
     drafts: true,
     max: 20,
+  },
+  hooks: {
+    afterChange: [revalidateGlobal('navigation')],
   },
   fields: [navItemsField('primaryNavigation'), navItemsField('footerNavigation'), navItemsField('legalNavigation')],
 }

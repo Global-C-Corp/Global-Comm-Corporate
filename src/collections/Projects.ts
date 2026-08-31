@@ -1,5 +1,7 @@
 import type { CollectionConfig, Field } from 'payload'
+import { revalidateCollection, revalidateOnDelete } from '@/hooks/revalidate'
 import { isAdminOnlyDelete, isEditorOrAI, publicReadPublishedOnly } from '@/access/predicates'
+import { collectionPreview } from '@/lib/adminPreview'
 import { editorialFields } from '@/fields/editorial'
 import { localizedSlugField } from '@/fields/slug'
 import { enforceEditorialWorkflowCollection } from '@/hooks/enforceEditorialWorkflow'
@@ -38,6 +40,7 @@ export const Projects: CollectionConfig = {
     update: isEditorOrAI,
   },
   admin: {
+    ...collectionPreview('projects'),
     useAsTitle: 'title',
     defaultColumns: ['title', 'client', 'year', 'featured', 'reviewStatus', '_status'],
     group: 'Content',
@@ -47,6 +50,8 @@ export const Projects: CollectionConfig = {
     maxPerDoc: 50,
   },
   hooks: {
+    afterChange: [revalidateCollection('projects')],
+    afterDelete: [revalidateOnDelete('projects')],
     beforeChange: [enforceEditorialWorkflowCollection],
   },
   fields: [

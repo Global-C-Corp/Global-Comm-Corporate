@@ -1,12 +1,13 @@
 import type { Metadata } from 'next'
 import Link from 'next/link'
-import { notFound } from 'next/navigation'
 import { SiteHeader } from '@/components/layout/SiteHeader'
+import { breadcrumbSchema, JsonLd } from '@/components/seo/JsonLd'
 import { ProjectCard } from '@/components/project/ProjectCard'
 import { TestimonialBlock } from '@/components/testimonial/TestimonialBlock'
 import { RichText } from '@/components/ui/RichText'
 import { Section, SectionHeader } from '@/components/ui/Sections'
 import { getDictionary } from '@/i18n/dictionaries'
+import { redirectOrNotFound } from '@/lib/routing'
 import { mediaURL } from '@/lib/media'
 import { populated } from '@/lib/relations'
 import type { Industry, Service, Testimonial } from '@/payload-types'
@@ -50,7 +51,7 @@ export default async function ProjectDetailRoute({
   const { ctx, draft } = await getPageContext(locale)
 
   const project = await getProjectBySlug(ctx, slug)
-  if (!project) notFound()
+  if (!project) return redirectOrNotFound(buildPath(ctx.locale, { type: 'project', slug }), ctx.locale)
 
   const t = getDictionary(ctx.locale)
   const route: Route = { type: 'project', slug }
@@ -76,6 +77,12 @@ export default async function ProjectDetailRoute({
   return (
     <>
       <SiteHeader locale={ctx.locale} route={route} availability={availability} draft={draft} />
+      <JsonLd
+        data={breadcrumbSchema(ctx.locale, [
+          { name: t.sections.selectedWork, route: { type: 'work' } },
+          { name: project.title, route },
+        ])}
+      />
 
       <main id="main">
         <div className="gc-container gc-page-header">
