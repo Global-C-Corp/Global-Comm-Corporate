@@ -4,6 +4,95 @@
  * large whitespace, strong grid, minimal shadows, 0–4px radius.
  */
 
+/*
+ * shadcn/ui primitive layer (Tailwind v4).
+ *
+ * Preflight is deliberately NOT imported: Tailwind's reset would override the
+ * Global Comm base styles below. Only the theme and utility layers are pulled
+ * in, so the design system in this file remains the single source of truth and
+ * shadcn stays a primitive layer on top of it.
+ *
+ * This stylesheet is imported solely by (frontend)/[locale]/layout.tsx, so
+ * Payload Admin is untouched by any of it.
+ */
+@import 'tailwindcss/theme.css' layer(theme);
+@import 'tailwindcss/utilities.css' layer(utilities);
+
+@source '../../components';
+@source '../../app/(frontend)';
+
+/*
+ * shadcn's contract, mapped onto the Global Comm palette (CLAUDE.md §83)
+ * rather than introducing a second one. Values below are references to the
+ * --gc-* tokens defined in :root, so the palette has one definition.
+ */
+:root {
+  --background: var(--gc-white);
+  --foreground: var(--gc-black);
+
+  --card: var(--gc-white);
+  --card-foreground: var(--gc-black);
+  --popover: var(--gc-white);
+  --popover-foreground: var(--gc-black);
+
+  --primary: var(--gc-blue);
+  --primary-foreground: var(--gc-white);
+
+  --secondary: var(--gc-surface);
+  --secondary-foreground: var(--gc-black);
+
+  --muted: var(--gc-surface);
+  --muted-foreground: var(--gc-secondary);
+
+  --accent: var(--gc-surface);
+  --accent-foreground: var(--gc-black);
+
+  /* Not in §83; a restrained oxblood rather than an alerting red. */
+  --destructive: #8c1c1c;
+  --destructive-foreground: var(--gc-white);
+
+  --border: var(--gc-border);
+  --input: var(--gc-border);
+  --ring: var(--gc-blue);
+
+  --radius: var(--gc-radius);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--gc-font-sans);
+  --font-serif: var(--gc-font-serif);
+  --font-mono: var(--gc-font-mono);
+
+  /* §83 geometry: 0-4px radius. Capped here so no primitive can exceed it. */
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 4px;
+  --radius-xl: 4px;
+  --radius-2xl: 4px;
+  --radius-3xl: 4px;
+  --radius-full: 4px;
+}
+
 :root {
   --gc-white: #ffffff;
   --gc-black: #000000;
