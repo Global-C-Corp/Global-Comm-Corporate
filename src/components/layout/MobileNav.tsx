@@ -23,7 +23,7 @@ export function MobileNav({ links, labels }: { links: NavLink[]; labels: { menu:
     <>
       <button
         type="button"
-        className="gc-menu-toggle"
+        className="rounded-sm border border-border px-4 py-2 text-sm text-foreground md:hidden"
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen((value) => !value)}
@@ -31,12 +31,16 @@ export function MobileNav({ links, labels }: { links: NavLink[]; labels: { menu:
         {open ? labels.close : labels.menu}
       </button>
       {open && (
-        <nav id={panelId} className="gc-nav gc-nav--open" aria-label={labels.menu}>
+        <nav
+          id={panelId}
+          className="absolute inset-x-0 top-full flex flex-col gap-1 border-b border-border bg-background p-6 md:hidden"
+          aria-label={labels.menu}
+        >
           {links.map((link) => (
             <Link
               key={`${link.url}-${link.label}`}
               href={link.url}
-              className="gc-nav__link"
+              className="py-2 text-sm text-foreground hover:text-primary"
               target={link.opensInNewTab ? '_blank' : undefined}
               rel={link.opensInNewTab ? 'noopener noreferrer' : undefined}
               onClick={() => setOpen(false)}

@@ -1,33 +1,44 @@
 /*
  * Global Communication Corporate — stylesheet entry point.
  *
- * Two systems run side by side while the frontend migrates one template at a
- * time. The cascade layer order below is what keeps them from fighting:
+ * The hand-written design system is gone: every public template now renders
+ * with Tailwind utilities against the shadcn variable contract, so Preflight
+ * applies at the root rather than being scoped to a migration boundary.
  *
- *   theme      Tailwind's design tokens
- *   legacy     the hand-written design system (legacy.css)
- *   base       Tailwind Preflight, scoped to `.gc-tw`
- *   components reserved for shadcn primitives
- *   utilities  Tailwind utilities
+ * The `.gc-tw` class remains on each template's outermost element. It costs
+ * nothing, and it keeps the boundary available should a future template need
+ * to opt out of the reset.
  *
- * `legacy` sits before `base` and `utilities` deliberately. Those rules use
- * unlayered element selectors (h1, p, a, img); unlayered CSS outranks every
- * cascade layer, so without a layer of their own they would beat every
- * Tailwind utility inside the migrated boundary regardless of specificity.
- *
- * Imported solely by (frontend)/[locale]/layout.tsx, so Payload Admin is
- * untouched by any of it.
+ * Imported solely by (frontend)/[locale]/layout.tsx, so Payload Admin — which
+ * ships its own stylesheet — is untouched by any of it.
  */
-@layer theme, legacy, base, components, utilities;
+@layer theme, base, components, utilities;
 
 @import 'tailwindcss/theme.css' layer(theme);
-@import './legacy.css' layer(legacy);
+@import 'tailwindcss/preflight.css' layer(base);
 @import 'tailwindcss/utilities.css' layer(utilities);
 
 @source '../../components';
 @source '../../app/(frontend)';
 
+/*
+ * The Global Comm palette (CLAUDE.md §83), and shadcn's variable contract
+ * expressed in terms of it so the palette keeps a single definition.
+ */
 :root {
+  --gc-white: #ffffff;
+  --gc-black: #000000;
+  --gc-blue: #0000ff;
+  --gc-surface: #f5f5f2;
+  --gc-secondary: #5f5f5f;
+  --gc-border: rgba(0, 0, 0, 0.15);
+
+  --gc-font-sans: Inter, 'Helvetica Neue', Arial, system-ui, sans-serif;
+  --gc-font-serif: Lora, Georgia, 'Times New Roman', serif;
+  --gc-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  --gc-radius: 2px;
+
   --background: var(--gc-white);
   --foreground: var(--gc-black);
 
@@ -94,31 +105,23 @@
   --radius-full: 4px;
 }
 
-/*
- * Tailwind Preflight, scoped to the migrated boundary (`.gc-tw`).
- *
- * Two details this depends on, both verified in a browser rather than assumed:
- *
- * 1. The import MUST sit inside `@layer base`. Nested on its own, Tailwind
- *    emits the scoped reset UNLAYERED, and unlayered CSS outranks every layer
- *    — `.gc-tw h1 { font-size: inherit }` then beats `.text-4xl`, silently
- *    killing every heading utility inside the boundary.
- *
- * 2. Preflight's `html` rule cannot match under a descendant scope
- *    (`.gc-tw html` requires html to be a descendant), so its inheritable
- *    declarations are re-applied to the boundary element itself. Without this,
- *    migrated markup silently loses `line-height: 1.5`.
- */
 @layer base {
-  .gc-tw {
-    @import 'tailwindcss/preflight.css';
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--gc-font-sans);
+    -webkit-font-smoothing: antialiased;
   }
 
-  .gc-tw {
-    line-height: 1.5;
-    -webkit-text-size-adjust: 100%;
-    -moz-tab-size: 4;
-    tab-size: 4;
-    -webkit-tap-highlight-color: transparent;
+  /* §118 — motion is a preference, not a default. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
   }
 }

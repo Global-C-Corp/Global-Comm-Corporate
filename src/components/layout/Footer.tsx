@@ -26,18 +26,18 @@ export function Footer({
   const year = new Date().getFullYear()
 
   return (
-    <footer className="gc-footer">
-      <div className="gc-container">
-        <div className="gc-footer__grid">
+    <footer className="gc-tw border-t border-border bg-background">
+      <div className="mx-auto w-full max-w-[76rem] px-6 py-16 md:px-10 md:py-20">
+        <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <p className="gc-wordmark">GLOBAL COMM<span>.</span></p>
-            {address && <p className="gc-card__body">{address}</p>}
+            <p className="text-sm font-bold tracking-[-0.01em] text-foreground">GLOBAL COMM<span className="text-primary">.</span></p>
+            {address && <p className="mt-4 text-sm leading-relaxed text-muted-foreground">{address}</p>}
           </div>
 
           {footerLinks.length > 0 && (
             <nav aria-label="Footer">
-              <p className="gc-footer__heading">{companyName}</p>
-              <ul className="gc-footer__list">
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">{companyName}</p>
+              <ul className="mt-4 space-y-2 text-sm [&_a]:text-foreground [&_a:hover]:text-primary">
                 {footerLinks.map((link) => (
                   <li key={`${link.url}-${link.label}`}>
                     <Link href={link.url}>{link.label}</Link>
@@ -48,8 +48,8 @@ export function Footer({
           )}
 
           <div>
-            <p className="gc-footer__heading">Contact</p>
-            <ul className="gc-footer__list">
+            <p className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">Contact</p>
+            <ul className="mt-4 space-y-2 text-sm [&_a]:text-foreground [&_a:hover]:text-primary">
               {primaryEmail && (
                 <li>
                   <a href={`mailto:${primaryEmail}`}>{primaryEmail}</a>
@@ -65,8 +65,8 @@ export function Footer({
 
           {socialLinks && socialLinks.length > 0 && (
             <div>
-              <p className="gc-footer__heading">Social</p>
-              <ul className="gc-footer__list">
+              <p className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">Social</p>
+              <ul className="mt-4 space-y-2 text-sm [&_a]:text-foreground [&_a:hover]:text-primary">
                 {socialLinks.map((social) =>
                   social?.url ? (
                     <li key={social.url}>
@@ -81,11 +81,11 @@ export function Footer({
           )}
         </div>
 
-        <div className="gc-footer__bottom">
-          <p style={{ margin: 0 }}>{copyrightText ?? `© ${year} ${companyName}`}</p>
+        <div className="mt-16 flex flex-wrap items-center justify-between gap-6 border-t border-border pt-8 text-sm text-muted-foreground">
+          <p>{copyrightText ?? `© ${year} ${companyName}`}</p>
           {legalLinks.length > 0 && (
             <nav aria-label="Legal" lang={locale}>
-              <ul className="gc-footer__list" style={{ gridAutoFlow: 'column', gap: '1rem' }}>
+              <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm [&_a]:text-muted-foreground [&_a:hover]:text-foreground">
                 {legalLinks.map((link) => (
                   <li key={`${link.url}-${link.label}`}>
                     <Link href={link.url}>{link.label}</Link>

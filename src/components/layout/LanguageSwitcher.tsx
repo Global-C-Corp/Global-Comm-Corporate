@@ -20,14 +20,14 @@ export function LanguageSwitcher({
   label: string
 }) {
   return (
-    <nav className="gc-lang" aria-label={label}>
+    <nav className="flex items-center gap-2 font-mono text-xs" aria-label={label}>
       {locales.map((locale) => {
         const entry = availability[locale]
         const isCurrent = locale === currentLocale
 
         if (isCurrent) {
           return (
-            <span key={locale} className="gc-lang__item" aria-current="true">
+            <span key={locale} className="text-primary" aria-current="true">
               {localeLabels[locale]}
             </span>
           )
@@ -35,7 +35,7 @@ export function LanguageSwitcher({
 
         if (!entry?.isPublic) {
           return (
-            <span key={locale} className="gc-lang__item gc-lang__item--disabled" aria-disabled="true">
+            <span key={locale} className="text-border" aria-disabled="true">
               {localeLabels[locale]}
             </span>
           )
@@ -44,7 +44,7 @@ export function LanguageSwitcher({
         const localeRoute: Route = 'slug' in route ? { ...route, slug: entry.slug ?? route.slug } : route
 
         return (
-          <Link key={locale} className="gc-lang__item" href={buildPath(locale, localeRoute)} hrefLang={locale}>
+          <Link key={locale} className="text-muted-foreground hover:text-foreground" href={buildPath(locale, localeRoute)} hrefLang={locale}>
             {localeLabels[locale]}
           </Link>
         )

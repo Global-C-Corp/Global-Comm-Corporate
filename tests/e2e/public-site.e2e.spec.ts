@@ -74,7 +74,9 @@ test.describe('public site', () => {
     // Slugs differ per locale and are not a translation of one another, so the
     // switcher must resolve the sibling document rather than swap the prefix.
     await page.goto(`${BASE}/fr/services/recherche-audit-strategie`)
-    const enLink = page.locator('.gc-lang a[hreflang="en"]')
+    // Selected by attribute rather than class: the switcher's styling is free
+    // to change, its hreflang contract is not.
+    const enLink = page.locator('a[hreflang="en"]')
     await expect(enLink).toHaveAttribute('href', '/en/services/research-audit-strategy')
     await enLink.click()
     await expect(page).toHaveURL(`${BASE}/en/services/research-audit-strategy`)
@@ -118,15 +120,27 @@ test.describe('public site', () => {
     await page.setViewportSize({ width: 390, height: 844 })
     await page.goto(`${BASE}/fr`)
 
-    const toggle = page.locator('.gc-menu-toggle')
+    // Role and ARIA state, not class names — this asserts the behaviour a
+    // keyboard or screen-reader user actually depends on.
+    // Identified by its ARIA wiring rather than a role filter on `expanded`:
+    // that state flips on click, so filtering by it loses the element.
+    const toggle = page.locator('button[aria-expanded][aria-controls]')
     await expect(toggle).toBeVisible()
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false')
     await toggle.click()
-    await expect(page.locator('.gc-nav--open')).toBeVisible()
+    await expect(toggle).toHaveAttribute('aria-expanded', 'true')
+
+    const panelId = await toggle.getAttribute('aria-controls')
+    expect(panelId).toBeTruthy()
+    await expect(page.locator(`#${panelId}`)).toBeVisible()
   })
 
   test('exposes a keyboard skip link', async ({ page }) => {
     await page.goto(`${BASE}/fr`)
     await page.keyboard.press('Tab')
-    await expect(page.locator('.gc-skip-link')).toBeFocused()
+    const skipLink = page.locator('a[href="#main"]')
+    await expect(skipLink).toBeFocused()
+    // It must also become visible on focus, or it helps nobody.
+    await expect(skipLink).toBeVisible()
   })
 })

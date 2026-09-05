@@ -20,18 +20,18 @@ export function Header({
   const dictionary = getDictionary(locale)
 
   return (
-    <header className="gc-header">
-      <div className="gc-container gc-header__inner">
-        <Link href={buildPath(locale, { type: 'home' })} className="gc-wordmark">
-          GLOBAL COMM<span>.</span>
+    <header className="gc-tw sticky top-0 z-40 border-b border-border bg-background">
+      <div className="mx-auto flex w-full max-w-[76rem] items-center justify-between gap-8 px-6 py-5 md:px-10">
+        <Link href={buildPath(locale, { type: 'home' })} className="text-sm font-bold tracking-[-0.01em] text-foreground">
+          GLOBAL COMM<span className="text-primary">.</span>
         </Link>
 
-        <nav className="gc-nav gc-nav--primary" aria-label="Primary">
+        <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
           {links.map((link) => (
             <Link
               key={`${link.url}-${link.label}`}
               href={link.url}
-              className="gc-nav__link"
+              className="text-sm text-foreground hover:text-primary"
               target={link.opensInNewTab ? '_blank' : undefined}
               rel={link.opensInNewTab ? 'noopener noreferrer' : undefined}
             >
@@ -40,7 +40,7 @@ export function Header({
           ))}
         </nav>
 
-        <div className="gc-header__actions">
+        <div className="flex items-center gap-6">
           <LanguageSwitcher
             currentLocale={locale}
             route={route}
