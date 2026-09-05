@@ -16,13 +16,20 @@ export function TestimonialBlock({ testimonial, locale }: { testimonial: Testimo
     .join(' · ')
 
   return (
-    <figure style={{ margin: 0 }}>
-      <blockquote className="gc-quote" lang={isOriginalLocale ? undefined : locale}>
+    <figure>
+      <blockquote
+        className="border-l-2 border-primary pl-5 text-base leading-relaxed text-foreground"
+        lang={isOriginalLocale ? undefined : locale}
+      >
         “{quote}”
       </blockquote>
-      {attribution && <figcaption className="gc-quote__attribution">{attribution}</figcaption>}
+      {attribution && (
+        <figcaption className="mt-4 font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground">
+          {attribution}
+        </figcaption>
+      )}
       {!isOriginalLocale && (
-        <p className="gc-quote__note">
+        <p className="mt-2 text-xs text-muted-foreground">
           Translated from {testimonial.originalLocale?.toUpperCase()}
         </p>
       )}

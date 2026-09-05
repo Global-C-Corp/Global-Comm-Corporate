@@ -2,10 +2,9 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { SiteHeader } from '@/components/layout/SiteHeader'
 import { breadcrumbSchema, JsonLd } from '@/components/seo/JsonLd'
-import { ProjectCard } from '@/components/project/ProjectCard'
 import { TestimonialBlock } from '@/components/testimonial/TestimonialBlock'
 import { RichText } from '@/components/ui/RichText'
-import { Section, SectionHeader } from '@/components/ui/Sections'
+import { Band, Heading, PageHeader, ProjectTile, RichProse, TileGrid } from '@/components/ui/Primitives'
 import { getDictionary } from '@/i18n/dictionaries'
 import { redirectOrNotFound } from '@/lib/routing'
 import { mediaURL } from '@/lib/media'
@@ -74,6 +73,8 @@ export default async function ProjectDetailRoute({
   const heroImage = mediaURL(project.heroMedia ?? project.featuredMedia, 'hero')
   const clientName = typeof project.client === 'object' && project.client ? project.client.name : undefined
 
+  const related = relatedProjects.filter((item) => item.id !== project.id)
+
   return (
     <>
       <SiteHeader locale={ctx.locale} route={route} availability={availability} draft={draft} />
@@ -84,147 +85,180 @@ export default async function ProjectDetailRoute({
         ])}
       />
 
-      <main id="main">
-        <div className="gc-container gc-page-header">
-          <p className="gc-eyebrow">{[clientName, project.year].filter(Boolean).join(' · ')}</p>
-          <h1>{project.title}</h1>
-          {project.shortStatement && (
-            <p className="gc-lead" style={{ marginTop: '1.5rem' }}>
-              {project.shortStatement}
-            </p>
+      <main id="main" className="gc-tw bg-background">
+        <PageHeader
+          eyebrow={[clientName, project.year].filter(Boolean).join(' · ')}
+          heading={project.title}
+          intro={project.shortStatement}
+        />
+
+        <div className="mx-auto w-full max-w-[76rem] px-6 md:px-10">
+          {heroImage && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={heroImage} alt={project.title} className="w-full border border-border" />
           )}
-        </div>
 
-        {heroImage && (
-          <div className="gc-container" style={{ marginBottom: '3rem' }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={heroImage} alt={project.title} />
-          </div>
-        )}
-
-        <div className="gc-container">
-          <dl className="gc-detail-meta">
+          <dl className="mt-12 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
             {clientName && (
-              <div>
-                <dt>Client</dt>
-                <dd>{clientName}</dd>
+              <div className="bg-background p-6">
+                <dt className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">Client</dt>
+                <dd className="mt-2 text-sm text-foreground">{clientName}</dd>
               </div>
             )}
             {services.length > 0 && (
-              <div>
-                <dt>{t.sections.capabilities}</dt>
-                <dd>{services.map((service) => service.name).join(', ')}</dd>
+              <div className="bg-background p-6">
+                <dt className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                  {t.sections.capabilities}
+                </dt>
+                <dd className="mt-2 text-sm text-foreground">
+                  {services.map((service) => service.name).join(', ')}
+                </dd>
               </div>
             )}
             {industries.length > 0 && (
-              <div>
-                <dt>{t.sections.industries}</dt>
-                <dd>{industries.map((industry) => industry.name).join(', ')}</dd>
+              <div className="bg-background p-6">
+                <dt className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
+                  {t.sections.industries}
+                </dt>
+                <dd className="mt-2 text-sm text-foreground">
+                  {industries.map((industry) => industry.name).join(', ')}
+                </dd>
               </div>
             )}
             {project.location && (
-              <div>
-                <dt>Location</dt>
-                <dd>{project.location}</dd>
+              <div className="bg-background p-6">
+                <dt className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">Location</dt>
+                <dd className="mt-2 text-sm text-foreground">{project.location}</dd>
               </div>
             )}
           </dl>
         </div>
 
         {project.challenge && (
-          <Section labelledBy="challenge">
-            <SectionHeader id="challenge" heading={t.sections.challenge} />
-            <RichText data={project.challenge} />
-          </Section>
+          <Band labelledBy="challenge">
+            <Heading id="challenge">{t.sections.challenge}</Heading>
+            <RichProse className="mt-8">
+              <RichText data={project.challenge} />
+            </RichProse>
+          </Band>
         )}
 
         {project.approach && (
-          <Section labelledBy="approach">
-            <SectionHeader id="approach" heading={t.sections.approach} />
-            <RichText data={project.approach} />
-          </Section>
+          <Band surface labelledBy="approach">
+            <Heading id="approach">{t.sections.approach}</Heading>
+            <RichProse className="mt-8">
+              <RichText data={project.approach} />
+            </RichProse>
+          </Band>
         )}
 
         {gallery.length > 0 && (
-          <Section surface>
-            <div className="gc-grid gc-grid--2">
+          <Band>
+            <div className="grid gap-6 md:grid-cols-2">
               {gallery.map((url) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={url} src={url} alt="" loading="lazy" />
+                <img key={url} src={url} alt="" loading="lazy" className="w-full border border-border" />
               ))}
             </div>
-          </Section>
+          </Band>
         )}
 
         {project.deliverables && (
-          <Section labelledBy="deliverables">
-            <SectionHeader id="deliverables" heading={t.sections.deliverables} />
-            <RichText data={project.deliverables} />
-          </Section>
+          <Band labelledBy="deliverables">
+            <Heading id="deliverables">{t.sections.deliverables}</Heading>
+            <RichProse className="mt-8">
+              <RichText data={project.deliverables} />
+            </RichProse>
+          </Band>
         )}
 
         {project.outcome && (
-          <Section labelledBy="outcome">
-            <SectionHeader id="outcome" heading={t.sections.outcome} />
-            <RichText data={project.outcome} />
-            {project.resultsNote && <p className="gc-card__body">{project.resultsNote}</p>}
-          </Section>
+          <Band surface labelledBy="outcome">
+            <Heading id="outcome">{t.sections.outcome}</Heading>
+            <RichProse className="mt-8">
+              <RichText data={project.outcome} />
+            </RichProse>
+            {project.resultsNote && (
+              <p className="mt-6 max-w-[62ch] text-sm text-muted-foreground">{project.resultsNote}</p>
+            )}
+          </Band>
         )}
 
+        {/* Every metric shown carries its source; unsourced values never
+            render (CLAUDE.md §36, §139). */}
         {metrics.length > 0 && (
-          <Section surface labelledBy="metrics">
-            <SectionHeader id="metrics" heading={t.sections.metrics} />
-            <div className="gc-metrics">
+          <Band labelledBy="metrics">
+            <Heading id="metrics">{t.sections.metrics}</Heading>
+            <div className="mt-10 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
               {metrics.map((metric) => (
-                <div key={metric.id ?? metric.label}>
-                  <p className="gc-metric__value">{metric.value}</p>
-                  <p className="gc-metric__label">{metric.label}</p>
-                  <p className="gc-metric__source">{metric.sourceNote}</p>
+                <div key={metric.id ?? metric.label} className="bg-background p-8">
+                  <p className="text-4xl font-semibold tracking-[-0.02em] text-primary">{metric.value}</p>
+                  <p className="mt-3 text-sm font-medium text-foreground">{metric.label}</p>
+                  <p className="mt-2 text-xs text-muted-foreground">{metric.sourceNote}</p>
                 </div>
               ))}
             </div>
-          </Section>
+          </Band>
         )}
 
         {testimonials.length > 0 && (
-          <Section labelledBy="proof">
-            <SectionHeader id="proof" heading={t.sections.testimonials} />
-            <div className="gc-grid gc-grid--2">
+          <Band surface labelledBy="proof">
+            <Heading id="proof">{t.sections.testimonials}</Heading>
+            <div className="mt-10 grid gap-px border border-border bg-border md:grid-cols-2">
               {testimonials.map((testimonial) => (
-                <TestimonialBlock key={testimonial.id} testimonial={testimonial} locale={ctx.locale} />
+                <div key={testimonial.id} className="bg-background p-8">
+                  <TestimonialBlock testimonial={testimonial} locale={ctx.locale} />
+                </div>
               ))}
             </div>
-          </Section>
+          </Band>
         )}
 
         {services.length > 0 && (
-          <Section labelledBy="related-services">
-            <SectionHeader id="related-services" heading={t.sections.relatedServices} />
-            <ul className="gc-footer__list">
-              {services.map((service) =>
-                service.slug ? (
-                  <li key={service.id}>
-                    <Link href={buildPath(ctx.locale, { type: 'service', slug: service.slug })}>{service.name}</Link>
-                  </li>
-                ) : (
-                  <li key={service.id}>{service.name}</li>
-                ),
-              )}
+          <Band labelledBy="related-services">
+            <Heading id="related-services">{t.sections.relatedServices}</Heading>
+            {/* Only the four pillars have pages. A folded term is named but not
+                linked, so the page never sends a reader through a redirect
+                (§29-§30, §70). */}
+            <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm">
+              {services.map((service) => (
+                <li key={service.id}>
+                  {service.isPillar && service.slug ? (
+                    <Link
+                      href={buildPath(ctx.locale, { type: 'service', slug: service.slug })}
+                      className="text-primary underline underline-offset-4 hover:text-foreground"
+                    >
+                      {service.name}
+                    </Link>
+                  ) : (
+                    <span className="text-muted-foreground">{service.name}</span>
+                  )}
+                </li>
+              ))}
             </ul>
-          </Section>
+          </Band>
         )}
 
-        {relatedProjects.filter((related) => related.id !== project.id).length > 0 && (
-          <Section surface labelledBy="related-work">
-            <SectionHeader id="related-work" heading={t.sections.relatedWork} />
-            <div className="gc-grid gc-grid--3">
-              {relatedProjects
-                .filter((related) => related.id !== project.id)
-                .map((related) => (
-                  <ProjectCard key={related.id} project={related} locale={ctx.locale} />
-                ))}
+        {related.length > 0 && (
+          <Band surface labelledBy="related-work">
+            <Heading id="related-work">{t.sections.relatedWork}</Heading>
+            <div className="mt-10">
+              <TileGrid>
+                {related.map((item) => {
+                  const itemClient = typeof item.client === 'object' ? item.client?.name : undefined
+                  return (
+                    <ProjectTile
+                      key={item.id}
+                      href={item.slug ? buildPath(ctx.locale, { type: 'project', slug: item.slug }) : null}
+                      title={item.title}
+                      meta={[itemClient, item.year ? String(item.year) : undefined].filter(Boolean).join(' · ')}
+                      excerpt={item.excerpt}
+                    />
+                  )
+                })}
+              </TileGrid>
             </div>
-          </Section>
+          </Band>
         )}
       </main>
     </>
