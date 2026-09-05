@@ -71,11 +71,13 @@ test.describe('public site', () => {
   })
 
   test('uses the localized slug when switching language', async ({ page }) => {
-    await page.goto(`${BASE}/fr/services/strategie`)
+    // Slugs differ per locale and are not a translation of one another, so the
+    // switcher must resolve the sibling document rather than swap the prefix.
+    await page.goto(`${BASE}/fr/services/recherche-audit-strategie`)
     const enLink = page.locator('.gc-lang a[hreflang="en"]')
-    await expect(enLink).toHaveAttribute('href', '/en/services/strategy')
+    await expect(enLink).toHaveAttribute('href', '/en/services/research-audit-strategy')
     await enLink.click()
-    await expect(page).toHaveURL(`${BASE}/en/services/strategy`)
+    await expect(page).toHaveURL(`${BASE}/en/services/research-audit-strategy`)
   })
 
   test('marks the work archive noindex when filters are applied', async ({ page }) => {

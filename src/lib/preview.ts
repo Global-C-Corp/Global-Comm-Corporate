@@ -16,8 +16,9 @@ export function previewRouteFor({ collection, slug }: PreviewTarget): Route | nu
       return slug ? { type: 'service', slug } : { type: 'services' }
     case 'projects':
       return slug ? { type: 'project', slug } : { type: 'work' }
+    // Industries have no public page; there is nothing to preview.
     case 'industries':
-      return slug ? { type: 'industry', slug } : null
+      return null
     case 'home-page':
       return { type: 'home' }
     case 'services-page':

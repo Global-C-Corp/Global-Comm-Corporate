@@ -50,7 +50,13 @@ export default async function ServiceDetailRoute({
   const { ctx, draft } = await getPageContext(locale)
 
   const service = await getServiceBySlug(ctx, slug)
-  if (!service) return redirectOrNotFound(buildPath(ctx.locale, { type: 'service', slug }), ctx.locale)
+
+  // Only the four pillars have a public page. A folded term falls through to
+  // its Payload redirect record, which 301s to the pillar that absorbed it
+  // (CLAUDE.md §29-§30, §70).
+  if (!service || !service.isPillar) {
+    return redirectOrNotFound(buildPath(ctx.locale, { type: 'service', slug }), ctx.locale)
+  }
 
   const t = getDictionary(ctx.locale)
   const route: Route = { type: 'service', slug }

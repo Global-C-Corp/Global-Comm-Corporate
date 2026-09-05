@@ -8,8 +8,8 @@ type Locale = (typeof locales)[number]
 /**
  * Visual baseline for the Tailwind + shadcn migration.
  *
- * Every template is captured once per locale at a desktop and a mobile width
- * before any markup changes. Later PRs migrate one template at a time and diff
+ * Every public template is captured once per locale at a desktop and a mobile
+ * width. Later PRs migrate one template at a time and diff
  * against these snapshots, so "does the case study page still look right" is a
  * pixel diff rather than a manual pass over 18 pages.
  *
@@ -25,9 +25,11 @@ type Locale = (typeof locales)[number]
  *   case study      → "AMREC — 55 ans / programme UNESCO", the published
  *                     project with the longest narrative and three metrics,
  *                     so the optional metrics block is exercised.
- *   industry detail → "Grande consommation". This template is removed in
- *                     PR 2; it is captured so the removal is a deliberate
- *                     deletion of a known baseline rather than a silent gap.
+ *
+ * The industry-detail template was captured in the original baseline and has
+ * been removed here along with the route itself: industries no longer have
+ * public pages, and their URLs now 301 to the work archive (covered by
+ * redirects.e2e.spec.ts).
  */
 
 const VIEWPORTS = [
@@ -62,14 +64,6 @@ const TEMPLATES: { name: string; paths: Record<Locale, string> }[] = [
       fr: '/fr/work/amrec-55-ans-programme-unesco',
       en: '/en/work/amrec-55-years-unesco-programme',
       es: '/es/work/amrec-55-anos-programa-unesco',
-    },
-  },
-  {
-    name: 'industry-detail',
-    paths: {
-      fr: '/fr/industries/grande-consommation',
-      en: '/en/industries/fmcg',
-      es: '/es/industries/gran-consumo',
     },
   },
   {

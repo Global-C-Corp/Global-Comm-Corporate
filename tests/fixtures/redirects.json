@@ -1,0 +1,692 @@
+[
+  {
+    "from": "/en/industries/culture-creative-industries",
+    "to": "/en/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/en/industries/education",
+    "to": "/en/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/en/industries/fmcg",
+    "to": "/en/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/en/industries/food-beverage",
+    "to": "/en/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/en/industries/healthcare",
+    "to": "/en/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/en/industries/hospitality",
+    "to": "/en/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/en/industries/human-development",
+    "to": "/en/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/en/industries/institutional",
+    "to": "/en/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/en/industries/ngo-nonprofit",
+    "to": "/en/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/en/industries/professional-services",
+    "to": "/en/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/en/industries/public-sector",
+    "to": "/en/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/en/industries/real-estate",
+    "to": "/en/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/en/industries/retail",
+    "to": "/en/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/en/services/ai-solutions",
+    "to": "/en/services/automation-ai",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/analytics-reporting",
+    "to": "/en/services/automation-ai",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/audit-diagnostic",
+    "to": "/en/services/research-audit-strategy",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/brand-guidelines",
+    "to": "/en/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/brand-identity",
+    "to": "/en/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/brand-strategy",
+    "to": "/en/services/research-audit-strategy",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/branding",
+    "to": "/en/services/branding-communication",
+    "reason": "pillar-renamed"
+  },
+  {
+    "from": "/en/services/communication-strategy",
+    "to": "/en/services/research-audit-strategy",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/content-creation",
+    "to": "/en/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/content-marketing",
+    "to": "/en/services/digital-marketing",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/conversion-optimization",
+    "to": "/en/services/digital-marketing",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/copywriting",
+    "to": "/en/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/corporate-websites",
+    "to": "/en/services/automation-ai",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/creative-campaigns",
+    "to": "/en/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/creative-content",
+    "to": "/en/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/crm",
+    "to": "/en/services/automation-ai",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/e-commerce",
+    "to": "/en/services/automation-ai",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/email-marketing",
+    "to": "/en/services/digital-marketing",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/landing-pages",
+    "to": "/en/services/automation-ai",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/lead-generation",
+    "to": "/en/services/digital-marketing",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/marketing-automation",
+    "to": "/en/services/automation-ai",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/marketing-strategy",
+    "to": "/en/services/research-audit-strategy",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/motion-design",
+    "to": "/en/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/packaging",
+    "to": "/en/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/paid-media",
+    "to": "/en/services/digital-marketing",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/photography",
+    "to": "/en/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/rebranding",
+    "to": "/en/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/seo",
+    "to": "/en/services/digital-marketing",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/social-media",
+    "to": "/en/services/digital-marketing",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/strategy",
+    "to": "/en/services/research-audit-strategy",
+    "reason": "pillar-renamed"
+  },
+  {
+    "from": "/en/services/video-production",
+    "to": "/en/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/visual-identity",
+    "to": "/en/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/en/services/web-technology",
+    "to": "/en/services/automation-ai",
+    "reason": "pillar-renamed"
+  },
+  {
+    "from": "/es/industries/alimentacion-y-bebidas",
+    "to": "/es/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/es/industries/cultura-e-industrias-creativas",
+    "to": "/es/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/es/industries/desarrollo-humano",
+    "to": "/es/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/es/industries/educacion",
+    "to": "/es/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/es/industries/gran-consumo",
+    "to": "/es/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/es/industries/hosteleria",
+    "to": "/es/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/es/industries/inmobiliario",
+    "to": "/es/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/es/industries/institucional",
+    "to": "/es/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/es/industries/ong-y-sin-animo-de-lucro",
+    "to": "/es/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/es/industries/retail",
+    "to": "/es/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/es/industries/salud",
+    "to": "/es/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/es/industries/sector-publico",
+    "to": "/es/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/es/industries/servicios-profesionales",
+    "to": "/es/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/es/services/analitica-e-informes",
+    "to": "/es/services/automatizacion-ia",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/auditoria-y-diagnostico",
+    "to": "/es/services/investigacion-auditoria-estrategia",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/automatizacion-de-marketing",
+    "to": "/es/services/automatizacion-ia",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/branding",
+    "to": "/es/services/branding-comunicacion",
+    "reason": "pillar-renamed"
+  },
+  {
+    "from": "/es/services/campanas-creativas",
+    "to": "/es/services/branding-comunicacion",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/creacion-de-contenido",
+    "to": "/es/services/branding-comunicacion",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/creatividad-y-contenido",
+    "to": "/es/services/branding-comunicacion",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/crm",
+    "to": "/es/services/automatizacion-ia",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/e-commerce",
+    "to": "/es/services/automatizacion-ia",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/email-marketing",
+    "to": "/es/services/marketing-digital",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/estrategia",
+    "to": "/es/services/investigacion-auditoria-estrategia",
+    "reason": "pillar-renamed"
+  },
+  {
+    "from": "/es/services/estrategia-de-comunicacion",
+    "to": "/es/services/investigacion-auditoria-estrategia",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/estrategia-de-marca",
+    "to": "/es/services/investigacion-auditoria-estrategia",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/estrategia-de-marketing",
+    "to": "/es/services/investigacion-auditoria-estrategia",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/fotografia",
+    "to": "/es/services/branding-comunicacion",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/generacion-de-leads",
+    "to": "/es/services/marketing-digital",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/identidad-de-marca",
+    "to": "/es/services/branding-comunicacion",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/identidad-visual",
+    "to": "/es/services/branding-comunicacion",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/landing-pages",
+    "to": "/es/services/automatizacion-ia",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/manual-de-marca",
+    "to": "/es/services/branding-comunicacion",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/marketing-de-contenidos",
+    "to": "/es/services/marketing-digital",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/medios-pagados",
+    "to": "/es/services/marketing-digital",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/motion-design",
+    "to": "/es/services/branding-comunicacion",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/optimizacion-de-conversion",
+    "to": "/es/services/marketing-digital",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/packaging",
+    "to": "/es/services/branding-comunicacion",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/produccion-de-video",
+    "to": "/es/services/branding-comunicacion",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/rebranding",
+    "to": "/es/services/branding-comunicacion",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/redaccion",
+    "to": "/es/services/branding-comunicacion",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/redes-sociales",
+    "to": "/es/services/marketing-digital",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/seo",
+    "to": "/es/services/marketing-digital",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/sitios-corporativos",
+    "to": "/es/services/automatizacion-ia",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/soluciones-de-ia",
+    "to": "/es/services/automatizacion-ia",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/es/services/web-y-tecnologia",
+    "to": "/es/services/automatizacion-ia",
+    "reason": "pillar-renamed"
+  },
+  {
+    "from": "/fr/industries/agroalimentaire",
+    "to": "/fr/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/fr/industries/culture-industries-creatives",
+    "to": "/fr/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/fr/industries/developpement-humain",
+    "to": "/fr/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/fr/industries/education",
+    "to": "/fr/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/fr/industries/grande-consommation",
+    "to": "/fr/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/fr/industries/hotellerie",
+    "to": "/fr/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/fr/industries/immobilier",
+    "to": "/fr/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/fr/industries/institutionnel",
+    "to": "/fr/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/fr/industries/ong-associations",
+    "to": "/fr/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/fr/industries/retail",
+    "to": "/fr/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/fr/industries/sante",
+    "to": "/fr/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/fr/industries/secteur-public",
+    "to": "/fr/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/fr/industries/services-professionnels",
+    "to": "/fr/work",
+    "reason": "industry"
+  },
+  {
+    "from": "/fr/services/analytics-reporting",
+    "to": "/fr/services/automatisation-ia",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/audit-diagnostic",
+    "to": "/fr/services/recherche-audit-strategie",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/automatisation-marketing",
+    "to": "/fr/services/automatisation-ia",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/branding",
+    "to": "/fr/services/branding-communication",
+    "reason": "pillar-renamed"
+  },
+  {
+    "from": "/fr/services/campagnes-creatives",
+    "to": "/fr/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/charte-de-marque",
+    "to": "/fr/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/creation-contenu",
+    "to": "/fr/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/creation-de-contenu",
+    "to": "/fr/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/crm",
+    "to": "/fr/services/automatisation-ia",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/e-commerce",
+    "to": "/fr/services/automatisation-ia",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/email-marketing",
+    "to": "/fr/services/marketing-digital",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/generation-de-leads",
+    "to": "/fr/services/marketing-digital",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/identite-de-marque",
+    "to": "/fr/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/identite-visuelle",
+    "to": "/fr/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/landing-pages",
+    "to": "/fr/services/automatisation-ia",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/marketing-de-contenu",
+    "to": "/fr/services/marketing-digital",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/medias-payants",
+    "to": "/fr/services/marketing-digital",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/motion-design",
+    "to": "/fr/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/optimisation-de-la-conversion",
+    "to": "/fr/services/marketing-digital",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/packaging",
+    "to": "/fr/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/photographie",
+    "to": "/fr/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/production-video",
+    "to": "/fr/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/redaction",
+    "to": "/fr/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/refonte-de-marque",
+    "to": "/fr/services/branding-communication",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/reseaux-sociaux",
+    "to": "/fr/services/marketing-digital",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/seo",
+    "to": "/fr/services/marketing-digital",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/sites-corporate",
+    "to": "/fr/services/automatisation-ia",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/solutions-ia",
+    "to": "/fr/services/automatisation-ia",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/strategie",
+    "to": "/fr/services/recherche-audit-strategie",
+    "reason": "pillar-renamed"
+  },
+  {
+    "from": "/fr/services/strategie-de-communication",
+    "to": "/fr/services/recherche-audit-strategie",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/strategie-de-marque",
+    "to": "/fr/services/recherche-audit-strategie",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/strategie-marketing",
+    "to": "/fr/services/recherche-audit-strategie",
+    "reason": "folded-service"
+  },
+  {
+    "from": "/fr/services/web-technologie",
+    "to": "/fr/services/automatisation-ia",
+    "reason": "pillar-renamed"
+  }
+]

@@ -13,7 +13,6 @@ const ROUTE_PATTERNS = {
   serviceDetail: '/[locale]/services/[slug]',
   work: '/[locale]/work',
   projectDetail: '/[locale]/work/[slug]',
-  industryDetail: '/[locale]/industries/[slug]',
   company: '/[locale]/company',
   contact: '/[locale]/contact',
 } as const
@@ -33,12 +32,12 @@ function revalidateRoutes(keys: RouteKey[]) {
 }
 
 const AFFECTED_ROUTES: Record<string, RouteKey[]> = {
-  services: ['home', 'services', 'serviceDetail', 'projectDetail', 'industryDetail'],
-  projects: ['home', 'work', 'projectDetail', 'serviceDetail', 'industryDetail'],
-  industries: ['home', 'industryDetail', 'serviceDetail', 'company'],
+  services: ['home', 'services', 'serviceDetail', 'projectDetail'],
+  projects: ['home', 'work', 'projectDetail', 'serviceDetail'],
+  industries: ['home', 'serviceDetail', 'company'],
   clients: ['home', 'company', 'projectDetail'],
   testimonials: ['home', 'company', 'projectDetail'],
-  media: ['home', 'services', 'serviceDetail', 'work', 'projectDetail', 'industryDetail', 'company'],
+  media: ['home', 'services', 'serviceDetail', 'work', 'projectDetail', 'company'],
   'project-types': ['work', 'contact'],
   'context-tags': ['work'],
   'home-page': ['home'],
@@ -46,8 +45,8 @@ const AFFECTED_ROUTES: Record<string, RouteKey[]> = {
   'work-page': ['work'],
   'company-page': ['company'],
   'contact-page': ['contact'],
-  navigation: ['home', 'services', 'serviceDetail', 'work', 'projectDetail', 'industryDetail', 'company', 'contact'],
-  'site-settings': ['home', 'services', 'serviceDetail', 'work', 'projectDetail', 'industryDetail', 'company', 'contact'],
+  navigation: ['home', 'services', 'serviceDetail', 'work', 'projectDetail', 'company', 'contact'],
+  'site-settings': ['home', 'services', 'serviceDetail', 'work', 'projectDetail', 'company', 'contact'],
 }
 
 export function revalidateCollection(slug: string): CollectionAfterChangeHook {

@@ -1,3 +1,4 @@
+import type { Where } from 'payload'
 import { logCmsFailure } from '@/lib/log'
 import { locales, translationStatusKey, type Locale } from '@/i18n/locale'
 import { getPayloadClient } from '@/services/cms/context'
@@ -55,9 +56,15 @@ export async function buildSitemapEntries(): Promise<Entry[]> {
       }
     }
 
-    entries.push(...(await collectionEntries(locale, 'services', (slug) => ({ type: 'service', slug }))))
+    // Only the four pillars have public service pages, and industries have no
+    // page at all — both now resolve to a 301 rather than a document, so
+    // neither belongs in a sitemap of canonical URLs (§68).
+    entries.push(
+      ...(await collectionEntries(locale, 'services', (slug) => ({ type: 'service', slug }), {
+        isPillar: { equals: true },
+      })),
+    )
     entries.push(...(await collectionEntries(locale, 'projects', (slug) => ({ type: 'project', slug }))))
-    entries.push(...(await collectionEntries(locale, 'industries', (slug) => ({ type: 'industry', slug }))))
   }
 
   return entries
@@ -65,8 +72,9 @@ export async function buildSitemapEntries(): Promise<Entry[]> {
 
 async function collectionEntries(
   locale: Locale,
-  collection: 'services' | 'projects' | 'industries',
+  collection: 'services' | 'projects',
   toRoute: (slug: string) => Route,
+  extraWhere?: Where,
 ): Promise<Entry[]> {
   const payload = await getPayloadClient()
   const result = await payload.find({
@@ -75,7 +83,12 @@ async function collectionEntries(
     fallbackLocale: false,
     draft: false,
     overrideAccess: false,
-    where: { [`translationStatus.${translationStatusKey(locale)}`]: { equals: 'approved' } },
+    where: {
+      and: [
+        { [`translationStatus.${translationStatusKey(locale)}`]: { equals: 'approved' } },
+        ...(extraWhere ? [extraWhere] : []),
+      ],
+    },
     limit: 1000,
     depth: 0,
   })

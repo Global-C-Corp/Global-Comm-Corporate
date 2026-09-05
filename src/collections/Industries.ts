@@ -2,7 +2,6 @@ import type { CollectionConfig } from 'payload'
 import { collectionPublishGate } from '@/lib/adminComponents'
 import { revalidateCollection, revalidateOnDelete } from '@/hooks/revalidate'
 import { isAdminOnlyDelete, isEditorOrAI, publicReadPublishedOnly } from '@/access/predicates'
-import { collectionPreview } from '@/lib/adminPreview'
 import { editorialFields } from '@/fields/editorial'
 import { localizedSlugField } from '@/fields/slug'
 import { governed } from '@/fields/taxonomyGovernance'
@@ -21,7 +20,6 @@ export const Industries: CollectionConfig = {
   },
   admin: {
     ...collectionPublishGate,
-    ...collectionPreview('industries'),
     useAsTitle: 'name',
     defaultColumns: ['name', 'featured', 'reviewStatus', '_status'],
     group: 'Content',

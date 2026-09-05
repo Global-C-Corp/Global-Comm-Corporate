@@ -3,7 +3,7 @@ import { getPayload } from 'payload'
 import type { Payload } from 'payload'
 import config from '../src/payload.config'
 import { locales } from '../src/i18n/locale'
-import { PILLAR_NAMES, PILLAR_SLUGS, ROOT_MERGES } from '../src/services/cms/pillarConfig'
+import { PILLARS, currentPillarConfig, pillarKeyForFrSlug } from '../src/services/cms/pillarConfig'
 import {
   resolvePillarAssignments,
   type PillarAssignment,
@@ -54,15 +54,14 @@ const idOf = (value: unknown): number | null => {
 }
 
 function report(nodes: ServiceNode[], assignments: PillarAssignment[], mismatches: string[]) {
-  const bySlug = new Map(nodes.map((node) => [node.slug, node]))
   const pillars = assignments.filter((a) => a.role === 'pillar')
   const folded = assignments.filter((a) => a.role === 'folded')
 
   console.log(`\nPILLARS (${pillars.length})\n`)
-  for (const slug of PILLAR_SLUGS) {
-    const node = bySlug.get(slug)
-    if (!node) continue
-    console.log(`  ${slug.padEnd(20)} "${node.name}"  ->  "${PILLAR_NAMES[slug].fr}"`)
+  for (const assignment of pillars) {
+    const key = pillarKeyForFrSlug(assignment.node.slug)
+    if (!key) continue
+    console.log(`  ${key.padEnd(20)} "${assignment.node.name}"  ->  "${PILLARS[key].names.fr}"`)
   }
 
   console.log(`\nFOLDED (${folded.length})\n`)
@@ -71,8 +70,7 @@ function report(nodes: ServiceNode[], assignments: PillarAssignment[], mismatche
     const key = assignment.pillarSlug as string
     grouped.set(key, [...(grouped.get(key) ?? []), assignment])
   }
-  for (const slug of PILLAR_SLUGS) {
-    const items = grouped.get(slug)
+  for (const [slug, items] of grouped) {
     if (!items) continue
     console.log(`  → ${slug} (${items.length})`)
     for (const item of items) {
@@ -114,10 +112,14 @@ async function main() {
     parentId: idOf(doc.parent),
   }))
 
+  // Restated in terms of the slugs currently stored, so a second run still
+  // recognises the pillars it renamed on the first.
+  const { pillarSlugs, rootMerges } = currentPillarConfig(nodes.map((node) => node.slug))
+
   const { assignments, mismatches } = resolvePillarAssignments({
     nodes,
-    pillarSlugs: PILLAR_SLUGS,
-    rootMerges: ROOT_MERGES,
+    pillarSlugs,
+    rootMerges,
   })
 
   report(nodes, assignments, mismatches)
@@ -146,7 +148,7 @@ async function main() {
         data: {
           isPillar: true,
           foldedInto: null,
-          name: PILLAR_NAMES[assignment.node.slug][locale],
+          name: PILLARS[pillarKeyForFrSlug(assignment.node.slug) as string].names[locale],
         },
         draft: false,
         overrideAccess: true,
