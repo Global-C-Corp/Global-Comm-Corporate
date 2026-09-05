@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { ContactForm } from '@/components/contact/ContactForm'
 import { SiteHeader } from '@/components/layout/SiteHeader'
-import { Section } from '@/components/ui/Sections'
+import { Kicker, PageHeader, Prose } from '@/components/ui/Primitives'
 import { getDictionary } from '@/i18n/dictionaries'
 import { getGlobalAvailability } from '@/services/cms/availability'
 import { baseQueryOptions, getPayloadClient } from '@/services/cms/context'
@@ -51,36 +51,35 @@ export default async function ContactPageRoute({ params }: { params: Promise<{ l
     <>
       <SiteHeader locale={ctx.locale} route={route} availability={availability} draft={draft} />
 
-      <main id="main">
-        <div className="gc-container gc-page-header">
-          {page.eyebrow && <p className="gc-eyebrow">{page.eyebrow}</p>}
-          {page.heading && <h1>{page.heading}</h1>}
-          {page.intro && <p className="gc-lead" style={{ marginTop: '1.5rem' }}>{page.intro}</p>}
-        </div>
+      <main id="main" className="gc-tw bg-background">
+        <PageHeader eyebrow={page.eyebrow} heading={page.heading} intro={page.intro} />
 
-        <Section flush>
-          <div className="gc-grid gc-grid--2">
-            <div>
-              {page.formIntro && <p className="gc-lead">{page.formIntro}</p>}
+        <div className="mx-auto w-full max-w-[76rem] px-6 pb-24 md:px-10 md:pb-32">
+          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+            <div className="lg:col-span-7">
+              {page.formIntro && <Prose text={page.formIntro} className="mb-10" />}
               <ContactForm action={submitInquiry} dictionary={t} projectTypes={projectTypes} />
             </div>
-            <aside className="gc-stack">
+
+            <aside className="space-y-8 lg:col-span-4 lg:col-start-9">
               {page.directContact && (
-                <div>
-                  <p className="gc-eyebrow">Direct</p>
-                  <p>{page.directContact}</p>
+                <div className="border-t border-foreground pt-5">
+                  <Kicker>Direct</Kicker>
+                  <p className="mt-3 text-sm text-foreground">{page.directContact}</p>
                 </div>
               )}
               {page.officeLocation && (
-                <div>
-                  <p className="gc-eyebrow">Office</p>
-                  <p>{page.officeLocation}</p>
+                <div className="border-t border-foreground pt-5">
+                  <Kicker>Office</Kicker>
+                  <p className="mt-3 text-sm text-foreground">{page.officeLocation}</p>
                 </div>
               )}
-              {page.closingText && <p className="gc-card__body">{page.closingText}</p>}
+              {page.closingText && (
+                <p className="text-sm leading-relaxed text-muted-foreground">{page.closingText}</p>
+              )}
             </aside>
           </div>
-        </Section>
+        </div>
       </main>
     </>
   )

@@ -24,55 +24,55 @@ export function ContactForm({
   const errorFor = (field: string) => state.errors?.[field]
 
   return (
-    <form action={formAction} className="gc-form" noValidate>
+    <form action={formAction} className="space-y-8" noValidate>
       {state.status === 'success' && (
-        <p className="gc-form__status" role="status">
+        <p className="rounded-sm border border-border bg-muted p-4 text-sm text-foreground" role="status">
           {dictionary.form.success}
         </p>
       )}
       {state.status === 'error' && !state.errors && (
-        <p className="gc-form__status" role="alert">
+        <p className="rounded-sm border border-border bg-muted p-4 text-sm text-foreground" role="alert">
           {dictionary.form.genericError}
         </p>
       )}
 
-      <div className="gc-form__row">
-        <div className="gc-field">
-          <label htmlFor="name">Name *</label>
-          <input id="name" name="name" className="gc-input" required aria-describedby={errorFor('name') ? 'name-error' : undefined} />
+      <div className="grid gap-6 md:grid-cols-2">
+        <div className="flex flex-col gap-2">
+          <label htmlFor="name" className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">Name *</label>
+          <input id="name" name="name" className="w-full rounded-sm border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" required aria-describedby={errorFor('name') ? 'name-error' : undefined} />
           {errorFor('name') && (
-            <p className="gc-field__error" id="name-error">
+            <p className="text-xs text-destructive" id="name-error">
               {dictionary.form.required}
             </p>
           )}
         </div>
-        <div className="gc-field">
-          <label htmlFor="company">Company *</label>
-          <input id="company" name="company" className="gc-input" required />
-          {errorFor('company') && <p className="gc-field__error">{dictionary.form.required}</p>}
+        <div className="flex flex-col gap-2">
+          <label htmlFor="company" className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">Company *</label>
+          <input id="company" name="company" className="w-full rounded-sm border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" required />
+          {errorFor('company') && <p className="text-xs text-destructive">{dictionary.form.required}</p>}
         </div>
       </div>
 
-      <div className="gc-form__row">
-        <div className="gc-field">
-          <label htmlFor="email">Email *</label>
-          <input id="email" name="email" type="email" className="gc-input" required />
-          {errorFor('email') && <p className="gc-field__error">{dictionary.form.invalidEmail}</p>}
+      <div className="grid gap-6 md:grid-cols-2">
+        <div className="flex flex-col gap-2">
+          <label htmlFor="email" className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">Email *</label>
+          <input id="email" name="email" type="email" className="w-full rounded-sm border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" required />
+          {errorFor('email') && <p className="text-xs text-destructive">{dictionary.form.invalidEmail}</p>}
         </div>
-        <div className="gc-field">
-          <label htmlFor="phone">Phone</label>
-          <input id="phone" name="phone" className="gc-input" />
+        <div className="flex flex-col gap-2">
+          <label htmlFor="phone" className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">Phone</label>
+          <input id="phone" name="phone" className="w-full rounded-sm border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" />
         </div>
       </div>
 
-      <div className="gc-form__row">
-        <div className="gc-field">
-          <label htmlFor="website">Website</label>
-          <input id="website" name="website" className="gc-input" />
+      <div className="grid gap-6 md:grid-cols-2">
+        <div className="flex flex-col gap-2">
+          <label htmlFor="website" className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">Website</label>
+          <input id="website" name="website" className="w-full rounded-sm border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" />
         </div>
-        <div className="gc-field">
-          <label htmlFor="projectType">Project type</label>
-          <select id="projectType" name="projectType" className="gc-select" defaultValue="">
+        <div className="flex flex-col gap-2">
+          <label htmlFor="projectType" className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">Project type</label>
+          <select id="projectType" name="projectType" className="w-full rounded-sm border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" defaultValue="">
             <option value="">—</option>
             {projectTypes.map((type) => (
               <option key={type.id} value={String(type.id)}>
@@ -83,33 +83,33 @@ export function ContactForm({
         </div>
       </div>
 
-      <div className="gc-form__row">
-        <div className="gc-field">
-          <label htmlFor="estimatedBudget">Estimated budget</label>
-          <input id="estimatedBudget" name="estimatedBudget" className="gc-input" />
+      <div className="grid gap-6 md:grid-cols-2">
+        <div className="flex flex-col gap-2">
+          <label htmlFor="estimatedBudget" className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">Estimated budget</label>
+          <input id="estimatedBudget" name="estimatedBudget" className="w-full rounded-sm border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" />
         </div>
-        <div className="gc-field">
-          <label htmlFor="desiredStart">Desired start</label>
-          <input id="desiredStart" name="desiredStart" type="date" className="gc-input" />
+        <div className="flex flex-col gap-2">
+          <label htmlFor="desiredStart" className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">Desired start</label>
+          <input id="desiredStart" name="desiredStart" type="date" className="w-full rounded-sm border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" />
         </div>
       </div>
 
-      <div className="gc-field">
-        <label htmlFor="message">Message *</label>
-        <textarea id="message" name="message" className="gc-textarea" required />
-        {errorFor('message') && <p className="gc-field__error">{dictionary.form.required}</p>}
+      <div className="flex flex-col gap-2">
+        <label htmlFor="message" className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">Message *</label>
+        <textarea id="message" name="message" className="w-full rounded-sm border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring min-h-40" required />
+        {errorFor('message') && <p className="text-xs text-destructive">{dictionary.form.required}</p>}
       </div>
 
-      <div className="gc-field gc-field--checkbox">
+      <div className="flex flex-col gap-2 md:col-span-2">
         <input id="consent" name="consent" type="checkbox" value="true" required />
-        <label htmlFor="consent">
+        <label htmlFor="consent" className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
           I consent to Global Communication Corporate storing this information to respond to my enquiry. *
         </label>
       </div>
-      {errorFor('consent') && <p className="gc-field__error">{dictionary.form.required}</p>}
+      {errorFor('consent') && <p className="text-xs text-destructive">{dictionary.form.required}</p>}
 
       <div>
-        <button type="submit" className="gc-button" disabled={pending}>
+        <button type="submit" className="rounded-sm bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring" disabled={pending}>
           {dictionary.actions.submit}
         </button>
       </div>
