@@ -10,9 +10,11 @@ import type { Service } from '@/payload-types'
  */
 export function AbsorbedCapability({ service }: { service: Service }) {
   return (
-    <article className="gc-card">
-      <p className="gc-card__title">{service.name}</p>
-      {service.shortDescription && <p className="gc-card__body">{service.shortDescription}</p>}
+    <article className="bg-background p-8">
+      <p className="text-base font-semibold text-foreground">{service.name}</p>
+      {service.shortDescription && (
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{service.shortDescription}</p>
+      )}
     </article>
   )
 }

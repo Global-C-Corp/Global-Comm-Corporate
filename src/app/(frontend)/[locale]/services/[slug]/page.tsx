@@ -1,10 +1,9 @@
 import type { Metadata } from 'next'
 import { SiteHeader } from '@/components/layout/SiteHeader'
 import { breadcrumbSchema, JsonLd } from '@/components/seo/JsonLd'
-import { ProjectCard } from '@/components/project/ProjectCard'
 import { AbsorbedCapability } from '@/components/service/AbsorbedCapability'
+import { Band, Heading, PageHeader, ProjectTile, RichProse, TileGrid } from '@/components/ui/Primitives'
 import { RichText } from '@/components/ui/RichText'
-import { Section, SectionHeader } from '@/components/ui/Sections'
 import { getDictionary } from '@/i18n/dictionaries'
 import { redirectOrNotFound } from '@/lib/routing'
 import { getLocalizedAvailability } from '@/services/cms/availability'
@@ -77,75 +76,92 @@ export default async function ServiceDetailRoute({
         ])}
       />
 
-      <main id="main">
-        <div className="gc-container gc-page-header">
-          <p className="gc-eyebrow">{t.sections.capabilities}</p>
-          <h1>{service.name}</h1>
-          {service.shortDescription && (
-            <p className="gc-lead" style={{ marginTop: '1.5rem' }}>
-              {service.shortDescription}
-            </p>
-          )}
-        </div>
+      <main id="main" className="gc-tw bg-background">
+        <PageHeader
+          eyebrow={t.sections.capabilities}
+          heading={service.name}
+          intro={service.shortDescription}
+        />
 
         {/* Empty sections are hidden rather than rendered blank (CLAUDE.md §76, §139). */}
         {service.clientProblem && (
-          <Section labelledBy="client-problem">
-            <SectionHeader id="client-problem" heading={t.sections.clientProblem} />
-            <RichText data={service.clientProblem} />
-          </Section>
+          <Band surface labelledBy="client-problem">
+            <Heading id="client-problem">{t.sections.clientProblem}</Heading>
+            <RichProse className="mt-8">
+              <RichText data={service.clientProblem} />
+            </RichProse>
+          </Band>
         )}
 
         {service.longDescription && (
-          <Section labelledBy="what-we-do">
-            <SectionHeader id="what-we-do" heading={t.sections.whatWeDo} />
-            <RichText data={service.longDescription} />
-          </Section>
+          <Band labelledBy="what-we-do">
+            <Heading id="what-we-do">{t.sections.whatWeDo}</Heading>
+            <RichProse className="mt-8">
+              <RichText data={service.longDescription} />
+            </RichProse>
+          </Band>
         )}
 
         {/* Absorbed capabilities are sections, not links: these terms no
             longer have a public page (§29-§30). */}
         {absorbed.length > 0 && (
-          <Section surface labelledBy="capabilities">
-            <SectionHeader id="capabilities" heading={t.sections.capabilities} />
-            <div className="gc-grid gc-grid--3">
+          <Band surface labelledBy="capabilities">
+            <Heading id="capabilities">{t.sections.capabilities}</Heading>
+            <div className="mt-10 grid gap-px border border-border bg-border md:grid-cols-2 lg:grid-cols-3">
               {absorbed.map((child) => (
                 <AbsorbedCapability key={child.id} service={child} />
               ))}
             </div>
-          </Section>
+          </Band>
         )}
 
         {relatedProjects.length > 0 && (
-          <Section labelledBy="related-work">
-            <SectionHeader id="related-work" heading={t.sections.selectedWork} />
-            <div className="gc-grid gc-grid--3">
-              {relatedProjects.map((project) => (
-                <ProjectCard key={project.id} project={project} locale={ctx.locale} />
-              ))}
+          <Band labelledBy="related-work">
+            <Heading id="related-work">{t.sections.selectedWork}</Heading>
+            <div className="mt-10">
+              <TileGrid>
+                {relatedProjects.map((project) => {
+                  const client = typeof project.client === 'object' ? project.client?.name : undefined
+                  return (
+                    <ProjectTile
+                      key={project.id}
+                      href={project.slug ? buildPath(ctx.locale, { type: 'project', slug: project.slug }) : null}
+                      title={project.title}
+                      meta={[client, project.year ? String(project.year) : undefined].filter(Boolean).join(' · ')}
+                      excerpt={project.excerpt}
+                    />
+                  )
+                })}
+              </TileGrid>
             </div>
-          </Section>
+          </Band>
         )}
 
         {service.approach && (
-          <Section labelledBy="approach">
-            <SectionHeader id="approach" heading={t.sections.approach} />
-            <RichText data={service.approach} />
-          </Section>
+          <Band surface labelledBy="approach">
+            <Heading id="approach">{t.sections.approach}</Heading>
+            <RichProse className="mt-8">
+              <RichText data={service.approach} />
+            </RichProse>
+          </Band>
         )}
 
         {service.deliverables && (
-          <Section labelledBy="deliverables">
-            <SectionHeader id="deliverables" heading={t.sections.deliverables} />
-            <RichText data={service.deliverables} />
-          </Section>
+          <Band labelledBy="deliverables">
+            <Heading id="deliverables">{t.sections.deliverables}</Heading>
+            <RichProse className="mt-8">
+              <RichText data={service.deliverables} />
+            </RichProse>
+          </Band>
         )}
 
         {service.outcomes && (
-          <Section labelledBy="outcomes">
-            <SectionHeader id="outcomes" heading={t.sections.outcome} />
-            <RichText data={service.outcomes} />
-          </Section>
+          <Band surface labelledBy="outcomes">
+            <Heading id="outcomes">{t.sections.outcome}</Heading>
+            <RichProse className="mt-8">
+              <RichText data={service.outcomes} />
+            </RichProse>
+          </Band>
         )}
       </main>
     </>
