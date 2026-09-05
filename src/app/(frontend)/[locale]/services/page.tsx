@@ -1,9 +1,16 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 import { SiteHeader } from '@/components/layout/SiteHeader'
-import { ProjectCard } from '@/components/project/ProjectCard'
-import { ServiceCard } from '@/components/service/ServiceCard'
-import { CTALinks, Section, SectionHeader } from '@/components/ui/Sections'
+import {
+  Band,
+  CTA,
+  Heading,
+  Kicker,
+  PageHeader,
+  ProjectTile,
+  TileGrid,
+} from '@/components/ui/Primitives'
 import { getDictionary } from '@/i18n/dictionaries'
 import { populated } from '@/lib/relations'
 import type { Project } from '@/payload-types'
@@ -13,7 +20,7 @@ import { getPageContext } from '@/services/cms/pageContext'
 import { getFeaturedProjects } from '@/services/cms/projects'
 import { getServices } from '@/services/cms/services'
 import { resolvePageSEO } from '@/services/seo/resolvePageSEO'
-import type { Route } from '@/services/seo/urls'
+import { buildPath, type Route } from '@/services/seo/urls'
 
 const route: Route = { type: 'services' }
 
@@ -67,52 +74,81 @@ export default async function ServicesPageRoute({ params }: { params: Promise<{ 
     <>
       <SiteHeader locale={ctx.locale} route={route} availability={availability} draft={draft} />
 
-      <main id="main">
-        <div className="gc-container gc-page-header">
-          {page.eyebrow && <p className="gc-eyebrow">{page.eyebrow}</p>}
-          {page.heading && <h1>{page.heading}</h1>}
-          {page.intro && <p className="gc-lead" style={{ marginTop: '1.5rem' }}>{page.intro}</p>}
-        </div>
+      <main id="main" className="gc-tw bg-background">
+        <PageHeader eyebrow={page.eyebrow} heading={page.heading} intro={page.intro} />
 
         {pillars.length > 0 && (
-          <Section labelledBy="pillars">
-            <SectionHeader id="pillars" heading={t.sections.whatWeDo} />
-            <div className="gc-grid gc-grid--2">
+          <Band surface labelledBy="pillars">
+            <Kicker id="pillars">{t.sections.whatWeDo}</Kicker>
+
+            <div className="mt-10 grid gap-px border border-border bg-border md:grid-cols-2">
               {pillars.map((service) => {
                 const folded = foldedByPillar.get(String(service.id)) ?? []
+                const href = service.slug
+                  ? buildPath(ctx.locale, { type: 'service', slug: service.slug })
+                  : null
+
                 return (
-                  <ServiceCard key={service.id} service={service} locale={ctx.locale}>
+                  <article key={service.id} className="flex flex-col bg-background p-8 md:p-10">
+                    <h3 className="text-xl font-semibold text-foreground">
+                      {href ? (
+                        <Link href={href} className="hover:text-primary">
+                          {service.name}
+                        </Link>
+                      ) : (
+                        service.name
+                      )}
+                    </h3>
+                    {service.shortDescription && (
+                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                        {service.shortDescription}
+                      </p>
+                    )}
+
+                    {/* Absorbed capabilities are listed, not linked: they have
+                        no public page of their own (§29-§30). */}
                     {folded.length > 0 && (
-                      <ul className="gc-footer__list" style={{ marginTop: '0.5rem' }}>
+                      <ul className="mt-6 space-y-2 text-sm text-foreground">
                         {folded.map((child) => (
-                          <li key={child.id} className="gc-card__body">
+                          <li key={child.id} className="border-t border-border pt-2">
                             {child.name}
                           </li>
                         ))}
                       </ul>
                     )}
-                  </ServiceCard>
+                  </article>
                 )
               })}
             </div>
-          </Section>
+          </Band>
         )}
 
         {projects.length > 0 && (
-          <Section surface labelledBy="services-work">
-            <SectionHeader id="services-work" heading={t.sections.selectedWork} />
-            <div className="gc-grid gc-grid--3">
-              {projects.map((project) => (
-                <ProjectCard key={project.id} project={project} locale={ctx.locale} />
-              ))}
+          <Band labelledBy="services-work">
+            <Heading id="services-work">{t.sections.selectedWork}</Heading>
+            <div className="mt-10">
+              <TileGrid>
+                {projects.map((project) => {
+                  const client = typeof project.client === 'object' ? project.client?.name : undefined
+                  return (
+                    <ProjectTile
+                      key={project.id}
+                      href={project.slug ? buildPath(ctx.locale, { type: 'project', slug: project.slug }) : null}
+                      title={project.title}
+                      meta={[client, project.year ? String(project.year) : undefined].filter(Boolean).join(' · ')}
+                      excerpt={project.excerpt}
+                    />
+                  )
+                })}
+              </TileGrid>
             </div>
-          </Section>
+          </Band>
         )}
 
         {page.closingCTA?.label && (
-          <Section>
-            <CTALinks ctas={[page.closingCTA]} locale={ctx.locale} />
-          </Section>
+          <Band surface>
+            <CTA cta={page.closingCTA} locale={ctx.locale} />
+          </Band>
         )}
       </main>
     </>

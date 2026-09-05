@@ -12,7 +12,7 @@ import {
   Kicker,
   Ordinal,
   Prose,
-} from '@/components/home/HomeSections'
+} from '@/components/ui/Primitives'
 import { mediaURL } from '@/lib/media'
 import { populated } from '@/lib/relations'
 import type { Client, Project, Service, Testimonial } from '@/payload-types'

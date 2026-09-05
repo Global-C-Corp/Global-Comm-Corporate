@@ -3,8 +3,8 @@ import type { Locale } from '@/i18n/locale'
 import { cn } from '@/lib/utils'
 
 /**
- * Layout primitives for the rebuilt homepage, written against Tailwind inside
- * the `.gc-tw` Preflight boundary (CLAUDE.md §82-§83).
+ * Shared layout primitives for the migrated frontend, written against Tailwind
+ * inside the `.gc-tw` Preflight boundary (CLAUDE.md §82-§83).
  *
  * Restrained on purpose: hairline borders, generous whitespace, a strong grid,
  * no shadows, and radii capped at 4px by the theme. No gradients, no glass, no
@@ -48,13 +48,17 @@ export function Heading({
   children,
   as: Tag = 'h2',
   className,
+  id,
 }: {
   children: React.ReactNode
   as?: 'h1' | 'h2' | 'h3'
   className?: string
+  /** Target for a Band's aria-labelledby, so the landmark is named. */
+  id?: string
 }) {
   return (
     <Tag
+      id={id}
       className={cn(
         'max-w-[24ch] text-balance font-sans font-semibold tracking-[-0.02em] text-foreground',
         Tag === 'h1' ? 'text-4xl leading-[1.05] md:text-6xl' : 'text-3xl leading-[1.1] md:text-4xl',
@@ -148,5 +152,107 @@ export function Bullets({ items }: { items: string[] }) {
         </li>
       ))}
     </ul>
+  )
+}
+
+/** Page hero used by every migrated inner template. */
+export function PageHeader({
+  eyebrow,
+  heading,
+  intro,
+}: {
+  eyebrow?: string | null
+  heading?: string | null
+  intro?: string | null
+}) {
+  return (
+    <div className="mx-auto w-full max-w-[76rem] px-6 pt-16 pb-16 md:px-10 md:pt-24 md:pb-20">
+      {eyebrow && <Kicker>{eyebrow}</Kicker>}
+      {heading && <Heading as="h1" className="mt-5">{heading}</Heading>}
+      {intro && <Prose text={intro} className="mt-8 text-lg" />}
+    </div>
+  )
+}
+
+/**
+ * One project in a grid. Shared by the homepage, the services index and the
+ * work archive so a case study looks the same wherever it is surfaced.
+ */
+export function ProjectTile({
+  href,
+  title,
+  meta,
+  excerpt,
+  ctaLabel,
+}: {
+  href?: string | null
+  title: string
+  meta?: string
+  excerpt?: string | null
+  ctaLabel?: string | null
+}) {
+  return (
+    <li className="bg-background p-8">
+      {meta && <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground">{meta}</p>}
+      <h3 className="mt-4 text-lg font-semibold leading-snug text-foreground">
+        {href ? (
+          <Link href={href} className="hover:text-primary">
+            {title}
+          </Link>
+        ) : (
+          title
+        )}
+      </h3>
+      {excerpt && <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{excerpt}</p>}
+      {href && ctaLabel && (
+        <p className="mt-6">
+          <Link href={href} className="text-sm font-medium text-primary underline underline-offset-4 hover:text-foreground">
+            {ctaLabel}
+          </Link>
+        </p>
+      )}
+    </li>
+  )
+}
+
+/** Bordered grid wrapper: hairline dividers via a 1px gap over the border colour. */
+export function TileGrid({ children, columns = 3 }: { children: React.ReactNode; columns?: 2 | 3 }) {
+  return (
+    <ul
+      className={cn(
+        'grid gap-px border border-border bg-border',
+        columns === 2 ? 'md:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3',
+      )}
+    >
+      {children}
+    </ul>
+  )
+}
+
+/**
+ * Typographic frame for CMS rich text inside the Preflight boundary.
+ *
+ * Preflight deliberately strips heading sizes, list markers and margins, which
+ * is right for markup we control but wrong for Lexical output an editor wrote.
+ * These arbitrary variants restore just enough for editorial prose, without
+ * adding the typography plugin for one component (§141).
+ */
+export function RichProse({ children, className }: { children: React.ReactNode; className?: string }) {
+  return (
+    <div
+      className={cn(
+        'max-w-[68ch] text-base leading-relaxed text-foreground',
+        '[&_p]:mt-4 [&_p:first-child]:mt-0',
+        '[&_h2]:mt-10 [&_h2]:text-xl [&_h2]:font-semibold',
+        '[&_h3]:mt-8 [&_h3]:text-lg [&_h3]:font-semibold',
+        '[&_ul]:mt-4 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:mt-4 [&_ol]:list-decimal [&_ol]:pl-5',
+        '[&_li]:mt-2',
+        '[&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4',
+        '[&_strong]:font-semibold',
+        className,
+      )}
+    >
+      {children}
+    </div>
   )
 }
