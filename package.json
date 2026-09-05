@@ -6,7 +6,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "build": "payload migrate && cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
+    "build": "pnpm run migrate && cross-env NODE_OPTIONS=\"--no-deprecation --max-old-space-size=8000\" next build",
     "dev": "cross-env NODE_OPTIONS=--no-deprecation next dev",
     "devsafe": "rm -rf .next && cross-env NODE_OPTIONS=--no-deprecation next dev",
     "generate:importmap": "cross-env NODE_OPTIONS=--no-deprecation payload generate:importmap",
@@ -15,7 +15,8 @@
     "import:projects": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/import-projects.ts",
     "typecheck": "tsc --noEmit",
     "verify:env": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/verify-env.ts",
-    "migrate": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
+    "migrate": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/migrate.ts",
+    "migrate:raw": "cross-env NODE_OPTIONS=--no-deprecation payload migrate",
     "migrate:create": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:create",
     "migrate:status": "cross-env NODE_OPTIONS=--no-deprecation payload migrate:status",
     "seed": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/seed.ts",
