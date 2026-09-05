@@ -2275,16 +2275,127 @@ export interface HomePage {
     label?: string | null;
     url?: string | null;
   };
-  featuredClients?: (number | Client)[] | null;
+  /**
+   * A real working session or client presentation. Optional; the hero renders without it.
+   */
+  heroMedia?: (number | null) | Media;
+  hero?: {
+    overlayLabel?: string | null;
+    overlayItems?:
+      | {
+          value: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  positioning?: {
+    kicker?: string | null;
+    heading?: string | null;
+    body?: string | null;
+    pillars?:
+      | {
+          title: string;
+          body?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  expertise?: {
+    kicker?: string | null;
+    heading?: string | null;
+    intro?: string | null;
+    items?:
+      | {
+          number?: string | null;
+          title?: string | null;
+          tagline?: string | null;
+          body?: string | null;
+          offerings?:
+            | {
+                value: string;
+                id?: string | null;
+              }[]
+            | null;
+          /**
+           * The pillar this card links to. Its localized slug builds the URL.
+           */
+          service?: (number | null) | Service;
+          ctaLabel?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+    sectionCTA?: {
+      label?: string | null;
+      url?: string | null;
+    };
+  };
   featuredProjects?: (number | Project)[] | null;
-  featuredIndustries?: (number | Industry)[] | null;
+  workSection?: {
+    kicker?: string | null;
+    heading?: string | null;
+    body?: string | null;
+    itemCTALabel?: string | null;
+    sectionCTA?: {
+      label?: string | null;
+      url?: string | null;
+    };
+  };
+  approach?: {
+    kicker?: string | null;
+    heading?: string | null;
+    body?: string | null;
+    steps?:
+      | {
+          number?: string | null;
+          title?: string | null;
+          tagline?: string | null;
+          body?: string | null;
+          bullets?:
+            | {
+                value: string;
+                id?: string | null;
+              }[]
+            | null;
+          resultLabel?: string | null;
+          result?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  featuredClients?: (number | Client)[] | null;
   featuredTestimonials?: (number | Testimonial)[] | null;
-  methodHeading?: string | null;
-  methodIntro?: string | null;
+  /**
+   * Copy only. The logos, testimonials and results themselves come from published CMS records — the section hides when there are none (§105, §139).
+   */
+  proof?: {
+    kicker?: string | null;
+    heading?: string | null;
+    body?: string | null;
+  };
+  faq?: {
+    kicker?: string | null;
+    heading?: string | null;
+    items?:
+      | {
+          question: string;
+          answer: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
   closingCTA?: {
     label?: string | null;
     url?: string | null;
   };
+  closing?: {
+    kicker?: string | null;
+    heading?: string | null;
+    body?: string | null;
+    reassurance?: string | null;
+  };
+  methodHeading?: string | null;
+  methodIntro?: string | null;
+  featuredIndustries?: (number | Industry)[] | null;
   /**
    * Where this document sits in the editorial process — separate from whether it is live. Publishing requires “Approved”; editors and AI submit for review, and a publisher or admin approves.
    */
@@ -2782,18 +2893,140 @@ export interface HomePageSelect<T extends boolean = true> {
         label?: T;
         url?: T;
       };
-  featuredClients?: T;
+  heroMedia?: T;
+  hero?:
+    | T
+    | {
+        overlayLabel?: T;
+        overlayItems?:
+          | T
+          | {
+              value?: T;
+              id?: T;
+            };
+      };
+  positioning?:
+    | T
+    | {
+        kicker?: T;
+        heading?: T;
+        body?: T;
+        pillars?:
+          | T
+          | {
+              title?: T;
+              body?: T;
+              id?: T;
+            };
+      };
+  expertise?:
+    | T
+    | {
+        kicker?: T;
+        heading?: T;
+        intro?: T;
+        items?:
+          | T
+          | {
+              number?: T;
+              title?: T;
+              tagline?: T;
+              body?: T;
+              offerings?:
+                | T
+                | {
+                    value?: T;
+                    id?: T;
+                  };
+              service?: T;
+              ctaLabel?: T;
+              id?: T;
+            };
+        sectionCTA?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
+      };
   featuredProjects?: T;
-  featuredIndustries?: T;
+  workSection?:
+    | T
+    | {
+        kicker?: T;
+        heading?: T;
+        body?: T;
+        itemCTALabel?: T;
+        sectionCTA?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
+      };
+  approach?:
+    | T
+    | {
+        kicker?: T;
+        heading?: T;
+        body?: T;
+        steps?:
+          | T
+          | {
+              number?: T;
+              title?: T;
+              tagline?: T;
+              body?: T;
+              bullets?:
+                | T
+                | {
+                    value?: T;
+                    id?: T;
+                  };
+              resultLabel?: T;
+              result?: T;
+              id?: T;
+            };
+      };
+  featuredClients?: T;
   featuredTestimonials?: T;
-  methodHeading?: T;
-  methodIntro?: T;
+  proof?:
+    | T
+    | {
+        kicker?: T;
+        heading?: T;
+        body?: T;
+      };
+  faq?:
+    | T
+    | {
+        kicker?: T;
+        heading?: T;
+        items?:
+          | T
+          | {
+              question?: T;
+              answer?: T;
+              id?: T;
+            };
+      };
   closingCTA?:
     | T
     | {
         label?: T;
         url?: T;
       };
+  closing?:
+    | T
+    | {
+        kicker?: T;
+        heading?: T;
+        body?: T;
+        reassurance?: T;
+      };
+  methodHeading?: T;
+  methodIntro?: T;
+  featuredIndustries?: T;
   reviewStatus?: T;
   translationStatus?:
     | T

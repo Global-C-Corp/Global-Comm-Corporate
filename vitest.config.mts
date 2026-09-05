@@ -13,6 +13,12 @@ export default defineConfig({
       'tests/contract/**/*.contract.spec.ts',
     ],
     testTimeout: 20000,
-    hookTimeout: 30000,
+    /**
+     * Integration and contract suites boot Payload in their beforeAll hook,
+     * and in dev mode that boot also reconciles the database schema. The
+     * homepage sections added 18 tables, which pushed a cold boot past the
+     * previous 30s allowance. This is boot cost, not a slow test.
+     */
+    hookTimeout: 120000,
   },
 })

@@ -1,0 +1,152 @@
+import Link from 'next/link'
+import type { Locale } from '@/i18n/locale'
+import { cn } from '@/lib/utils'
+
+/**
+ * Layout primitives for the rebuilt homepage, written against Tailwind inside
+ * the `.gc-tw` Preflight boundary (CLAUDE.md §82-§83).
+ *
+ * Restrained on purpose: hairline borders, generous whitespace, a strong grid,
+ * no shadows, and radii capped at 4px by the theme. No gradients, no glass, no
+ * dashboard language.
+ */
+
+export function Band({
+  children,
+  surface = false,
+  labelledBy,
+  className,
+}: {
+  children: React.ReactNode
+  surface?: boolean
+  labelledBy?: string
+  className?: string
+}) {
+  return (
+    <section
+      aria-labelledby={labelledBy}
+      className={cn(
+        'border-t border-border',
+        surface ? 'bg-muted' : 'bg-background',
+        className,
+      )}
+    >
+      <div className="mx-auto w-full max-w-[76rem] px-6 py-20 md:px-10 md:py-28">{children}</div>
+    </section>
+  )
+}
+
+export function Kicker({ children, id }: { children: React.ReactNode; id?: string }) {
+  return (
+    <p id={id} className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
+      {children}
+    </p>
+  )
+}
+
+export function Heading({
+  children,
+  as: Tag = 'h2',
+  className,
+}: {
+  children: React.ReactNode
+  as?: 'h1' | 'h2' | 'h3'
+  className?: string
+}) {
+  return (
+    <Tag
+      className={cn(
+        'max-w-[24ch] text-balance font-sans font-semibold tracking-[-0.02em] text-foreground',
+        Tag === 'h1' ? 'text-4xl leading-[1.05] md:text-6xl' : 'text-3xl leading-[1.1] md:text-4xl',
+        className,
+      )}
+    >
+      {children}
+    </Tag>
+  )
+}
+
+/**
+ * Renders copy that the CMS stores as blank-line separated paragraphs. Editors
+ * type prose, not markup, so the split happens here rather than asking them to
+ * think about elements.
+ */
+export function Prose({ text, className }: { text?: string | null; className?: string }) {
+  if (!text) return null
+  const paragraphs = text.split(/\n{2,}/).map((part) => part.trim()).filter(Boolean)
+  if (paragraphs.length === 0) return null
+
+  return (
+    <div className={cn('max-w-[62ch] space-y-4 text-base leading-relaxed text-foreground', className)}>
+      {paragraphs.map((paragraph, index) => (
+        <p key={index}>{paragraph}</p>
+      ))}
+    </div>
+  )
+}
+
+export function ActionLink({
+  href,
+  children,
+  variant = 'primary',
+}: {
+  href: string
+  children: React.ReactNode
+  variant?: 'primary' | 'secondary' | 'quiet'
+}) {
+  const base =
+    'inline-flex items-center justify-center rounded-sm px-6 py-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring'
+
+  const variants = {
+    primary: 'bg-primary text-primary-foreground hover:bg-foreground',
+    secondary: 'border border-border text-foreground hover:border-foreground',
+    quiet: 'px-0 py-0 text-foreground underline underline-offset-4 hover:text-primary',
+  } as const
+
+  return (
+    <Link href={href} className={cn(base, variants[variant])}>
+      {children}
+    </Link>
+  )
+}
+
+/** A call to action stored as { label, url }; renders nothing without a label. */
+export function CTA({
+  cta,
+  locale,
+  variant = 'primary',
+}: {
+  cta?: { label?: string | null; url?: string | null } | null
+  locale: Locale
+  variant?: 'primary' | 'secondary' | 'quiet'
+}) {
+  if (!cta?.label) return null
+  const raw = cta.url ?? '/'
+  const href = raw.startsWith('/') && !raw.startsWith(`/${locale}`) ? `/${locale}${raw}` : raw
+  return (
+    <ActionLink href={href} variant={variant}>
+      {cta.label}
+    </ActionLink>
+  )
+}
+
+/** Numbered rule used by the services and approach sections. */
+export function Ordinal({ children }: { children: React.ReactNode }) {
+  return <span className="font-mono text-xs tracking-[0.18em] text-primary">{children}</span>
+}
+
+export function Bullets({ items }: { items: string[] }) {
+  if (items.length === 0) return null
+  return (
+    <ul className="space-y-2 text-sm text-foreground">
+      {items.map((item, index) => (
+        <li key={index} className="flex gap-3 border-t border-border pt-2">
+          <span aria-hidden className="text-primary">
+            —
+          </span>
+          <span>{item}</span>
+        </li>
+      ))}
+    </ul>
+  )
+}

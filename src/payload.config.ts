@@ -142,6 +142,13 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URI || '',
     },
+    /**
+     * Dev-mode schema push is disabled under test so the suites run against
+     * the schema the migrations actually produce, rather than one drizzle
+     * pushed on the fly (CLAUDE.md §8, §89). It also keeps a cold boot from
+     * re-diffing the whole schema in every worker.
+     */
+    push: process.env.NODE_ENV !== 'test',
   }),
   sharp,
   plugins,
