@@ -49,13 +49,16 @@ export default async function ServicesPageRoute({ params }: { params: Promise<{ 
     getGlobalAvailability('services-page'),
   ])
 
-  const pillars = allServices.filter((service) => !service.parent)
-  const childrenByParent = new Map<string, typeof allServices>()
+  // Four public pillars, each listing what it absorbs. Grouping follows
+  // `foldedInto` rather than `parent`, so a term whose parent stopped being
+  // public still appears under the pillar that took it over (§29-§30).
+  const pillars = allServices.filter((service) => service.isPillar)
+  const foldedByPillar = new Map<string, typeof allServices>()
   for (const service of allServices) {
-    const parentId = typeof service.parent === 'object' ? service.parent?.id : service.parent
-    if (parentId === undefined || parentId === null) continue
-    const key = String(parentId)
-    childrenByParent.set(key, [...(childrenByParent.get(key) ?? []), service])
+    const pillarId = typeof service.foldedInto === 'object' ? service.foldedInto?.id : service.foldedInto
+    if (pillarId === undefined || pillarId === null) continue
+    const key = String(pillarId)
+    foldedByPillar.set(key, [...(foldedByPillar.get(key) ?? []), service])
   }
 
   const projects = selectedProjects.length > 0 ? selectedProjects : fallbackProjects
@@ -76,12 +79,12 @@ export default async function ServicesPageRoute({ params }: { params: Promise<{ 
             <SectionHeader id="pillars" heading={t.sections.whatWeDo} />
             <div className="gc-grid gc-grid--2">
               {pillars.map((service) => {
-                const children = childrenByParent.get(String(service.id)) ?? []
+                const folded = foldedByPillar.get(String(service.id)) ?? []
                 return (
                   <ServiceCard key={service.id} service={service} locale={ctx.locale}>
-                    {children.length > 0 && (
+                    {folded.length > 0 && (
                       <ul className="gc-footer__list" style={{ marginTop: '0.5rem' }}>
-                        {children.map((child) => (
+                        {folded.map((child) => (
                           <li key={child.id} className="gc-card__body">
                             {child.name}
                           </li>

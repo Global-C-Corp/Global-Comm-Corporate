@@ -7,6 +7,7 @@ import { editorialFields } from '@/fields/editorial'
 import { localizedSlugField } from '@/fields/slug'
 import { governed } from '@/fields/taxonomyGovernance'
 import { enforceEditorialWorkflowCollection } from '@/hooks/enforceEditorialWorkflow'
+import { enforceServicePillars } from '@/hooks/enforceServicePillars'
 
 /**
  * Hierarchical service taxonomy + editorial page content (CLAUDE.md §29-§30).
@@ -34,7 +35,7 @@ export const Services: CollectionConfig = {
   hooks: {
     afterChange: [revalidateCollection('services')],
     afterDelete: [revalidateOnDelete('services')],
-    beforeChange: [enforceEditorialWorkflowCollection],
+    beforeChange: [enforceServicePillars, enforceEditorialWorkflowCollection],
   },
   fields: [
     governed({ name: 'name', type: 'text', required: true, localized: true }),
@@ -63,6 +64,39 @@ export const Services: CollectionConfig = {
     { name: 'approach', type: 'richText', localized: true },
     { name: 'deliverables', type: 'richText', localized: true },
     { name: 'outcomes', type: 'richText', localized: true },
+    /**
+     * Public grouping (CLAUDE.md §29-§30, §109).
+     *
+     * The taxonomy keeps its full hierarchy — every term still classifies
+     * projects — but only the terms flagged here get a public URL. Every
+     * other term declares the pillar that absorbs it, and that relationship
+     * is what the redirect generator reads. Keeping the grouping in Payload
+     * rather than in code means a mis-bucketed term is corrected by an
+     * authorized human in Admin, not by a deploy.
+     *
+     * Both fields control live URLs, so they are governed exactly like the
+     * term's identity fields.
+     */
+    governed({
+      name: 'isPillar',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description: 'Publishes this service at /{locale}/services/{slug}. Only the four pillars are public.',
+      },
+    }),
+    governed({
+      name: 'foldedInto',
+      type: 'relationship',
+      relationTo: 'services',
+      filterOptions: () => ({ isPillar: { equals: true } }),
+      admin: {
+        position: 'sidebar',
+        condition: (data) => !data?.isPillar,
+        description: 'The pillar that absorbs this term. Its public URL redirects here.',
+      },
+    }),
     { name: 'featured', type: 'checkbox', defaultValue: false, admin: { position: 'sidebar' } },
     { name: 'displayOrder', type: 'number', defaultValue: 0, admin: { position: 'sidebar' } },
     ...editorialFields,

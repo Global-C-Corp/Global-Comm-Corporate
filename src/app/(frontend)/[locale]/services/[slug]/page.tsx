@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 import { SiteHeader } from '@/components/layout/SiteHeader'
 import { breadcrumbSchema, JsonLd } from '@/components/seo/JsonLd'
 import { ProjectCard } from '@/components/project/ProjectCard'
-import { ServiceCard } from '@/components/service/ServiceCard'
+import { AbsorbedCapability } from '@/components/service/AbsorbedCapability'
 import { RichText } from '@/components/ui/RichText'
 import { Section, SectionHeader } from '@/components/ui/Sections'
 import { getDictionary } from '@/i18n/dictionaries'
@@ -10,7 +10,7 @@ import { redirectOrNotFound } from '@/lib/routing'
 import { getLocalizedAvailability } from '@/services/cms/availability'
 import { getPageContext } from '@/services/cms/pageContext'
 import { getProjectsByRelation } from '@/services/cms/projects'
-import { getChildServices, getServiceBySlug } from '@/services/cms/services'
+import { getFoldedServices, getServiceBySlug } from '@/services/cms/services'
 import { resolvePageSEO } from '@/services/seo/resolvePageSEO'
 import { buildPath, type Route } from '@/services/seo/urls'
 
@@ -55,8 +55,8 @@ export default async function ServiceDetailRoute({
   const t = getDictionary(ctx.locale)
   const route: Route = { type: 'service', slug }
 
-  const [children, relatedProjects, availability] = await Promise.all([
-    getChildServices(ctx, service.id),
+  const [absorbed, relatedProjects, availability] = await Promise.all([
+    getFoldedServices(ctx, service.id),
     getProjectsByRelation(ctx, 'services', service.id),
     getLocalizedAvailability('services', service.id),
   ])
@@ -97,12 +97,14 @@ export default async function ServiceDetailRoute({
           </Section>
         )}
 
-        {children.length > 0 && (
+        {/* Absorbed capabilities are sections, not links: these terms no
+            longer have a public page (§29-§30). */}
+        {absorbed.length > 0 && (
           <Section surface labelledBy="capabilities">
             <SectionHeader id="capabilities" heading={t.sections.capabilities} />
             <div className="gc-grid gc-grid--3">
-              {children.map((child) => (
-                <ServiceCard key={child.id} service={child} locale={ctx.locale} />
+              {absorbed.map((child) => (
+                <AbsorbedCapability key={child.id} service={child} />
               ))}
             </div>
           </Section>

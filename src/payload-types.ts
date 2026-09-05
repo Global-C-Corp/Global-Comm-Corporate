@@ -385,6 +385,14 @@ export interface Service {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Publishes this service at /{locale}/services/{slug}. Only the four pillars are public.
+   */
+  isPillar?: boolean | null;
+  /**
+   * The pillar that absorbs this term. Its public URL redirects here.
+   */
+  foldedInto?: (number | null) | Service;
   featured?: boolean | null;
   displayOrder?: number | null;
   /**
@@ -1542,6 +1550,8 @@ export interface ServicesSelect<T extends boolean = true> {
   approach?: T;
   deliverables?: T;
   outcomes?: T;
+  isPillar?: T;
+  foldedInto?: T;
   featured?: T;
   displayOrder?: T;
   reviewStatus?: T;
