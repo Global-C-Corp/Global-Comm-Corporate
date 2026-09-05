@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { SiteHeader } from '@/components/layout/SiteHeader'
 import { TestimonialBlock } from '@/components/testimonial/TestimonialBlock'
 import { RichText } from '@/components/ui/RichText'
-import { CTALinks, Section, SectionHeader } from '@/components/ui/Sections'
+import { Band, CTA, Heading, PageHeader, RichProse } from '@/components/ui/Primitives'
 import { getDictionary } from '@/i18n/dictionaries'
 import { mediaURL } from '@/lib/media'
 import { populated } from '@/lib/relations'
@@ -46,88 +46,95 @@ export default async function CompanyPageRoute({ params }: { params: Promise<{ l
   const industries = populated<Industry>(page.selectedIndustries)
   const testimonials = populated<Testimonial>(page.selectedTestimonials)
 
+  const clientLogos = clients
+    .map((client) => ({ client, logo: mediaURL(client.logo, 'logo') }))
+    .filter((entry): entry is { client: Client; logo: string } => Boolean(entry.logo))
+
   return (
     <>
       <SiteHeader locale={ctx.locale} route={route} availability={availability} draft={draft} />
 
-      <main id="main">
-        <div className="gc-container gc-page-header">
-          {page.eyebrow && <p className="gc-eyebrow">{page.eyebrow}</p>}
-          {page.heading && <h1>{page.heading}</h1>}
-          {page.intro && <p className="gc-lead" style={{ marginTop: '1.5rem' }}>{page.intro}</p>}
-        </div>
+      <main id="main" className="gc-tw bg-background">
+        <PageHeader eyebrow={page.eyebrow} heading={page.heading} intro={page.intro} />
 
         {page.whoWeAre && (
-          <Section labelledBy="who-we-are">
-            <SectionHeader id="who-we-are" heading={t.sections.whatWeDo} />
-            <RichText data={page.whoWeAre} />
-          </Section>
+          <Band labelledBy="who-we-are">
+            <Heading id="who-we-are">{t.sections.whatWeDo}</Heading>
+            <RichProse className="mt-8">
+              <RichText data={page.whoWeAre} />
+            </RichProse>
+          </Band>
         )}
 
         {page.whatWeBelieve && (
-          <Section labelledBy="what-we-believe">
-            <SectionHeader id="what-we-believe" heading={t.sections.method} />
-            <RichText data={page.whatWeBelieve} />
-          </Section>
+          <Band surface labelledBy="what-we-believe">
+            <Heading id="what-we-believe">{t.sections.method}</Heading>
+            <RichProse className="mt-8">
+              <RichText data={page.whatWeBelieve} />
+            </RichProse>
+          </Band>
         )}
 
         {page.howWeWork && (
-          <Section surface labelledBy="how-we-work">
-            <SectionHeader id="how-we-work" heading={t.sections.approach} />
-            <RichText data={page.howWeWork} />
-          </Section>
+          <Band labelledBy="how-we-work">
+            <Heading id="how-we-work">{t.sections.approach}</Heading>
+            <RichProse className="mt-8">
+              <RichText data={page.howWeWork} />
+            </RichProse>
+          </Band>
         )}
 
-        {clients.length > 0 && (
-          <Section labelledBy="company-clients">
-            <SectionHeader id="company-clients" heading={t.sections.selectedClients} />
-            <div className="gc-logo-wall">
-              {clients.map((client) => {
-                const logo = mediaURL(client.logo, 'logo')
-                return (
-                  <div key={client.id} className="gc-logo-wall__item">
-                    {logo ? (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={logo} alt={client.name} loading="lazy" style={{ maxHeight: '2.5rem' }} />
-                    ) : (
-                      client.name
-                    )}
-                  </div>
-                )
-              })}
-            </div>
-          </Section>
+        {/* Only clients with an approved logo appear; a bare name row is not
+            evidence (§105, §139). */}
+        {clientLogos.length > 0 && (
+          <Band surface labelledBy="company-clients">
+            <Heading id="company-clients">{t.sections.selectedClients}</Heading>
+            <ul className="mt-10 flex flex-wrap items-center gap-x-12 gap-y-8">
+              {clientLogos.map(({ client, logo }) => (
+                <li key={client.id}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={logo} alt={client.name} loading="lazy" className="max-h-10 w-auto" />
+                </li>
+              ))}
+            </ul>
+          </Band>
         )}
 
         {industries.length > 0 && (
-          <Section labelledBy="company-industries">
-            <SectionHeader id="company-industries" heading={t.sections.industries} />
-            <div className="gc-grid gc-grid--3">
+          <Band labelledBy="company-industries">
+            <Heading id="company-industries">{t.sections.industries}</Heading>
+            <ul className="mt-10 grid gap-px border border-border bg-border md:grid-cols-2 lg:grid-cols-3">
               {industries.map((industry) => (
-                <article key={industry.id} className="gc-card">
-                  <p className="gc-card__title">{industry.name}</p>
-                  {industry.shortDescription && <p className="gc-card__body">{industry.shortDescription}</p>}
-                </article>
+                <li key={industry.id} className="bg-background p-8">
+                  <p className="text-base font-semibold text-foreground">{industry.name}</p>
+                  {industry.shortDescription && (
+                    <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
+                      {industry.shortDescription}
+                    </p>
+                  )}
+                </li>
               ))}
-            </div>
-          </Section>
+            </ul>
+          </Band>
         )}
 
         {testimonials.length > 0 && (
-          <Section surface labelledBy="company-testimonials">
-            <SectionHeader id="company-testimonials" heading={t.sections.testimonials} />
-            <div className="gc-grid gc-grid--2">
+          <Band surface labelledBy="company-testimonials">
+            <Heading id="company-testimonials">{t.sections.testimonials}</Heading>
+            <div className="mt-10 grid gap-px border border-border bg-border md:grid-cols-2">
               {testimonials.map((testimonial) => (
-                <TestimonialBlock key={testimonial.id} testimonial={testimonial} locale={ctx.locale} />
+                <div key={testimonial.id} className="bg-background p-8">
+                  <TestimonialBlock testimonial={testimonial} locale={ctx.locale} />
+                </div>
               ))}
             </div>
-          </Section>
+          </Band>
         )}
 
         {page.closingCTA?.label && (
-          <Section>
-            <CTALinks ctas={[page.closingCTA]} locale={ctx.locale} />
-          </Section>
+          <Band>
+            <CTA cta={page.closingCTA} locale={ctx.locale} />
+          </Band>
         )}
       </main>
     </>
