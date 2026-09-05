@@ -27,6 +27,8 @@
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts tests/integration",
     "test:contract": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts tests/contract",
     "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" playwright test --config=playwright.config.ts",
+    "test:visual": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" playwright test --config=playwright.config.ts visual-baseline",
+    "test:visual:update": "cross-env NODE_OPTIONS=\"--no-deprecation --import=tsx/esm\" playwright test --config=playwright.config.ts visual-baseline --update-snapshots",
     "launch:report": "cross-env NODE_OPTIONS=--no-deprecation tsx scripts/launch-report.ts"
   },
   "dependencies": {
