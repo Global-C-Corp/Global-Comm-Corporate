@@ -13,6 +13,7 @@ import {
   Ordinal,
   Prose,
 } from '@/components/ui/Primitives'
+import { getDictionary } from '@/i18n/dictionaries'
 import { mediaURL } from '@/lib/media'
 import { populated } from '@/lib/relations'
 import type { Client, Project, Service, Testimonial } from '@/payload-types'
@@ -75,6 +76,18 @@ export default async function HomePageRoute({ params }: { params: Promise<{ loca
   const clientLogos = clients
     .map((client) => ({ client, logo: mediaURL(client.logo, 'logo') }))
     .filter((entry): entry is { client: Client; logo: string } => Boolean(entry.logo))
+
+  const t = getDictionary(ctx.locale)
+
+  // Every labelled Band needs its aria-labelledby target to exist. The CMS
+  // heading is optional, so a section label from the UI dictionary (§62) backs
+  // it up rather than leaving the reference dangling.
+  const expertiseHeading = page.expertise?.heading || t.sections.whatWeDo
+  const workHeading = page.workSection?.heading || t.sections.selectedWork
+  const approachHeading = page.approach?.heading || t.sections.method
+  const faqHeading = page.faq?.heading || t.sections.faq
+  const proofHeading = page.proof?.heading || t.sections.testimonials
+  const positioningHeading = page.positioning?.heading || t.sections.positioning
 
   const heroImage = mediaURL(page.heroMedia, 'hero')
   const overlayItems = values(page.hero?.overlayItems)
@@ -147,11 +160,13 @@ export default async function HomePageRoute({ params }: { params: Promise<{ loca
         </section>
 
         {/* ---- 2. Positionnement --------------------------------------- */}
-        {page.positioning?.heading && (
+        {(page.positioning?.heading || page.positioning?.body || positioningPillars.length > 0) && (
           <Band surface labelledBy="positioning">
-            {page.positioning.kicker && <Kicker id="positioning">{page.positioning.kicker}</Kicker>}
-            <Heading className="mt-5">{page.positioning.heading}</Heading>
-            <Prose text={page.positioning.body} className="mt-8" />
+            {page.positioning?.kicker && <Kicker>{page.positioning.kicker}</Kicker>}
+            <Heading id="positioning" className={page.positioning?.kicker ? 'mt-5' : undefined}>
+              {positioningHeading}
+            </Heading>
+            <Prose text={page.positioning?.body} className="mt-8" />
 
             {positioningPillars.length > 0 && (
               <ul className="mt-14 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
@@ -169,8 +184,10 @@ export default async function HomePageRoute({ params }: { params: Promise<{ loca
         {/* ---- 3. Services --------------------------------------------- */}
         {serviceItems.length > 0 && (
           <Band labelledBy="services">
-            {page.expertise?.kicker && <Kicker id="services">{page.expertise.kicker}</Kicker>}
-            {page.expertise?.heading && <Heading className="mt-5">{page.expertise.heading}</Heading>}
+            {page.expertise?.kicker && <Kicker>{page.expertise.kicker}</Kicker>}
+            <Heading id="services" className={page.expertise?.kicker ? 'mt-5' : undefined}>
+              {expertiseHeading}
+            </Heading>
             <Prose text={page.expertise?.intro} className="mt-8" />
 
             <div className="mt-16 grid gap-px border border-border bg-border md:grid-cols-2">
@@ -220,8 +237,10 @@ export default async function HomePageRoute({ params }: { params: Promise<{ loca
         {/* ---- 4. Réalisations ----------------------------------------- */}
         {projects.length > 0 && (
           <Band surface labelledBy="work">
-            {page.workSection?.kicker && <Kicker id="work">{page.workSection.kicker}</Kicker>}
-            {page.workSection?.heading && <Heading className="mt-5">{page.workSection.heading}</Heading>}
+            {page.workSection?.kicker && <Kicker>{page.workSection.kicker}</Kicker>}
+            <Heading id="work" className={page.workSection?.kicker ? 'mt-5' : undefined}>
+              {workHeading}
+            </Heading>
             <Prose text={page.workSection?.body} className="mt-8" />
 
             <ul className="mt-16 grid gap-px border border-border bg-border md:grid-cols-2 lg:grid-cols-3">
@@ -273,8 +292,10 @@ export default async function HomePageRoute({ params }: { params: Promise<{ loca
         {/* ---- 5. Notre approche --------------------------------------- */}
         {approachSteps.length > 0 && (
           <Band labelledBy="approach">
-            {page.approach?.kicker && <Kicker id="approach">{page.approach.kicker}</Kicker>}
-            {page.approach?.heading && <Heading className="mt-5">{page.approach.heading}</Heading>}
+            {page.approach?.kicker && <Kicker>{page.approach.kicker}</Kicker>}
+            <Heading id="approach" className={page.approach?.kicker ? 'mt-5' : undefined}>
+              {approachHeading}
+            </Heading>
             <Prose text={page.approach?.body} className="mt-8" />
 
             <ol className="mt-16 space-y-px border border-border bg-border">
@@ -313,11 +334,13 @@ export default async function HomePageRoute({ params }: { params: Promise<{ loca
             Copy renders only when there is real evidence to introduce.
             Zero approved testimonials and zero client logos means the whole
             band is hidden rather than shown empty (CLAUDE.md §105, §139). */}
-        {(testimonials.length > 0 || clientLogos.length > 0) && page.proof?.heading && (
+        {(testimonials.length > 0 || clientLogos.length > 0) && (
           <Band surface labelledBy="proof">
-            {page.proof.kicker && <Kicker id="proof">{page.proof.kicker}</Kicker>}
-            <Heading className="mt-5">{page.proof.heading}</Heading>
-            <Prose text={page.proof.body} className="mt-8" />
+            {page.proof?.kicker && <Kicker>{page.proof.kicker}</Kicker>}
+            <Heading id="proof" className={page.proof?.kicker ? 'mt-5' : undefined}>
+              {proofHeading}
+            </Heading>
+            <Prose text={page.proof?.body} className="mt-8" />
 
             {testimonials.length > 0 && (
               <div className="mt-14 grid gap-px border border-border bg-border md:grid-cols-2">
@@ -334,8 +357,10 @@ export default async function HomePageRoute({ params }: { params: Promise<{ loca
         {/* ---- 7. Questions fréquentes --------------------------------- */}
         {faqItems.length > 0 && (
           <Band labelledBy="faq">
-            {page.faq?.kicker && <Kicker id="faq">{page.faq.kicker}</Kicker>}
-            {page.faq?.heading && <Heading className="mt-5">{page.faq.heading}</Heading>}
+            {page.faq?.kicker && <Kicker>{page.faq.kicker}</Kicker>}
+            <Heading id="faq" className={page.faq?.kicker ? 'mt-5' : undefined}>
+              {faqHeading}
+            </Heading>
 
             <dl className="mt-14 border-t border-border">
               {faqItems.map((item, index) => (
@@ -351,8 +376,10 @@ export default async function HomePageRoute({ params }: { params: Promise<{ loca
         {/* ---- 8. Appel à l'action final -------------------------------- */}
         {page.closing?.heading && (
           <Band surface labelledBy="closing">
-            {page.closing.kicker && <Kicker id="closing">{page.closing.kicker}</Kicker>}
-            <Heading className="mt-5">{page.closing.heading}</Heading>
+            {page.closing.kicker && <Kicker>{page.closing.kicker}</Kicker>}
+            <Heading id="closing" className={page.closing.kicker ? 'mt-5' : undefined}>
+              {page.closing.heading}
+            </Heading>
             <Prose text={page.closing.body} className="mt-8" />
             <div className="mt-10">
               <CTA cta={page.closingCTA} locale={ctx.locale} />

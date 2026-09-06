@@ -25,6 +25,8 @@ export type Dictionary = {
     relatedWork: string
     clientProblem: string
     method: string
+    faq: string
+    positioning: string
   }
   actions: {
     next: string
@@ -73,6 +75,8 @@ const dictionaries: Record<Locale, Dictionary> = {
       relatedWork: 'Projets associés',
       clientProblem: 'Problématique client',
       method: 'Méthode',
+      faq: 'Questions fréquentes',
+      positioning: 'Notre positionnement',
     },
     actions: {
       next: 'Suivant',
@@ -116,6 +120,8 @@ const dictionaries: Record<Locale, Dictionary> = {
       relatedWork: 'Related work',
       clientProblem: 'Client problem',
       method: 'Method',
+      faq: 'Frequently asked questions',
+      positioning: 'Our positioning',
     },
     actions: {
       next: 'Next',
@@ -159,6 +165,8 @@ const dictionaries: Record<Locale, Dictionary> = {
       relatedWork: 'Proyectos relacionados',
       clientProblem: 'Problema del cliente',
       method: 'Método',
+      faq: 'Preguntas frecuentes',
+      positioning: 'Nuestro posicionamiento',
     },
     actions: {
       next: 'Siguiente',

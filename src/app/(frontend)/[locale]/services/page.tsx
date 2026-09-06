@@ -6,7 +6,6 @@ import {
   Band,
   CTA,
   Heading,
-  Kicker,
   PageHeader,
   ProjectTile,
   TileGrid,
@@ -79,7 +78,7 @@ export default async function ServicesPageRoute({ params }: { params: Promise<{ 
 
         {pillars.length > 0 && (
           <Band surface labelledBy="pillars">
-            <Kicker id="pillars">{t.sections.whatWeDo}</Kicker>
+            <Heading id="pillars">{t.sections.whatWeDo}</Heading>
 
             <div className="mt-10 grid gap-px border border-border bg-border md:grid-cols-2">
               {pillars.map((service) => {
