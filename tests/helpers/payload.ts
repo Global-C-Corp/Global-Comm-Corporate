@@ -13,32 +13,51 @@ export async function getTestPayload(): Promise<Payload> {
 
 export type TestUser = { id: number; email: string; role: Role; collection: 'users' }
 
-/**
- * Creates (or reuses) a real user per role, so tests exercise the same
- * access-control and hook paths as the Admin UI, REST and MCP.
- */
-export async function ensureUser(role: Role): Promise<TestUser> {
-  const payload = await getTestPayload()
-  const email = `${role}@test.local`
-
-  const existing = await payload.find({
+async function findUserByEmail(payload: Payload, email: string) {
+  const result = await payload.find({
     collection: 'users',
     where: { email: { equals: email } },
     limit: 1,
     overrideAccess: true,
   })
 
-  if (existing.docs[0]) {
-    return { id: existing.docs[0].id, email, role, collection: 'users' }
+  return result.docs[0]
+}
+
+/**
+ * Creates (or reuses) a real user per role, so tests exercise the same
+ * access-control and hook paths as the Admin UI, REST and MCP.
+ *
+ * Integration suites run in parallel. Two suites can therefore both observe
+ * that a role user is missing and race to create the same unique email. If the
+ * other suite wins that race, re-read the row and reuse it instead of failing
+ * the entire CI run on the expected uniqueness constraint.
+ */
+export async function ensureUser(role: Role): Promise<TestUser> {
+  const payload = await getTestPayload()
+  const email = `${role}@test.local`
+
+  const existing = await findUserByEmail(payload, email)
+  if (existing) {
+    return { id: existing.id, email, role, collection: 'users' }
   }
 
-  const created = await payload.create({
-    collection: 'users',
-    data: { email, password: 'test-password-1234', role, name: role },
-    overrideAccess: true,
-  })
+  try {
+    const created = await payload.create({
+      collection: 'users',
+      data: { email, password: 'test-password-1234', role, name: role },
+      overrideAccess: true,
+    })
 
-  return { id: created.id, email, role, collection: 'users' }
+    return { id: created.id, email, role, collection: 'users' }
+  } catch (error) {
+    const concurrent = await findUserByEmail(payload, email)
+    if (concurrent) {
+      return { id: concurrent.id, email, role, collection: 'users' }
+    }
+
+    throw error
+  }
 }
 
 /** Minimal PayloadRequest for exercising content-ops services directly. */
