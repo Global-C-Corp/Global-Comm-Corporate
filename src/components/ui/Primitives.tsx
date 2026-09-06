@@ -3,12 +3,10 @@ import type { Locale } from '@/i18n/locale'
 import { cn } from '@/lib/utils'
 
 /**
- * Shared layout primitives for the migrated frontend, written against Tailwind
- * inside the `.gc-tw` Preflight boundary (CLAUDE.md §82-§83).
+ * Shared public-site primitives.
  *
- * Restrained on purpose: hairline borders, generous whitespace, a strong grid,
- * no shadows, and radii capped at 4px by the theme. No gradients, no glass, no
- * dashboard language.
+ * They express the locked Global Comm grammar: sharp geometry, generous space,
+ * controlled blue, nearly invisible chrome and predictable interaction states.
  */
 
 export function Band({
@@ -25,20 +23,16 @@ export function Band({
   return (
     <section
       aria-labelledby={labelledBy}
-      className={cn(
-        'border-t border-border',
-        surface ? 'bg-muted' : 'bg-background',
-        className,
-      )}
+      className={cn(surface ? 'bg-secondary' : 'bg-background', className)}
     >
-      <div className="mx-auto w-full max-w-[76rem] px-6 py-20 md:px-10 md:py-28">{children}</div>
+      <div className="mx-auto w-full max-w-[80rem] px-5 py-24 sm:px-6 md:px-8 md:py-32 lg:px-12">{children}</div>
     </section>
   )
 }
 
 export function Kicker({ children, id }: { children: React.ReactNode; id?: string }) {
   return (
-    <p id={id} className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
+    <p id={id} className="text-[0.7rem] font-medium uppercase tracking-[0.14em] text-muted-foreground">
       {children}
     </p>
   )
@@ -53,15 +47,18 @@ export function Heading({
   children: React.ReactNode
   as?: 'h1' | 'h2' | 'h3'
   className?: string
-  /** Target for a Band's aria-labelledby, so the landmark is named. */
   id?: string
 }) {
   return (
     <Tag
       id={id}
       className={cn(
-        'max-w-[24ch] text-balance font-sans font-semibold tracking-[-0.02em] text-foreground',
-        Tag === 'h1' ? 'text-4xl leading-[1.05] md:text-6xl' : 'text-3xl leading-[1.1] md:text-4xl',
+        'max-w-[22ch] text-balance font-sans font-semibold text-foreground',
+        Tag === 'h1'
+          ? 'text-5xl leading-[1] tracking-[-0.045em] md:text-7xl'
+          : Tag === 'h2'
+            ? 'text-3xl leading-[1.06] tracking-[-0.035em] md:text-5xl'
+            : 'text-2xl leading-[1.12] tracking-[-0.025em] md:text-3xl',
         className,
       )}
     >
@@ -70,18 +67,14 @@ export function Heading({
   )
 }
 
-/**
- * Renders copy that the CMS stores as blank-line separated paragraphs. Editors
- * type prose, not markup, so the split happens here rather than asking them to
- * think about elements.
- */
+/** CMS plain text stored as blank-line separated paragraphs. */
 export function Prose({ text, className }: { text?: string | null; className?: string }) {
   if (!text) return null
   const paragraphs = text.split(/\n{2,}/).map((part) => part.trim()).filter(Boolean)
   if (paragraphs.length === 0) return null
 
   return (
-    <div className={cn('max-w-[62ch] space-y-4 text-base leading-relaxed text-foreground', className)}>
+    <div className={cn('max-w-[65ch] space-y-4 text-base leading-[1.65] text-foreground', className)}>
       {paragraphs.map((paragraph, index) => (
         <p key={index}>{paragraph}</p>
       ))}
@@ -99,12 +92,13 @@ export function ActionLink({
   variant?: 'primary' | 'secondary' | 'quiet'
 }) {
   const base =
-    'inline-flex items-center justify-center rounded-sm px-6 py-3 text-sm font-medium transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring'
+    'inline-flex min-h-11 items-center justify-center rounded-md text-sm font-medium transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring'
 
   const variants = {
-    primary: 'bg-primary text-primary-foreground hover:bg-foreground',
-    secondary: 'border border-border text-foreground hover:border-foreground',
-    quiet: 'px-0 py-0 text-foreground underline underline-offset-4 hover:text-primary',
+    primary: 'bg-primary px-5 text-primary-foreground hover:bg-brand-hover active:bg-brand-active',
+    secondary:
+      'border border-border bg-background px-5 text-foreground hover:border-foreground hover:bg-secondary active:bg-muted',
+    quiet: 'min-h-0 px-0 text-foreground underline decoration-border underline-offset-4 hover:text-primary hover:decoration-primary',
   } as const
 
   return (
@@ -134,20 +128,17 @@ export function CTA({
   )
 }
 
-/** Numbered rule used by the services and approach sections. */
 export function Ordinal({ children }: { children: React.ReactNode }) {
-  return <span className="font-mono text-xs tracking-[0.18em] text-primary">{children}</span>
+  return <span className="text-xs font-medium tracking-[0.08em] text-primary">{children}</span>
 }
 
 export function Bullets({ items }: { items: string[] }) {
   if (items.length === 0) return null
   return (
-    <ul className="space-y-2 text-sm text-foreground">
+    <ul className="space-y-3 text-sm leading-relaxed text-foreground">
       {items.map((item, index) => (
-        <li key={index} className="flex gap-3 border-t border-border pt-2">
-          <span aria-hidden className="text-primary">
-            —
-          </span>
+        <li key={index} className="flex gap-3">
+          <span aria-hidden className="mt-[0.55em] h-1.5 w-1.5 shrink-0 bg-primary" />
           <span>{item}</span>
         </li>
       ))}
@@ -155,7 +146,7 @@ export function Bullets({ items }: { items: string[] }) {
   )
 }
 
-/** Page hero used by every migrated inner template. */
+/** Page hero used by inner templates. */
 export function PageHeader({
   eyebrow,
   heading,
@@ -166,18 +157,15 @@ export function PageHeader({
   intro?: string | null
 }) {
   return (
-    <div className="mx-auto w-full max-w-[76rem] px-6 pt-16 pb-16 md:px-10 md:pt-24 md:pb-20">
+    <div className="mx-auto w-full max-w-[80rem] px-5 pb-20 pt-20 sm:px-6 md:px-8 md:pb-28 md:pt-28 lg:px-12">
       {eyebrow && <Kicker>{eyebrow}</Kicker>}
       {heading && <Heading as="h1" className="mt-5">{heading}</Heading>}
-      {intro && <Prose text={intro} className="mt-8 text-lg" />}
+      {intro && <Prose text={intro} className="mt-8 max-w-[58ch] text-lg text-muted-foreground" />}
     </div>
   )
 }
 
-/**
- * One project in a grid. Shared by the homepage, the services index and the
- * work archive so a case study looks the same wherever it is surfaced.
- */
+/** Project summary shared by archives and related-work surfaces. */
 export function ProjectTile({
   href,
   title,
@@ -192,35 +180,35 @@ export function ProjectTile({
   ctaLabel?: string | null
 }) {
   return (
-    <li className="bg-background p-8">
-      {meta && <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground">{meta}</p>}
-      <h3 className="mt-4 text-lg font-semibold leading-snug text-foreground">
+    <li className="min-w-0">
+      {meta && <p className="text-xs font-medium tracking-[0.06em] text-muted-foreground">{meta}</p>}
+      <h3 className="mt-3 text-xl font-semibold leading-snug tracking-[-0.02em] text-foreground">
         {href ? (
-          <Link href={href} className="hover:text-primary">
+          <Link href={href} className="transition-colors duration-150 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring">
             {title}
           </Link>
         ) : (
           title
         )}
       </h3>
-      {excerpt && <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{excerpt}</p>}
+      {excerpt && <p className="mt-3 max-w-[48ch] text-sm leading-relaxed text-muted-foreground">{excerpt}</p>}
       {href && ctaLabel && (
-        <p className="mt-6">
-          <Link href={href} className="text-sm font-medium text-primary underline underline-offset-4 hover:text-foreground">
+        <p className="mt-5">
+          <ActionLink href={href} variant="quiet">
             {ctaLabel}
-          </Link>
+          </ActionLink>
         </p>
       )}
     </li>
   )
 }
 
-/** Bordered grid wrapper: hairline dividers via a 1px gap over the border colour. */
+/** Quiet editorial grid; grouping comes from space rather than boxes. */
 export function TileGrid({ children, columns = 3 }: { children: React.ReactNode; columns?: 2 | 3 }) {
   return (
     <ul
       className={cn(
-        'grid gap-px border border-border bg-border',
+        'grid gap-x-8 gap-y-14',
         columns === 2 ? 'md:grid-cols-2' : 'md:grid-cols-2 lg:grid-cols-3',
       )}
     >
@@ -229,23 +217,16 @@ export function TileGrid({ children, columns = 3 }: { children: React.ReactNode;
   )
 }
 
-/**
- * Typographic frame for CMS rich text inside the Preflight boundary.
- *
- * Preflight deliberately strips heading sizes, list markers and margins, which
- * is right for markup we control but wrong for Lexical output an editor wrote.
- * These arbitrary variants restore just enough for editorial prose, without
- * adding the typography plugin for one component (§141).
- */
+/** Typographic frame for Payload Lexical output. */
 export function RichProse({ children, className }: { children: React.ReactNode; className?: string }) {
   return (
     <div
       className={cn(
-        'max-w-[68ch] text-base leading-relaxed text-foreground',
-        '[&_p]:mt-4 [&_p:first-child]:mt-0',
-        '[&_h2]:mt-10 [&_h2]:text-xl [&_h2]:font-semibold',
-        '[&_h3]:mt-8 [&_h3]:text-lg [&_h3]:font-semibold',
-        '[&_ul]:mt-4 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:mt-4 [&_ol]:list-decimal [&_ol]:pl-5',
+        'max-w-[68ch] text-base leading-[1.7] text-foreground',
+        '[&_p]:mt-5 [&_p:first-child]:mt-0',
+        '[&_h2]:mt-12 [&_h2]:text-3xl [&_h2]:font-semibold [&_h2]:tracking-[-0.03em]',
+        '[&_h3]:mt-10 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:tracking-[-0.02em]',
+        '[&_ul]:mt-5 [&_ul]:list-disc [&_ul]:pl-5 [&_ol]:mt-5 [&_ol]:list-decimal [&_ol]:pl-5',
         '[&_li]:mt-2',
         '[&_a]:text-primary [&_a]:underline [&_a]:underline-offset-4',
         '[&_strong]:font-semibold',
