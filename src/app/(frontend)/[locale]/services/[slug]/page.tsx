@@ -9,6 +9,7 @@ import { redirectOrNotFound } from '@/lib/routing'
 import { getLocalizedAvailability } from '@/services/cms/availability'
 import { getPageContext } from '@/services/cms/pageContext'
 import { getProjectsByRelation } from '@/services/cms/projects'
+import { isMediaLed, projectTiles } from '@/services/cms/projectTiles'
 import { getFoldedServices, getServiceBySlug } from '@/services/cms/services'
 import { resolvePageSEO } from '@/services/seo/resolvePageSEO'
 import { buildPath, type Route } from '@/services/seo/urls'
@@ -66,6 +67,9 @@ export default async function ServiceDetailRoute({
     getLocalizedAvailability('services', service.id),
   ])
 
+  const tiles = projectTiles(relatedProjects, ctx.locale)
+  const tilesAreMediaLed = isMediaLed(tiles)
+
   return (
     <>
       <SiteHeader locale={ctx.locale} route={route} availability={availability} draft={draft} />
@@ -120,18 +124,17 @@ export default async function ServiceDetailRoute({
             <Heading id="related-work">{t.sections.selectedWork}</Heading>
             <div className="mt-10">
               <TileGrid>
-                {relatedProjects.map((project) => {
-                  const client = typeof project.client === 'object' ? project.client?.name : undefined
-                  return (
-                    <ProjectTile
-                      key={project.id}
-                      href={project.slug ? buildPath(ctx.locale, { type: 'project', slug: project.slug }) : null}
-                      title={project.title}
-                      meta={[client, project.year ? String(project.year) : undefined].filter(Boolean).join(' · ')}
-                      excerpt={project.excerpt}
-                    />
-                  )
-                })}
+                {tiles.map(({ project, href, meta, image }) => (
+                  <ProjectTile
+                    key={project.id}
+                    href={href}
+                    title={project.title}
+                    meta={meta}
+                    excerpt={project.excerpt}
+                    image={image}
+                    mediaLed={tilesAreMediaLed}
+                  />
+                ))}
               </TileGrid>
             </div>
           </Band>

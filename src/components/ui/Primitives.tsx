@@ -1,4 +1,6 @@
+import Image from 'next/image'
 import Link from 'next/link'
+import type { TileImage } from '@/lib/media'
 import type { Locale } from '@/i18n/locale'
 import { cn } from '@/lib/utils'
 
@@ -175,8 +177,19 @@ export function PageHeader({
 }
 
 /**
- * One project in a grid. Shared by the homepage, the services index and the
+ * One project in a grid. Shared by the homepage, the services pages and the
  * work archive so a case study looks the same wherever it is surfaced.
+ *
+ * The tile is image-led when the project actually has media of its own, and
+ * text-led otherwise. `mediaLed` is decided per grid rather than per tile: it
+ * keeps a row regular when some projects have media and others do not, and it
+ * avoids a wall of identical placeholder fields when none of them do. Adding a
+ * real image to one project is enough to flip the whole grid — no code change.
+ *
+ * The text-led field is deliberately typographic. It restates the project
+ * title in the surface colour behind a brand rule; it is aria-hidden, because
+ * the real title follows immediately below, and it never pretends to be
+ * project imagery.
  */
 export function ProjectTile({
   href,
@@ -184,33 +197,67 @@ export function ProjectTile({
   meta,
   excerpt,
   ctaLabel,
+  image,
+  mediaLed = false,
+  priority = false,
 }: {
   href?: string | null
   title: string
   meta?: string
   excerpt?: string | null
   ctaLabel?: string | null
+  image?: TileImage
+  /** Whether this grid shows a visual band above each tile at all. */
+  mediaLed?: boolean
+  /** Set on the first tile above the fold only; everything else lazy-loads. */
+  priority?: boolean
 }) {
   return (
-    <li className="bg-background p-8">
-      {meta && <p className="text-xs text-muted-foreground">{meta}</p>}
-      <h3 className="mt-4 text-lg font-semibold leading-snug text-foreground">
-        {href ? (
-          <Link href={href} className="hover:text-primary">
-            {title}
-          </Link>
+    <li className="flex flex-col bg-background">
+      {mediaLed &&
+        (image ? (
+          <div className="relative aspect-[4/3] w-full overflow-hidden border-b border-border bg-muted">
+            <Image
+              src={image.url}
+              alt={image.alt}
+              fill
+              sizes="(min-width: 1024px) 33vw, (min-width: 768px) 50vw, 100vw"
+              className="object-cover"
+              priority={priority}
+            />
+          </div>
         ) : (
-          title
+          <div
+            aria-hidden
+            className="flex aspect-[4/3] w-full flex-col justify-between border-b border-border bg-muted p-8"
+          >
+            <span className="block h-1.5 w-10 bg-primary" />
+            <span className="line-clamp-3 text-2xl font-semibold leading-tight tracking-[-0.02em] text-foreground/70">
+              {title}
+            </span>
+          </div>
+        ))}
+
+      <div className="flex flex-1 flex-col p-8">
+        {meta && <p className="text-xs text-muted-foreground">{meta}</p>}
+        <h3 className="mt-4 text-lg font-semibold leading-snug text-foreground">
+          {href ? (
+            <Link href={href} className="hover:text-primary">
+              {title}
+            </Link>
+          ) : (
+            title
+          )}
+        </h3>
+        {excerpt && <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{excerpt}</p>}
+        {href && ctaLabel && (
+          <p className="mt-6">
+            <Link href={href} className="text-sm font-medium text-primary underline underline-offset-4 hover:text-foreground">
+              {ctaLabel}
+            </Link>
+          </p>
         )}
-      </h3>
-      {excerpt && <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{excerpt}</p>}
-      {href && ctaLabel && (
-        <p className="mt-6">
-          <Link href={href} className="text-sm font-medium text-primary underline underline-offset-4 hover:text-foreground">
-            {ctaLabel}
-          </Link>
-        </p>
-      )}
+      </div>
     </li>
   )
 }

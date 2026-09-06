@@ -11,7 +11,9 @@ import {
   Heading,
   Kicker,
   Ordinal,
+  ProjectTile,
   Prose,
+  TileGrid,
 } from '@/components/ui/Primitives'
 import { getDictionary } from '@/i18n/dictionaries'
 import { mediaURL } from '@/lib/media'
@@ -21,6 +23,7 @@ import { getGlobalAvailability } from '@/services/cms/availability'
 import { getHomePage, getSiteChrome } from '@/services/cms/globals'
 import { getPageContext } from '@/services/cms/pageContext'
 import { getFeaturedProjects } from '@/services/cms/projects'
+import { isMediaLed, projectTiles } from '@/services/cms/projectTiles'
 import { getFeaturedClients, getFeaturedTestimonials } from '@/services/cms/proof'
 import { resolvePageSEO } from '@/services/seo/resolvePageSEO'
 import { buildPath, type Route } from '@/services/seo/urls'
@@ -88,6 +91,9 @@ export default async function HomePageRoute({ params }: { params: Promise<{ loca
   const faqHeading = page.faq?.heading || t.sections.faq
   const proofHeading = page.proof?.heading || t.sections.testimonials
   const positioningHeading = page.positioning?.heading || t.sections.positioning
+
+  const workTiles = projectTiles(projects, ctx.locale)
+  const workIsMediaLed = isMediaLed(workTiles)
 
   const heroImage = mediaURL(page.heroMedia, 'hero')
   const overlayItems = values(page.hero?.overlayItems)
@@ -243,45 +249,23 @@ export default async function HomePageRoute({ params }: { params: Promise<{ loca
             </Heading>
             <Prose text={page.workSection?.body} className="mt-8" />
 
-            <ul className="mt-16 grid gap-px border border-border bg-border md:grid-cols-2 lg:grid-cols-3">
-              {projects.map((project) => {
-                const href = project.slug
-                  ? buildPath(ctx.locale, { type: 'project', slug: project.slug })
-                  : null
-                const client = typeof project.client === 'object' ? project.client?.name : undefined
-                const meta = [client, project.year ? String(project.year) : undefined]
-                  .filter(Boolean)
-                  .join(' · ')
-
-                return (
-                  <li key={project.id} className="bg-background p-8">
-                    {meta && <p className="text-xs text-muted-foreground">{meta}</p>}
-                    <h3 className="mt-4 text-lg font-semibold leading-snug text-foreground">
-                      {href ? (
-                        <Link href={href} className="hover:text-primary">
-                          {project.title}
-                        </Link>
-                      ) : (
-                        project.title
-                      )}
-                    </h3>
-                    {project.excerpt && (
-                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{project.excerpt}</p>
-                    )}
-                    {href && page.workSection?.itemCTALabel && (
-                      <p className="mt-6">
-                        <Link
-                          href={href}
-                          className="text-sm font-medium text-primary underline underline-offset-4 hover:text-foreground"
-                        >
-                          {page.workSection.itemCTALabel}
-                        </Link>
-                      </p>
-                    )}
-                  </li>
-                )
-              })}
-            </ul>
+            <div className="mt-16">
+              <TileGrid>
+                {workTiles.map(({ project, href, meta, image }, index) => (
+                  <ProjectTile
+                    key={project.id}
+                    href={href}
+                    title={project.title}
+                    meta={meta}
+                    excerpt={project.excerpt}
+                    ctaLabel={page.workSection?.itemCTALabel}
+                    image={image}
+                    mediaLed={workIsMediaLed}
+                    priority={index === 0}
+                  />
+                ))}
+              </TileGrid>
+            </div>
 
             <div className="mt-12">
               <CTA cta={page.workSection?.sectionCTA} locale={ctx.locale} variant="secondary" />

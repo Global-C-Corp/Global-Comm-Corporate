@@ -11,6 +11,7 @@ import { getIndustries } from '@/services/cms/industries'
 import { getPageContext } from '@/services/cms/pageContext'
 import { getProjects } from '@/services/cms/projects'
 import { getServices } from '@/services/cms/services'
+import { isMediaLed, projectTiles } from '@/services/cms/projectTiles'
 import { resolvePageSEO } from '@/services/seo/resolvePageSEO'
 import { buildPath, type Route } from '@/services/seo/urls'
 
@@ -91,6 +92,9 @@ export default async function WorkArchiveRoute({
   const pageURL = (n: number) =>
     `${buildPath(ctx.locale, route)}?${new URLSearchParams({ ...query, page: String(n) }).toString()}`
 
+  const workTiles = projectTiles(projects.docs, ctx.locale)
+  const workTilesAreMediaLed = isMediaLed(workTiles)
+
   return (
     <>
       <SiteHeader locale={ctx.locale} route={route} availability={availability} draft={draft} />
@@ -117,21 +121,20 @@ export default async function WorkArchiveRoute({
           <div className="mt-10">
             {projects.docs.length > 0 ? (
               <TileGrid>
-                {projects.docs.map((project) => {
-                  const client = typeof project.client === 'object' ? project.client?.name : undefined
-                  return (
-                    <ProjectTile
-                      key={project.id}
-                      href={project.slug ? buildPath(ctx.locale, { type: 'project', slug: project.slug }) : null}
-                      title={project.title}
-                      meta={[client, project.year ? String(project.year) : undefined].filter(Boolean).join(' · ')}
-                      excerpt={project.excerpt}
-                    />
-                  )
-                })}
+                {workTiles.map(({ project, href, meta, image }) => (
+                  <ProjectTile
+                    key={project.id}
+                    href={href}
+                    title={project.title}
+                    meta={meta}
+                    excerpt={project.excerpt}
+                    image={image}
+                    mediaLed={workTilesAreMediaLed}
+                  />
+                ))}
               </TileGrid>
             ) : (
-              <p className="border border-border p-8 text-sm text-muted-foreground">{t.actions.all} — 0</p>
+              <p className="border border-border p-8 text-sm text-muted-foreground">{t.actions.noResults}</p>
             )}
           </div>
 

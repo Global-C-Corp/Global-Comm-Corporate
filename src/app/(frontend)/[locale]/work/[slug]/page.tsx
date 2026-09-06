@@ -13,6 +13,7 @@ import type { Industry, Service, Testimonial } from '@/payload-types'
 import { getLocalizedAvailability } from '@/services/cms/availability'
 import { getPageContext } from '@/services/cms/pageContext'
 import { getProjectBySlug, getProjectsByRelation } from '@/services/cms/projects'
+import { isMediaLed, projectTiles } from '@/services/cms/projectTiles'
 import { resolvePageSEO } from '@/services/seo/resolvePageSEO'
 import { buildPath, type Route } from '@/services/seo/urls'
 
@@ -74,6 +75,9 @@ export default async function ProjectDetailRoute({
   const clientName = typeof project.client === 'object' && project.client ? project.client.name : undefined
 
   const related = relatedProjects.filter((item) => item.id !== project.id)
+
+  const relatedTiles = projectTiles(related, ctx.locale)
+  const relatedTilesAreMediaLed = isMediaLed(relatedTiles)
 
   return (
     <>
@@ -244,18 +248,17 @@ export default async function ProjectDetailRoute({
             <Heading id="related-work">{t.sections.relatedWork}</Heading>
             <div className="mt-10">
               <TileGrid>
-                {related.map((item) => {
-                  const itemClient = typeof item.client === 'object' ? item.client?.name : undefined
-                  return (
-                    <ProjectTile
-                      key={item.id}
-                      href={item.slug ? buildPath(ctx.locale, { type: 'project', slug: item.slug }) : null}
-                      title={item.title}
-                      meta={[itemClient, item.year ? String(item.year) : undefined].filter(Boolean).join(' · ')}
-                      excerpt={item.excerpt}
-                    />
-                  )
-                })}
+                {relatedTiles.map(({ project, href, meta, image }) => (
+                  <ProjectTile
+                    key={project.id}
+                    href={href}
+                    title={project.title}
+                    meta={meta}
+                    excerpt={project.excerpt}
+                    image={image}
+                    mediaLed={relatedTilesAreMediaLed}
+                  />
+                ))}
               </TileGrid>
             </div>
           </Band>

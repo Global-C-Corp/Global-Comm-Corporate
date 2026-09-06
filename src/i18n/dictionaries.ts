@@ -46,6 +46,7 @@ export type Dictionary = {
     readMore: string
     startProject: string
     viewOurWork: string
+    noResults: string
   }
   form: {
     required: string
@@ -122,6 +123,7 @@ const dictionaries: Record<Locale, Dictionary> = {
       readMore: 'En savoir plus',
       startProject: 'Démarrer un projet',
       viewOurWork: 'Voir nos réalisations',
+      noResults: 'Aucun projet ne correspond à ces filtres.',
     },
     form: {
       required: 'Ce champ est requis',
@@ -194,6 +196,7 @@ const dictionaries: Record<Locale, Dictionary> = {
       readMore: 'Read more',
       startProject: 'Start a project',
       viewOurWork: 'View our work',
+      noResults: 'No projects match these filters.',
     },
     form: {
       required: 'This field is required',
@@ -266,6 +269,7 @@ const dictionaries: Record<Locale, Dictionary> = {
       readMore: 'Saber más',
       startProject: 'Iniciar un proyecto',
       viewOurWork: 'Ver nuestro trabajo',
+      noResults: 'Ningún proyecto coincide con estos filtros.',
     },
     form: {
       required: 'Este campo es obligatorio',

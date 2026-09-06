@@ -50,9 +50,19 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   images: {
+    // Payload serves uploads from its own route locally and from Vercel Blob
+    // once BLOB_READ_WRITE_TOKEN is set; next/image has to accept both, and
+    // nothing else.
     localPatterns: [
       {
         pathname: '/api/media/file/**',
+      },
+    ],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: '*.public.blob.vercel-storage.com',
+        pathname: '/**',
       },
     ],
   },
