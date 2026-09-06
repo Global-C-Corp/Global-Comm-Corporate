@@ -20,18 +20,21 @@ export function Header({
   const dictionary = getDictionary(locale)
 
   return (
-    <header className="gc-tw sticky top-0 z-40 border-b border-border bg-background">
-      <div className="mx-auto flex w-full max-w-[76rem] items-center justify-between gap-8 px-6 py-5 md:px-10">
-        <Link href={buildPath(locale, { type: 'home' })} className="text-sm font-bold tracking-[-0.01em] text-foreground">
+    <header className="gc-tw sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur-sm">
+      <div className="mx-auto flex h-16 w-full max-w-[80rem] items-center justify-between gap-8 px-5 sm:px-6 md:px-8 lg:px-12">
+        <Link
+          href={buildPath(locale, { type: 'home' })}
+          className="text-sm font-semibold tracking-[-0.025em] text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+        >
           GLOBAL COMM<span className="text-primary">.</span>
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-7 md:flex" aria-label="Primary">
           {links.map((link) => (
             <Link
               key={`${link.url}-${link.label}`}
               href={link.url}
-              className="text-sm text-foreground hover:text-primary"
+              className="text-[0.8125rem] font-medium text-foreground transition-colors duration-150 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
               target={link.opensInNewTab ? '_blank' : undefined}
               rel={link.opensInNewTab ? 'noopener noreferrer' : undefined}
             >
@@ -40,7 +43,7 @@ export function Header({
           ))}
         </nav>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-5">
           <LanguageSwitcher
             currentLocale={locale}
             route={route}
