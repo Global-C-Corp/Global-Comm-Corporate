@@ -20,7 +20,7 @@ export function LanguageSwitcher({
   label: string
 }) {
   return (
-    <nav className="flex items-center gap-2 font-mono text-xs" aria-label={label}>
+    <nav className="flex items-center gap-2 text-xs font-medium" aria-label={label}>
       {locales.map((locale) => {
         const entry = availability[locale]
         const isCurrent = locale === currentLocale

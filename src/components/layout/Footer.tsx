@@ -36,7 +36,7 @@ export function Footer({
 
           {footerLinks.length > 0 && (
             <nav aria-label="Footer">
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">{companyName}</p>
+              <p className="text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground">{companyName}</p>
               <ul className="mt-4 space-y-2 text-sm [&_a]:text-foreground [&_a:hover]:text-primary">
                 {footerLinks.map((link) => (
                   <li key={`${link.url}-${link.label}`}>
@@ -48,7 +48,7 @@ export function Footer({
           )}
 
           <div>
-            <p className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">Contact</p>
+            <p className="text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground">Contact</p>
             <ul className="mt-4 space-y-2 text-sm [&_a]:text-foreground [&_a:hover]:text-primary">
               {primaryEmail && (
                 <li>
@@ -65,7 +65,7 @@ export function Footer({
 
           {socialLinks && socialLinks.length > 0 && (
             <div>
-              <p className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">Social</p>
+              <p className="text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground">Social</p>
               <ul className="mt-4 space-y-2 text-sm [&_a]:text-foreground [&_a:hover]:text-primary">
                 {socialLinks.map((social) =>
                   social?.url ? (

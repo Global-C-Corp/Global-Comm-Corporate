@@ -39,7 +39,7 @@ export function WorkFilters({
         .map((group) => (
           <div key={group.name} className="flex min-w-[12rem] flex-col gap-2">
             <label
-              className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground"
+              className="text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground"
               htmlFor={`filter-${group.name}`}
             >
               {group.label}

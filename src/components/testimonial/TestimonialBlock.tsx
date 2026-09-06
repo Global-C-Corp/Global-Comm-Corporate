@@ -24,7 +24,7 @@ export function TestimonialBlock({ testimonial, locale }: { testimonial: Testimo
         “{quote}”
       </blockquote>
       {attribution && (
-        <figcaption className="mt-4 font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground">
+        <figcaption className="mt-4 text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground">
           {attribution}
         </figcaption>
       )}

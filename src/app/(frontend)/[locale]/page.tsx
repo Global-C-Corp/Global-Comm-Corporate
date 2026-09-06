@@ -255,7 +255,7 @@ export default async function HomePageRoute({ params }: { params: Promise<{ loca
 
                 return (
                   <li key={project.id} className="bg-background p-8">
-                    {meta && <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground">{meta}</p>}
+                    {meta && <p className="text-xs text-muted-foreground">{meta}</p>}
                     <h3 className="mt-4 text-lg font-semibold leading-snug text-foreground">
                       {href ? (
                         <Link href={href} className="hover:text-primary">

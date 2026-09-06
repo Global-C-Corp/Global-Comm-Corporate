@@ -38,7 +38,7 @@ export function Band({
 
 export function Kicker({ children, id }: { children: React.ReactNode; id?: string }) {
   return (
-    <p id={id} className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
+    <p id={id} className="text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground">
       {children}
     </p>
   )
@@ -136,7 +136,7 @@ export function CTA({
 
 /** Numbered rule used by the services and approach sections. */
 export function Ordinal({ children }: { children: React.ReactNode }) {
-  return <span className="font-mono text-xs tracking-[0.18em] text-primary">{children}</span>
+  return <span className="text-xs font-medium tabular-nums text-primary">{children}</span>
 }
 
 export function Bullets({ items }: { items: string[] }) {
@@ -193,7 +193,7 @@ export function ProjectTile({
 }) {
   return (
     <li className="bg-background p-8">
-      {meta && <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground">{meta}</p>}
+      {meta && <p className="text-xs text-muted-foreground">{meta}</p>}
       <h3 className="mt-4 text-lg font-semibold leading-snug text-foreground">
         {href ? (
           <Link href={href} className="hover:text-primary">
