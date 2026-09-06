@@ -136,7 +136,7 @@ export default async function WorkArchiveRoute({
           </div>
 
           {projects.totalPages > 1 && (
-            <nav className="mt-10 flex gap-4" aria-label="Pagination">
+            <nav className="mt-10 flex gap-4" aria-label={t.a11y.pagination}>
               {projects.page > 1 && (
                 <a
                   className="rounded-sm border border-border px-6 py-3 text-sm font-medium text-foreground hover:border-foreground"

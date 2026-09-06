@@ -101,7 +101,7 @@ export default async function ProjectDetailRoute({
           <dl className="mt-12 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-4">
             {clientName && (
               <div className="bg-background p-6">
-                <dt className="text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground">Client</dt>
+                <dt className="text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground">{t.meta.client}</dt>
                 <dd className="mt-2 text-sm text-foreground">{clientName}</dd>
               </div>
             )}
@@ -127,7 +127,7 @@ export default async function ProjectDetailRoute({
             )}
             {project.location && (
               <div className="bg-background p-6">
-                <dt className="text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground">Location</dt>
+                <dt className="text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground">{t.meta.location}</dt>
                 <dd className="mt-2 text-sm text-foreground">{project.location}</dd>
               </div>
             )}

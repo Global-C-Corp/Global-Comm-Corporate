@@ -6,7 +6,7 @@ import { Kicker, PageHeader, Prose } from '@/components/ui/Primitives'
 import { getDictionary } from '@/i18n/dictionaries'
 import { getGlobalAvailability } from '@/services/cms/availability'
 import { baseQueryOptions, getPayloadClient } from '@/services/cms/context'
-import { getContactPage } from '@/services/cms/globals'
+import { getContactPage, getSiteChrome } from '@/services/cms/globals'
 import { getPageContext } from '@/services/cms/pageContext'
 import { resolvePageSEO } from '@/services/seo/resolvePageSEO'
 import type { Route } from '@/services/seo/urls'
@@ -40,7 +40,8 @@ export default async function ContactPageRoute({ params }: { params: Promise<{ l
   const t = getDictionary(ctx.locale)
   const payload = await getPayloadClient()
 
-  const [projectTypes, availability] = await Promise.all([
+  const [{ settings }, projectTypes, availability] = await Promise.all([
+    getSiteChrome(ctx.locale, draft),
     payload
       .find({ collection: 'project-types', ...baseQueryOptions(ctx), limit: 50, depth: 0, sort: ['displayOrder'] })
       .then((result) => result.docs.map((doc) => ({ id: doc.id, name: doc.name }))),
@@ -58,19 +59,24 @@ export default async function ContactPageRoute({ params }: { params: Promise<{ l
           <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
             <div className="lg:col-span-7">
               {page.formIntro && <Prose text={page.formIntro} className="mb-10" />}
-              <ContactForm action={submitInquiry} dictionary={t} projectTypes={projectTypes} />
+              <ContactForm
+                action={submitInquiry}
+                dictionary={t}
+                projectTypes={projectTypes}
+                companyName={settings.companyName}
+              />
             </div>
 
             <aside className="space-y-8 lg:col-span-4 lg:col-start-9">
               {page.directContact && (
                 <div className="border-t border-foreground pt-5">
-                  <Kicker>Direct</Kicker>
+                  <Kicker>{t.meta.direct}</Kicker>
                   <p className="mt-3 text-sm text-foreground">{page.directContact}</p>
                 </div>
               )}
               {page.officeLocation && (
                 <div className="border-t border-foreground pt-5">
-                  <Kicker>Office</Kicker>
+                  <Kicker>{t.meta.office}</Kicker>
                   <p className="mt-3 text-sm text-foreground">{page.officeLocation}</p>
                 </div>
               )}

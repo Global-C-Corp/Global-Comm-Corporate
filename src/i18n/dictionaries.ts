@@ -27,6 +27,14 @@ export type Dictionary = {
     method: string
     faq: string
     positioning: string
+    contact: string
+    social: string
+  }
+  meta: {
+    client: string
+    location: string
+    direct: string
+    office: string
   }
   actions: {
     next: string
@@ -44,10 +52,28 @@ export type Dictionary = {
     invalidEmail: string
     genericError: string
     success: string
+    /** Visible field labels. The required marker is appended by the form. */
+    labels: {
+      name: string
+      company: string
+      email: string
+      phone: string
+      website: string
+      projectType: string
+      estimatedBudget: string
+      desiredStart: string
+      message: string
+      /** Contains a {company} placeholder filled from Site Settings. */
+      consent: string
+    }
   }
   a11y: {
     skipToContent: string
     languageSwitcher: string
+    primaryNav: string
+    footerNav: string
+    legalNav: string
+    pagination: string
   }
   notFound: {
     title: string
@@ -77,6 +103,14 @@ const dictionaries: Record<Locale, Dictionary> = {
       method: 'Méthode',
       faq: 'Questions fréquentes',
       positioning: 'Notre positionnement',
+      contact: 'Contact',
+      social: 'Réseaux sociaux',
+    },
+    meta: {
+      client: 'Client',
+      location: 'Lieu',
+      direct: 'Contact direct',
+      office: 'Bureau',
     },
     actions: {
       next: 'Suivant',
@@ -94,8 +128,27 @@ const dictionaries: Record<Locale, Dictionary> = {
       invalidEmail: 'Adresse e-mail invalide',
       genericError: "Une erreur est survenue. Veuillez réessayer.",
       success: 'Merci, votre message a bien été envoyé.',
+      labels: {
+        name: 'Nom',
+        company: 'Société',
+        email: 'E-mail',
+        phone: 'Téléphone',
+        website: 'Site web',
+        projectType: 'Type de projet',
+        estimatedBudget: 'Budget estimé',
+        desiredStart: 'Date de démarrage souhaitée',
+        message: 'Message',
+        consent: "J'autorise {company} à conserver ces informations afin de répondre à ma demande.",
+      },
     },
-    a11y: { skipToContent: 'Aller au contenu', languageSwitcher: 'Changer de langue' },
+    a11y: {
+      skipToContent: 'Aller au contenu',
+      languageSwitcher: 'Changer de langue',
+      primaryNav: 'Navigation principale',
+      footerNav: 'Navigation de pied de page',
+      legalNav: 'Mentions légales',
+      pagination: 'Pagination',
+    },
     notFound: {
       title: 'Page introuvable',
       body: "La page que vous recherchez n'existe pas ou a été déplacée.",
@@ -122,6 +175,14 @@ const dictionaries: Record<Locale, Dictionary> = {
       method: 'Method',
       faq: 'Frequently asked questions',
       positioning: 'Our positioning',
+      contact: 'Contact',
+      social: 'Social',
+    },
+    meta: {
+      client: 'Client',
+      location: 'Location',
+      direct: 'Direct',
+      office: 'Office',
     },
     actions: {
       next: 'Next',
@@ -139,8 +200,27 @@ const dictionaries: Record<Locale, Dictionary> = {
       invalidEmail: 'Invalid email address',
       genericError: 'Something went wrong. Please try again.',
       success: 'Thank you, your message has been sent.',
+      labels: {
+        name: 'Name',
+        company: 'Company',
+        email: 'Email',
+        phone: 'Phone',
+        website: 'Website',
+        projectType: 'Project type',
+        estimatedBudget: 'Estimated budget',
+        desiredStart: 'Desired start',
+        message: 'Message',
+        consent: 'I consent to {company} storing this information to respond to my enquiry.',
+      },
     },
-    a11y: { skipToContent: 'Skip to content', languageSwitcher: 'Switch language' },
+    a11y: {
+      skipToContent: 'Skip to content',
+      languageSwitcher: 'Switch language',
+      primaryNav: 'Primary',
+      footerNav: 'Footer',
+      legalNav: 'Legal',
+      pagination: 'Pagination',
+    },
     notFound: {
       title: 'Page not found',
       body: "The page you are looking for doesn't exist or has moved.",
@@ -167,6 +247,14 @@ const dictionaries: Record<Locale, Dictionary> = {
       method: 'Método',
       faq: 'Preguntas frecuentes',
       positioning: 'Nuestro posicionamiento',
+      contact: 'Contacto',
+      social: 'Redes sociales',
+    },
+    meta: {
+      client: 'Cliente',
+      location: 'Ubicación',
+      direct: 'Contacto directo',
+      office: 'Oficina',
     },
     actions: {
       next: 'Siguiente',
@@ -184,8 +272,27 @@ const dictionaries: Record<Locale, Dictionary> = {
       invalidEmail: 'Correo electrónico no válido',
       genericError: 'Ha ocurrido un error. Inténtalo de nuevo.',
       success: 'Gracias, tu mensaje ha sido enviado.',
+      labels: {
+        name: 'Nombre',
+        company: 'Empresa',
+        email: 'Correo electrónico',
+        phone: 'Teléfono',
+        website: 'Sitio web',
+        projectType: 'Tipo de proyecto',
+        estimatedBudget: 'Presupuesto estimado',
+        desiredStart: 'Fecha de inicio deseada',
+        message: 'Mensaje',
+        consent: 'Autorizo a {company} a conservar esta información para responder a mi solicitud.',
+      },
     },
-    a11y: { skipToContent: 'Ir al contenido', languageSwitcher: 'Cambiar idioma' },
+    a11y: {
+      skipToContent: 'Ir al contenido',
+      languageSwitcher: 'Cambiar idioma',
+      primaryNav: 'Navegación principal',
+      footerNav: 'Navegación de pie de página',
+      legalNav: 'Avisos legales',
+      pagination: 'Paginación',
+    },
     notFound: {
       title: 'Página no encontrada',
       body: 'La página que buscas no existe o ha sido movida.',

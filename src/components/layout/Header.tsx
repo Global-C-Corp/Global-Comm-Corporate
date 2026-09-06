@@ -26,7 +26,7 @@ export function Header({
           GLOBAL COMM<span className="text-primary">.</span>
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex" aria-label="Primary">
+        <nav className="hidden items-center gap-8 md:flex" aria-label={dictionary.a11y.primaryNav}>
           {links.map((link) => (
             <Link
               key={`${link.url}-${link.label}`}

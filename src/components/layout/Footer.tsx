@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { getDictionary } from '@/i18n/dictionaries'
 import type { Locale } from '@/i18n/locale'
 import type { NavLink } from './MobileNav'
 
@@ -23,6 +24,7 @@ export function Footer({
   address?: string | null
   socialLinks?: { platform?: string | null; url?: string | null }[] | null
 }) {
+  const t = getDictionary(locale)
   const year = new Date().getFullYear()
 
   return (
@@ -35,7 +37,7 @@ export function Footer({
           </div>
 
           {footerLinks.length > 0 && (
-            <nav aria-label="Footer">
+            <nav aria-label={t.a11y.footerNav}>
               <p className="text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground">{companyName}</p>
               <ul className="mt-4 space-y-2 text-sm [&_a]:text-foreground [&_a:hover]:text-primary">
                 {footerLinks.map((link) => (
@@ -48,7 +50,7 @@ export function Footer({
           )}
 
           <div>
-            <p className="text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground">Contact</p>
+            <p className="text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground">{t.sections.contact}</p>
             <ul className="mt-4 space-y-2 text-sm [&_a]:text-foreground [&_a:hover]:text-primary">
               {primaryEmail && (
                 <li>
@@ -65,7 +67,7 @@ export function Footer({
 
           {socialLinks && socialLinks.length > 0 && (
             <div>
-              <p className="text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground">Social</p>
+              <p className="text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground">{t.sections.social}</p>
               <ul className="mt-4 space-y-2 text-sm [&_a]:text-foreground [&_a:hover]:text-primary">
                 {socialLinks.map((social) =>
                   social?.url ? (
@@ -84,7 +86,7 @@ export function Footer({
         <div className="mt-16 flex flex-wrap items-center justify-between gap-6 border-t border-border pt-8 text-sm text-muted-foreground">
           <p>{copyrightText ?? `© ${year} ${companyName}`}</p>
           {legalLinks.length > 0 && (
-            <nav aria-label="Legal" lang={locale}>
+            <nav aria-label={t.a11y.legalNav} lang={locale}>
               <ul className="flex flex-wrap gap-x-6 gap-y-2 text-sm [&_a]:text-muted-foreground [&_a:hover]:text-foreground">
                 {legalLinks.map((link) => (
                   <li key={`${link.url}-${link.label}`}>
