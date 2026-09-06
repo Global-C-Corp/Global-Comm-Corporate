@@ -3,7 +3,6 @@ import 'dotenv/config'
 
 const localBaseURL = process.env.CI ? 'http://127.0.0.1:3000' : 'http://localhost:3000'
 const baseURL = process.env.E2E_BASE_URL ?? localBaseURL
-const healthURL = new URL('/fr', baseURL).toString()
 
 /**
  * `PLAYWRIGHT_CHROMIUM_PATH` lets a sandbox with a pre-installed browser
@@ -40,14 +39,13 @@ export default defineConfig({
   ],
   webServer: {
     // CI exercises the production build on an explicit IPv4 loopback address.
-    // Probe a real localized page rather than relying on the root redirect as
-    // the readiness signal. Pipe both streams so a future startup failure is
-    // visible in Actions instead of surfacing only as a three-minute timeout.
+    // Readiness is based on the listening port, not a particular application
+    // route. The E2E suite itself owns page-level HTTP assertions.
     command: process.env.CI
       ? 'pnpm exec next start --hostname 127.0.0.1 --port 3000'
       : 'pnpm dev',
     reuseExistingServer: !process.env.CI,
-    url: healthURL,
+    port: 3000,
     stdout: 'pipe',
     stderr: 'pipe',
     timeout: 180_000,
