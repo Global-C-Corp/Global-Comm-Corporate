@@ -3,6 +3,7 @@ import * as migration_20260831_031312_mcp_api_keys from './20260831_031312_mcp_a
 import * as migration_20260831_214415_approval_provenance from './20260831_214415_approval_provenance';
 import * as migration_20260905_012312_service_pillars from './20260905_012312_service_pillars';
 import * as migration_20260905_173054_home_page_sections from './20260905_173054_home_page_sections';
+import * as migration_20260906_163614_blob_storage_fields from './20260906_163614_blob_storage_fields';
 
 export const migrations = [
   {
@@ -28,6 +29,11 @@ export const migrations = [
   {
     up: migration_20260905_173054_home_page_sections.up,
     down: migration_20260905_173054_home_page_sections.down,
-    name: '20260905_173054_home_page_sections'
+    name: '20260905_173054_home_page_sections',
+  },
+  {
+    up: migration_20260906_163614_blob_storage_fields.up,
+    down: migration_20260906_163614_blob_storage_fields.down,
+    name: '20260906_163614_blob_storage_fields'
   },
 ];

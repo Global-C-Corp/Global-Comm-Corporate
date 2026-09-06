@@ -216,6 +216,7 @@ export interface Media {
   clientApproved?: boolean | null;
   source?: string | null;
   internalNotes?: string | null;
+  prefix?: string | null;
   updatedAt: string;
   createdAt: string;
   url?: string | null;
@@ -1442,6 +1443,7 @@ export interface MediaSelect<T extends boolean = true> {
   clientApproved?: T;
   source?: T;
   internalNotes?: T;
+  prefix?: T;
   updatedAt?: T;
   createdAt?: T;
   url?: T;

@@ -2,6 +2,7 @@ import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { seoPlugin } from '@payloadcms/plugin-seo'
 import { redirectsPlugin } from '@payloadcms/plugin-redirects'
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import { mcpPlugin } from '@payloadcms/plugin-mcp'
 import path from 'path'
 import { buildConfig } from 'payload'
@@ -57,6 +58,27 @@ const plugins: Plugin[] = [
   redirectsPlugin({
     collections: ['services', 'industries', 'projects'],
     redirectTypes: ['301', '302'],
+  }),
+  /**
+   * Persistent object storage for media (CLAUDE.md §38, §90).
+   *
+   * Without this, uploads land on the deployment filesystem, which on Vercel is
+   * ephemeral — a file survives until the next deploy and then is gone. §90 is
+   * explicit that the deployment filesystem is never the store.
+   *
+   * `token` self-disables the adapter when unset, so local development and CI
+   * keep using the filesystem without needing a Vercel credential.
+   *
+   * `alwaysInsertFields` keeps the collection schema identical whether or not
+   * the token is present. Without it the schema would differ between a local
+   * machine and production, and a migration generated in one place would not
+   * describe the other — the exact drift §89's migration discipline exists to
+   * prevent. (Payload v4 makes this the default.)
+   */
+  vercelBlobStorage({
+    collections: { media: true },
+    token: process.env.BLOB_READ_WRITE_TOKEN,
+    alwaysInsertFields: true,
   }),
 ]
 
