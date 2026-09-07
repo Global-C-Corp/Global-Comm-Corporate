@@ -54,7 +54,7 @@ describe('projectTiles', () => {
   })
 
   it('omits the href when the locale has no approved slug', () => {
-    const [tile] = projectTiles([project({ slug: null })], 'fr')
+    const [tile] = projectTiles([project({ slug: undefined })], 'fr')
     expect(tile.href).toBeNull()
   })
 

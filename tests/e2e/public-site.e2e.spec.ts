@@ -132,7 +132,16 @@ test.describe('public site', () => {
 
     const panelId = await toggle.getAttribute('aria-controls')
     expect(panelId).toBeTruthy()
-    await expect(page.locator(`#${panelId}`)).toBeVisible()
+    const panel = page.locator(`#${panelId}`)
+    await expect(panel).toBeVisible()
+
+    // The panel stays mounted so aria-controls always resolves; closing hides
+    // it rather than unmounting it, and it must genuinely leave the tab order.
+    await page.keyboard.press('Escape')
+    await expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    await expect(panel).toBeHidden()
+    await expect(panel).toHaveCount(1)
+    await expect(toggle).toBeFocused()
   })
 
   test('exposes a keyboard skip link', async ({ page }) => {
