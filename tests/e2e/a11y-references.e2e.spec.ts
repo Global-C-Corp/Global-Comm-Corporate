@@ -102,3 +102,34 @@ for (const paths of PATHS) {
     })
   }
 }
+
+/**
+ * Heading structure, checked on the same set of pages.
+ *
+ * Exactly one h1 per page, and no skipped level on the way down — h1 straight
+ * to h3 leaves a screen-reader user unable to tell what the h3s belong to.
+ */
+for (const paths of PATHS) {
+  for (const locale of locales) {
+    const path = paths[locale]
+
+    test(`heading structure · ${path}`, async ({ page }) => {
+      const response = await page.goto(`${BASE}${path}`)
+      expect(response?.status()).toBe(200)
+
+      const levels = await page.evaluate(() =>
+        Array.from(document.querySelectorAll('main h1, main h2, main h3, main h4, main h5, main h6')).map(
+          (heading) => Number(heading.tagName.slice(1)),
+        ),
+      )
+
+      expect(levels.filter((level) => level === 1), `h1 count on ${path}`).toHaveLength(1)
+
+      const skips: string[] = []
+      for (let i = 1; i < levels.length; i += 1) {
+        if (levels[i] > levels[i - 1] + 1) skips.push(`h${levels[i - 1]} → h${levels[i]} at index ${i}`)
+      }
+      expect(skips, `skipped heading levels on ${path}`).toEqual([])
+    })
+  }
+}

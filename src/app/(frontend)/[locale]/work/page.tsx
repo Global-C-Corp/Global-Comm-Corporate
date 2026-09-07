@@ -130,6 +130,7 @@ export default async function WorkArchiveRoute({
                     excerpt={project.excerpt}
                     image={image}
                     mediaLed={workTilesAreMediaLed}
+                    headingLevel="h2"
                   />
                 ))}
               </TileGrid>

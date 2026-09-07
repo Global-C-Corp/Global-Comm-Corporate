@@ -200,6 +200,7 @@ export function ProjectTile({
   image,
   mediaLed = false,
   priority = false,
+  headingLevel: Title = 'h3',
 }: {
   href?: string | null
   title: string
@@ -211,6 +212,12 @@ export function ProjectTile({
   mediaLed?: boolean
   /** Set on the first tile above the fold only; everything else lazy-loads. */
   priority?: boolean
+  /**
+   * h3 under a section heading, h2 where the grid is the page's own content —
+   * the work archive puts tiles directly under its h1, and jumping h1 → h3
+   * skips a level.
+   */
+  headingLevel?: 'h2' | 'h3'
 }) {
   return (
     <li className="flex flex-col bg-background">
@@ -240,7 +247,7 @@ export function ProjectTile({
 
       <div className="flex flex-1 flex-col p-8">
         {meta && <p className="text-xs text-muted-foreground">{meta}</p>}
-        <h3 className="mt-4 text-lg font-semibold leading-snug text-foreground">
+        <Title className="mt-4 text-lg font-semibold leading-snug text-foreground">
           {href ? (
             <Link href={href} className="hover:text-primary">
               {title}
@@ -248,7 +255,7 @@ export function ProjectTile({
           ) : (
             title
           )}
-        </h3>
+        </Title>
         {excerpt && <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{excerpt}</p>}
         {href && ctaLabel && (
           <p className="mt-6">
