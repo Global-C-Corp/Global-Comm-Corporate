@@ -124,7 +124,9 @@ test.describe('public site', () => {
     // keyboard or screen-reader user actually depends on.
     // Identified by its ARIA wiring rather than a role filter on `expanded`:
     // that state flips on click, so filtering by it loses the element.
-    const toggle = page.locator('button[aria-expanded][aria-controls]')
+    // Scoped to the site header: the dev server injects its own Next.js Dev
+    // Tools button, which carries the same ARIA wiring.
+    const toggle = page.getByRole('banner').locator('button[aria-expanded][aria-controls]')
     await expect(toggle).toBeVisible()
     await expect(toggle).toHaveAttribute('aria-expanded', 'false')
     await toggle.click()
