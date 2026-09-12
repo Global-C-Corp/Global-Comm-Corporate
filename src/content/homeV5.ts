@@ -1,15 +1,3 @@
-/**
- * Contenu de la Home V5.1 — maquette frontend isolée.
- *
- * Copie fournie mot pour mot par le brief. Aucun client, chiffre, partenariat,
- * témoignage ni visuel n'est inventé — et rien n'est signalé comme manquant à
- * l'écran non plus : ce qui n'existe pas est retiré de la composition, pas
- * rendu sous forme de cadre vide.
- *
- * La section Expertises n'est pas ici : elle est figée et lit son propre
- * contenu depuis `homeHalbert.ts`.
- */
-
 export const homeV5 = {
   header: {
     wordmark: 'GLOBAL COMMUNICATION CORPORATE™',
@@ -28,195 +16,171 @@ export const homeV5 = {
       'We help companies build stronger brands, create better content and turn digital marketing into measurable business growth.',
     primaryCTA: { label: 'Start a project', href: '/fr/contact' },
     secondaryCTA: { label: 'View our work', href: '/fr/work' },
-    closing:
-      'From strategy to execution, one partner connecting brand, marketing and digital growth.',
+    closing: 'From strategy to execution, one partner connecting brand, marketing and digital growth.',
   },
 
-  /**
-   * Rail de logos retiré, pas masqué par du vide : aucun logo client approuvé
-   * n'existe dans le dépôt, et une rangée de cadres vides coûte plus de
-   * crédibilité qu'elle n'en apporte. La confiance repose ici sur du contenu
-   * vrai — le périmètre d'intervention, énoncé sans chiffre inventé.
-   */
-  credibility: {
-    label: 'HOW WE WORK WITH CLIENTS',
-    items: [
-      { term: 'ENGAGEMENT', detail: 'Project-based or ongoing, defined before we start.' },
-      { term: 'SCOPE', detail: 'Objectives, deliverables and validation points in writing.' },
-      { term: 'DISCIPLINES', detail: 'Strategy, brand, digital and technology under one team.' },
-    ],
+  experience: {
+    label: 'SELECTED EXPERIENCE',
+    support: 'Companies, institutions and brands connected to our work.',
+    names: ['OGLO NUTS', 'AMSD', 'AJM', 'IMANOR', 'INDH'],
   },
 
-  /**
-   * Compétence opérationnelle, jamais un partenariat officiel ni une
-   * certification : les capacités listées sont génériques et vraies.
-   */
   platforms: {
     label: 'PLATFORM EXPERTISE',
-    support: 'Built across the platforms your customers already use',
+    heading: 'Platform Expertise',
+    support: 'Built across the platforms your customers already use.',
     items: [
       {
         key: 'google',
         name: 'GOOGLE',
         capabilities: ['SEARCH', 'PAID MEDIA', 'ANALYTICS', 'SEO'],
-        body: 'Intent-driven demand: what people already search for, captured and measured.',
+        notes: [
+          'Capture high-intent demand and grow visibility.',
+          'Drive qualified traffic with performance campaigns.',
+          'Turn data into clearer decisions.',
+          'Build long-term organic growth.',
+        ],
       },
       {
         key: 'meta',
         name: 'META',
         capabilities: ['SOCIAL', 'PAID MEDIA', 'RETARGETING', 'CONTENT'],
-        body: 'Audience building and creative iteration at the scale the platform rewards.',
+        notes: [
+          'Build reach and relevance across social audiences.',
+          'Test creative against measurable campaign goals.',
+          'Reconnect with warm audiences intelligently.',
+          'Create content designed for the feed.',
+        ],
       },
       {
         key: 'tiktok',
         name: 'TIKTOK',
-        capabilities: ['CONTENT', 'PAID MEDIA', 'CREATIVE TESTING'],
-        body: 'Native creative produced to be tested, not adapted from a campaign film.',
+        capabilities: ['CONTENT', 'PAID MEDIA', 'CREATIVE TESTING', 'INSIGHTS'],
+        notes: [
+          'Native creative built for attention.',
+          'Performance distribution designed for the platform.',
+          'Fast iteration on formats and messages.',
+          'Learn from real audience signals.',
+        ],
       },
       {
         key: 'linkedin',
         name: 'LINKEDIN',
-        capabilities: ['B2B CONTENT', 'LEAD GENERATION', 'PAID MEDIA'],
-        body: 'Positioning and lead capture for considered, long-cycle purchases.',
+        capabilities: ['B2B CONTENT', 'LEAD GEN', 'PAID MEDIA', 'POSITIONING'],
+        notes: [
+          'Build authority around real expertise.',
+          'Capture demand from professional audiences.',
+          'Reach decision-makers with focused campaigns.',
+          'Clarify category and point of view.',
+        ],
       },
     ],
   },
 
   pointOfView: {
-    label: '02 / OUR POINT OF VIEW',
-    statement: [
-      "Better marketing doesn't begin with more execution.",
-      'It begins with better understanding.',
-    ],
-    left: "Most companies don't need more scattered marketing.",
-    right: 'We start by understanding the business, audience, market and objective.',
+    label: 'OUR POINT OF VIEW',
+    left:
+      'We take the time to understand your market, your customers and what makes your brand different. Better strategy leads to clearer creative and stronger business decisions.',
+    right:
+      'In a noisy world, we help brands find clarity, focus and momentum — and turn it into meaningful growth.',
   },
 
   work: {
-    label: '04 / SELECTED WORK',
-    heading: 'Work built around real business problems.',
-    intro:
-      'Every engagement starts from a business problem and ends in something a team can run. These are the systems we build.',
+    label: 'SELECTED WORK',
     viewAll: { label: 'View all work', href: '/fr/work' },
-    /**
-     * Disciplines, pas études de cas : aucun projet approuvé n'existe dans le
-     * dépôt. Chaque entrée décrit ce que la discipline produit réellement, et
-     * ne revendique ni client, ni année, ni résultat.
-     */
-    disciplines: [
+    projects: [
       {
-        key: 'brand',
-        index: '01',
-        name: 'Brand systems',
-        disciplines: 'POSITIONING · IDENTITY · PACKAGING',
-        body: 'A position, a visual language and the rules that keep it consistent once a dozen people start using it.',
+        name: 'PIKOTA',
+        disciplines: 'Brand Strategy · Packaging · Digital',
+        body: 'A coordinated brand system for a consumer food brand, from strategic framing to digital presentation.',
       },
       {
-        key: 'campaign',
-        index: '02',
-        name: 'Digital campaigns',
-        disciplines: 'CONTENT · PAID MEDIA · CONVERSION',
-        body: 'Channels coordinated around one objective, with creative built to be tested rather than admired.',
+        name: 'OGLO NUTS',
+        disciplines: 'Corporate · B2B · Web',
+        body: 'A clearer corporate and B2B story across services, brands and digital touchpoints.',
       },
       {
-        key: 'technology',
-        index: '03',
-        name: 'Technology platforms',
-        disciplines: 'WEB · AUTOMATION · REPORTING',
-        body: 'Sites, workflows and reporting that a team can operate without calling an agency every week.',
+        name: 'AMSD',
+        disciplines: 'Communication · Content · Digital',
+        body: 'Communication delivery structured around useful content and consistent digital execution.',
       },
     ],
   },
 
   method: {
-    label: '05 / HOW WE WORK',
-    heading: ['A structured process.', 'Not a preset package.'],
+    label: 'OUR PROCESS',
     steps: [
-      {
-        number: '01',
-        name: ['RESEARCH', '& BRIEFING'],
-        body: 'Understand the context, objectives and indicators.',
-      },
-      {
-        number: '02',
-        name: ['DESIGN', '& VALIDATION'],
-        body: 'Build the strategy, direction and system.',
-      },
-      {
-        number: '03',
-        name: ['EXECUTION'],
-        body: 'Deploy, measure, improve.',
-      },
+      { number: '01', shortName: 'Research & Briefing', body: 'We listen, explore and define the right opportunity.' },
+      { number: '02', shortName: 'Design & Validation', body: 'We create, test and refine the best direction.' },
+      { number: '03', shortName: 'Execution', body: 'We launch, measure and improve what works.' },
     ],
   },
 
   evidence: {
-    label: '06 / SELECTED EVIDENCE',
-    heading: 'What strategy becomes when it reaches execution.',
-    /**
-     * Preuve qualitative uniquement. Le dépôt ne contient aucun résultat
-     * chiffré vérifié, et un chiffre inventé vaut moins que rien.
-     */
+    label: 'SELECTED EVIDENCE',
     categories: [
       {
         label: 'STRATEGY',
-        deliverable: 'Diagnostic & roadmap',
-        body: 'Where the business actually loses ground, which levers matter, and the order to pull them in.',
+        deliverable: 'Strategic Foundations',
+        body: 'Market analysis, audience research and strategic roadmaps that identify the biggest opportunities.',
+        points: ['Market & competitor analysis', 'Audience research', 'Strategic roadmap'],
       },
       {
         label: 'BRAND',
-        deliverable: 'Identity system',
-        body: 'Positioning turned into a visual and verbal language, with the rules that keep it intact.',
+        deliverable: 'Brand System',
+        body: 'Positioning translated into a clear verbal and visual system that teams can actually use.',
+        points: ['Positioning', 'Identity system', 'Messaging'],
       },
       {
         label: 'DIGITAL',
-        deliverable: 'Campaign & content system',
-        body: 'A production rhythm and a media plan built around one objective, not four disconnected ones.',
+        deliverable: 'Campaign System',
+        body: 'Content, distribution and performance working together around one commercial objective.',
+        points: ['Content system', 'Paid media', 'Measurement'],
       },
       {
         label: 'TECHNOLOGY',
-        deliverable: 'Platform & automation',
-        body: 'The site, the workflows and the reporting that let the team run the work themselves.',
+        deliverable: 'Digital Platform',
+        body: 'Web, automation and reporting combined into practical operating tools.',
+        points: ['Web experience', 'Automation', 'Reporting'],
       },
     ],
   },
 
   faq: {
-    label: '07 / COMMON QUESTIONS',
-    support: 'A few things clients usually want to know.',
+    label: 'FREQUENTLY ASKED QUESTIONS',
     items: [
       {
         question: 'What kind of companies do you work with?',
         answer:
-          'Companies with something real to grow — established brands, institutions and businesses building their market position. The engagement is shaped by the problem, not by a fixed package.',
+          'We work with ambitious companies, institutions and brands that value strategic thinking, strong creative systems and measurable execution.',
       },
       {
         question: 'Do you work on strategy only?',
         answer:
-          'Yes. A diagnostic, a positioning or a roadmap can be the whole engagement. Strategy that never reaches execution is still worth having when it clarifies where to act.',
+          'Yes. Strategy can be a standalone engagement when clarity and direction are the priority.',
       },
       {
         question: 'Can Global Comm handle execution as well?',
         answer:
-          'Yes. Branding, content, digital marketing, web and automation can all be delivered by the same team that set the direction, which is what keeps the work coherent.',
+          'Yes. Branding, content, digital marketing, web and automation can be coordinated under the same strategic direction.',
       },
       {
         question: 'How does a project usually start?',
         answer:
-          'With a conversation about the situation, not a brief. The first exchange establishes the context, the objective and whether we are the right partner for it.',
+          'With a discovery conversation that establishes context, objectives, constraints and the right next step.',
       },
       {
         question: 'Do you offer ongoing engagements?',
         answer:
-          'Yes. Recurring engagements suit teams who need continuity across brand, content and campaigns. Scope, deliverables and reporting rhythm are defined at the start.',
+          'Yes. Ongoing engagements are structured around a clear scope, cadence, responsibilities and reporting rhythm.',
       },
     ],
   },
 
   finalCTA: {
-    heading: ['READY TO BUILD', 'WHAT COMES NEXT?'],
+    heading: 'READY TO BUILD WHAT COMES NEXT?',
     action: { label: 'Tell us about your project', href: '/fr/contact' },
-    support: 'Tell us where you are and what you want to improve. We will tell you what we would do first.',
+    support: 'New markets. Stronger brands. Real business growth.',
   },
 
   footer: {
@@ -236,7 +200,8 @@ export const homeV5 = {
     copyright: '© 2026 Global Communication Corporate™',
     legal: [
       { label: 'Privacy', href: '/fr/contact' },
-      { label: 'Legal', href: '/fr/contact' },
+      { label: 'Terms', href: '/fr/contact' },
+      { label: 'Cookies', href: '/fr/contact' },
     ],
   },
 } as const
