@@ -118,6 +118,7 @@ export const homeV5 = {
 
   evidence: {
     label: 'SELECTED EVIDENCE',
+    heading: 'What strategy becomes when it reaches execution.',
     categories: [
       {
         label: 'STRATEGY',
@@ -148,6 +149,7 @@ export const homeV5 = {
 
   faq: {
     label: 'FREQUENTLY ASKED QUESTIONS',
+    support: 'A few things clients usually want to know.',
     items: [
       {
         question: 'What kind of companies do you work with?',
