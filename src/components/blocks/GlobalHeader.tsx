@@ -5,9 +5,9 @@ import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetClose, SheetContent, SheetTitle } from '@/components/ui/sheet'
 import { Container } from '@/components/blocks/Layout'
-import { homeV4 } from '@/content/homeV4'
+import { homeV5 } from '@/content/homeV5'
 
-const { header } = homeV4
+const { header } = homeV5
 
 /**
  * En-tête : 72px desktop, 64px mobile, même fond que le Hero dont il fait

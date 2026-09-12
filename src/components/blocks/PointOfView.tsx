@@ -1,7 +1,7 @@
 import { Container, Grid, SectionLabel } from '@/components/blocks/Layout'
-import { homeV4 } from '@/content/homeV4'
+import { homeV5 } from '@/content/homeV5'
 
-const { pointOfView } = homeV4
+const { pointOfView } = homeV5
 
 /**
  * 02 — Point de vue stratégique.
@@ -12,26 +12,27 @@ const { pointOfView } = homeV4
  */
 export function PointOfView() {
   return (
-    <section className="border-b border-border bg-background" aria-labelledby="pov-heading">
-      <Container className="py-28 md:py-32">
+    <section className="bg-background" aria-labelledby="pov-heading">
+      <Container className="py-32 md:py-40">
         <Grid>
-          <SectionLabel className="lg:col-span-2">{pointOfView.label}</SectionLabel>
-          <h2 id="pov-heading" className="mt-6 text-heading-32 text-foreground md:text-heading-48 lg:col-span-7 lg:col-start-4 lg:mt-0">
-            {pointOfView.statement.map((line) => (
-              <span key={line} className="block">
-                {line}
-              </span>
-            ))}
+          <SectionLabel className="lg:col-span-3">{pointOfView.label}</SectionLabel>
+
+          <h2
+            id="pov-heading"
+            className="mt-8 text-heading-32 text-foreground md:text-heading-56 lg:col-span-9 lg:col-start-4 lg:mt-0"
+          >
+            {/* La seconde ligne est la bascule de l'argument : elle porte le bleu. */}
+            <span className="block max-w-[20ch] text-muted-foreground">{pointOfView.statement[0]}</span>
+            <span className="mt-3 block max-w-[20ch]">{pointOfView.statement[1]}</span>
           </h2>
         </Grid>
 
-        <hr className="mt-16 border-border md:mt-20" />
-
-        <Grid className="mt-12 md:mt-16">
-          <p className="max-w-[44ch] text-copy-18 text-muted-foreground lg:col-span-5">
+        <Grid className="mt-24 md:mt-28">
+          <p className="max-w-[34ch] text-copy-18 text-muted-foreground lg:col-span-4 lg:col-start-4">
             {pointOfView.left}
           </p>
-          <p className="mt-6 max-w-[44ch] text-copy-18 text-muted-foreground lg:col-span-5 lg:col-start-7 lg:mt-0">
+          <p className="mt-8 max-w-[34ch] text-copy-18 text-foreground lg:col-span-4 lg:col-start-9 lg:mt-0">
+            <span aria-hidden className="mb-5 block h-px w-10 bg-primary" />
             {pointOfView.right}
           </p>
         </Grid>

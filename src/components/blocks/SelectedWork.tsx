@@ -1,78 +1,168 @@
-import { Container, Grid, SectionLabel, Slot } from '@/components/blocks/Layout'
-import { homeV4 } from '@/content/homeV4'
+'use client'
 
-const { work } = homeV4
+import Link from 'next/link'
+import { ArrowUpRight } from 'lucide-react'
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
+import {
+  BrandSystemPlate,
+  DigitalCampaignPlate,
+  TechnologyPlate,
+} from '@/components/blocks/WorkPlates'
+import { Container, SectionLabel } from '@/components/blocks/Layout'
+import { homeV5 } from '@/content/homeV5'
+
+const { work } = homeV5
+
+const PLATES = {
+  brand: BrandSystemPlate,
+  campaign: DigitalCampaignPlate,
+  technology: TechnologyPlate,
+} as const
 
 /**
  * 04 — Réalisations.
  *
- * Le point d'art direction le plus fort après le Hero. Chaque projet a sa
- * propre composition : le premier pleine largeur en 16:9, le second en 4/7
- * texte-visuel, le troisième inversé 7/4. Jamais trois cartes égales sur une
- * grille en trois colonnes.
+ * Le moment d'énergie visuelle de la page. Trois disciplines, trois
+ * compositions différentes : la première pleine largeur, les deux suivantes en
+ * 7/5 puis 5/7 inversé. Jamais trois cartes égales.
  *
- * Aucun projet approuvé n'existe dans le dépôt : les trois entrées sont donc
- * des emplacements. La composition, elle, est réelle et prête à recevoir les
- * visuels.
+ * Sur mobile, un Carousel Embla remplace l'empilement : trois plaques hautes
+ * à la suite se parcourent mal au pouce, alors qu'un balayage horizontal les
+ * présente une par une à pleine échelle.
+ *
+ * Les plaques représentent les disciplines, pas des projets clients — aucun
+ * n'est approuvé dans le dépôt. Rien ne prétend le contraire à l'écran.
  */
-export function SelectedWork() {
-  const [first, second, third] = work.projects
+function Entry({
+  entry,
+  className,
+  reversed = false,
+}: {
+  entry: (typeof work.disciplines)[number]
+  className?: string
+  reversed?: boolean
+}) {
+  const Plate = PLATES[entry.key]
 
   return (
-    <section className="border-b border-border bg-background" aria-labelledby="work-heading">
-      <Container className="py-32 md:py-36">
-        <Grid>
-          <SectionLabel className="lg:col-span-2">{work.label}</SectionLabel>
-          <h2
-            id="work-heading"
-            className="mt-6 max-w-[20ch] text-heading-32 text-foreground md:text-heading-48 lg:col-span-7 lg:col-start-5 lg:mt-0"
+    <article className={className}>
+      <div
+        className={`grid gap-8 lg:grid-cols-12 lg:gap-12 ${reversed ? '' : ''}`}
+      >
+        <div
+          className={`group relative lg:col-span-7 ${reversed ? 'lg:order-2 lg:col-start-6' : ''}`}
+        >
+          <div className="overflow-hidden transition-transform duration-200 ease-out group-hover:scale-[1.01]">
+            <Plate />
+          </div>
+        </div>
+
+        <div
+          className={`flex flex-col justify-end lg:col-span-4 lg:pb-2 ${reversed ? 'lg:order-1 lg:col-start-1' : 'lg:col-start-9'}`}
+        >
+          <span
+            aria-hidden
+            className="font-[family-name:var(--font-geist-mono)] text-label-12 text-primary"
           >
-            {work.heading}
-          </h2>
-        </Grid>
+            {entry.index}
+          </span>
+          <h3 className="mt-4 text-heading-24 text-foreground">{entry.name}</h3>
+          <p className="mt-3 font-[family-name:var(--font-geist-mono)] text-label-12 uppercase text-muted-foreground">
+            {entry.disciplines}
+          </p>
+          <p className="mt-5 max-w-[38ch] text-copy-16 text-muted-foreground">{entry.body}</p>
+        </div>
+      </div>
+    </article>
+  )
+}
 
-        {/* --- Projet 01 : pleine largeur, le plus fort ------------------- */}
-        <article className="mt-20 md:mt-24">
-          <Slot label={first.pending} title={first.slot} className="aspect-[16/9] w-full" />
-          <div className="mt-5 flex flex-wrap items-baseline justify-between gap-4 border-t border-border pt-5">
-            <p className="font-[family-name:var(--font-geist-mono)] text-label-12 uppercase text-muted-foreground">
-              01 / SECTOR / LOCATION
-            </p>
-            <p className="font-[family-name:var(--font-geist-mono)] text-label-12 uppercase text-muted-foreground">
-              {work.viewLabel} ↗
-            </p>
-          </div>
-        </article>
+export function SelectedWork() {
+  const [lead, ...rest] = work.disciplines
+  const LeadPlate = PLATES[lead.key]
 
-        {/* --- Projet 02 : texte à gauche, visuel à droite ---------------- */}
-        <Grid className="mt-24 md:mt-28">
-          <div className="lg:col-span-4 lg:pt-6">
-            <h3 className="text-heading-24 text-foreground">{second.slot}</h3>
-            <p className="mt-4 max-w-[36ch] text-copy-16 text-muted-foreground">{second.pending}</p>
-            <p className="mt-6 font-[family-name:var(--font-geist-mono)] text-label-12 uppercase text-muted-foreground">
-              {work.viewLabel} ↗
-            </p>
+  return (
+    <section className="bg-background" aria-labelledby="work-heading">
+      <Container className="py-28 md:py-36">
+        <div className="grid gap-8 lg:grid-cols-12 lg:gap-12">
+          <SectionLabel className="lg:col-span-3">{work.label}</SectionLabel>
+          <div className="lg:col-span-8 lg:col-start-5">
+            <h2 id="work-heading" className="max-w-[18ch] text-heading-32 text-foreground md:text-heading-56">
+              {work.heading}
+            </h2>
+            <p className="mt-6 max-w-[52ch] text-copy-18 text-muted-foreground">{work.intro}</p>
           </div>
-          <Slot
-            label="Project visual to be supplied"
-            className="mt-8 aspect-[16/10] w-full lg:col-span-7 lg:col-start-6 lg:mt-0"
-          />
-        </Grid>
+        </div>
 
-        {/* --- Projet 03 : composition inversée --------------------------- */}
-        <Grid className="mt-24 md:mt-28">
-          <Slot
-            label="Project visual to be supplied"
-            className="aspect-[4/3] w-full lg:col-span-7 lg:row-start-1"
-          />
-          <div className="mt-8 lg:col-span-4 lg:col-start-9 lg:row-start-1 lg:mt-0 lg:pt-6">
-            <h3 className="text-heading-24 text-foreground">{third.slot}</h3>
-            <p className="mt-4 max-w-[36ch] text-copy-16 text-muted-foreground">{third.pending}</p>
-            <p className="mt-6 font-[family-name:var(--font-geist-mono)] text-label-12 uppercase text-muted-foreground">
-              {work.viewLabel} ↗
-            </p>
-          </div>
-        </Grid>
+        {/* --- Desktop : compositions asymétriques ------------------------ */}
+        <div className="mt-20 hidden md:block">
+          {/* Entrée principale : plaque pleine largeur, métadonnées en pied. */}
+          <article className="group">
+            <div className="overflow-hidden transition-transform duration-200 ease-out group-hover:scale-[1.01]">
+              <LeadPlate />
+            </div>
+            <div className="mt-6 grid gap-6 lg:grid-cols-12">
+              <div className="lg:col-span-5">
+                <span
+                  aria-hidden
+                  className="font-[family-name:var(--font-geist-mono)] text-label-12 text-primary"
+                >
+                  {lead.index}
+                </span>
+                <h3 className="mt-3 text-heading-32 text-foreground">{lead.name}</h3>
+              </div>
+              <div className="lg:col-span-6 lg:col-start-7">
+                <p className="font-[family-name:var(--font-geist-mono)] text-label-12 uppercase text-muted-foreground">
+                  {lead.disciplines}
+                </p>
+                <p className="mt-4 max-w-[46ch] text-copy-16 text-muted-foreground">{lead.body}</p>
+              </div>
+            </div>
+          </article>
+
+          <Entry entry={rest[0]} className="mt-28" />
+          <Entry entry={rest[1]} className="mt-28" reversed />
+        </div>
+
+        {/* --- Mobile : parcours au pouce -------------------------------- */}
+        <div className="mt-14 md:hidden">
+          <Carousel opts={{ align: 'start' }}>
+            <CarouselContent>
+              {work.disciplines.map((entry) => {
+                const Plate = PLATES[entry.key]
+                return (
+                  <CarouselItem key={entry.key} className="basis-[88%]">
+                    <Plate />
+                    <span
+                      aria-hidden
+                      className="mt-5 block font-[family-name:var(--font-geist-mono)] text-label-12 text-primary"
+                    >
+                      {entry.index}
+                    </span>
+                    <h3 className="mt-3 text-heading-24 text-foreground">{entry.name}</h3>
+                    <p className="mt-2 font-[family-name:var(--font-geist-mono)] text-label-12 uppercase text-muted-foreground">
+                      {entry.disciplines}
+                    </p>
+                    <p className="mt-4 text-copy-16 text-muted-foreground">{entry.body}</p>
+                  </CarouselItem>
+                )
+              })}
+            </CarouselContent>
+          </Carousel>
+        </div>
+
+        <div className="mt-20">
+          <Link
+            href={work.viewAll.href}
+            className="group inline-flex items-center gap-2 border-b border-foreground/25 pb-2 text-copy-18 text-foreground transition-colors duration-150 hover:border-primary hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+          >
+            {work.viewAll.label}
+            <ArrowUpRight
+              aria-hidden
+              className="size-4 transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+            />
+          </Link>
+        </div>
       </Container>
     </section>
   )

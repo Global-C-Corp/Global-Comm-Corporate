@@ -7,9 +7,9 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion'
 import { Container, Grid, SectionLabel } from '@/components/blocks/Layout'
-import { homeV4 } from '@/content/homeV4'
+import { homeV5 } from '@/content/homeV5'
 
-const { faq } = homeV4
+const { faq } = homeV5
 
 /**
  * 07 — Questions fréquentes.

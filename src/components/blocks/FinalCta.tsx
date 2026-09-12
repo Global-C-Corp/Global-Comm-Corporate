@@ -1,9 +1,11 @@
 import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
+import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 import { Container, Grid } from '@/components/blocks/Layout'
-import { homeV4 } from '@/content/homeV4'
+import { homeV5 } from '@/content/homeV5'
 
-const { finalCTA } = homeV4
+const { finalCTA } = homeV5
 
 /**
  * 08 — Appel à l'action final.
@@ -31,18 +33,25 @@ export function FinalCta() {
             ))}
           </h2>
 
-          <div className="mt-12 lg:col-span-4 lg:mt-0 lg:flex lg:flex-col lg:justify-end">
+          <div className="mt-14 lg:col-span-4 lg:mt-0 lg:flex lg:flex-col lg:justify-end">
             <p className="max-w-[38ch] text-copy-16 text-primary-foreground/85">{finalCTA.support}</p>
-            <Link
-              href={finalCTA.action.href}
-              className="group mt-8 inline-flex items-center gap-3 border-b border-primary-foreground/40 pb-3 text-copy-18 text-primary-foreground transition-colors duration-150 hover:border-primary-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-background"
+
+            <Separator className="mt-8 bg-primary-foreground/25" />
+
+            <Button
+              asChild
+              size="lg"
+              className="mt-8 w-fit bg-background text-foreground hover:bg-foreground hover:text-background focus-visible:outline-background"
             >
-              {finalCTA.action.label}
-              <ArrowRight
-                aria-hidden
-                className="size-5 transition-transform duration-200 group-hover:translate-x-1"
-              />
-            </Link>
+              <Link href={finalCTA.action.href}>
+                {finalCTA.action.label}
+                <ArrowRight aria-hidden className="transition-transform duration-200 group-hover:translate-x-1" />
+              </Link>
+            </Button>
+
+            <p className="mt-6 font-[family-name:var(--font-geist-mono)] text-label-12 uppercase text-primary-foreground/85">
+              Rabat · Morocco — FR / EN / ES
+            </p>
           </div>
         </Grid>
       </Container>

@@ -1,17 +1,16 @@
 /**
- * Contenu de la Home V4 — maquette frontend isolée.
+ * Contenu de la Home V5.1 — maquette frontend isolée.
  *
  * Copie fournie mot pour mot par le brief. Aucun client, chiffre, partenariat,
- * témoignage ni visuel n'est inventé : tout ce que le dépôt ne contient pas
- * réellement apparaît comme un emplacement explicite.
+ * témoignage ni visuel n'est inventé — et rien n'est signalé comme manquant à
+ * l'écran non plus : ce qui n'existe pas est retiré de la composition, pas
+ * rendu sous forme de cadre vide.
  *
  * La section Expertises n'est pas ici : elle est figée et lit son propre
  * contenu depuis `homeHalbert.ts`.
  */
 
-export type Pending = { readonly pending: string }
-
-export const homeV4 = {
+export const homeV5 = {
   header: {
     wordmark: 'GLOBAL COMMUNICATION CORPORATE™',
     nav: [
@@ -33,27 +32,54 @@ export const homeV4 = {
       'From strategy to execution, one partner connecting brand, marketing and digital growth.',
   },
 
-  trust: {
-    label: 'TRUSTED BY',
-    support: 'Selected companies, institutions and brands we’ve worked with',
-    /**
-     * Cinq emplacements. Le dépôt ne contient aucun logo client : ni fichier
-     * dans public/, ni média en base. Rien n'est fabriqué à la place.
-     */
-    logos: [
-      { pending: 'Client logo 01' },
-      { pending: 'Client logo 02' },
-      { pending: 'Client logo 03' },
-      { pending: 'Client logo 04' },
-      { pending: 'Client logo 05' },
-    ] as readonly Pending[],
+  /**
+   * Rail de logos retiré, pas masqué par du vide : aucun logo client approuvé
+   * n'existe dans le dépôt, et une rangée de cadres vides coûte plus de
+   * crédibilité qu'elle n'en apporte. La confiance repose ici sur du contenu
+   * vrai — le périmètre d'intervention, énoncé sans chiffre inventé.
+   */
+  credibility: {
+    label: 'HOW WE WORK WITH CLIENTS',
+    items: [
+      { term: 'ENGAGEMENT', detail: 'Project-based or ongoing, defined before we start.' },
+      { term: 'SCOPE', detail: 'Objectives, deliverables and validation points in writing.' },
+      { term: 'DISCIPLINES', detail: 'Strategy, brand, digital and technology under one team.' },
+    ],
   },
 
+  /**
+   * Compétence opérationnelle, jamais un partenariat officiel ni une
+   * certification : les capacités listées sont génériques et vraies.
+   */
   platforms: {
     label: 'PLATFORM EXPERTISE',
     support: 'Built across the platforms your customers already use',
-    /** Compétence opérationnelle, pas un partenariat officiel ni une certification. */
-    items: ['GOOGLE', 'META', 'TIKTOK', 'LINKEDIN'],
+    items: [
+      {
+        key: 'google',
+        name: 'GOOGLE',
+        capabilities: ['SEARCH', 'PAID MEDIA', 'ANALYTICS', 'SEO'],
+        body: 'Intent-driven demand: what people already search for, captured and measured.',
+      },
+      {
+        key: 'meta',
+        name: 'META',
+        capabilities: ['SOCIAL', 'PAID MEDIA', 'RETARGETING', 'CONTENT'],
+        body: 'Audience building and creative iteration at the scale the platform rewards.',
+      },
+      {
+        key: 'tiktok',
+        name: 'TIKTOK',
+        capabilities: ['CONTENT', 'PAID MEDIA', 'CREATIVE TESTING'],
+        body: 'Native creative produced to be tested, not adapted from a campaign film.',
+      },
+      {
+        key: 'linkedin',
+        name: 'LINKEDIN',
+        capabilities: ['B2B CONTENT', 'LEAD GENERATION', 'PAID MEDIA'],
+        body: 'Positioning and lead capture for considered, long-cycle purchases.',
+      },
+    ],
   },
 
   pointOfView: {
@@ -69,24 +95,35 @@ export const homeV4 = {
   work: {
     label: '04 / SELECTED WORK',
     heading: 'Work built around real business problems.',
-    viewLabel: 'VIEW PROJECT',
+    intro:
+      'Every engagement starts from a business problem and ends in something a team can run. These are the systems we build.',
+    viewAll: { label: 'View all work', href: '/fr/work' },
     /**
-     * Aucun projet approuvé n'existe dans le dépôt — 0 média, aucune fiche
-     * Pikota en base. Les trois entrées sont donc des emplacements, et le
-     * brief est clair : mieux vaut deux projets réels que trois inventés.
+     * Disciplines, pas études de cas : aucun projet approuvé n'existe dans le
+     * dépôt. Chaque entrée décrit ce que la discipline produit réellement, et
+     * ne revendique ni client, ni année, ni résultat.
      */
-    projects: [
+    disciplines: [
       {
-        slot: 'Project 01',
-        pending: 'Flagship project — name, disciplines, context and large visual to be supplied',
+        key: 'brand',
+        index: '01',
+        name: 'Brand systems',
+        disciplines: 'POSITIONING · IDENTITY · PACKAGING',
+        body: 'A position, a visual language and the rules that keep it consistent once a dozen people start using it.',
       },
       {
-        slot: 'Project 02',
-        pending: 'Second project — name, disciplines, context and visual to be supplied',
+        key: 'campaign',
+        index: '02',
+        name: 'Digital campaigns',
+        disciplines: 'CONTENT · PAID MEDIA · CONVERSION',
+        body: 'Channels coordinated around one objective, with creative built to be tested rather than admired.',
       },
       {
-        slot: 'Project 03',
-        pending: 'Third project — only if approved material exists',
+        key: 'technology',
+        index: '03',
+        name: 'Technology platforms',
+        disciplines: 'WEB · AUTOMATION · REPORTING',
+        body: 'Sites, workflows and reporting that a team can operate without calling an agency every week.',
       },
     ],
   },
@@ -123,23 +160,23 @@ export const homeV4 = {
     categories: [
       {
         label: 'STRATEGY',
-        body: 'Positioning, objectives and the indicators a team can actually follow.',
-        pending: 'Approved strategic deliverable to be supplied',
+        deliverable: 'Diagnostic & roadmap',
+        body: 'Where the business actually loses ground, which levers matter, and the order to pull them in.',
       },
       {
         label: 'BRAND',
-        body: 'Identity systems, messaging and the supports that carry them.',
-        pending: 'Approved brand system or packaging artifact to be supplied',
+        deliverable: 'Identity system',
+        body: 'Positioning turned into a visual and verbal language, with the rules that keep it intact.',
       },
       {
         label: 'DIGITAL',
-        body: 'Content, campaigns and channels coordinated around one objective.',
-        pending: 'Approved campaign or content system to be supplied',
+        deliverable: 'Campaign & content system',
+        body: 'A production rhythm and a media plan built around one objective, not four disconnected ones.',
       },
       {
         label: 'TECHNOLOGY',
-        body: 'Websites, automation and reporting built to be used, not admired.',
-        pending: 'Approved website or automation artifact to be supplied',
+        deliverable: 'Platform & automation',
+        body: 'The site, the workflows and the reporting that let the team run the work themselves.',
       },
     ],
   },
@@ -196,7 +233,6 @@ export const homeV4 = {
       { label: 'EN', href: '/en' },
       { label: 'ES', href: '/es' },
     ],
-    external: { label: 'LinkedIn', pending: 'Official LinkedIn URL to be supplied' },
     copyright: '© 2026 Global Communication Corporate™',
     legal: [
       { label: 'Privacy', href: '/fr/contact' },

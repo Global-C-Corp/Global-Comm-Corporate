@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import { Container, Grid } from '@/components/blocks/Layout'
-import { homeV4 } from '@/content/homeV4'
+import { homeV5 } from '@/content/homeV5'
 
-const { footer } = homeV4
+const { footer } = homeV5
 
 /**
  * 09 — Pied de page.
@@ -22,10 +22,12 @@ export function Footer() {
             <p className="text-label-12 font-medium tracking-[0.04em] text-foreground">
               {footer.wordmark}
             </p>
-            <p className="mt-4 text-copy-16 text-muted-foreground">{footer.location}</p>
+            <p className="mt-4 font-[family-name:var(--font-geist-mono)] text-label-12 uppercase text-muted-foreground">
+              {footer.location}
+            </p>
           </div>
 
-          <nav className="mt-10 lg:col-span-3 lg:mt-0" aria-label="Footer">
+          <nav className="mt-10 lg:col-span-3 lg:col-start-7 lg:mt-0" aria-label="Footer">
             <ul className="space-y-3">
               {footer.links.map((item) => (
                 <li key={item.label}>
@@ -40,7 +42,7 @@ export function Footer() {
             </ul>
           </nav>
 
-          <div className="mt-10 lg:col-span-2 lg:mt-0">
+          <div className="mt-10 lg:col-span-2 lg:col-start-11 lg:mt-0">
             <ul className="flex gap-4 lg:flex-col lg:gap-3">
               {footer.locales.map((locale) => (
                 <li key={locale.label}>
@@ -55,11 +57,6 @@ export function Footer() {
             </ul>
           </div>
 
-          <div className="mt-10 lg:col-span-2 lg:mt-0">
-            <p className="font-[family-name:var(--font-geist-mono)] text-label-12 uppercase text-muted-foreground">
-              {footer.external.label} — {footer.external.pending}
-            </p>
-          </div>
         </Grid>
 
         <div className="mt-20 flex flex-wrap items-center justify-between gap-x-8 gap-y-4 border-t border-border pt-8">

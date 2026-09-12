@@ -48,3 +48,6 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Sorties de revue visuelle des maquettes : locales, jamais versionnées.
+artifacts/
