@@ -46,11 +46,15 @@ export function SelectedWork() {
             </Link>
           </article>
 
-          <div className="group overflow-hidden bg-background lg:col-span-6">
+          <Link
+            href="/fr/work"
+            aria-label="View PIKOTA case study"
+            className="group overflow-hidden bg-background focus-visible:z-10 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-ring lg:col-span-6"
+          >
             <div className="h-full transition-transform duration-300 motion-reduce:transform-none group-hover:scale-[1.012]">
               <PikotaPlate />
             </div>
-          </div>
+          </Link>
 
           <div className="grid gap-px bg-border lg:col-span-3">
             <Link
