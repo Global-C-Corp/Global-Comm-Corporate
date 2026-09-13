@@ -13,6 +13,9 @@ import { SelectedWork } from '@/components/blocks/SelectedWork'
 import { mediaURL } from '@/lib/media'
 import { populated } from '@/lib/relations'
 import { getHomePage } from '@/services/cms/globals'
+import { getFeaturedClients } from '@/services/cms/proof'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Global Comm — Home Direct Visual Clone',
@@ -25,7 +28,8 @@ export default async function HomeDesignPreview() {
   const page = await getHomePage(ctx)
 
   const projects = populated<Project>(page?.featuredProjects)
-  const clients = populated<Client>(page?.featuredClients)
+  const selectedClients = populated<Client>(page?.featuredClients)
+  const clients = selectedClients.length > 0 ? selectedClients : await getFeaturedClients(ctx, 16)
 
   const heroSlides: HeroSlide[] = projects
     .map((project) => {
@@ -52,19 +56,16 @@ export default async function HomeDesignPreview() {
     })
     .filter((slide): slide is NonNullable<typeof slide> => slide !== null)
 
-  const heroLogos: HeroLogo[] = clients
-    .map((client) => {
-      const logo = mediaURL(client.logo, 'logo')
-      if (!logo) return null
+  const heroLogos: HeroLogo[] = clients.map((client) => {
+    const logo = mediaURL(client.logo, 'logo')
 
-      return {
-        id: String(client.id),
-        name: client.name,
-        logo,
-        ...(client.websiteURL ? { href: client.websiteURL } : {}),
-      } satisfies HeroLogo
-    })
-    .filter((logo): logo is NonNullable<typeof logo> => logo !== null)
+    return {
+      id: String(client.id),
+      name: client.name,
+      ...(logo ? { logo } : {}),
+      ...(client.websiteURL ? { href: client.websiteURL } : {}),
+    } satisfies HeroLogo
+  })
 
   return (
     <>
