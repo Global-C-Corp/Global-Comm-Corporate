@@ -47,10 +47,10 @@ export default async function HomeDesignPreview() {
         eyebrow: clientName,
         title: project.shortStatement || project.title,
         body: project.excerpt || '',
-        href: project.slug ? `/fr/work/${project.slug}` : undefined,
-      }
+        ...(project.slug ? { href: `/fr/work/${project.slug}` } : {}),
+      } satisfies HeroSlide
     })
-    .filter((slide): slide is HeroSlide => Boolean(slide))
+    .filter((slide): slide is NonNullable<typeof slide> => slide !== null)
 
   const heroLogos: HeroLogo[] = clients
     .map((client) => {
@@ -61,10 +61,10 @@ export default async function HomeDesignPreview() {
         id: String(client.id),
         name: client.name,
         logo,
-        href: client.websiteURL || undefined,
-      }
+        ...(client.websiteURL ? { href: client.websiteURL } : {}),
+      } satisfies HeroLogo
     })
-    .filter((logo): logo is HeroLogo => Boolean(logo))
+    .filter((logo): logo is NonNullable<typeof logo> => logo !== null)
 
   return (
     <>
