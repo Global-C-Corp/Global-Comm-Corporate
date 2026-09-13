@@ -42,15 +42,32 @@ function HeroVisual({ slides }: { slides: HeroSlide[] }) {
     if (!api) return
 
     const sync = () => setCurrent(api.selectedScrollSnap())
+    const stopAutoRotate = () => setAutoRotate(false)
+
     sync()
     api.on('select', sync)
     api.on('reInit', sync)
+    api.on('pointerDown', stopAutoRotate)
 
     return () => {
       api.off('select', sync)
       api.off('reInit', sync)
+      api.off('pointerDown', stopAutoRotate)
     }
   }, [api])
+
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+    const syncMotionPreference = () => {
+      if (media.matches) setAutoRotate(false)
+    }
+
+    syncMotionPreference()
+    media.addEventListener('change', syncMotionPreference)
+
+    return () => media.removeEventListener('change', syncMotionPreference)
+  }, [])
 
   useEffect(() => {
     if (!api || slides.length < 2 || !autoRotate) return
@@ -115,11 +132,18 @@ function HeroVisual({ slides }: { slides: HeroSlide[] }) {
   return (
     <Carousel setApi={setApi} opts={{ loop: true }} className="group">
       <CarouselContent className="-ml-0">
-        {slides.map((slide) => (
+        {slides.map((slide, index) => (
           <CarouselItem key={slide.id} className="pl-0">
             <article className="relative min-h-[29rem] overflow-hidden bg-foreground sm:min-h-[32rem] lg:min-h-[35rem]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={slide.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+              <img
+                src={slide.image}
+                alt=""
+                loading={index === 0 ? 'eager' : 'lazy'}
+                fetchPriority={index === 0 ? 'high' : 'auto'}
+                decoding="async"
+                className="absolute inset-0 h-full w-full object-cover"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-black/82 via-black/18 to-black/12" />
 
               <div className="absolute inset-x-0 bottom-0 p-6 pb-20 text-white sm:p-8 sm:pb-20">
@@ -162,8 +186,7 @@ function HeroVisual({ slides }: { slides: HeroSlide[] }) {
           <button
             type="button"
             aria-label={autoRotate ? 'Pause hero carousel' : 'Play hero carousel'}
-            aria-pressed={!autoRotate}
-            onClick={() => setAutoRotate((value) => !value)}
+                onClick={() => setAutoRotate((value) => !value)}
             className="grid size-11 place-items-center rounded-[4px] border border-white/22 bg-white/8 text-white transition-colors duration-150 hover:border-white/45 hover:bg-white/16 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             {autoRotate ? <Pause aria-hidden className="size-4" /> : <Play aria-hidden className="size-4" />}
@@ -267,7 +290,6 @@ function LogoMarquee({ logos }: { logos: HeroLogo[] }) {
       <button
         type="button"
         aria-label={paused ? 'Play client logo marquee' : 'Pause client logo marquee'}
-        aria-pressed={paused}
         onClick={() => setPaused((value) => !value)}
         className="absolute right-0 top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-[4px] border border-white/22 bg-black/35 text-white backdrop-blur-xl transition-colors duration-150 hover:border-white/45 hover:bg-black/55 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
       >
@@ -288,6 +310,7 @@ export function Hero({
     <HeroSection
       className="min-h-0"
       aria-labelledby="hero-heading"
+      poster={slides[0]?.image}
     >
       <Container className="pb-10 pt-12 md:pb-12 md:pt-16">
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-6">
