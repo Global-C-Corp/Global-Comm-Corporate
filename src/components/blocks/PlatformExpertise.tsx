@@ -1,5 +1,6 @@
 'use client'
 
+import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { Search, BarChart3, LineChart, Settings2 } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Container, SectionLabel } from '@/components/blocks/Layout'
@@ -9,6 +10,20 @@ const { platforms } = homeV5
 const ICONS = [Search, BarChart3, LineChart, Settings2]
 
 export function PlatformExpertise() {
+  const pathname = usePathname()
+  const router = useRouter()
+  const searchParams = useSearchParams()
+
+  const validKeys = new Set(platforms.items.map((item) => item.key as string))
+  const requested = searchParams.get('platform')
+  const active = requested && validKeys.has(requested) ? requested : platforms.items[0].key
+
+  const setPlatform = (value: string) => {
+    const params = new URLSearchParams(searchParams.toString())
+    params.set('platform', value)
+    router.push(`${pathname}?${params.toString()}`, { scroll: false })
+  }
+
   return (
     <section
       id="platform-expertise"
@@ -31,25 +46,22 @@ export function PlatformExpertise() {
           </div>
 
           <div className="min-w-0 lg:col-span-8">
-            <Tabs defaultValue={platforms.items[0].key}>
-              <TabsList
-                variant="line"
-                className="grid h-auto w-full grid-cols-2 gap-0 overflow-hidden border border-border bg-[#FAFAF8] p-1 sm:grid-cols-4"
-              >
+            <Tabs value={active} onValueChange={setPlatform}>
+              <TabsList className="grid h-auto w-full grid-cols-2 gap-1 border border-border bg-[#F5F5F2] p-1 sm:grid-cols-4">
                 {platforms.items.map((item) => (
                   <TabsTrigger
                     key={item.key}
                     value={item.key}
-                    className="min-h-11 min-w-0 rounded-[3px] px-3 py-2 text-label-13 transition-colors duration-150"
+                    className="min-h-11 min-w-0 whitespace-normal rounded-[3px] px-3 py-2 text-center text-label-13 data-[state=active]:border-black/8 data-[state=active]:bg-background data-[state=active]:shadow-[0_1px_2px_rgba(0,0,0,0.08),0_4px_12px_rgba(0,0,0,0.04)]"
                   >
-                    <span className="truncate">{item.name}</span>
+                    {item.name}
                   </TabsTrigger>
                 ))}
               </TabsList>
 
               {platforms.items.map((item) => (
                 <TabsContent key={item.key} value={item.key} className="mt-5">
-                  <div className="grid overflow-hidden border border-border bg-border shadow-[0_1px_2px_rgba(0,0,0,0.04),0_14px_36px_rgba(0,0,0,0.035)] sm:grid-cols-2 xl:grid-cols-4">
+                  <div className="grid overflow-hidden border border-border bg-border sm:grid-cols-2 xl:grid-cols-4">
                     {item.capabilities.map((capability, index) => {
                       const Icon = ICONS[index % ICONS.length]
                       return (
