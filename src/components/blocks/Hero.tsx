@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ArrowUpRight, Pause, Play } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Carousel,
@@ -36,6 +36,7 @@ export type HeroLogo = {
 function HeroVisual({ slides }: { slides: HeroSlide[] }) {
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
+  const [autoRotate, setAutoRotate] = useState(true)
 
   useEffect(() => {
     if (!api) return
@@ -52,7 +53,7 @@ function HeroVisual({ slides }: { slides: HeroSlide[] }) {
   }, [api])
 
   useEffect(() => {
-    if (!api || slides.length < 2) return
+    if (!api || slides.length < 2 || !autoRotate) return
 
     const timer = window.setInterval(() => {
       if (document.visibilityState !== 'visible') return
@@ -62,7 +63,7 @@ function HeroVisual({ slides }: { slides: HeroSlide[] }) {
     }, 6000)
 
     return () => window.clearInterval(timer)
-  }, [api, slides.length])
+  }, [api, autoRotate, slides.length])
 
   if (slides.length === 0) {
     return (
@@ -152,27 +153,42 @@ function HeroVisual({ slides }: { slides: HeroSlide[] }) {
         ))}
       </CarouselContent>
 
-      <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center justify-between bg-background/90 px-4 py-3 backdrop-blur-sm">
-        <span className="font-[family-name:var(--font-geist-mono)] text-label-12 text-muted-foreground">
+      <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center justify-between rounded-[4px] border border-white/18 bg-black/45 px-4 py-3 text-white shadow-[0_1px_2px_rgba(0,0,0,0.42),0_10px_28px_rgba(0,0,0,0.18)] backdrop-blur-xl">
+        <span className="font-[family-name:var(--font-geist-mono)] text-label-12 tabular-nums text-white/72">
           {String(current + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
         </span>
 
         <div className="flex gap-2">
           <button
             type="button"
-            aria-label="Previous hero slide"
-            onClick={() => api?.scrollPrev()}
-            className="grid size-8 place-items-center rounded-full border border-border bg-background text-foreground transition-colors hover:border-foreground"
+            aria-label={autoRotate ? 'Pause hero carousel' : 'Play hero carousel'}
+            aria-pressed={!autoRotate}
+            onClick={() => setAutoRotate((value) => !value)}
+            className="grid size-11 place-items-center rounded-[4px] border border-white/22 bg-white/8 text-white transition-colors duration-150 hover:border-white/45 hover:bg-white/16 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
-            <ArrowLeft aria-hidden className="size-3.5" />
+            {autoRotate ? <Pause aria-hidden className="size-4" /> : <Play aria-hidden className="size-4" />}
+          </button>
+          <button
+            type="button"
+            aria-label="Previous hero slide"
+            onClick={() => {
+              setAutoRotate(false)
+              api?.scrollPrev()
+            }}
+            className="grid size-11 place-items-center rounded-[4px] border border-white/22 bg-white/8 text-white transition-colors duration-150 hover:border-white/45 hover:bg-white/16 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+          >
+            <ArrowLeft aria-hidden className="size-4" />
           </button>
           <button
             type="button"
             aria-label="Next hero slide"
-            onClick={() => api?.scrollNext()}
-            className="grid size-8 place-items-center rounded-full bg-foreground text-background transition-colors hover:bg-primary"
+            onClick={() => {
+              setAutoRotate(false)
+              api?.scrollNext()
+            }}
+            className="grid size-11 place-items-center rounded-[4px] border border-white/22 bg-white text-black transition-colors duration-150 hover:bg-primary hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
-            <ArrowRight aria-hidden className="size-3.5" />
+            <ArrowRight aria-hidden className="size-4" />
           </button>
         </div>
       </div>
@@ -217,6 +233,7 @@ function LogoMark({ logo, duplicate = false }: { logo: HeroLogo; duplicate?: boo
 }
 
 function LogoMarquee({ logos }: { logos: HeroLogo[] }) {
+  const [paused, setPaused] = useState(false)
   const source = logos.length > 0
     ? logos
     : experience.names.map((name, index) => ({
@@ -233,8 +250,8 @@ function LogoMarquee({ logos }: { logos: HeroLogo[] }) {
   if (sequence.length === 0) return null
 
   return (
-    <div className="gc-logo-marquee-viewport relative min-w-0 overflow-hidden lg:col-span-9 [mask-image:linear-gradient(to_right,transparent,black_7%,black_93%,transparent)]">
-      <div className="gc-logo-marquee-track flex w-max">
+    <div className="gc-logo-marquee-viewport relative min-w-0 overflow-hidden pr-14 lg:col-span-9 [mask-image:linear-gradient(to_right,transparent,black_7%,black_88%,transparent)]">
+      <div className="gc-logo-marquee-track flex w-max" data-paused={paused}>
         <div className="gc-logo-marquee-group flex shrink-0 items-center gap-12 pr-12">
           {sequence.map((logo, index) => (
             <LogoMark key={`a-${logo.id}-${index}`} logo={logo} />
@@ -246,6 +263,16 @@ function LogoMarquee({ logos }: { logos: HeroLogo[] }) {
           ))}
         </div>
       </div>
+
+      <button
+        type="button"
+        aria-label={paused ? 'Play client logo marquee' : 'Pause client logo marquee'}
+        aria-pressed={paused}
+        onClick={() => setPaused((value) => !value)}
+        className="absolute right-0 top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-[4px] border border-white/22 bg-black/35 text-white backdrop-blur-xl transition-colors duration-150 hover:border-white/45 hover:bg-black/55 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+      >
+        {paused ? <Play aria-hidden className="size-4" /> : <Pause aria-hidden className="size-4" />}
+      </button>
     </div>
   )
 }
@@ -273,7 +300,7 @@ export function Hero({
               {hero.heading}
             </h1>
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Button asChild size="lg" className="group">
+              <Button asChild size="lg" className="group shadow-[0_1px_2px_rgba(0,0,0,0.35),0_10px_28px_rgba(0,0,255,0.20)]">
                 <Link href={hero.primaryCTA.href}>
                   {hero.primaryCTA.label}
                   <ArrowRight
@@ -282,7 +309,7 @@ export function Hero({
                   />
                 </Link>
               </Button>
-              <Button asChild variant="ghost" size="lg" className="group px-2 text-white hover:bg-white/10 hover:text-white">
+              <Button asChild variant="outline" size="lg" className="group border-white/24 bg-white/8 px-4 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_1px_2px_rgba(0,0,0,0.24)] backdrop-blur-xl hover:border-white/42 hover:bg-white/14 hover:text-white">
                 <Link href={hero.secondaryCTA.href}>
                   {hero.secondaryCTA.label}
                   <ArrowRight
