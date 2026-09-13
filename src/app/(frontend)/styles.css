@@ -206,38 +206,51 @@
 
 
 @layer components {
-  .gc-hero-grain::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    pointer-events: none;
-    opacity: 0.13;
-    mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.52'/%3E%3C/svg%3E");
-    background-size: 180px 180px;
+  .gc-gradient-bar {
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 255, 0.68) 0%,
+      rgba(0, 0, 255, 0.22) 48%,
+      rgba(0, 0, 255, 0) 100%
+    );
+    transform: scaleY(var(--gc-gradient-bar-min));
+    animation: gc-gradient-bar-wave 3s ease-in-out var(--gc-gradient-bar-delay) infinite alternate;
+    will-change: transform, opacity;
   }
 
-  .gc-hero-logo-marquee {
-    animation: gc-hero-logo-marquee 28s linear infinite;
+  @keyframes gc-gradient-bar-wave {
+    0%,
+    100% {
+      transform: scaleY(var(--gc-gradient-bar-min));
+      opacity: 0.9;
+    }
+    50% {
+      transform: scaleY(var(--gc-gradient-bar-max));
+      opacity: 1;
+    }
+  }
+
+  .gc-logo-marquee-track {
+    animation: gc-logo-marquee-loop 24s linear infinite;
     will-change: transform;
   }
 
-  .gc-hero-logo-marquee:hover {
+  .gc-logo-marquee-viewport:hover .gc-logo-marquee-track {
     animation-play-state: paused;
   }
 
-  @keyframes gc-hero-logo-marquee {
+  @keyframes gc-logo-marquee-loop {
     from {
-      transform: translateX(0);
+      transform: translate3d(0, 0, 0);
     }
     to {
-      transform: translateX(-50%);
+      transform: translate3d(-50%, 0, 0);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .gc-hero-logo-marquee {
+    .gc-gradient-bar,
+    .gc-logo-marquee-track {
       animation: none;
       transform: none;
     }
