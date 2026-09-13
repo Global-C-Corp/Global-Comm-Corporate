@@ -243,13 +243,14 @@ function LogoMark({ logo, duplicate = false }: { logo: HeroLogo; duplicate?: boo
       target="_blank"
       rel="noreferrer"
       className={className}
+      translate="no"
       aria-hidden={duplicate || undefined}
       tabIndex={duplicate ? -1 : undefined}
     >
       {content}
     </a>
   ) : (
-    <span className={className} aria-hidden={duplicate || undefined}>
+    <span className={className} translate="no" aria-hidden={duplicate || undefined}>
       {content}
     </span>
   )
@@ -323,7 +324,7 @@ export function Hero({
               {hero.heading}
             </h1>
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Button asChild size="lg" className="group shadow-[0_1px_2px_rgba(0,0,0,0.35),0_10px_28px_rgba(0,0,255,0.20)]">
+              <Button asChild size="lg" className="group shadow-[0_1px_2px_rgba(0,0,0,0.35),0_10px_28px_rgba(0,0,255,0.20)] focus-visible:outline-white">
                 <Link href={hero.primaryCTA.href}>
                   {hero.primaryCTA.label}
                   <ArrowRight
@@ -332,7 +333,7 @@ export function Hero({
                   />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="group border-white/24 bg-white/8 px-4 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_1px_2px_rgba(0,0,0,0.24)] backdrop-blur-xl hover:border-white/42 hover:bg-white/14 hover:text-white">
+              <Button asChild variant="outline" size="lg" className="group border-white/24 bg-white/8 px-4 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_1px_2px_rgba(0,0,0,0.24)] backdrop-blur-xl hover:border-white/42 hover:bg-white/14 hover:text-white focus-visible:outline-white">
                 <Link href={hero.secondaryCTA.href}>
                   {hero.secondaryCTA.label}
                   <ArrowRight
