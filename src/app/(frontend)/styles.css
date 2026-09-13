@@ -203,3 +203,43 @@
     }
   }
 }
+
+
+@layer components {
+  .gc-hero-grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.13;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.86' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='.52'/%3E%3C/svg%3E");
+    background-size: 180px 180px;
+  }
+
+  .gc-hero-logo-marquee {
+    animation: gc-hero-logo-marquee 28s linear infinite;
+    will-change: transform;
+  }
+
+  .gc-hero-logo-marquee:hover {
+    animation-play-state: paused;
+  }
+
+  @keyframes gc-hero-logo-marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .gc-hero-logo-marquee {
+      animation: none;
+      transform: none;
+    }
+  }
+}
