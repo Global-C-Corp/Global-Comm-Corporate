@@ -211,7 +211,9 @@
     will-change: transform;
   }
 
-  .gc-logo-marquee-viewport:hover .gc-logo-marquee-track {
+  .gc-logo-marquee-viewport:hover .gc-logo-marquee-track,
+  .gc-logo-marquee-viewport:focus-within .gc-logo-marquee-track,
+  .gc-logo-marquee-track[data-paused='true'] {
     animation-play-state: paused;
   }
 
