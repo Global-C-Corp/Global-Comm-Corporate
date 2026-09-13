@@ -23,23 +23,26 @@ const VIDEO_URL =
 export function HeroSection({
   className,
   children,
+  poster,
   ...props
-}: ComponentProps<'section'>) {
+}: ComponentProps<'section'> & { poster?: string }) {
   const videoRef = useRef<HTMLVideoElement>(null)
   const [paused, setPaused] = useState(false)
+  const [reducedMotion, setReducedMotion] = useState(false)
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)')
+    const video = videoRef.current
 
     const syncPreference = () => {
-      const video = videoRef.current
+      setReducedMotion(media.matches)
+
       if (!video) return
 
       if (media.matches) {
         video.pause()
-        setPaused(true)
-      } else if (!paused) {
-        void video.play().catch(() => undefined)
+      } else {
+        void video.play().catch(() => setPaused(true))
       }
     }
 
@@ -47,7 +50,7 @@ export function HeroSection({
     media.addEventListener('change', syncPreference)
 
     return () => media.removeEventListener('change', syncPreference)
-  }, [paused])
+  }, [])
 
   const togglePlayback = () => {
     const video = videoRef.current
@@ -66,17 +69,33 @@ export function HeroSection({
       className={cn('relative w-full overflow-hidden bg-[#171525]', className)}
       {...props}
     >
+      {poster ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={poster}
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 z-0 h-full w-full object-cover"
+        />
+      ) : null}
+
       <video
         ref={videoRef}
-        className="absolute inset-0 z-0 h-full w-full object-cover"
+        className={cn(
+          'absolute inset-0 z-0 h-full w-full object-cover transition-opacity duration-200',
+          reducedMotion && paused ? 'opacity-0' : 'opacity-100',
+        )}
         src={VIDEO_URL}
         autoPlay
         loop
         muted
         playsInline
         preload="metadata"
+        poster={poster}
         aria-hidden="true"
         tabIndex={-1}
+        onPlay={() => setPaused(false)}
+        onPause={() => setPaused(true)}
       />
 
       <div
@@ -93,7 +112,6 @@ export function HeroSection({
         onClick={togglePlayback}
         className="absolute right-5 top-5 z-20 grid size-11 place-items-center rounded-[4px] border border-white/25 bg-black/35 text-white shadow-[0_1px_2px_rgba(0,0,0,0.45),0_8px_24px_rgba(0,0,0,0.20)] backdrop-blur-xl transition-colors duration-150 hover:border-white/45 hover:bg-black/55 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
         aria-label={paused ? 'Play hero background video' : 'Pause hero background video'}
-        aria-pressed={paused}
       >
         {paused ? <Play aria-hidden className="size-4" /> : <Pause aria-hidden className="size-4" />}
       </button>
