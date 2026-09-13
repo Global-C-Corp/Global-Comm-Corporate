@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState, type CSSProperties } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -28,8 +28,40 @@ export type HeroSlide = {
 export type HeroLogo = {
   id: string
   name: string
-  logo: string
+  logo?: string
   href?: string
+}
+
+function GradientBarsBackground() {
+  const bars = 20
+
+  return (
+    <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-[#FAFAF8]" aria-hidden>
+      <div className="absolute inset-0 flex">
+        {Array.from({ length: bars }).map((_, index) => {
+          const position = index / (bars - 1)
+          const distance = Math.abs(position - 0.5)
+          const minScale = 0.3 + 0.7 * Math.pow(distance * 2, 1.2)
+          const maxScale = Math.min(1.08, minScale + 0.1)
+
+          return (
+            <span
+              key={index}
+              className="gc-gradient-bar flex-1 origin-bottom"
+              style={
+                {
+                  '--gc-gradient-bar-min': minScale,
+                  '--gc-gradient-bar-max': maxScale,
+                  '--gc-gradient-bar-delay': `${index * 0.18}s`,
+                } as CSSProperties
+              }
+            />
+          )
+        })}
+      </div>
+      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(250,250,248,0.98)_0%,rgba(250,250,248,0.82)_34%,rgba(250,250,248,0.12)_100%)]" />
+    </div>
+  )
 }
 
 function HeroVisual({ slides }: { slides: HeroSlide[] }) {
@@ -179,59 +211,71 @@ function HeroVisual({ slides }: { slides: HeroSlide[] }) {
   )
 }
 
-function LogoMarquee({ logos }: { logos: HeroLogo[] }) {
-  if (logos.length === 0) {
-    return (
-      <div className="grid grid-cols-2 gap-x-6 gap-y-5 sm:grid-cols-5 lg:col-span-9">
-        {experience.names.map((name) => (
-          <div
-            key={name}
-            className="flex min-h-10 items-center border-l border-border pl-5 first:border-l-0 first:pl-0"
-          >
-            <span className="text-heading-20 font-medium tracking-[-0.03em] text-foreground">
-              {name}
-            </span>
-          </div>
-        ))}
-      </div>
-    )
-  }
+function LogoMark({ logo, duplicate = false }: { logo: HeroLogo; duplicate?: boolean }) {
+  const content = logo.logo ? (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={logo.logo}
+      alt={duplicate ? '' : logo.name}
+      className="max-h-8 w-auto max-w-32 object-contain grayscale opacity-70 transition-all duration-200 group-hover:grayscale-0 group-hover:opacity-100"
+      loading={duplicate ? 'lazy' : 'eager'}
+    />
+  ) : (
+    <span className="text-heading-20 font-medium tracking-[-0.03em] text-foreground/68 transition-colors group-hover:text-foreground">
+      {logo.name}
+    </span>
+  )
 
-  const items = logos.length < 6 ? [...logos, ...logos, ...logos] : [...logos, ...logos]
+  const className =
+    'group flex h-12 min-w-32 shrink-0 items-center justify-center px-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring'
+
+  return logo.href ? (
+    <a
+      href={logo.href}
+      target="_blank"
+      rel="noreferrer"
+      className={className}
+      aria-hidden={duplicate || undefined}
+      tabIndex={duplicate ? -1 : undefined}
+    >
+      {content}
+    </a>
+  ) : (
+    <span className={className} aria-hidden={duplicate || undefined}>
+      {content}
+    </span>
+  )
+}
+
+function LogoMarquee({ logos }: { logos: HeroLogo[] }) {
+  const source = logos.length > 0
+    ? logos
+    : experience.names.map((name, index) => ({
+        id: `fallback-${index}`,
+        name,
+      } satisfies HeroLogo))
+
+  const sequence = useMemo(() => {
+    if (source.length === 0) return []
+    const repeats = Math.max(1, Math.ceil(8 / source.length))
+    return Array.from({ length: repeats }, () => source).flat()
+  }, [source])
+
+  if (sequence.length === 0) return null
 
   return (
-    <div className="relative min-w-0 overflow-hidden lg:col-span-9 [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-      <div className="gc-hero-logo-marquee flex w-max items-center gap-12 pr-12">
-        {items.map((logo, index) => {
-          const image = (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              src={logo.logo}
-              alt={logo.name}
-              className="max-h-8 w-auto max-w-32 object-contain grayscale opacity-70 transition-all duration-200 hover:grayscale-0 hover:opacity-100"
-              loading={index < logos.length ? 'eager' : 'lazy'}
-            />
-          )
-
-          return logo.href ? (
-            <a
-              key={`${logo.id}-${index}`}
-              href={logo.href}
-              target="_blank"
-              rel="noreferrer"
-              className="flex h-10 min-w-28 items-center justify-center focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
-            >
-              {image}
-            </a>
-          ) : (
-            <span
-              key={`${logo.id}-${index}`}
-              className="flex h-10 min-w-28 items-center justify-center"
-            >
-              {image}
-            </span>
-          )
-        })}
+    <div className="gc-logo-marquee-viewport relative min-w-0 overflow-hidden lg:col-span-9 [mask-image:linear-gradient(to_right,transparent,black_7%,black_93%,transparent)]">
+      <div className="gc-logo-marquee-track flex w-max">
+        <div className="gc-logo-marquee-group flex shrink-0 items-center gap-12 pr-12">
+          {sequence.map((logo, index) => (
+            <LogoMark key={`a-${logo.id}-${index}`} logo={logo} />
+          ))}
+        </div>
+        <div className="gc-logo-marquee-group flex shrink-0 items-center gap-12 pr-12" aria-hidden>
+          {sequence.map((logo, index) => (
+            <LogoMark key={`b-${logo.id}-${index}`} logo={logo} duplicate />
+          ))}
+        </div>
       </div>
     </div>
   )
@@ -246,12 +290,12 @@ export function Hero({
 }) {
   return (
     <section
-      className="gc-hero-grain relative isolate overflow-hidden bg-[#FAFAF8]"
+      className="relative isolate overflow-hidden bg-[#FAFAF8]"
       aria-labelledby="hero-heading"
     >
-      <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_78%_18%,rgba(0,0,255,0.19),transparent_28%),radial-gradient(circle_at_28%_34%,rgba(255,255,255,0.92),transparent_34%),linear-gradient(135deg,#fafaf8_0%,#f4f4ef_42%,#e5e5ff_100%)]" />
+      <GradientBarsBackground />
 
-      <Container className="pb-10 pt-12 md:pb-12 md:pt-16">
+      <Container className="relative z-10 pb-10 pt-12 md:pb-12 md:pt-16">
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-6">
           <div className="lg:col-span-5">
             <SectionLabel>{hero.eyebrow}</SectionLabel>
@@ -288,22 +332,22 @@ export function Hero({
           </div>
 
           <div className="flex flex-col justify-between lg:col-span-3 lg:pl-4">
-            <p className="max-w-[28ch] text-copy-18 text-foreground/65">{hero.support}</p>
+            <p className="max-w-[28ch] text-copy-18 text-foreground/68">{hero.support}</p>
             <div className="mt-12 lg:mt-0">
-              <Separator />
-              <p className="mt-5 max-w-[25ch] text-copy-14 text-foreground/60">
+              <Separator className="bg-foreground/15" />
+              <p className="mt-5 max-w-[25ch] text-copy-14 text-foreground/62">
                 {hero.closing}
               </p>
             </div>
           </div>
         </div>
 
-        <Separator className="mt-10 bg-foreground/12" />
+        <Separator className="mt-10 bg-foreground/15" />
 
         <div className="grid gap-6 py-8 lg:grid-cols-12 lg:items-center">
           <div className="lg:col-span-3">
             <SectionLabel>{experience.label}</SectionLabel>
-            <p className="mt-2 max-w-[24ch] text-copy-14 text-foreground/55">
+            <p className="mt-2 max-w-[24ch] text-copy-14 text-foreground/58">
               {experience.support}
             </p>
           </div>
