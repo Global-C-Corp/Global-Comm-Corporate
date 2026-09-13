@@ -15,7 +15,7 @@ export function GlobalHeader() {
   const triggerRef = useRef<HTMLButtonElement>(null)
 
   return (
-    <header className="sticky top-0 z-50 border-b border-black/10 bg-[#FAFAF8]/92 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.035)] backdrop-blur-xl supports-[backdrop-filter]:bg-[#FAFAF8]/86">
+    <header className="sticky top-0 z-50 border-b border-black/10 bg-[#FAFAF8]/92 pt-[env(safe-area-inset-top)] shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.035)] backdrop-blur-xl supports-[backdrop-filter]:bg-[#FAFAF8]/86">
       <Container className="flex h-16 items-center justify-between gap-5">
         <Link
           href="/design/home"
