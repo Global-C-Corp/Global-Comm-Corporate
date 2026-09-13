@@ -28,7 +28,7 @@ export function FinalCta() {
               asChild
               size="lg"
               variant="secondary"
-              className="group mt-8 w-full justify-between bg-background text-foreground shadow-[0_1px_2px_rgba(0,0,0,0.18),0_10px_28px_rgba(0,0,0,0.10)] hover:bg-foreground hover:text-background"
+              className="group mt-8 w-full justify-between bg-background text-foreground shadow-[0_1px_2px_rgba(0,0,0,0.18),0_10px_28px_rgba(0,0,0,0.10)] hover:bg-foreground hover:text-background focus-visible:outline-white"
             >
               <Link href={finalCTA.action.href}>
                 {finalCTA.action.label}
