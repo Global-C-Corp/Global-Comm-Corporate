@@ -52,6 +52,7 @@ export function PlatformExpertise() {
                   <TabsTrigger
                     key={item.key}
                     value={item.key}
+                    translate="no"
                     className="min-h-11 min-w-0 whitespace-normal rounded-[3px] px-3 py-2 text-center text-label-13 data-[state=active]:border-black/8 data-[state=active]:bg-background data-[state=active]:shadow-[0_1px_2px_rgba(0,0,0,0.08),0_4px_12px_rgba(0,0,0,0.04)]"
                   >
                     {item.name}
