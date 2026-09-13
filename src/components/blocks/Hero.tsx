@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useMemo, useState, type CSSProperties } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -11,6 +11,7 @@ import {
   type CarouselApi,
 } from '@/components/ui/carousel'
 import { Separator } from '@/components/ui/separator'
+import { HeroSection } from '@/components/ui/glass-video-hero'
 import { Container, SectionLabel } from '@/components/blocks/Layout'
 import { homeV5 } from '@/content/homeV5'
 
@@ -30,38 +31,6 @@ export type HeroLogo = {
   name: string
   logo?: string
   href?: string
-}
-
-function GradientBarsBackground() {
-  const bars = 20
-
-  return (
-    <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden bg-[#FAFAF8]" aria-hidden>
-      <div className="absolute inset-0 flex">
-        {Array.from({ length: bars }).map((_, index) => {
-          const position = index / (bars - 1)
-          const distance = Math.abs(position - 0.5)
-          const minScale = 0.3 + 0.7 * Math.pow(distance * 2, 1.2)
-          const maxScale = Math.min(1.08, minScale + 0.1)
-
-          return (
-            <span
-              key={index}
-              className="gc-gradient-bar flex-1 origin-bottom"
-              style={
-                {
-                  '--gc-gradient-bar-min': minScale,
-                  '--gc-gradient-bar-max': maxScale,
-                  '--gc-gradient-bar-delay': `${index * 0.18}s`,
-                } as CSSProperties
-              }
-            />
-          )
-        })}
-      </div>
-      <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(250,250,248,0.98)_0%,rgba(250,250,248,0.82)_34%,rgba(250,250,248,0.12)_100%)]" />
-    </div>
-  )
 }
 
 function HeroVisual({ slides }: { slides: HeroSlide[] }) {
@@ -217,11 +186,11 @@ function LogoMark({ logo, duplicate = false }: { logo: HeroLogo; duplicate?: boo
     <img
       src={logo.logo}
       alt={duplicate ? '' : logo.name}
-      className="max-h-8 w-auto max-w-32 object-contain grayscale opacity-70 transition-all duration-200 group-hover:grayscale-0 group-hover:opacity-100"
+      className="max-h-8 w-auto max-w-32 object-contain grayscale brightness-0 invert opacity-75 transition-all duration-200 group-hover:grayscale-0 group-hover:brightness-100 group-hover:invert-0 group-hover:opacity-100"
       loading={duplicate ? 'lazy' : 'eager'}
     />
   ) : (
-    <span className="text-heading-20 font-medium tracking-[-0.03em] text-foreground/68 transition-colors group-hover:text-foreground">
+    <span className="text-heading-20 font-medium tracking-[-0.03em] text-white/72 transition-colors group-hover:text-white">
       {logo.name}
     </span>
   )
@@ -289,19 +258,17 @@ export function Hero({
   logos?: HeroLogo[]
 }) {
   return (
-    <section
-      className="relative isolate overflow-hidden bg-[#FAFAF8]"
+    <HeroSection
+      className="min-h-0"
       aria-labelledby="hero-heading"
     >
-      <GradientBarsBackground />
-
-      <Container className="relative z-10 pb-10 pt-12 md:pb-12 md:pt-16">
+      <Container className="pb-10 pt-12 md:pb-12 md:pt-16">
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-6">
           <div className="lg:col-span-5">
-            <SectionLabel>{hero.eyebrow}</SectionLabel>
+            <SectionLabel className="text-white/68">{hero.eyebrow}</SectionLabel>
             <h1
               id="hero-heading"
-              className="mt-7 max-w-[11ch] text-heading-40 text-foreground sm:text-heading-48 lg:text-heading-64 xl:text-heading-72"
+              className="mt-7 max-w-[11ch] text-heading-40 text-white sm:text-heading-48 lg:text-heading-64 xl:text-heading-72"
             >
               {hero.heading}
             </h1>
@@ -315,7 +282,7 @@ export function Hero({
                   />
                 </Link>
               </Button>
-              <Button asChild variant="ghost" size="lg" className="group px-2">
+              <Button asChild variant="ghost" size="lg" className="group px-2 text-white hover:bg-white/10 hover:text-white">
                 <Link href={hero.secondaryCTA.href}>
                   {hero.secondaryCTA.label}
                   <ArrowRight
@@ -332,22 +299,22 @@ export function Hero({
           </div>
 
           <div className="flex flex-col justify-between lg:col-span-3 lg:pl-4">
-            <p className="max-w-[28ch] text-copy-18 text-foreground/68">{hero.support}</p>
+            <p className="max-w-[28ch] text-copy-18 text-white/72">{hero.support}</p>
             <div className="mt-12 lg:mt-0">
-              <Separator className="bg-foreground/15" />
-              <p className="mt-5 max-w-[25ch] text-copy-14 text-foreground/62">
+              <Separator className="bg-white/22" />
+              <p className="mt-5 max-w-[25ch] text-copy-14 text-white/66">
                 {hero.closing}
               </p>
             </div>
           </div>
         </div>
 
-        <Separator className="mt-10 bg-foreground/15" />
+        <Separator className="mt-10 bg-white/22" />
 
         <div className="grid gap-6 py-8 lg:grid-cols-12 lg:items-center">
           <div className="lg:col-span-3">
-            <SectionLabel>{experience.label}</SectionLabel>
-            <p className="mt-2 max-w-[24ch] text-copy-14 text-foreground/58">
+            <SectionLabel className="text-white/68">{experience.label}</SectionLabel>
+            <p className="mt-2 max-w-[24ch] text-copy-14 text-white/62">
               {experience.support}
             </p>
           </div>
@@ -355,6 +322,6 @@ export function Hero({
           <LogoMarquee logos={logos} />
         </div>
       </Container>
-    </section>
+    </HeroSection>
   )
 }
