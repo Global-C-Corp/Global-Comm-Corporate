@@ -35,6 +35,7 @@ const securityHeaders = [
       "frame-ancestors 'self'",
       "object-src 'none'",
       "img-src 'self' data: blob: https:",
+      "media-src 'self' https://d8j0ntlcm91z4.cloudfront.net",
       "font-src 'self' data:",
       "style-src 'self' 'unsafe-inline'",
       // 'unsafe-eval' is dev-only: React Fast Refresh needs it.
