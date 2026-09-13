@@ -15,23 +15,24 @@ export function GlobalHeader() {
   const triggerRef = useRef<HTMLButtonElement>(null)
 
   return (
-    <header className="sticky top-0 z-50 border-b border-border/80 bg-[#FAFAF8]/95 backdrop-blur supports-[backdrop-filter]:bg-[#FAFAF8]/90">
-      <Container className="flex h-14 items-center justify-between gap-5 lg:h-16">
+    <header className="sticky top-0 z-50 border-b border-black/10 bg-[#FAFAF8]/92 shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.035)] backdrop-blur-xl supports-[backdrop-filter]:bg-[#FAFAF8]/86">
+      <Container className="flex h-16 items-center justify-between gap-5">
         <Link
           href="/design/home"
-          className="text-label-12 font-semibold tracking-[-0.01em] text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+          translate="no"
+          className="inline-flex min-h-11 items-center text-label-12 font-semibold tracking-[-0.01em] text-foreground transition-colors duration-150 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
         >
           {header.wordmark}
         </Link>
 
-        <div className="hidden items-center gap-8 md:flex">
+        <div className="hidden items-center gap-5 md:flex">
           <nav aria-label="Primary">
-            <ul className="flex items-center gap-7">
+            <ul className="flex items-center gap-1">
               {header.nav.map((item) => (
                 <li key={item.label}>
                   <Link
                     href={item.href}
-                    className="text-label-13 text-muted-foreground transition-colors duration-150 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
+                    className="inline-flex min-h-11 items-center rounded-[4px] px-3 text-label-13 text-muted-foreground transition-colors duration-150 hover:bg-foreground/[0.045] hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                   >
                     {item.label}
                   </Link>
@@ -40,20 +41,26 @@ export function GlobalHeader() {
             </ul>
           </nav>
 
-          <span className="h-4 w-px bg-border" aria-hidden />
-          <div className="flex items-center gap-2 text-label-12 text-foreground">
+          <span className="h-5 w-px bg-border" aria-hidden />
+
+          <Link
+            href="/en"
+            aria-label="Switch language to English"
+            className="inline-flex min-h-11 items-center gap-2 rounded-[4px] px-3 text-label-12 text-foreground transition-colors duration-150 hover:bg-foreground/[0.045] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+          >
             <Globe2 aria-hidden className="size-3.5" />
             <span>EN</span>
-          </div>
+          </Link>
         </div>
 
         <Sheet open={open} onOpenChange={setOpen}>
           <button
             ref={triggerRef}
             type="button"
-            className="text-label-13 text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring md:hidden"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-[4px] px-3 text-label-13 text-foreground transition-colors duration-150 hover:bg-foreground/[0.045] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring md:hidden"
             aria-haspopup="dialog"
             aria-expanded={open}
+            aria-label="Open navigation menu"
             onClick={() => setOpen(true)}
           >
             MENU
@@ -69,6 +76,7 @@ export function GlobalHeader() {
             <SheetTitle className="text-label-12 font-semibold tracking-[-0.01em]">
               {header.wordmark}
             </SheetTitle>
+
             <nav className="mt-10" aria-label="Primary">
               <ul>
                 {header.nav.map((item) => (
@@ -76,7 +84,7 @@ export function GlobalHeader() {
                     <SheetClose asChild>
                       <Link
                         href={item.href}
-                        className="block border-b border-border py-5 text-heading-24 text-foreground transition-colors hover:text-primary"
+                        className="flex min-h-14 items-center border-b border-border py-4 text-heading-24 text-foreground transition-colors duration-150 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-ring"
                       >
                         {item.label}
                       </Link>
@@ -85,8 +93,9 @@ export function GlobalHeader() {
                 ))}
               </ul>
             </nav>
+
             <SheetClose asChild>
-              <Button asChild className="mt-10 w-full">
+              <Button asChild size="lg" className="mt-10 w-full">
                 <Link href="/fr/contact">Start a project</Link>
               </Button>
             </SheetClose>

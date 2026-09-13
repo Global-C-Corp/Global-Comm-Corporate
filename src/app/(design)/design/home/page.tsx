@@ -18,7 +18,7 @@ import { getFeaturedClients } from '@/services/cms/proof'
 export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
-  title: 'Global Comm — Home Direct Visual Clone',
+  title: 'Global Comm — Homepage Preview',
   robots: { index: false, follow: false },
 }
 
@@ -70,7 +70,7 @@ export default async function HomeDesignPreview() {
   return (
     <>
       <GlobalHeader />
-      <main id="main">
+      <main id="main" className="gc-design-page">
         <Hero slides={heroSlides} logos={heroLogos} />
         <PlatformExpertise />
         <PointOfView />

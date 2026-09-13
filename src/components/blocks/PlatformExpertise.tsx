@@ -10,35 +10,61 @@ const ICONS = [Search, BarChart3, LineChart, Settings2]
 
 export function PlatformExpertise() {
   return (
-    <section className="bg-background">
-      <Container className="py-16 md:py-20">
-        <div className="grid gap-8 lg:grid-cols-12">
-          <div className="lg:col-span-4">
+    <section
+      id="platform-expertise"
+      className="scroll-mt-20 border-b border-border bg-background"
+      aria-labelledby="platform-heading"
+    >
+      <Container className="py-20 md:py-28">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-6">
+          <div className="lg:col-span-4 lg:pr-8">
             <SectionLabel>{platforms.label}</SectionLabel>
-            <h2 className="mt-4 text-heading-40 text-foreground">{platforms.heading}</h2>
-            <p className="mt-3 max-w-[34ch] text-copy-16 text-muted-foreground">{platforms.support}</p>
+            <h2
+              id="platform-heading"
+              className="mt-4 max-w-[12ch] text-heading-32 text-foreground [text-wrap:balance] md:text-heading-40"
+            >
+              {platforms.heading}
+            </h2>
+            <p className="mt-4 max-w-[34ch] text-copy-16 text-muted-foreground [text-wrap:pretty]">
+              {platforms.support}
+            </p>
           </div>
 
-          <div className="lg:col-span-8">
+          <div className="min-w-0 lg:col-span-8">
             <Tabs defaultValue={platforms.items[0].key}>
-              <TabsList variant="line" className="h-auto w-full justify-start gap-8 overflow-x-auto border-b border-border p-0 pb-[5px]">
+              <TabsList
+                variant="line"
+                className="grid h-auto w-full grid-cols-2 gap-0 overflow-hidden border border-border bg-[#FAFAF8] p-1 sm:grid-cols-4"
+              >
                 {platforms.items.map((item) => (
-                  <TabsTrigger key={item.key} value={item.key} className="h-auto flex-none px-0 py-3 text-label-13">
-                    {item.name}
+                  <TabsTrigger
+                    key={item.key}
+                    value={item.key}
+                    className="min-h-11 min-w-0 rounded-[3px] px-3 py-2 text-label-13 transition-colors duration-150"
+                  >
+                    <span className="truncate">{item.name}</span>
                   </TabsTrigger>
                 ))}
               </TabsList>
 
               {platforms.items.map((item) => (
-                <TabsContent key={item.key} value={item.key} className="pt-5">
-                  <div className="grid gap-px bg-border sm:grid-cols-2 xl:grid-cols-4">
+                <TabsContent key={item.key} value={item.key} className="mt-5">
+                  <div className="grid overflow-hidden border border-border bg-border shadow-[0_1px_2px_rgba(0,0,0,0.04),0_14px_36px_rgba(0,0,0,0.035)] sm:grid-cols-2 xl:grid-cols-4">
                     {item.capabilities.map((capability, index) => {
                       const Icon = ICONS[index % ICONS.length]
                       return (
-                        <div key={capability} className="bg-background p-5">
-                          <Icon aria-hidden className="size-4 text-foreground" />
-                          <p className="mt-5 text-label-13 font-semibold text-foreground">{capability}</p>
-                          <p className="mt-2 text-copy-13 text-muted-foreground">{item.notes[index]}</p>
+                        <div
+                          key={capability}
+                          className="min-h-44 bg-background p-5 sm:border-r sm:border-b sm:border-border xl:border-b-0"
+                        >
+                          <div className="flex items-center justify-between gap-4">
+                            <Icon aria-hidden className="size-4 text-primary" />
+                            <span className="font-[family-name:var(--font-geist-mono)] text-label-12 tabular-nums text-muted-foreground">
+                              {String(index + 1).padStart(2, '0')}
+                            </span>
+                          </div>
+                          <p className="mt-8 text-label-13 font-semibold text-foreground">{capability}</p>
+                          <p className="mt-2 text-copy-13 text-muted-foreground [text-wrap:pretty]">{item.notes[index]}</p>
                         </div>
                       )
                     })}

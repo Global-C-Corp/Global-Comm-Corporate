@@ -10,12 +10,20 @@ const { evidence, faq } = homeV5
 
 function EvidenceVisual({ label }: { label: string }) {
   return (
-    <div className="relative min-h-56 overflow-hidden bg-[#efede7] p-6">
-      <div className="absolute -left-8 -top-10 h-40 w-40 rotate-12 bg-background shadow-sm" />
-      <div className="absolute bottom-8 left-8 z-10 rotate-[-7deg] bg-background px-5 py-7 shadow-md">
-        <p className="text-heading-24 leading-[1.05]">From<br />insight<br />to opportunity</p>
+    <div className="relative min-h-64 overflow-hidden bg-[#efede7] p-6">
+      <div className="absolute -left-8 -top-10 h-40 w-40 rotate-12 border border-black/5 bg-background shadow-[0_1px_2px_rgba(0,0,0,0.08),0_14px_28px_rgba(0,0,0,0.06)]" />
+      <div className="absolute bottom-8 left-8 z-10 rotate-[-7deg] border border-black/6 bg-background px-5 py-7 shadow-[0_1px_2px_rgba(0,0,0,0.08),0_16px_32px_rgba(0,0,0,0.10)]">
+        <p className="text-heading-24 leading-[1.05]">
+          From
+          <br />
+          insight
+          <br />
+          to opportunity
+        </p>
       </div>
-      <span className="absolute right-6 top-6 font-[family-name:var(--font-geist-mono)] text-label-12 uppercase text-muted-foreground">{label}</span>
+      <span className="absolute right-6 top-6 font-[family-name:var(--font-geist-mono)] text-label-12 uppercase text-muted-foreground">
+        {label}
+      </span>
       <span className="absolute bottom-6 right-6 h-px w-20 bg-primary" />
     </div>
   )
@@ -23,34 +31,48 @@ function EvidenceVisual({ label }: { label: string }) {
 
 export function EvidenceFaq() {
   return (
-    <section className="bg-[#FAFAF8]">
-      <Container className="py-16 md:py-20">
-        <div className="grid gap-12 lg:grid-cols-12">
-          <div className="lg:col-span-6">
+    <section id="evidence" className="scroll-mt-20 bg-[#FAFAF8]" aria-labelledby="evidence-heading">
+      <Container className="py-20 md:py-28">
+        <div className="grid gap-14 lg:grid-cols-12 lg:gap-8">
+          <div className="min-w-0 lg:col-span-7">
             <SectionLabel>{evidence.label}</SectionLabel>
-            <Tabs defaultValue={evidence.categories[0].label} className="mt-5">
-              <TabsList variant="line" className="h-auto w-full justify-start gap-6 overflow-x-auto border-b border-border p-0 pb-[5px]">
+            <h2
+              id="evidence-heading"
+              className="mt-4 max-w-[14ch] text-heading-32 text-foreground [text-wrap:balance] md:text-heading-40"
+            >
+              {evidence.heading}
+            </h2>
+
+            <Tabs defaultValue={evidence.categories[0].label} className="mt-8">
+              <TabsList
+                variant="line"
+                className="grid h-auto w-full grid-cols-2 gap-0 overflow-hidden border border-border bg-background p-1 sm:grid-cols-4"
+              >
                 {evidence.categories.map((category) => (
-                  <TabsTrigger key={category.label} value={category.label} className="h-auto flex-none px-0 py-3 text-label-12">
-                    {category.label}
+                  <TabsTrigger
+                    key={category.label}
+                    value={category.label}
+                    className="min-h-11 min-w-0 rounded-[3px] px-2 py-2 text-label-12 transition-colors duration-150"
+                  >
+                    <span className="truncate">{category.label}</span>
                   </TabsTrigger>
                 ))}
               </TabsList>
 
               {evidence.categories.map((category) => (
-                <TabsContent key={category.label} value={category.label} className="pt-5">
-                  <div className="grid gap-px bg-border sm:grid-cols-2">
+                <TabsContent key={category.label} value={category.label} className="mt-5">
+                  <div className="grid overflow-hidden border border-border bg-border shadow-[0_1px_2px_rgba(0,0,0,0.04),0_18px_42px_rgba(0,0,0,0.04)] sm:grid-cols-2">
                     <EvidenceVisual label={category.label} />
-                    <div className="bg-background p-6">
+                    <div className="bg-background p-6 md:p-7">
                       <h3 className="text-heading-20 text-foreground">{category.deliverable}</h3>
-                      <p className="mt-3 text-copy-14 text-muted-foreground">{category.body}</p>
-                      <ul className="mt-6 space-y-3">
+                      <p className="mt-3 text-copy-14 text-muted-foreground [text-wrap:pretty]">{category.body}</p>
+                      <ul className="mt-7 space-y-3">
                         {category.points.map((point) => (
-                          <li key={point} className="flex items-center gap-3 text-copy-13 text-foreground">
-                            <span className="grid size-4 place-items-center rounded-full bg-primary text-primary-foreground">
-                              <Check aria-hidden className="size-2.5" />
+                          <li key={point} className="flex items-start gap-3 text-copy-13 text-foreground">
+                            <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-[4px] bg-primary text-primary-foreground">
+                              <Check aria-hidden className="size-3" />
                             </span>
-                            {point}
+                            <span>{point}</span>
                           </li>
                         ))}
                       </ul>
@@ -61,19 +83,30 @@ export function EvidenceFaq() {
             </Tabs>
           </div>
 
-          <div className="lg:col-span-6">
+          <div className="lg:col-span-5">
             <SectionLabel>{faq.label}</SectionLabel>
-            <Accordion type="single" collapsible defaultValue="faq-0" className="mt-5 border-t border-border bg-background">
+            <p className="mt-4 max-w-[34ch] text-copy-16 text-muted-foreground">{faq.support}</p>
+
+            <Accordion
+              type="single"
+              collapsible
+              defaultValue="faq-0"
+              className="mt-8 overflow-hidden border border-border bg-background shadow-[0_1px_2px_rgba(0,0,0,0.04),0_14px_36px_rgba(0,0,0,0.03)]"
+            >
               {faq.items.map((item, index) => (
                 <AccordionItem key={item.question} value={`faq-${index}`} className="px-5">
-                  <AccordionTrigger className="group py-5 text-left text-copy-14 font-semibold hover:no-underline">
-                    <span className="flex items-center gap-3">
-                      <span className="text-primary group-data-[state=open]:hidden"><Plus aria-hidden className="size-3.5" /></span>
-                      <span className="hidden text-primary group-data-[state=open]:inline"><Minus aria-hidden className="size-3.5" /></span>
-                      {item.question}
+                  <AccordionTrigger className="group min-h-14 py-4 text-left text-copy-14 font-semibold hover:no-underline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-ring">
+                    <span className="flex items-start gap-3 pr-4">
+                      <span className="mt-0.5 text-primary group-data-[state=open]:hidden">
+                        <Plus aria-hidden className="size-4" />
+                      </span>
+                      <span className="mt-0.5 hidden text-primary group-data-[state=open]:inline">
+                        <Minus aria-hidden className="size-4" />
+                      </span>
+                      <span className="[text-wrap:pretty]">{item.question}</span>
                     </span>
                   </AccordionTrigger>
-                  <AccordionContent className="pb-5 pl-7 pr-4 text-copy-13 text-muted-foreground">
+                  <AccordionContent className="pb-5 pl-7 pr-4 text-copy-13 text-muted-foreground [text-wrap:pretty]">
                     {item.answer}
                   </AccordionContent>
                 </AccordionItem>
