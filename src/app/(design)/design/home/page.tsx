@@ -1,26 +1,76 @@
 import type { Metadata } from 'next'
+import type { Client, Project } from '@/payload-types'
 import { EvidenceFaq } from '@/components/blocks/EvidenceFaq'
 import { FinalCta } from '@/components/blocks/FinalCta'
 import { Footer } from '@/components/blocks/Footer'
 import { FrozenExpertise } from '@/components/blocks/FrozenExpertise'
 import { GlobalHeader } from '@/components/blocks/GlobalHeader'
-import { Hero } from '@/components/blocks/Hero'
+import { Hero, type HeroLogo, type HeroSlide } from '@/components/blocks/Hero'
 import { Method } from '@/components/blocks/Method'
 import { PlatformExpertise } from '@/components/blocks/PlatformExpertise'
 import { PointOfView } from '@/components/blocks/PointOfView'
 import { SelectedWork } from '@/components/blocks/SelectedWork'
+import { mediaURL } from '@/lib/media'
+import { populated } from '@/lib/relations'
+import { getHomePage } from '@/services/cms/globals'
 
 export const metadata: Metadata = {
   title: 'Global Comm — Home Direct Visual Clone',
   robots: { index: false, follow: false },
 }
 
-export default function HomeDesignPreview() {
+const ctx = { locale: 'fr' as const, draft: false }
+
+export default async function HomeDesignPreview() {
+  const page = await getHomePage(ctx)
+
+  const projects = populated<Project>(page?.featuredProjects)
+  const clients = populated<Client>(page?.featuredClients)
+
+  const heroSlides: HeroSlide[] = projects
+    .map((project) => {
+      const image =
+        mediaURL(project.heroMedia, 'hero') ||
+        mediaURL(project.featuredMedia, 'projectFeature') ||
+        mediaURL(project.featuredMedia, 'projectCard')
+
+      if (!image) return null
+
+      const clientName =
+        typeof project.client === 'object' && project.client
+          ? project.client.name
+          : 'SELECTED WORK'
+
+      return {
+        id: String(project.id),
+        image,
+        eyebrow: clientName,
+        title: project.shortStatement || project.title,
+        body: project.excerpt || '',
+        href: project.slug ? `/fr/work/${project.slug}` : undefined,
+      }
+    })
+    .filter((slide): slide is HeroSlide => Boolean(slide))
+
+  const heroLogos: HeroLogo[] = clients
+    .map((client) => {
+      const logo = mediaURL(client.logo, 'logo')
+      if (!logo) return null
+
+      return {
+        id: String(client.id),
+        name: client.name,
+        logo,
+        href: client.websiteURL || undefined,
+      }
+    })
+    .filter((logo): logo is HeroLogo => Boolean(logo))
+
   return (
     <>
       <GlobalHeader />
       <main id="main">
-        <Hero />
+        <Hero slides={heroSlides} logos={heroLogos} />
         <PlatformExpertise />
         <PointOfView />
         <FrozenExpertise />
