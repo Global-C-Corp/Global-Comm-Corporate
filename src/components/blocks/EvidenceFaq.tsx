@@ -43,9 +43,12 @@ export function EvidenceFaq() {
       : evidence.categories[0].label
 
   const requestedFaq = searchParams.get('faq')
-  const validFaq = faq.items.some((_, index) => `faq-${index}` === requestedFaq)
-    ? requestedFaq
-    : 'faq-0'
+  const validFaq =
+    requestedFaq === 'none'
+      ? undefined
+      : faq.items.some((_, index) => `faq-${index}` === requestedFaq)
+        ? requestedFaq
+        : 'faq-0'
 
   const updateParam = (name: string, value: string | undefined) => {
     const params = new URLSearchParams(searchParams.toString())
@@ -115,7 +118,7 @@ export function EvidenceFaq() {
               type="single"
               collapsible
               value={validFaq ?? undefined}
-              onValueChange={(value) => updateParam('faq', value || undefined)}
+              onValueChange={(value) => updateParam('faq', value || 'none')}
               className="mt-8 overflow-hidden border border-border bg-background"
             >
               {faq.items.map((item, index) => (
