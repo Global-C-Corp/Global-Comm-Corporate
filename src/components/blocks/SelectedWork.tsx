@@ -34,7 +34,7 @@ export function SelectedWork() {
             <p className="font-[family-name:var(--font-geist-mono)] text-label-12 uppercase tracking-[0.16em] text-muted-foreground">
               Featured project
             </p>
-            <h3 className="mt-10 text-heading-48 text-foreground">PIKOTA</h3>
+            <h3 translate="no" className="mt-10 text-heading-48 text-foreground">PIKOTA</h3>
             <p className="mt-3 text-label-13 text-foreground">{work.projects[0].disciplines}</p>
             <p className="mt-7 max-w-[28ch] text-copy-14 text-muted-foreground [text-wrap:pretty]">{work.projects[0].body}</p>
             <Link
@@ -69,7 +69,7 @@ export function SelectedWork() {
               </div>
               <div className="flex min-h-20 items-center justify-between gap-4 px-5 py-4">
                 <div className="min-w-0">
-                  <h3 className="text-heading-20">OGLO NUTS</h3>
+                  <h3 translate="no" className="text-heading-20">OGLO NUTS</h3>
                   <p className="mt-1 truncate text-label-12 text-muted-foreground">{work.projects[1].disciplines}</p>
                 </div>
                 <span
@@ -93,7 +93,7 @@ export function SelectedWork() {
               </div>
               <div className="flex min-h-20 items-center justify-between gap-4 px-5 py-4">
                 <div className="min-w-0">
-                  <h3 className="text-heading-20">AMSD</h3>
+                  <h3 translate="no" className="text-heading-20">AMSD</h3>
                   <p className="mt-1 truncate text-label-12 text-muted-foreground">{work.projects[2].disciplines}</p>
                 </div>
                 <span
