@@ -206,30 +206,6 @@
 
 
 @layer components {
-  .gc-gradient-bar {
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 255, 0.68) 0%,
-      rgba(0, 0, 255, 0.22) 48%,
-      rgba(0, 0, 255, 0) 100%
-    );
-    transform: scaleY(var(--gc-gradient-bar-min));
-    animation: gc-gradient-bar-wave 3s ease-in-out var(--gc-gradient-bar-delay) infinite alternate;
-    will-change: transform, opacity;
-  }
-
-  @keyframes gc-gradient-bar-wave {
-    0%,
-    100% {
-      transform: scaleY(var(--gc-gradient-bar-min));
-      opacity: 0.9;
-    }
-    50% {
-      transform: scaleY(var(--gc-gradient-bar-max));
-      opacity: 1;
-    }
-  }
-
   .gc-logo-marquee-track {
     animation: gc-logo-marquee-loop 24s linear infinite;
     will-change: transform;
@@ -249,7 +225,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .gc-gradient-bar,
     .gc-logo-marquee-track {
       animation: none;
       transform: none;
