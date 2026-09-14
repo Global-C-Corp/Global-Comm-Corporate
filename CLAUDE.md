@@ -2390,240 +2390,479 @@ Context Tags
 
 ---
 
-# 73. HOMEPAGE ANATOMY
+# 73. PAGE LAYOUT AUTHORITY
+
+The **current implemented public layout** and its current Payload-driven section/content relationships are the structural source of truth for visual redesign work.
+
+Preserve unless the human project owner explicitly requests a structural change:
 
 ```text
-01 Hero
-02 Selected Clients
-03 What We Do
-04 Selected Work
-05 Method
-06 Industries / Capabilities
-07 Testimonials
-08 Closing CTA
-09 Footer
+existing page structure
+existing section order
+existing section purpose
+existing content hierarchy
+existing navigation information architecture
+existing routes
+existing CMS relationships
+existing Payload-driven sections
+existing functional behavior
 ```
 
-Next.js owns composition.
+Do not remove, merge, split, reorder, or invent sections during a visual redesign.
 
-Payload owns content.
+Do not restore an older layout merely because an earlier prompt, mockup, or historical specification describes it.
+
+The implemented layout is protected.
+
+The visual treatment is not.
+
+Next.js owns presentation and visual composition.
+
+Payload owns editorial content.
 
 ---
 
-# 74. HERO DIRECTION
+# 74. HOMEPAGE LAYOUT
 
-Initial content direction:
+Preserve the homepage structure that is currently implemented and connected to Payload.
+
+The Hero remains the opening section and keeps its existing content responsibilities.
+
+Do not hardcode obsolete hero copy from this specification.
+
+Current approved / published Payload content remains the content source of truth.
+
+Within the existing homepage layout, visual execution is open.
+
+Claude may freely redesign:
 
 ```text
-GLOBAL COMMUNICATION CORPORATE™
-
-Strategy.
-Creative.
-Growth.
-
-Integrated communication and marketing for organizations that need stronger brands, campaigns and digital growth systems.
-
-View our work
-
-Start a project
+hero presentation
+section styling
+typographic hierarchy
+internal grids
+media treatment
+backgrounds
+surfaces
+transitions
+motion
+interaction
+visual rhythm
 ```
 
-Final copy localized and Payload-managed.
+without changing the page's structural order or meaning.
 
 ---
 
 # 75. SERVICES PAGE
 
-```text
-Hero
-Five Service Pillars
-Child Capabilities
-Selected Work
-Method
-CTA
-```
+Preserve the currently implemented Services layout, service hierarchy, Payload relationships, routes, and content responsibilities.
+
+Do not restructure the page during visual redesign.
+
+Visual presentation inside the existing layout is open.
 
 ---
 
 # 76. SERVICE DETAIL
 
-```text
-Service Hero
-Client Problem
-What We Do
-Child Capabilities
-Selected Work
-Relevant Industries
-Approach
-Deliverables
-Outcomes
-CTA
-```
+Preserve the currently implemented Service Detail structure and content semantics.
 
-Hide empty sections.
+Keep existing Payload-driven content, relationships, routes, and empty-state behavior.
+
+Visual presentation inside the existing structure is open.
+
+Hide optional content when its approved source data is absent.
 
 ---
 
 # 77. WORK ARCHIVE
 
+Preserve the current Work archive structure and its functional behavior.
+
+Filters remain URL-search-param driven and server-rendered first unless a later owner-approved product change explicitly changes that behavior.
+
+Client enhancement is allowed.
+
+The visual design of:
+
 ```text
-Hero
-Filters
-Project Grid
+hero
+filters
+project presentation
+grid
+media
+transitions
+hover states
+motion
 CTA
 ```
 
-Filters:
-
-```text
-Service
-Industry
-Project Type
-```
-
-URL search params.
-
-Server-rendered first.
-
-Client enhancement optional.
+is open.
 
 ---
 
 # 78. PROJECT DETAIL
 
-```text
-Project Hero
-Metadata
-Challenge
-Approach
-Visual Work
-Deliverables
-Outcome
-Verified Metrics
-Related Services
-Related Projects
-Related Testimonial
-CTA
-```
+Preserve the current case-study / project-detail content structure, Payload relationships, factual context, credits, evidence rules, and route behavior.
+
+Do not change the meaning or provenance of project content for visual reasons.
+
+The project page may be visually expressive.
+
+Its typography, media scale, surfaces, transitions, motion, composition inside existing sections, and interaction treatment are open.
 
 ---
 
-# 79. INDUSTRY DETAIL
+# 79. INDUSTRY ROUTING
 
-```text
-Hero
-Industry Challenges
-Relevant Capabilities
-Selected Projects
-Related Services
-CTA
-```
+Do not resurrect obsolete Industry page layouts or routes merely because older specifications described them.
 
-No thin SEO pages.
+The **current implemented routing and redirect behavior** is authoritative.
+
+Any future Industry page requires an explicit product decision from the human project owner.
 
 ---
 
 # 80. COMPANY
 
-```text
-Hero
-Who We Are
-What We Believe
-How We Work
-Capabilities
-Selected Clients
-Industries
-Testimonials
-CTA
-```
+Preserve the current implemented Company layout, content responsibilities, CMS relationships, and page order.
+
+Visual treatment is open.
+
+Real people, clients, projects, and proof must remain factual and approved.
 
 ---
 
 # 81. CONTACT
 
-Fields:
+Preserve the current contact data model, validation, privacy behavior, storage in `inquiries`, and MCP restrictions.
 
-```text
-Name *
-Company *
-Email *
-Phone
-Website
-Project Type
-Estimated Budget
-Desired Start
-Message *
-Consent *
-```
+Visual redesign must not silently add or remove qualification fields or alter data-handling behavior.
 
-Server-side validation.
+Server-side validation remains authoritative.
 
-Store privately in:
+No MCP access to inquiries.
 
-```text
-inquiries
-```
-
-No MCP access.
+The visual composition of the Contact page and form is open provided usability and accessibility remain intact.
 
 ---
 
-# 82. DESIGN DIRECTION
+# 82. DESIGN FREEDOM
+
+## Core Principle
+
+The visual design of Global Comm is intentionally open.
+
+The goal is to preserve the approved product structure while creating the strongest possible visual expression of Global Comm.
+
+Previous mockups, visual experiments, component appearances, screenshots, aesthetic directions, old design-system rules, and historical styling decisions are **not permanent visual restrictions** unless the human project owner explicitly marks a specific visual decision as locked in the current task.
+
+### Structural rule
 
 ```text
-Corporate
-Editorial
-Strategic
-Precise
-Premium
-Restrained
-Modern
-Confident
+PRESERVE STRUCTURE
+REDESIGN PRESENTATION
 ```
 
-Avoid:
+The existing layout is protected.
+
+The existing styling is not.
+
+## Creative Authority
+
+Within the existing layout, Claude has broad art-direction authority and may freely rethink:
 
 ```text
-generic SaaS
+typography
+font pairing
+font scale
+font weight
+line height
+letter spacing
+visual hierarchy
+spacing
+section padding
+internal grid proportions
+alignment
+controlled asymmetry
+image scale
+image crop
+image treatment
+backgrounds
+gradients
+glass effects
+blur
+transparency
+borders
+dividers
+shadows
+overlays
+cards
+radius
+buttons
+tabs
+visual framing
+dark or light local surfaces
+section transitions
+decorative elements
+motion
+animation
+hover behavior
+marquees
+sliders
+carousels
+micro-interactions
+navigation presentation
+project presentation
+service presentation
+CTA presentation
+responsive visual composition
+```
+
+No visual technique is prohibited by default.
+
+Use or reject a technique according to whether it strengthens the final design.
+
+## Existing UI Is Not Visually Sacred
+
+Do not preserve a weak visual decision merely because it already exists in the codebase.
+
+Existing components may be:
+
+```text
+restyled
+recomposed internally
+extended
+simplified
+visually replaced
+combined with custom components
+```
+
+provided the protected layout, semantics, content integrity, accessibility, CMS behavior, and technical architecture remain intact.
+
+## Components Are Tools, Not Art Direction
+
+shadcn/ui, Radix, custom React components, motion libraries, and other approved implementation tools may be used when appropriate.
+
+Do not let the default appearance of a component library define Global Comm.
+
+The component serves the design.
+
+The design does not serve the component library.
+
+## Art Direction
+
+There is no mandatory predefined visual category.
+
+Do not force Global Comm into a label such as:
+
+```text
+Swiss
+editorial
+SaaS
+minimalist
+brutalist
 glassmorphism
-rounded-card overload
-neon
-startup gradients
-AI clichés
-floating blobs
-dashboard design
+Awwwards
+corporate
+neo-brutalist
 ```
+
+Any of these may influence a solution when useful.
+
+None is the required visual identity.
+
+The final result should feel intentionally art-directed and specific to Global Comm.
+
+## Motion
+
+Motion is available as an expressive design tool.
+
+Use it when it improves:
+
+```text
+hierarchy
+storytelling
+pacing
+interaction
+brand expression
+transitions
+project presentation
+perceived quality
+```
+
+Motion must remain accessible, respect `prefers-reduced-motion`, and must not prevent access to content or controls.
+
+## Design Quality Bar
+
+Do not stop when the page is merely:
+
+```text
+correct
+clean
+modern
+responsive
+technically valid
+```
+
+Evaluate the complete page as an art-directed composition.
+
+Ask:
+
+```text
+Does this feel specific to Global Comm?
+Is there a clear visual idea?
+Is the hierarchy strong?
+Does the page have rhythm?
+Are quiet and expressive moments intentionally balanced?
+Does the work receive enough visual importance?
+Does the interface feel custom rather than library-generated?
+Would removing the Global Comm logo make this indistinguishable from another agency template?
+```
+
+If the final question is yes, continue designing.
 
 ---
 
-# 83. DESIGN TOKENS
+# 83. DESIGN GOVERNANCE
 
-```css
---gc-white: #ffffff;
---gc-black: #000000;
---gc-blue: #0000ff;
---gc-surface: #f5f5f2;
---gc-secondary: #5f5f5f;
---gc-border: rgba(0, 0, 0, 0.15);
+## What Remains Locked
+
+Visual freedom does not override:
+
+```text
+current page layout and section order
+approved content meaning
+Payload as editorial source of truth
+Next.js / Payload / PostgreSQL / Vercel architecture
+routes and localization behavior
+FR / EN / ES support
+SEO and canonical behavior
+accessibility
+security
+privacy
+human publishing gate
+factual integrity
+performance requirements
+responsive usability
+semantic interaction behavior
 ```
 
-Typography direction:
+## Brand
+
+Global Comm blue `#0000FF` remains a recognized core brand asset unless the human project owner explicitly changes the brand identity.
+
+Its **application is creatively open**.
+
+It may be used as:
+
+```text
+accent
+background
+surface
+typography
+gradient ingredient
+lighting / glow
+interaction state
+media treatment
+transition device
+large brand field
+small precision signal
+```
+
+There is no arbitrary percentage limit on blue usage.
+
+The existing neutral palette may evolve visually as part of an art direction, provided brand consistency and accessibility are preserved.
+
+## Typography
+
+Typography is visually open.
+
+The historical typography suggestions:
 
 ```text
 Inter
 Lora
 JetBrains Mono
+Geist
+Source Serif
 ```
 
-Geometry:
+are references / existing implementation choices, not permanent restrictions.
+
+Claude may propose and implement a stronger typography system when it materially improves the design, provided:
 
 ```text
-0–4px radius
-hairline borders
-large whitespace
-strong grid
-minimal shadows
+FR / EN / ES remain robust
+readability remains strong
+font loading is performant
+licensing / availability is valid
+the system remains internally coherent
 ```
+
+## Geometry and Surfaces
+
+There is no universal visual lock on:
+
+```text
+radius
+border thickness
+card shape
+shadow
+surface depth
+glass
+blur
+gradient
+overlay
+dark section
+light section
+grid style
+```
+
+These decisions belong to the active art direction.
+
+Do not create visual inconsistency by varying them randomly.
+
+Freedom means coherent authorship, not arbitrary styling.
+
+## Layout Boundary
+
+Claude may change layout **inside an existing section** when necessary to improve the visual result.
+
+Claude may not, without explicit owner instruction:
+
+```text
+reorder major sections
+remove a major section
+add a new major section
+merge major sections
+split a major section into new page-level sections
+change navigation IA
+change route architecture
+change CMS ownership
+change the factual meaning of content
+```
+
+## Responsive Design
+
+Responsive presentation is open.
+
+Mobile does not need to visually imitate desktop.
+
+It may simplify, reorder elements **inside the same protected section**, reduce effects, or use a different internal composition when necessary for usability.
+
+The semantic reading order and protected page-level hierarchy must remain coherent.
+
+## Technical Cost
+
+Creative ambition is encouraged.
+
+Performance remains measurable.
+
+Sophisticated media, animation, or visual libraries are allowed when their contribution justifies their runtime and maintenance cost.
+
+Prefer the simplest implementation that achieves the approved visual result, not the simplest visual result merely because it is cheaper to code.
 
 ---
 
@@ -3333,7 +3572,7 @@ lazy below-fold assets
 minimal dependency weight
 ```
 
-No heavy animation framework without demonstrated need.
+Animation frameworks are allowed when the approved visual design genuinely benefits from them; justify bundle cost, maintenance impact, accessibility, and measured performance.
 
 ---
 
