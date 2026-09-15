@@ -25,10 +25,19 @@ export type SelectedWorkItem = {
   href: string
 }
 
-function chunks<T>(items: T[], size: number): T[][] {
-  const result: T[][] = []
-  for (let index = 0; index < items.length; index += size) result.push(items.slice(index, index + size))
-  return result
+function buildBentoSlides(items: SelectedWorkItem[]): SelectedWorkItem[][] {
+  if (items.length === 0) return []
+  if (items.length === 1) return [[items[0]]]
+  if (items.length === 2) return [
+    [items[0], items[1]],
+    [items[1], items[0]],
+  ]
+
+  return items.map((_, index) => [
+    items[index],
+    items[(index + 1) % items.length],
+    items[(index + 2) % items.length],
+  ])
 }
 
 function ProjectImage({ item, className = '' }: { item: SelectedWorkItem; className?: string }) {
@@ -55,7 +64,7 @@ function ProjectImage({ item, className = '' }: { item: SelectedWorkItem; classN
 export function SelectedWork({ items = [] }: { items?: SelectedWorkItem[] }) {
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
-  const groups = useMemo(() => chunks(items, 3), [items])
+  const groups = useMemo(() => buildBentoSlides(items), [items])
 
   useEffect(() => {
     if (!api) return
@@ -94,7 +103,7 @@ export function SelectedWork({ items = [] }: { items?: SelectedWorkItem[] }) {
           </div>
         </div>
 
-        <Carousel setApi={setApi} opts={{ loop: true }} className="mt-6">
+        <Carousel setApi={setApi} opts={{ loop: true, align: 'start' }} className="mt-6">
           <CarouselContent className="-ml-5">
             {groups.map((group, groupIndex) => {
               const featured = group[0]
@@ -107,7 +116,7 @@ export function SelectedWork({ items = [] }: { items?: SelectedWorkItem[] }) {
                     <article className="flex min-h-[28rem] flex-col justify-between border border-border bg-background p-7 lg:col-span-3 lg:p-8">
                       <div>
                         <p className="font-[family-name:var(--font-geist-mono)] text-label-12 uppercase tracking-[0.16em] text-muted-foreground">
-                          {String(groupIndex * 3 + 1).padStart(2, '0')}
+                          {String(items.findIndex((item) => item.id === featured.id) + 1).padStart(2, '0')}
                         </p>
                         <h3 translate="no" className="mt-8 text-heading-32 text-foreground md:text-heading-40">{featured.title}</h3>
                         {featured.disciplines ? <p className="mt-3 text-label-13 text-foreground">{featured.disciplines}</p> : null}
