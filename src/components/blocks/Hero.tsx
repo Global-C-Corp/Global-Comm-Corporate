@@ -11,7 +11,6 @@ import {
   type CarouselApi,
 } from '@/components/ui/carousel'
 import { Separator } from '@/components/ui/separator'
-import { HeroSection } from '@/components/ui/glass-video-hero'
 import { Container, SectionLabel } from '@/components/blocks/Layout'
 import { homeV5 } from '@/content/homeV5'
 
@@ -308,11 +307,14 @@ export function Hero({
   logos?: HeroLogo[]
 }) {
   return (
-    <HeroSection
-      className="min-h-0"
+    <section
+      className="gc-hero-grain relative isolate overflow-hidden bg-[#07070A] text-white"
       aria-labelledby="hero-heading"
-      poster={slides[0]?.image}
     >
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_72%_18%,rgba(0,0,255,0.58),transparent_28%),radial-gradient(circle_at_24%_28%,rgba(57,57,255,0.24),transparent_34%),linear-gradient(135deg,#050507_0%,#0B0B16_48%,#0000FF_165%)]"
+      />
       <Container className="pb-10 pt-12 md:pb-12 md:pt-16">
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-6">
           <div className="lg:col-span-5">
@@ -373,6 +375,6 @@ export function Hero({
           <LogoMarquee logos={logos} />
         </div>
       </Container>
-    </HeroSection>
+    </section>
   )
 }
