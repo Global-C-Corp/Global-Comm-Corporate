@@ -14,6 +14,8 @@ import { isMedia, mediaURL } from '@/lib/media'
 import { populated } from '@/lib/relations'
 import { getHomePage } from '@/services/cms/globals'
 import { getFeaturedClients } from '@/services/cms/proof'
+import { getFeaturedProjects } from '@/services/cms/projects'
+import { projectTiles } from '@/services/cms/projectTiles'
 
 export const dynamic = 'force-dynamic'
 
@@ -31,7 +33,11 @@ function populatedService(value: Service | number | string | null | undefined): 
 export default async function HomeDesignPreview() {
   const page = await getHomePage(ctx)
 
-  const projects = populated<Project>(page?.featuredProjects)
+  const selectedProjects = populated<Project>(page?.featuredProjects)
+  const fallbackProjects =
+    selectedProjects.length === 0 ? await getFeaturedProjects(ctx) : []
+  const projects = selectedProjects.length > 0 ? selectedProjects : fallbackProjects
+
   const selectedClients = populated<Client>(page?.featuredClients)
   const clients = selectedClients.length > 0 ? selectedClients : await getFeaturedClients(ctx, 16)
 
@@ -80,34 +86,17 @@ export default async function HomeDesignPreview() {
     return mediaURL(service.heroMedia, 'projectFeature') || mediaURL(service.heroMedia, 'hero')
   })
 
-  const workItems: SelectedWorkItem[] = projects.map((project) => {
-    const image =
-      mediaURL(project.featuredMedia, 'projectFeature') ||
-      mediaURL(project.heroMedia, 'projectFeature') ||
-      mediaURL(project.featuredMedia, 'projectCard') ||
-      mediaURL(project.heroMedia, 'hero')
-
-    const media = isMedia(project.featuredMedia)
-      ? project.featuredMedia
-      : isMedia(project.heroMedia)
-        ? project.heroMedia
-        : null
-
-    const disciplines = (project.services ?? [])
-      .map((service) => (typeof service === 'object' && service ? service.name : null))
-      .filter((name): name is string => Boolean(name))
-      .join(' · ')
-
-    return {
+  const workItems: SelectedWorkItem[] = projectTiles(projects, ctx.locale).map(
+    ({ project, href, meta, image }) => ({
       id: String(project.id),
       title: project.title,
-      disciplines,
+      disciplines: meta,
       body: project.excerpt || project.shortStatement || '',
-      ...(image ? { image } : {}),
-      alt: media?.alt?.trim() || project.title,
-      href: project.slug ? `/fr/work/${project.slug}` : '/fr/work',
-    }
-  })
+      ...(image ? { image: image.url } : {}),
+      alt: image?.alt || project.title,
+      href: href || '/fr/work',
+    }),
+  )
 
   const evidenceMedia: EvidenceMedia[] = []
   const seenEvidenceUrls = new Set<string>()
