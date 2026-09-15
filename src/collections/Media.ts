@@ -1,6 +1,11 @@
 import type { CollectionConfig } from 'payload'
 import { revalidateCollection, revalidateOnDelete } from '@/hooks/revalidate'
-import { isAdminOnlyDelete, isEditorOrAI, publicReadPublishedOnly } from '@/access/predicates'
+import {
+  fieldInternalOnly,
+  isAdminOnlyDelete,
+  isEditorOrAI,
+  publicReadUnversioned,
+} from '@/access/predicates'
 
 /**
  * CLAUDE.md §38. Media metadata is editorial data (rights, credit,
@@ -11,7 +16,7 @@ export const Media: CollectionConfig = {
   access: {
     create: isEditorOrAI,
     delete: isAdminOnlyDelete,
-    read: publicReadPublishedOnly,
+    read: publicReadUnversioned,
     update: isEditorOrAI,
   },
   admin: {
@@ -45,21 +50,32 @@ export const Media: CollectionConfig = {
       type: 'text',
       localized: true,
     },
+    // Attribution travels with the asset wherever it is displayed, so credit
+    // and copyright owner stay publicly readable.
     { name: 'credit', type: 'text' },
     { name: 'copyrightOwner', type: 'text' },
+    // Rights administration is internal: it says what Global Comm is allowed
+    // to do with an asset, which is commercial information, not page content.
     {
       name: 'usageRights',
       type: 'select',
       options: ['full_ownership', 'licensed', 'client_provided', 'stock', 'unknown'],
       defaultValue: 'unknown',
+      access: { read: fieldInternalOnly },
     },
-    { name: 'usageExpiration', type: 'date' },
-    { name: 'clientApproved', type: 'checkbox', defaultValue: false },
-    { name: 'source', type: 'text' },
+    { name: 'usageExpiration', type: 'date', access: { read: fieldInternalOnly } },
+    {
+      name: 'clientApproved',
+      type: 'checkbox',
+      defaultValue: false,
+      access: { read: fieldInternalOnly },
+    },
+    { name: 'source', type: 'text', access: { read: fieldInternalOnly } },
     {
       name: 'internalNotes',
       type: 'textarea',
       admin: { position: 'sidebar' },
+      access: { read: fieldInternalOnly },
     },
   ],
 }

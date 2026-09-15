@@ -32,13 +32,28 @@ export async function ensureUser(role: Role): Promise<TestUser> {
     return { id: existing.docs[0].id, email, role, collection: 'users' }
   }
 
-  const created = await payload.create({
-    collection: 'users',
-    data: { email, password: 'test-password-1234', role, name: role },
-    overrideAccess: true,
-  })
+  try {
+    const created = await payload.create({
+      collection: 'users',
+      data: { email, password: 'test-password-1234', role, name: role },
+      overrideAccess: true,
+    })
 
-  return { id: created.id, email, role, collection: 'users' }
+    return { id: created.id, email, role, collection: 'users' }
+  } catch (error) {
+    // Vitest runs spec files in parallel workers against one database, so two
+    // suites can pass the `find` above before either has inserted. The loser
+    // gets a unique-email violation; the row it wanted now exists.
+    const retry = await payload.find({
+      collection: 'users',
+      where: { email: { equals: email } },
+      limit: 1,
+      overrideAccess: true,
+    })
+
+    if (!retry.docs[0]) throw error
+    return { id: retry.docs[0].id, email, role, collection: 'users' }
+  }
 }
 
 /** Minimal PayloadRequest for exercising content-ops services directly. */
