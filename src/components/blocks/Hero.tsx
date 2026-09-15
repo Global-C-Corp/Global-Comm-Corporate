@@ -11,7 +11,6 @@ import {
   type CarouselApi,
 } from '@/components/ui/carousel'
 import { Separator } from '@/components/ui/separator'
-import { HeroSection } from '@/components/ui/glass-video-hero'
 import { Container, SectionLabel } from '@/components/blocks/Layout'
 import { homeV5 } from '@/content/homeV5'
 
@@ -29,7 +28,7 @@ export type HeroSlide = {
 export type HeroLogo = {
   id: string
   name: string
-  logo?: string
+  logo: string
   href?: string
 }
 
@@ -58,15 +57,13 @@ function HeroVisual({ slides }: { slides: HeroSlide[] }) {
 
   useEffect(() => {
     const media = window.matchMedia('(prefers-reduced-motion: reduce)')
-
-    const syncMotionPreference = () => {
+    const sync = () => {
       if (media.matches) setAutoRotate(false)
     }
 
-    syncMotionPreference()
-    media.addEventListener('change', syncMotionPreference)
-
-    return () => media.removeEventListener('change', syncMotionPreference)
+    sync()
+    media.addEventListener('change', sync)
+    return () => media.removeEventListener('change', sync)
   }, [])
 
   useEffect(() => {
@@ -74,7 +71,6 @@ function HeroVisual({ slides }: { slides: HeroSlide[] }) {
 
     const timer = window.setInterval(() => {
       if (document.visibilityState !== 'visible') return
-
       const next = api.selectedScrollSnap() + 1
       api.scrollTo(next >= slides.length ? 0 : next)
     }, 6000)
@@ -84,46 +80,12 @@ function HeroVisual({ slides }: { slides: HeroSlide[] }) {
 
   if (slides.length === 0) {
     return (
-      <div className="relative min-h-[29rem] overflow-hidden bg-[#dce9ff] sm:min-h-[32rem] lg:min-h-[35rem]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_78%_14%,rgba(0,0,255,0.18),transparent_34%)]" />
-        <div
-          className="absolute -left-[6%] top-[8%] h-[74%] w-[58%] bg-[#262626]"
-          style={{ clipPath: 'polygon(0 0, 100% 18%, 72% 100%, 9% 82%)' }}
-        />
-        <div
-          className="absolute left-[18%] top-[26%] h-[54%] w-[58%] bg-[#b9b9b4]"
-          style={{ clipPath: 'polygon(0 13%, 100% 0, 82% 100%, 16% 86%)' }}
-        />
-        <div className="absolute bottom-0 right-0 h-[56%] w-[43%] bg-primary" />
-        <div className="absolute bottom-0 right-[43%] h-[28%] w-[31%] bg-[#f4f1e8]" />
-
-        <div className="absolute right-8 top-8 max-w-[10rem] text-primary-foreground sm:right-10 sm:top-10">
-          <p className="text-heading-24 font-normal leading-[1.05] tracking-[-0.03em] sm:text-heading-32">
-            BRANDS
-            <br />
-            PEOPLE
-            <br />
-            PROGRESS
-          </p>
-          <span className="mt-6 block h-8 w-px bg-primary-foreground/70" />
-          <p className="mt-6 font-[family-name:var(--font-geist-mono)] text-[0.55rem] uppercase tracking-[0.2em] text-primary-foreground/80">
-            Strategy
-            <br />
-            Creative
-            <br />
-            Technology
-            <br />
-            Real growth
-          </p>
-        </div>
-
-        <div className="absolute bottom-4 left-4 right-4 flex items-center justify-between bg-background/90 px-4 py-3 backdrop-blur-sm">
-          <span className="font-[family-name:var(--font-geist-mono)] text-label-12 text-muted-foreground">
+      <div className="relative min-h-[29rem] overflow-hidden border border-white/14 bg-white/[0.06] sm:min-h-[32rem] lg:min-h-[35rem]">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_20%,rgba(0,0,255,0.5),transparent_32%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent)]" />
+        <div className="absolute inset-x-6 bottom-6 border border-white/16 bg-black/30 p-5 backdrop-blur-xl">
+          <span className="font-[family-name:var(--font-geist-mono)] text-label-12 text-white/62">
             01 / 01
           </span>
-          <p className="text-label-12 text-muted-foreground">
-            Add media to Home Page → Featured Projects in Payload
-          </p>
         </div>
       </div>
     )
@@ -134,7 +96,7 @@ function HeroVisual({ slides }: { slides: HeroSlide[] }) {
       <CarouselContent className="-ml-0">
         {slides.map((slide, index) => (
           <CarouselItem key={slide.id} className="pl-0">
-            <article className="relative min-h-[29rem] overflow-hidden bg-foreground sm:min-h-[32rem] lg:min-h-[35rem]">
+            <article className="relative min-h-[29rem] overflow-hidden border border-white/14 bg-foreground sm:min-h-[32rem] lg:min-h-[35rem]">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={slide.image}
@@ -144,7 +106,7 @@ function HeroVisual({ slides }: { slides: HeroSlide[] }) {
                 decoding="async"
                 className="absolute inset-0 h-full w-full object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/82 via-black/18 to-black/12" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/84 via-black/20 to-black/12" />
 
               <div className="absolute inset-x-0 bottom-0 p-6 pb-20 text-white sm:p-8 sm:pb-20">
                 <p className="font-[family-name:var(--font-geist-mono)] text-label-12 uppercase tracking-[0.15em] text-white/65">
@@ -153,22 +115,15 @@ function HeroVisual({ slides }: { slides: HeroSlide[] }) {
                 <h2 className="mt-3 max-w-[16ch] text-heading-24 text-white sm:text-heading-32">
                   {slide.title}
                 </h2>
-                {slide.body ? (
-                  <p className="mt-3 max-w-[42ch] text-copy-14 text-white/72">
-                    {slide.body}
-                  </p>
-                ) : null}
+                {slide.body ? <p className="mt-3 max-w-[42ch] text-copy-14 text-white/72">{slide.body}</p> : null}
 
                 {slide.href ? (
                   <Link
                     href={slide.href}
-                    className="group/link mt-5 inline-flex items-center gap-2 text-button-14 text-white"
+                    className="group/link mt-5 inline-flex min-h-11 items-center gap-2 rounded-[4px] text-button-14 text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
                   >
                     View case study
-                    <ArrowUpRight
-                      aria-hidden
-                      className="size-4 transition-transform duration-200 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5"
-                    />
+                    <ArrowUpRight aria-hidden className="size-4 transition-transform duration-200 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
                   </Link>
                 ) : null}
               </div>
@@ -186,7 +141,7 @@ function HeroVisual({ slides }: { slides: HeroSlide[] }) {
           <button
             type="button"
             aria-label={autoRotate ? 'Pause hero carousel' : 'Play hero carousel'}
-                onClick={() => setAutoRotate((value) => !value)}
+            onClick={() => setAutoRotate((value) => !value)}
             className="grid size-11 place-items-center rounded-[4px] border border-white/22 bg-white/8 text-white transition-colors duration-150 hover:border-white/45 hover:bg-white/16 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
           >
             {autoRotate ? <Pause aria-hidden className="size-4" /> : <Play aria-hidden className="size-4" />}
@@ -220,22 +175,18 @@ function HeroVisual({ slides }: { slides: HeroSlide[] }) {
 }
 
 function LogoMark({ logo, duplicate = false }: { logo: HeroLogo; duplicate?: boolean }) {
-  const content = logo.logo ? (
+  const image = (
     // eslint-disable-next-line @next/next/no-img-element
     <img
       src={logo.logo}
       alt={duplicate ? '' : logo.name}
-      className="max-h-8 w-auto max-w-32 object-contain grayscale brightness-0 invert opacity-75 transition-all duration-200 group-hover:grayscale-0 group-hover:brightness-100 group-hover:invert-0 group-hover:opacity-100"
+      className="max-h-8 w-auto max-w-32 object-contain brightness-0 invert opacity-72 transition-opacity duration-150 group-hover:opacity-100"
       loading={duplicate ? 'lazy' : 'eager'}
     />
-  ) : (
-    <span className="text-heading-20 font-medium tracking-[-0.03em] text-white/72 transition-colors group-hover:text-white">
-      {logo.name}
-    </span>
   )
 
   const className =
-    'group flex h-12 min-w-32 shrink-0 items-center justify-center px-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring'
+    'group flex h-12 min-w-32 shrink-0 items-center justify-center px-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white'
 
   return logo.href ? (
     <a
@@ -247,41 +198,35 @@ function LogoMark({ logo, duplicate = false }: { logo: HeroLogo; duplicate?: boo
       aria-hidden={duplicate || undefined}
       tabIndex={duplicate ? -1 : undefined}
     >
-      {content}
+      {image}
     </a>
   ) : (
     <span className={className} translate="no" aria-hidden={duplicate || undefined}>
-      {content}
+      {image}
     </span>
   )
 }
 
 function LogoMarquee({ logos }: { logos: HeroLogo[] }) {
   const [paused, setPaused] = useState(false)
-  const source = logos.length > 0
-    ? logos
-    : experience.names.map((name, index) => ({
-        id: `fallback-${index}`,
-        name,
-      } satisfies HeroLogo))
 
   const sequence = useMemo(() => {
-    if (source.length === 0) return []
-    const repeats = Math.max(1, Math.ceil(8 / source.length))
-    return Array.from({ length: repeats }, () => source).flat()
-  }, [source])
+    if (logos.length === 0) return []
+    const repeats = Math.max(1, Math.ceil(8 / logos.length))
+    return Array.from({ length: repeats }, () => logos).flat()
+  }, [logos])
 
   if (sequence.length === 0) return null
 
   return (
     <div className="gc-logo-marquee-viewport relative min-w-0 overflow-hidden pr-14 lg:col-span-9 [mask-image:linear-gradient(to_right,transparent,black_7%,black_88%,transparent)]">
       <div className="gc-logo-marquee-track flex w-max" data-paused={paused}>
-        <div className="gc-logo-marquee-group flex shrink-0 items-center gap-12 pr-12">
+        <div className="flex shrink-0 items-center gap-12 pr-12">
           {sequence.map((logo, index) => (
             <LogoMark key={`a-${logo.id}-${index}`} logo={logo} />
           ))}
         </div>
-        <div className="gc-logo-marquee-group flex shrink-0 items-center gap-12 pr-12" aria-hidden>
+        <div className="flex shrink-0 items-center gap-12 pr-12" aria-hidden>
           {sequence.map((logo, index) => (
             <LogoMark key={`b-${logo.id}-${index}`} logo={logo} duplicate />
           ))}
@@ -308,38 +253,30 @@ export function Hero({
   logos?: HeroLogo[]
 }) {
   return (
-    <HeroSection
-      className="min-h-0"
-      aria-labelledby="hero-heading"
-      poster={slides[0]?.image}
-    >
+    <section className="gc-hero-grain relative isolate overflow-hidden bg-[#07070A] text-white" aria-labelledby="hero-heading">
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_76%_16%,rgba(0,0,255,0.62),transparent_28%),radial-gradient(circle_at_26%_26%,rgba(62,62,255,0.20),transparent_32%),linear-gradient(135deg,#050507_0%,#0B0B16_48%,#0000FF_170%)]"
+      />
+
       <Container className="pb-10 pt-12 md:pb-12 md:pt-16">
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-6">
           <div className="lg:col-span-5">
             <SectionLabel className="text-white/68">{hero.eyebrow}</SectionLabel>
-            <h1
-              id="hero-heading"
-              className="mt-7 max-w-[11ch] text-heading-40 text-white sm:text-heading-48 lg:text-heading-64 xl:text-heading-72"
-            >
+            <h1 id="hero-heading" className="mt-7 max-w-[11ch] text-heading-40 text-white sm:text-heading-48 lg:text-heading-64 xl:text-heading-72">
               {hero.heading}
             </h1>
             <div className="mt-8 flex flex-wrap items-center gap-4">
               <Button asChild size="lg" className="group shadow-[0_1px_2px_rgba(0,0,0,0.35),0_10px_28px_rgba(0,0,255,0.20)] focus-visible:outline-white">
                 <Link href={hero.primaryCTA.href}>
                   {hero.primaryCTA.label}
-                  <ArrowRight
-                    aria-hidden
-                    className="transition-transform duration-200 group-hover:translate-x-1"
-                  />
+                  <ArrowRight aria-hidden className="transition-transform duration-200 group-hover:translate-x-1" />
                 </Link>
               </Button>
               <Button asChild variant="outline" size="lg" className="group border-white/24 bg-white/8 px-4 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_1px_2px_rgba(0,0,0,0.24)] backdrop-blur-xl hover:border-white/42 hover:bg-white/14 hover:text-white focus-visible:outline-white">
                 <Link href={hero.secondaryCTA.href}>
                   {hero.secondaryCTA.label}
-                  <ArrowRight
-                    aria-hidden
-                    className="transition-transform duration-200 group-hover:translate-x-1"
-                  />
+                  <ArrowRight aria-hidden className="transition-transform duration-200 group-hover:translate-x-1" />
                 </Link>
               </Button>
             </div>
@@ -353,9 +290,7 @@ export function Hero({
             <p className="max-w-[28ch] text-copy-18 text-white/72">{hero.support}</p>
             <div className="mt-12 lg:mt-0">
               <Separator className="bg-white/22" />
-              <p className="mt-5 max-w-[25ch] text-copy-14 text-white/66">
-                {hero.closing}
-              </p>
+              <p className="mt-5 max-w-[25ch] text-copy-14 text-white/66">{hero.closing}</p>
             </div>
           </div>
         </div>
@@ -365,14 +300,12 @@ export function Hero({
         <div className="grid gap-6 py-8 lg:grid-cols-12 lg:items-center">
           <div className="lg:col-span-3">
             <SectionLabel className="text-white/68">{experience.label}</SectionLabel>
-            <p className="mt-2 max-w-[24ch] text-copy-14 text-white/62">
-              {experience.support}
-            </p>
+            <p className="mt-2 max-w-[24ch] text-copy-14 text-white/62">{experience.support}</p>
           </div>
 
           <LogoMarquee logos={logos} />
         </div>
       </Container>
-    </HeroSection>
+    </section>
   )
 }

@@ -1,46 +1,25 @@
 'use client'
 
+import { useEffect, useRef, useState } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { Check, Minus, Plus } from 'lucide-react'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { Minus, Plus } from 'lucide-react'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Container, SectionLabel } from '@/components/blocks/Layout'
 import { homeV5 } from '@/content/homeV5'
 
 const { evidence, faq } = homeV5
 
-function EvidenceVisual({ label }: { label: string }) {
-  return (
-    <div className="relative min-h-64 overflow-hidden bg-[#efede7] p-6">
-      <div className="absolute -left-8 -top-10 h-40 w-40 rotate-12 border border-black/5 bg-background shadow-[0_1px_2px_rgba(0,0,0,0.08),0_14px_28px_rgba(0,0,0,0.06)]" />
-      <div className="absolute bottom-8 left-8 z-10 rotate-[-7deg] border border-black/6 bg-background px-5 py-7 shadow-[0_1px_2px_rgba(0,0,0,0.08),0_16px_32px_rgba(0,0,0,0.10)]">
-        <p className="text-heading-24 leading-[1.05]">
-          From
-          <br />
-          insight
-          <br />
-          to opportunity
-        </p>
-      </div>
-      <span className="absolute right-6 top-6 font-[family-name:var(--font-geist-mono)] text-label-12 uppercase text-muted-foreground">
-        {label}
-      </span>
-      <span className="absolute bottom-6 right-6 h-px w-20 bg-primary" />
-    </div>
-  )
+export type EvidenceMedia = {
+  url: string
+  alt: string
 }
 
-export function EvidenceFaq() {
+export function EvidenceFaq({ media = [] }: { media?: EvidenceMedia[] }) {
   const pathname = usePathname()
   const router = useRouter()
   const searchParams = useSearchParams()
-
-  const evidenceLabels = new Set(evidence.categories.map((category) => category.label as string))
-  const requestedEvidence = searchParams.get('evidence')
-  const activeEvidence =
-    requestedEvidence && evidenceLabels.has(requestedEvidence)
-      ? requestedEvidence
-      : evidence.categories[0].label
+  const [activeEvidence, setActiveEvidence] = useState(0)
+  const evidenceRefs = useRef<Array<HTMLElement | null>>([])
 
   const requestedFaq = searchParams.get('faq')
   const validFaq =
@@ -50,14 +29,34 @@ export function EvidenceFaq() {
         ? requestedFaq
         : 'faq-0'
 
-  const updateParam = (name: string, value: string | undefined) => {
+  const updateFaq = (value: string | undefined) => {
     const params = new URLSearchParams(searchParams.toString())
-
-    if (value) params.set(name, value)
-    else params.delete(name)
-
+    if (value) params.set('faq', value)
+    else params.delete('faq')
     const query = params.toString()
     router.push(query ? `${pathname}?${query}` : pathname, { scroll: false })
+  }
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
+
+        if (!visible) return
+        const index = Number((visible.target as HTMLElement).dataset.index)
+        if (Number.isFinite(index)) setActiveEvidence(index)
+      },
+      { rootMargin: '-18% 0px -48% 0px', threshold: [0.2, 0.45, 0.7] },
+    )
+
+    evidenceRefs.current.forEach((node) => node && observer.observe(node))
+    return () => observer.disconnect()
+  }, [])
+
+  const jumpToEvidence = (index: number) => {
+    evidenceRefs.current[index]?.scrollIntoView({ behavior: 'smooth', block: 'center' })
   }
 
   return (
@@ -66,48 +65,62 @@ export function EvidenceFaq() {
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-8">
           <div className="min-w-0 lg:col-span-7">
             <SectionLabel>{evidence.label}</SectionLabel>
-            <h2
-              id="evidence-heading"
-              className="mt-4 max-w-[14ch] text-heading-32 text-foreground [text-wrap:balance] md:text-heading-40"
-            >
+            <h2 id="evidence-heading" className="mt-4 max-w-[14ch] text-heading-32 text-foreground [text-wrap:balance] md:text-heading-40">
               {evidence.heading}
             </h2>
 
-            <Tabs value={activeEvidence} onValueChange={(value) => updateParam('evidence', value)} className="mt-8">
-              <TabsList className="grid h-auto w-full grid-cols-2 gap-1 border border-border bg-background p-1 sm:grid-cols-4">
-                {evidence.categories.map((category) => (
-                  <TabsTrigger
-                    key={category.label}
-                    value={category.label}
-                    className="min-h-11 min-w-0 whitespace-normal rounded-[3px] px-2 py-2 text-center text-label-12 data-[state=active]:border-black/8 data-[state=active]:bg-[#F5F5F2]"
-                  >
-                    {category.label}
-                  </TabsTrigger>
-                ))}
-              </TabsList>
+            <div className="mt-8 grid gap-6 md:grid-cols-[10rem_minmax(0,1fr)]">
+              <div className="self-start md:sticky md:top-24">
+                <div className="grid grid-cols-2 gap-1 border border-border bg-background p-1 md:grid-cols-1">
+                  {evidence.categories.map((category, index) => (
+                    <button
+                      key={category.label}
+                      type="button"
+                      onClick={() => jumpToEvidence(index)}
+                      aria-current={activeEvidence === index ? 'true' : undefined}
+                      className={`min-h-11 min-w-0 rounded-[3px] px-3 py-2 text-left text-label-12 transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring ${activeEvidence === index ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-[#F5F5F2] hover:text-foreground'}`}
+                    >
+                      <span className="block truncate">{category.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
 
-              {evidence.categories.map((category) => (
-                <TabsContent key={category.label} value={category.label} className="mt-5">
-                  <div className="grid overflow-hidden border border-border bg-border sm:grid-cols-2">
-                    <EvidenceVisual label={category.label} />
-                    <div className="bg-background p-6 md:p-7">
-                      <h3 className="text-heading-20 text-foreground">{category.deliverable}</h3>
-                      <p className="mt-3 text-copy-14 text-muted-foreground [text-wrap:pretty]">{category.body}</p>
-                      <ul className="mt-7 space-y-3">
-                        {category.points.map((point) => (
-                          <li key={point} className="flex items-start gap-3 text-copy-13 text-foreground">
-                            <span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-[4px] bg-primary text-primary-foreground">
-                              <Check aria-hidden className="size-3" />
-                            </span>
-                            <span>{point}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </div>
-                </TabsContent>
-              ))}
-            </Tabs>
+              <div>
+                {evidence.categories.map((category, index) => {
+                  const picture = media.length > 0 ? media[index % media.length] : undefined
+
+                  return (
+                    <article
+                      key={category.label}
+                      ref={(node) => { evidenceRefs.current[index] = node }}
+                      data-index={index}
+                      className="scroll-mt-28 border-t border-border py-10 first:border-t-0 first:pt-0"
+                    >
+                      {picture ? (
+                        <div className="relative min-h-64 overflow-hidden border border-border bg-background">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img src={picture.url} alt={picture.alt} loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover" />
+                        </div>
+                      ) : null}
+
+                      <div className={picture ? 'pt-6' : ''}>
+                        <h3 className="text-heading-20 text-foreground">{category.deliverable}</h3>
+                        <p className="mt-3 text-copy-14 text-muted-foreground [text-wrap:pretty]">{category.body}</p>
+                        <ul className="mt-6 space-y-2">
+                          {category.points.map((point) => (
+                            <li key={point} className="flex gap-3 text-copy-13 text-foreground">
+                              <span aria-hidden className="text-primary">—</span>
+                              <span>{point}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </article>
+                  )
+                })}
+              </div>
+            </div>
           </div>
 
           <div className="lg:col-span-5">
@@ -118,7 +131,7 @@ export function EvidenceFaq() {
               type="single"
               collapsible
               value={validFaq ?? undefined}
-              onValueChange={(value) => updateParam('faq', value || 'none')}
+              onValueChange={(value) => updateFaq(value || 'none')}
               className="mt-8 overflow-hidden border border-border bg-background"
             >
               {faq.items.map((item, index) => (

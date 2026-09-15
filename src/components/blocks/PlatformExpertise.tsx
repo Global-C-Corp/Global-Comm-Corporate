@@ -9,6 +9,13 @@ import { homeV5 } from '@/content/homeV5'
 const { platforms } = homeV5
 const ICONS = [Search, BarChart3, LineChart, Settings2]
 
+const PLATFORM_LOGOS: Record<string, string> = {
+  google: 'https://cdn.simpleicons.org/google',
+  meta: 'https://cdn.simpleicons.org/meta/0866FF',
+  tiktok: 'https://cdn.simpleicons.org/tiktok',
+  linkedin: 'https://cdn.simpleicons.org/linkedin/0A66C2',
+}
+
 export function PlatformExpertise() {
   const pathname = usePathname()
   const router = useRouter()
@@ -34,10 +41,7 @@ export function PlatformExpertise() {
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-6">
           <div className="lg:col-span-4 lg:pr-8">
             <SectionLabel>{platforms.label}</SectionLabel>
-            <h2
-              id="platform-heading"
-              className="mt-4 max-w-[12ch] text-heading-32 text-foreground [text-wrap:balance] md:text-heading-40"
-            >
+            <h2 id="platform-heading" className="mt-4 max-w-[12ch] text-heading-32 text-foreground [text-wrap:balance] md:text-heading-40">
               {platforms.heading}
             </h2>
             <p className="mt-4 max-w-[34ch] text-copy-16 text-muted-foreground [text-wrap:pretty]">
@@ -47,15 +51,23 @@ export function PlatformExpertise() {
 
           <div className="min-w-0 lg:col-span-8">
             <Tabs value={active} onValueChange={setPlatform}>
-              <TabsList className="grid h-auto w-full grid-cols-2 gap-1 border border-border bg-[#F5F5F2] p-1 sm:grid-cols-4">
+              <TabsList className="grid h-auto w-full grid-cols-4 gap-1 overflow-hidden border border-border bg-[#F5F5F2] p-1">
                 {platforms.items.map((item) => (
                   <TabsTrigger
                     key={item.key}
                     value={item.key}
                     translate="no"
-                    className="min-h-11 min-w-0 whitespace-normal rounded-[3px] px-3 py-2 text-center text-label-13 data-[state=active]:border-black/8 data-[state=active]:bg-background data-[state=active]:shadow-[0_1px_2px_rgba(0,0,0,0.08),0_4px_12px_rgba(0,0,0,0.04)]"
+                    aria-label={item.name}
+                    className="min-h-14 min-w-0 rounded-[3px] px-2 py-2 data-[state=active]:border-black/8 data-[state=active]:bg-background data-[state=active]:shadow-[0_1px_2px_rgba(0,0,0,0.08),0_4px_12px_rgba(0,0,0,0.04)]"
                   >
-                    {item.name}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={PLATFORM_LOGOS[item.key]}
+                      alt=""
+                      aria-hidden
+                      className="h-5 w-auto max-w-full object-contain sm:h-6"
+                    />
+                    <span className="sr-only">{item.name}</span>
                   </TabsTrigger>
                 ))}
               </TabsList>
@@ -66,10 +78,7 @@ export function PlatformExpertise() {
                     {item.capabilities.map((capability, index) => {
                       const Icon = ICONS[index % ICONS.length]
                       return (
-                        <div
-                          key={capability}
-                          className="min-h-44 bg-background p-5 sm:border-r sm:border-b sm:border-border xl:border-b-0"
-                        >
+                        <div key={capability} className="min-h-44 bg-background p-5 sm:border-r sm:border-b sm:border-border xl:border-b-0">
                           <div className="flex items-center justify-between gap-4">
                             <Icon aria-hidden className="size-4 text-primary" />
                             <span className="font-[family-name:var(--font-geist-mono)] text-label-12 tabular-nums text-muted-foreground">
