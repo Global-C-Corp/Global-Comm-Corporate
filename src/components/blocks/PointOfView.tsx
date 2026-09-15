@@ -1,42 +1,59 @@
-import { Container, SectionLabel } from '@/components/blocks/Layout'
-import { homeV5 } from '@/content/homeV5'
+'use client'
 
-const { pointOfView } = homeV5
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
+import { Container, SectionLabel } from '@/components/blocks/Layout'
+
+const STATEMENT = 'We make your brand impossible to ignore, easy to trust, and built to grow.'
 
 export function PointOfView() {
+  const ref = useRef<HTMLElement>(null)
+  const [visible, setVisible] = useState(false)
+  const words = useMemo(() => STATEMENT.split(' '), [])
+
+  useEffect(() => {
+    const node = ref.current
+    if (!node) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry?.isIntersecting) return
+        setVisible(true)
+        observer.disconnect()
+      },
+      { threshold: 0.35 },
+    )
+
+    observer.observe(node)
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <section
+      ref={ref}
       id="point-of-view"
-      className="scroll-mt-20 border-b border-white/10 bg-[#0A0A0A] text-white"
-      aria-labelledby="point-of-view-heading"
+      className="relative flex min-h-[92vh] scroll-mt-20 items-center overflow-hidden border-b border-white/10 bg-[#0A0A0A] text-white"
+      aria-labelledby="brand-statement-heading"
     >
-      <Container className="flex min-h-[72vh] items-center py-24 md:py-32">
-        <div className="w-full">
-          <div className="flex items-center gap-4">
-            <SectionLabel className="text-white/52">{pointOfView.label}</SectionLabel>
-            <span aria-hidden className="h-px flex-1 bg-white/12" />
-          </div>
+      <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,0,255,0.34),transparent_34%),linear-gradient(180deg,#0A0A0A_0%,#111111_100%)]" />
 
-          <div className="mt-10 grid gap-12 lg:grid-cols-12 lg:items-end">
-            <h2
-              id="point-of-view-heading"
-              className="max-w-[16ch] text-heading-40 text-white [text-wrap:balance] md:text-heading-56 lg:col-span-8"
-            >
-              Better marketing doesn&apos;t begin with more execution. It begins with{' '}
-              <span className="text-primary">better understanding.</span>
-            </h2>
+      <Container className="relative z-10 py-24 md:py-32">
+        <div className="mx-auto max-w-[72rem] text-center">
+          <SectionLabel className="text-white/50">OUR POINT OF VIEW</SectionLabel>
 
-            <div className="grid gap-8 sm:grid-cols-2 lg:col-span-4 lg:grid-cols-1">
-              <p className="max-w-[36ch] text-copy-16 text-white/62 [text-wrap:pretty]">{pointOfView.left}</p>
-
-              <div className="border-t border-white/14 pt-6">
-                <p className="max-w-[36ch] text-copy-16 text-white/62 [text-wrap:pretty]">{pointOfView.right}</p>
-                <p className="mt-6 font-[family-name:var(--font-geist-mono)] text-label-12 uppercase tracking-[0.14em] text-white">
-                  Insight drives impact.
-                </p>
-              </div>
-            </div>
-          </div>
+          <h2
+            id="brand-statement-heading"
+            className="mx-auto mt-8 max-w-[18ch] text-heading-40 leading-[1.08] tracking-[-0.035em] text-white [text-wrap:balance] md:text-heading-56 lg:text-heading-64"
+          >
+            {words.map((word, index) => (
+              <span
+                key={`${word}-${index}`}
+                className={`inline-block transition-[opacity,transform,filter] duration-500 ease-out motion-reduce:transition-none ${visible ? 'translate-y-0 opacity-100 blur-0' : 'translate-y-3 opacity-0 blur-[8px]'}`}
+                style={{ transitionDelay: `${index * 55}ms` } as CSSProperties}
+              >
+                {word}&nbsp;
+              </span>
+            ))}
+          </h2>
         </div>
       </Container>
     </section>
