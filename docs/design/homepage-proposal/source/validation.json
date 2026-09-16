@@ -1,0 +1,115 @@
+{
+  "desktop": {
+    "width": 1440,
+    "height": 8941,
+    "sections": [
+      {
+        "name": "GlobalHeader",
+        "y": 0,
+        "h": 80
+      },
+      {
+        "name": "Hero",
+        "y": 80,
+        "h": 868
+      },
+      {
+        "name": "PlatformExpertise",
+        "y": 948,
+        "h": 424
+      },
+      {
+        "name": "PointOfView",
+        "y": 1372,
+        "h": 640
+      },
+      {
+        "name": "FrozenExpertise",
+        "y": 2012,
+        "h": 3210
+      },
+      {
+        "name": "SelectedWork",
+        "y": 5222,
+        "h": 948
+      },
+      {
+        "name": "ClientLogoCloud",
+        "y": 6170,
+        "h": 493
+      },
+      {
+        "name": "EvidenceFaq",
+        "y": 6663,
+        "h": 1410
+      },
+      {
+        "name": "FinalCta",
+        "y": 8073,
+        "h": 458
+      },
+      {
+        "name": "Footer",
+        "y": 8531,
+        "h": 410
+      }
+    ]
+  },
+  "mobile": {
+    "width": 390,
+    "height": 12081,
+    "sections": [
+      {
+        "name": "GlobalHeader",
+        "y": 0,
+        "h": 72
+      },
+      {
+        "name": "Hero",
+        "y": 72,
+        "h": 1260
+      },
+      {
+        "name": "PlatformExpertise",
+        "y": 1332,
+        "h": 648
+      },
+      {
+        "name": "PointOfView",
+        "y": 1980,
+        "h": 505
+      },
+      {
+        "name": "FrozenExpertise",
+        "y": 2485,
+        "h": 4198
+      },
+      {
+        "name": "SelectedWork",
+        "y": 6683,
+        "h": 1393
+      },
+      {
+        "name": "ClientLogoCloud",
+        "y": 8076,
+        "h": 602
+      },
+      {
+        "name": "EvidenceFaq",
+        "y": 8678,
+        "h": 2280
+      },
+      {
+        "name": "FinalCta",
+        "y": 10958,
+        "h": 511
+      },
+      {
+        "name": "Footer",
+        "y": 11469,
+        "h": 612
+      }
+    ]
+  },
+  "horizontal_overflows": []
+}

@@ -1,0 +1,395 @@
+{
+  "source": {
+    "repo": "https://github.com/Global-C-Corp/Global-Comm-Corporate",
+    "branch": "claude/headless-cms-project-h7k170",
+    "commit": "3f5dea4e697ab9389e55f52dc5e27d5d1aacd637",
+    "route": "/design/home",
+    "live": "https://global-comm-corporate-bm2pjibzd.vercel.app/design/home"
+  },
+  "header": {
+    "wordmark": "GLOBAL COMMUNICATION CORPORATE™",
+    "nav": [
+      {
+        "label": "Work",
+        "href": "/fr/work"
+      },
+      {
+        "label": "Services",
+        "href": "/fr/services"
+      },
+      {
+        "label": "Company",
+        "href": "/fr/company"
+      },
+      {
+        "label": "Contact",
+        "href": "/fr/contact"
+      }
+    ]
+  },
+  "hero": {
+    "eyebrow": "STRATEGY · BRANDING · DIGITAL MARKETING · GROWTH",
+    "heading": "A strategic marketing partner for brands ready to grow.",
+    "support": "We help companies build stronger brands, create better content and turn digital marketing into measurable business growth.",
+    "primaryCTA": {
+      "label": "Start a project",
+      "href": "/fr/contact"
+    },
+    "secondaryCTA": {
+      "label": "View our work",
+      "href": "/fr/work"
+    },
+    "closing": "From strategy to execution, one partner connecting brand, marketing and digital growth."
+  },
+  "experience": {
+    "label": "SELECTED EXPERIENCE",
+    "support": "Companies, institutions and brands connected to our work.",
+    "names": [
+      "OGLO NUTS",
+      "AMSD",
+      "AJM",
+      "IMANOR",
+      "INDH"
+    ]
+  },
+  "platforms": {
+    "label": "PLATFORM EXPERTISE",
+    "heading": "Platform Expertise",
+    "support": "Built across the platforms your customers already use.",
+    "items": [
+      {
+        "key": "google",
+        "name": "GOOGLE",
+        "capabilities": [
+          "SEARCH",
+          "PAID MEDIA",
+          "ANALYTICS",
+          "SEO"
+        ],
+        "notes": [
+          "Capture high-intent demand and grow visibility.",
+          "Drive qualified traffic with performance campaigns.",
+          "Turn data into clearer decisions.",
+          "Build long-term organic growth."
+        ]
+      },
+      {
+        "key": "meta",
+        "name": "META",
+        "capabilities": [
+          "SOCIAL",
+          "PAID MEDIA",
+          "RETARGETING",
+          "CONTENT"
+        ],
+        "notes": [
+          "Build reach and relevance across social audiences.",
+          "Test creative against measurable campaign goals.",
+          "Reconnect with warm audiences intelligently.",
+          "Create content designed for the feed."
+        ]
+      },
+      {
+        "key": "tiktok",
+        "name": "TIKTOK",
+        "capabilities": [
+          "CONTENT",
+          "PAID MEDIA",
+          "CREATIVE TESTING",
+          "INSIGHTS"
+        ],
+        "notes": [
+          "Native creative built for attention.",
+          "Performance distribution designed for the platform.",
+          "Fast iteration on formats and messages.",
+          "Learn from real audience signals."
+        ]
+      },
+      {
+        "key": "linkedin",
+        "name": "LINKEDIN",
+        "capabilities": [
+          "B2B CONTENT",
+          "LEAD GEN",
+          "PAID MEDIA",
+          "POSITIONING"
+        ],
+        "notes": [
+          "Build authority around real expertise.",
+          "Capture demand from professional audiences.",
+          "Reach decision-makers with focused campaigns.",
+          "Clarify category and point of view."
+        ]
+      }
+    ]
+  },
+  "pointOfView": {
+    "label": "OUR POINT OF VIEW",
+    "left": "We take the time to understand your market, your customers and what makes your brand different. Better strategy leads to clearer creative and stronger business decisions.",
+    "right": "In a noisy world, we help brands find clarity, focus and momentum — and turn it into meaningful growth."
+  },
+  "work": {
+    "label": "SELECTED WORK",
+    "viewAll": {
+      "label": "View all work",
+      "href": "/fr/work"
+    },
+    "projects": [
+      {
+        "name": "PIKOTA",
+        "disciplines": "Brand Strategy · Packaging · Digital",
+        "body": "A coordinated brand system for a consumer food brand, from strategic framing to digital presentation."
+      },
+      {
+        "name": "OGLO NUTS",
+        "disciplines": "Corporate · B2B · Web",
+        "body": "A clearer corporate and B2B story across services, brands and digital touchpoints."
+      },
+      {
+        "name": "AMSD",
+        "disciplines": "Communication · Content · Digital",
+        "body": "Communication delivery structured around useful content and consistent digital execution."
+      }
+    ]
+  },
+  "method": {
+    "label": "OUR PROCESS",
+    "steps": [
+      {
+        "number": "01",
+        "shortName": "Research & Briefing",
+        "body": "We listen, explore and define the right opportunity."
+      },
+      {
+        "number": "02",
+        "shortName": "Design & Validation",
+        "body": "We create, test and refine the best direction."
+      },
+      {
+        "number": "03",
+        "shortName": "Execution",
+        "body": "We launch, measure and improve what works."
+      }
+    ]
+  },
+  "evidence": {
+    "label": "SELECTED EVIDENCE",
+    "heading": "What strategy becomes when it reaches execution.",
+    "categories": [
+      {
+        "label": "STRATEGY",
+        "deliverable": "Strategic Foundations",
+        "body": "Market analysis, audience research and strategic roadmaps that identify the biggest opportunities.",
+        "points": [
+          "Market & competitor analysis",
+          "Audience research",
+          "Strategic roadmap"
+        ]
+      },
+      {
+        "label": "BRAND",
+        "deliverable": "Brand System",
+        "body": "Positioning translated into a clear verbal and visual system that teams can actually use.",
+        "points": [
+          "Positioning",
+          "Identity system",
+          "Messaging"
+        ]
+      },
+      {
+        "label": "DIGITAL",
+        "deliverable": "Campaign System",
+        "body": "Content, distribution and performance working together around one commercial objective.",
+        "points": [
+          "Content system",
+          "Paid media",
+          "Measurement"
+        ]
+      },
+      {
+        "label": "TECHNOLOGY",
+        "deliverable": "Digital Platform",
+        "body": "Web, automation and reporting combined into practical operating tools.",
+        "points": [
+          "Web experience",
+          "Automation",
+          "Reporting"
+        ]
+      }
+    ]
+  },
+  "faq": {
+    "label": "FREQUENTLY ASKED QUESTIONS",
+    "support": "A few things clients usually want to know.",
+    "items": [
+      {
+        "question": "What kind of companies do you work with?",
+        "answer": "We work with ambitious companies, institutions and brands that value strategic thinking, strong creative systems and measurable execution."
+      },
+      {
+        "question": "Do you work on strategy only?",
+        "answer": "Yes. Strategy can be a standalone engagement when clarity and direction are the priority."
+      },
+      {
+        "question": "Can Global Comm handle execution as well?",
+        "answer": "Yes. Branding, content, digital marketing, web and automation can be coordinated under the same strategic direction."
+      },
+      {
+        "question": "How does a project usually start?",
+        "answer": "With a discovery conversation that establishes context, objectives, constraints and the right next step."
+      },
+      {
+        "question": "Do you offer ongoing engagements?",
+        "answer": "Yes. Ongoing engagements are structured around a clear scope, cadence, responsibilities and reporting rhythm."
+      }
+    ]
+  },
+  "finalCTA": {
+    "heading": "READY TO BUILD WHAT COMES NEXT?",
+    "action": {
+      "label": "Tell us about your project",
+      "href": "/fr/contact"
+    },
+    "support": "New markets. Stronger brands. Real business growth."
+  },
+  "footer": {
+    "wordmark": "GLOBAL COMMUNICATION CORPORATE™",
+    "location": "Rabat, Morocco",
+    "links": [
+      {
+        "label": "Work",
+        "href": "/fr/work"
+      },
+      {
+        "label": "Services",
+        "href": "/fr/services"
+      },
+      {
+        "label": "Company",
+        "href": "/fr/company"
+      },
+      {
+        "label": "Contact",
+        "href": "/fr/contact"
+      }
+    ],
+    "locales": [
+      {
+        "label": "FR",
+        "href": "/fr"
+      },
+      {
+        "label": "EN",
+        "href": "/en"
+      },
+      {
+        "label": "ES",
+        "href": "/es"
+      }
+    ],
+    "copyright": "© 2026 Global Communication Corporate™",
+    "legal": [
+      {
+        "label": "Privacy",
+        "href": "/fr/contact"
+      },
+      {
+        "label": "Terms",
+        "href": "/fr/contact"
+      },
+      {
+        "label": "Cookies",
+        "href": "/fr/contact"
+      }
+    ]
+  },
+  "expertise": {
+    "kicker": "QUATRE EXPERTISES. UN PROJET COORDONNÉ.",
+    "title": "Mobilisez les compétences utiles sans multiplier les interlocuteurs.",
+    "body": [
+      "Global Comm n'impose pas les quatre expertises à chaque client.",
+      "Le périmètre dépend du problème, des priorités et des ressources déjà présentes dans votre entreprise."
+    ],
+    "scopeLabel": "Le périmètre peut inclure",
+    "outcomeLabel": "Ce que vous recevez",
+    "items": [
+      {
+        "number": "01",
+        "name": "Recherche, audit et stratégie",
+        "promise": "Sachez où agir avant d'engager vos ressources.",
+        "body": "Nous étudions votre situation, votre marché et vos objectifs pour faire ressortir les décisions prioritaires.",
+        "scope": [
+          "recherche et session de découverte",
+          "audit de communication et de marketing",
+          "analyse du marché et de la concurrence",
+          "positionnement, objectifs et indicateurs",
+          "feuille de route stratégique"
+        ],
+        "outcome": "Une lecture claire de la situation, des priorités et un plan pour avancer.",
+        "cta": {
+          "label": "Découvrir Recherche et stratégie",
+          "href": "/fr/services"
+        }
+      },
+      {
+        "number": "02",
+        "name": "Branding et communication",
+        "promise": "Faites reconnaître votre marque à chaque point de contact.",
+        "body": "Nous déclinons le positionnement retenu en messages, en identité et en supports cohérents.",
+        "scope": [
+          "stratégie et plateforme de marque",
+          "identité visuelle et système graphique",
+          "messages et direction artistique",
+          "communication corporate et campagnes",
+          "supports digitaux, imprimés ou packaging"
+        ],
+        "outcome": "Une marque claire, reconnaissable et plus simple à déployer.",
+        "cta": {
+          "label": "Découvrir Branding et communication",
+          "href": "/fr/services"
+        }
+      },
+      {
+        "number": "03",
+        "name": "Marketing digital",
+        "promise": "Transformez la stratégie en actions que votre équipe peut suivre.",
+        "body": "Nous coordonnons les canaux digitaux autour d’objectifs définis avec votre équipe.",
+        "scope": [
+          "contenus et réseaux sociaux",
+          "publicité sur les plateformes adaptées",
+          "SEO, landing pages et email marketing",
+          "mesure, tests et optimisation",
+          "tableau de bord et reporting"
+        ],
+        "outcome": "Des campagnes coordonnées, des responsabilités claires et un suivi régulier.",
+        "cta": {
+          "label": "Découvrir Marketing digital",
+          "href": "/fr/services"
+        }
+      },
+      {
+        "number": "04",
+        "name": "Automatisation et IA",
+        "promise": "Réduisez les tâches manuelles qui ralentissent votre équipe.",
+        "body": "Nous repérons les étapes répétitives puis concevons les outils et les flux adaptés à votre fonctionnement.",
+        "scope": [
+          "sites web et CMS",
+          "automatisation marketing et CRM",
+          "intégration de vos outils",
+          "assistants et fonctions basées sur l’IA",
+          "reporting automatisé"
+        ],
+        "outcome": "Un système plus fluide, documenté et utilisable par votre équipe.",
+        "cta": {
+          "label": "Découvrir Automatisation et IA",
+          "href": "/fr/services"
+        }
+      }
+    ],
+    "sectionCTA": {
+      "label": "Explorer toutes nos expertises",
+      "href": "/fr/services"
+    }
+  },
+  "statement": "We make your brand impossible to ignore, easy to trust, and built to grow."
+}

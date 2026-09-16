@@ -18,13 +18,13 @@ export function TestimonialBlock({ testimonial, locale }: { testimonial: Testimo
   return (
     <figure>
       <blockquote
-        className="border-l-2 border-primary pl-5 text-base leading-relaxed text-foreground"
+        className="max-w-[38ch] font-serif text-xl leading-[1.45] tracking-[-0.015em] text-foreground md:text-2xl"
         lang={isOriginalLocale ? undefined : locale}
       >
         “{quote}”
       </blockquote>
       {attribution && (
-        <figcaption className="mt-4 font-mono text-xs uppercase tracking-[0.14em] text-muted-foreground">
+        <figcaption className="mt-6 text-xs font-medium uppercase tracking-[0.08em] text-muted-foreground">
           {attribution}
         </figcaption>
       )}
