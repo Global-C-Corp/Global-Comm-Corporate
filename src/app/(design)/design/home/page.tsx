@@ -130,7 +130,7 @@ export default async function HomeDesignPreview() {
 
   return (
     <>
-      <GlobalHeader />
+      <GlobalHeader overDark />
       <main id="main" className="gc-design-page">
         <Hero slides={heroSlides} logos={heroLogos} />
         <PlatformExpertise />

@@ -259,7 +259,12 @@ export function Hero({
         className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_76%_16%,rgba(0,0,255,0.62),transparent_28%),radial-gradient(circle_at_26%_26%,rgba(62,62,255,0.20),transparent_32%),linear-gradient(135deg,#050507_0%,#0B0B16_48%,#0000FF_170%)]"
       />
 
-      <Container className="pb-10 pt-12 md:pb-12 md:pt-16">
+      {/*
+        * The global header overlays this section rather than sitting above it,
+        * so the hero clears the bar's own height (5rem) on top of its own
+        * breathing room instead of starting under it.
+        */}
+      <Container className="pb-10 pt-[8rem] md:pb-12 md:pt-[9rem]">
         <div className="grid gap-8 lg:grid-cols-12 lg:gap-6">
           <div className="lg:col-span-5">
             <SectionLabel className="text-white/68">{hero.eyebrow}</SectionLabel>
