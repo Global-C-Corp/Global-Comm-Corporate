@@ -2,32 +2,33 @@
 
 import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { ArrowRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Sheet, SheetClose, SheetContent, SheetTitle } from '@/components/ui/sheet'
-import { Container } from '@/components/blocks/Layout'
+import { Container, Wordmark } from '@/components/blocks/Layout'
 import { homeV5 } from '@/content/homeV5'
 import { cn } from '@/lib/utils'
 
 const { header } = homeV5
 
 /**
- * Global header (CLAUDE.md §82 — presentation is open, structure is not).
+ * Global header — approved homepage reference (04 §12.2).
  *
- * The visual idea is an instrument bar rather than a nav strip. Over a dark
- * opening section (`overDark`) it starts fully transparent and inverted, so the
- * hero runs to the top edge of the screen instead of being cut off by a white
- * band; once the page moves it collapses onto a hairline of brand blue and
- * takes on surface and weight.
- * The wordmark itself never moves or resizes — a brandmark that reflows while
- * you scroll reads as an accident rather than a decision.
+ * The bar is part of the hero canvas: over the dark opening section it is
+ * transparent and inverted so the hero reaches the top edge of the screen,
+ * rather than sitting in a white band above it. Once the page leaves the hero
+ * it condenses onto a light surface with a brand-blue hairline.
  *
- * Structure is unchanged: wordmark, primary nav, language, mobile menu. The
- * desktop CTA is new as *presentation*, not as new information — `Start a
- * project` already existed in the mobile sheet pointing at the same route, but
- * a desktop visitor had no way to act on it from the header.
+ * Composition is the reference's: wordmark left, primary nav centred with a
+ * blue underline on the current page, FR / EN / ES right. There is deliberately
+ * no CTA button in the bar — the reference does not carry one.
  */
-export function GlobalHeader({ overDark = false }: { overDark?: boolean }) {
+export function GlobalHeader({
+  overDark = false,
+  current = 'Work',
+}: {
+  overDark?: boolean
+  current?: string
+}) {
   const [open, setOpen] = useState(false)
   const [condensed, setCondensed] = useState(false)
   const triggerRef = useRef<HTMLButtonElement>(null)
@@ -52,12 +53,6 @@ export function GlobalHeader({ overDark = false }: { overDark?: boolean }) {
   }, [])
 
   const state = condensed ? 'condensed' : 'rest'
-
-  /**
-   * One axis drives every colour in the bar. Over a dark opening section the
-   * header dissolves into it and inverts; the moment it condenses it becomes
-   * the light bar again, whatever is behind it.
-   */
   const tone = overDark && !condensed ? 'dark' : 'light'
 
   return (
@@ -69,33 +64,21 @@ export function GlobalHeader({ overDark = false }: { overDark?: boolean }) {
         data-tone={tone}
         className={cn(
           'group/bar z-50 pt-[env(safe-area-inset-top)]',
-          /*
-           * Over a dark opening section the bar leaves the flow entirely and
-           * overlays it, so the hero runs to the top edge of the screen. In
-           * flow it would only reveal the page background behind itself — a
-           * white band cutting the hero off, which is the thing being fixed.
-           * Everywhere else it stays sticky and occupies its own height.
-           */
+          // Over a dark opening section the bar leaves the flow and overlays
+          // it. In flow it would only reveal the page background behind
+          // itself — a white band cutting the hero off.
           overDark ? 'fixed inset-x-0 top-0' : 'sticky top-0',
           // No `relative` here: tailwind-merge keeps the *last* position
           // utility, so it would silently cancel the line above and drop the
-          // bar back into the flow. `sticky` and `fixed` both establish the
-          // containing block the hairline below needs.
-          'border-b border-transparent bg-[#FAFAF8]/72 backdrop-blur-xl',
+          // bar back into the flow.
+          'border-b border-transparent bg-background/80 backdrop-blur-xl',
           'data-[tone=dark]:bg-transparent data-[tone=dark]:backdrop-blur-none',
           'supports-[backdrop-filter]:data-[tone=dark]:bg-transparent',
           'transition-[background-color,border-color,box-shadow] duration-300 ease-out',
-          'supports-[backdrop-filter]:bg-[#FAFAF8]/62',
-          'data-[bar=condensed]:border-black/10 data-[bar=condensed]:bg-[#FAFAF8]/92',
-          'data-[bar=condensed]:shadow-[0_1px_2px_rgba(0,0,0,0.04),0_10px_30px_rgba(0,0,0,0.05)]',
-          'supports-[backdrop-filter]:data-[bar=condensed]:bg-[#FAFAF8]/86',
+          'data-[bar=condensed]:border-border data-[bar=condensed]:bg-background/92',
+          'data-[bar=condensed]:shadow-[0_1px_2px_rgba(0,0,0,0.04),0_8px_24px_rgba(0,0,0,0.04)]',
         )}
       >
-        {/*
-         * The blue hairline is the scroll signal, drawn from the centre out so
-         * the bar reads as locking into place. It is the only brand colour the
-         * header carries at rest.
-         */}
         <span
           aria-hidden
           className={cn(
@@ -107,203 +90,189 @@ export function GlobalHeader({ overDark = false }: { overDark?: boolean }) {
 
         <Container
           className={cn(
-            'flex items-center justify-between gap-6',
-            'h-20 transition-[height] duration-300 ease-out',
-            'group-data-[bar=condensed]/bar:h-14',
+            'grid h-[5.5rem] grid-cols-[auto_1fr_auto] items-center gap-6',
+            'transition-[height] duration-300 ease-out',
+            'group-data-[bar=condensed]/bar:h-16',
           )}
         >
-          <Link
-            href="/design/home"
-            translate="no"
-            className={cn(
-              'inline-flex min-h-11 items-center font-semibold uppercase whitespace-nowrap',
-              // The wordmark is long enough to wrap to two lines beside the
-              // menu button at 390px. It tightens rather than wraps: a
-              // brandmark broken across two lines stops reading as one mark.
-              'text-[0.6875rem] tracking-[0.02em] sm:text-label-12 sm:tracking-[0.055em]',
-              'text-foreground',
-              'transition-colors duration-150 hover:text-primary',
-              'group-data-[tone=dark]/bar:text-white group-data-[tone=dark]/bar:hover:text-white/80',
-              'focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring',
-              'group-data-[tone=dark]/bar:focus-visible:outline-white',
-            )}
-          >
-            {header.wordmark}
-          </Link>
+          {/* The legal name is dropped when the bar condenses: at 64px it has
+              no room to breathe, and the lowercase mark still reads. */}
+          <Wordmark
+            tone={tone}
+            className="group-data-[bar=condensed]/bar:[&>span:last-child]:hidden"
+          />
 
-          <div className="hidden items-center md:flex">
-            <nav aria-label="Primary">
-              <ul className="flex items-center">
-                {header.nav.map((item) => (
+          <nav aria-label="Primary" className="hidden justify-center md:flex">
+            <ul className="flex items-center gap-1">
+              {header.nav.map((item) => {
+                const isCurrent = item.label === current
+
+                return (
                   <li key={item.label}>
                     <Link
                       href={item.href}
+                      aria-current={isCurrent ? 'page' : undefined}
                       className={cn(
-                        'group/nav inline-flex min-h-11 items-center px-3.5',
-                        'text-label-13 text-muted-foreground',
-                        'transition-colors duration-150 hover:text-foreground',
-                        'group-data-[tone=dark]/bar:text-white/80 group-data-[tone=dark]/bar:hover:text-white',
+                        'group/nav relative inline-flex min-h-11 items-center px-4',
+                        'text-copy-14 transition-colors duration-150',
+                        isCurrent ? 'text-foreground' : 'text-muted-foreground hover:text-foreground',
+                        'group-data-[tone=dark]/bar:text-white/75 group-data-[tone=dark]/bar:hover:text-white',
+                        isCurrent && 'group-data-[tone=dark]/bar:text-white',
                         'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
                         'group-data-[tone=dark]/bar:focus-visible:outline-white',
                       )}
                     >
-                      {/*
-                       * A rule that draws from the left of the word, replacing
-                       * the grey pill this had before: a pill makes every item
-                       * look like a button, a rule points at one word. Anchored
-                       * to the text box, not to the link box, so it stays put
-                       * when the bar changes height.
-                       */}
                       <span className="relative">
                         {item.label}
+                        {/* Brand-blue underline marks the current page; on
+                            hover the same rule draws in from the left. */}
                         <span
                           aria-hidden
                           className={cn(
-                            'pointer-events-none absolute -bottom-1.5 left-0 h-px w-full bg-primary',
-                            'group-data-[tone=dark]/bar:bg-white',
-                            'origin-left scale-x-0 transition-transform duration-200 ease-out',
-                            'group-hover/nav:scale-x-100 group-focus-visible/nav:scale-x-100',
+                            'pointer-events-none absolute -bottom-1.5 left-0 h-[2px] w-full origin-left bg-primary',
+                            'transition-transform duration-200 ease-out',
+                            isCurrent
+                              ? 'scale-x-100'
+                              : 'scale-x-0 group-hover/nav:scale-x-100 group-focus-visible/nav:scale-x-100',
                           )}
                         />
                       </span>
                     </Link>
                   </li>
-                ))}
-              </ul>
-            </nav>
+                )
+              })}
+            </ul>
+          </nav>
 
-            <span
-              className="mx-3 h-4 w-px bg-border transition-colors duration-300 group-data-[tone=dark]/bar:bg-white/25"
-              aria-hidden
-            />
+          <div className="flex items-center justify-end gap-1">
+            <ul className="hidden items-center md:flex" aria-label="Languages">
+              {header.locales.map((locale) => (
+                <li key={locale.label}>
+                  <Link
+                    href={locale.href}
+                    hrefLang={locale.label.toLowerCase()}
+                    aria-current={locale.current ? 'true' : undefined}
+                    className={cn(
+                      'inline-flex min-h-11 items-center px-2',
+                      'font-[family-name:var(--font-geist-mono)] text-label-12 uppercase tracking-[0.08em]',
+                      'transition-colors duration-150',
+                      locale.current
+                        ? 'text-primary'
+                        : cn(
+                            'text-muted-foreground hover:text-foreground',
+                            'group-data-[tone=dark]/bar:text-white/55 group-data-[tone=dark]/bar:hover:text-white',
+                          ),
+                      'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
+                      'group-data-[tone=dark]/bar:focus-visible:outline-white',
+                    )}
+                  >
+                    {locale.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
 
-            <Link
-              href="/en"
-              aria-label="Switch language to English"
-              className={cn(
-                'inline-flex min-h-11 items-center rounded-[3px] px-2.5',
-                'font-[family-name:var(--font-geist-mono)] text-label-12 uppercase tracking-[0.08em]',
-                'transition-colors duration-150',
-                'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
-                'group-data-[tone=dark]/bar:focus-visible:outline-white',
-              )}
-            >
-              <span aria-hidden className="text-foreground group-data-[tone=dark]/bar:text-white">
-                FR
-              </span>
-              <span aria-hidden className="px-1 text-border group-data-[tone=dark]/bar:text-white/30">
-                /
-              </span>
-              <span
-                aria-hidden
+            <Sheet open={open} onOpenChange={setOpen}>
+              <button
+                ref={triggerRef}
+                type="button"
                 className={cn(
-                  'text-muted-foreground transition-colors duration-150 hover:text-foreground',
-                  'group-data-[tone=dark]/bar:text-white/65 group-data-[tone=dark]/bar:hover:text-white',
+                  'inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-[2px] px-2 md:hidden',
+                  'font-[family-name:var(--font-geist-mono)] text-label-12 uppercase tracking-[0.1em]',
+                  'text-foreground transition-colors duration-150 hover:bg-foreground/[0.045]',
+                  'group-data-[tone=dark]/bar:text-white group-data-[tone=dark]/bar:hover:bg-white/10',
+                  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
+                  'group-data-[tone=dark]/bar:focus-visible:outline-white',
                 )}
+                aria-haspopup="dialog"
+                aria-expanded={open}
+                aria-label="Open navigation menu"
+                onClick={() => setOpen(true)}
               >
-                EN
-              </span>
-            </Link>
+                <span aria-hidden className="flex flex-col gap-[3px]">
+                  <span className="block h-px w-4 bg-current" />
+                  <span className="block h-px w-4 bg-current" />
+                </span>
+                Menu
+              </button>
 
-            <Button
-              asChild
-              size="sm"
-              className="group/cta ml-3 group-data-[tone=dark]/bar:focus-visible:outline-white"
-            >
-              <Link href="/fr/contact">
-                Start a project
-                <ArrowRight
-                  aria-hidden
-                  className="transition-transform duration-200 group-hover/cta:translate-x-0.5"
-                />
-              </Link>
-            </Button>
-          </div>
+              <SheetContent
+                side="right"
+                closeLabel="Close menu"
+                onCloseAutoFocus={(event) => {
+                  event.preventDefault()
+                  triggerRef.current?.focus()
+                }}
+              >
+                <SheetTitle asChild>
+                  <span>
+                    <Wordmark href="/design/home" />
+                  </span>
+                </SheetTitle>
 
-          <Sheet open={open} onOpenChange={setOpen}>
-            <button
-              ref={triggerRef}
-              type="button"
-              className={cn(
-                'inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-[3px] px-3 md:hidden',
-                'font-[family-name:var(--font-geist-mono)] text-label-12 uppercase tracking-[0.1em]',
-                'text-foreground transition-colors duration-150 hover:bg-foreground/[0.045]',
-                'group-data-[tone=dark]/bar:text-white group-data-[tone=dark]/bar:hover:bg-white/10',
-                'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
-                'group-data-[tone=dark]/bar:focus-visible:outline-white',
-              )}
-              aria-haspopup="dialog"
-              aria-expanded={open}
-              aria-label="Open navigation menu"
-              onClick={() => setOpen(true)}
-            >
-              <span aria-hidden className="flex flex-col gap-[3px]">
-                <span className="block h-px w-4 bg-current" />
-                <span className="block h-px w-4 bg-current" />
-              </span>
-              Menu
-            </button>
-
-            <SheetContent
-              side="right"
-              closeLabel="Close menu"
-              onCloseAutoFocus={(event) => {
-                event.preventDefault()
-                triggerRef.current?.focus()
-              }}
-            >
-              <SheetTitle className="text-label-12 font-semibold uppercase tracking-[0.055em]">
-                {header.wordmark}
-              </SheetTitle>
-
-              {/*
-               * The sheet gets the numbered index the bar cannot afford: a
-               * standing menu is a list of destinations, so it reads as one.
-               */}
-              <nav className="mt-10" aria-label="Primary">
-                <ul>
-                  {header.nav.map((item, index) => (
-                    <li key={item.label}>
-                      <SheetClose asChild>
-                        <Link
-                          href={item.href}
-                          className={cn(
-                            'group/item flex min-h-14 items-baseline gap-4 border-b border-border py-4',
-                            'text-heading-24 text-foreground',
-                            'transition-colors duration-150 hover:text-primary',
-                            'focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-ring',
-                          )}
-                        >
-                          <span
-                            aria-hidden
+                <nav className="mt-10" aria-label="Primary">
+                  <ul>
+                    {header.nav.map((item, index) => (
+                      <li key={item.label}>
+                        <SheetClose asChild>
+                          <Link
+                            href={item.href}
+                            aria-current={item.label === current ? 'page' : undefined}
                             className={cn(
-                              'font-[family-name:var(--font-geist-mono)] text-label-12 text-muted-foreground',
-                              'transition-colors duration-150 group-hover/item:text-primary',
+                              'group/item flex min-h-14 items-baseline gap-4 border-b border-border py-4',
+                              'text-heading-24 text-foreground',
+                              'transition-colors duration-150 hover:text-primary',
+                              'focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-ring',
                             )}
                           >
-                            {String(index + 1).padStart(2, '0')}
-                          </span>
-                          {item.label}
+                            <span
+                              aria-hidden
+                              className={cn(
+                                'font-[family-name:var(--font-geist-mono)] text-label-12',
+                                item.label === current ? 'text-primary' : 'text-muted-foreground',
+                                'transition-colors duration-150 group-hover/item:text-primary',
+                              )}
+                            >
+                              {String(index + 1).padStart(2, '0')}
+                            </span>
+                            {item.label}
+                          </Link>
+                        </SheetClose>
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
+
+                <ul className="mt-8 flex items-center gap-1" aria-label="Languages">
+                  {header.locales.map((locale) => (
+                    <li key={locale.label}>
+                      <SheetClose asChild>
+                        <Link
+                          href={locale.href}
+                          hrefLang={locale.label.toLowerCase()}
+                          aria-current={locale.current ? 'true' : undefined}
+                          className={cn(
+                            'inline-flex min-h-11 min-w-11 items-center justify-center rounded-[2px] px-2',
+                            'font-[family-name:var(--font-geist-mono)] text-label-12 uppercase tracking-[0.08em]',
+                            locale.current ? 'text-primary' : 'text-muted-foreground hover:text-foreground',
+                            'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring',
+                          )}
+                        >
+                          {locale.label}
                         </Link>
                       </SheetClose>
                     </li>
                   ))}
                 </ul>
-              </nav>
 
-              <SheetClose asChild>
-                <Button asChild size="lg" className="group/cta mt-10 w-full">
-                  <Link href="/fr/contact">
-                    Start a project
-                    <ArrowRight
-                      aria-hidden
-                      className="transition-transform duration-200 group-hover/cta:translate-x-0.5"
-                    />
-                  </Link>
-                </Button>
-              </SheetClose>
-            </SheetContent>
-          </Sheet>
+                <SheetClose asChild>
+                  <Button asChild size="lg" className="mt-8 w-full">
+                    <Link href="/fr/contact">Start a project</Link>
+                  </Button>
+                </SheetClose>
+              </SheetContent>
+            </Sheet>
+          </div>
         </Container>
       </header>
     </>

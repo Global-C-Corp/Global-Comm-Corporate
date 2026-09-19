@@ -7,11 +7,17 @@ export const homeV5 = {
       { label: 'Company', href: '/fr/company' },
       { label: 'Contact', href: '/fr/contact' },
     ],
+    locales: [
+      { label: 'FR', href: '/fr', current: true },
+      { label: 'EN', href: '/en', current: false },
+      { label: 'ES', href: '/es', current: false },
+    ],
   },
 
   hero: {
     eyebrow: 'STRATEGY · BRANDING · DIGITAL MARKETING · GROWTH',
-    heading: 'A strategic marketing partner for brands ready to grow.',
+    heading: 'A strategic marketing partner for brands',
+    headingAccent: 'ready to grow.',
     support:
       'We help companies build stronger brands, create better content and turn digital marketing into measurable business growth.',
     primaryCTA: { label: 'Start a project', href: '/fr/contact' },
@@ -21,6 +27,7 @@ export const homeV5 = {
 
   experience: {
     label: 'SELECTED EXPERIENCE',
+    pendingAssets: 'Client logos — approved assets to supply',
     support: 'Companies, institutions and brands connected to our work.',
     names: ['OGLO NUTS', 'AMSD', 'AJM', 'IMANOR', 'INDH'],
   },
@@ -79,6 +86,11 @@ export const homeV5 = {
 
   pointOfView: {
     label: 'OUR POINT OF VIEW',
+    statement: {
+      lead: 'We make your brand impossible to ignore,',
+      accent: 'easy to trust,',
+      tail: 'and built to grow.',
+    },
     left:
       'We take the time to understand your market, your customers and what makes your brand different. Better strategy leads to clearer creative and stronger business decisions.',
     right:
@@ -87,6 +99,7 @@ export const homeV5 = {
 
   work: {
     label: 'SELECTED WORK',
+    pendingAssets: 'Illustrative concepts — project assets to supply',
     viewAll: { label: 'View all work', href: '/fr/work' },
     projects: [
       {

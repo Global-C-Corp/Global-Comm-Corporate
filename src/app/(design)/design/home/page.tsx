@@ -1,10 +1,10 @@
 import type { Metadata } from 'next'
-import type { Client, Project, Service } from '@/payload-types'
+import type { Client, Project } from '@/payload-types'
 import { ClientLogoCloud } from '@/components/blocks/ClientLogoCloud'
 import { EvidenceFaq, type EvidenceMedia } from '@/components/blocks/EvidenceFaq'
 import { FinalCta } from '@/components/blocks/FinalCta'
 import { Footer } from '@/components/blocks/Footer'
-import { FrozenExpertise } from '@/components/blocks/FrozenExpertise'
+import { Expertise } from '@/components/blocks/Expertise'
 import { GlobalHeader } from '@/components/blocks/GlobalHeader'
 import { Hero, type HeroLogo, type HeroSlide } from '@/components/blocks/Hero'
 import { PlatformExpertise } from '@/components/blocks/PlatformExpertise'
@@ -25,10 +25,6 @@ export const metadata: Metadata = {
 }
 
 const ctx = { locale: 'fr' as const, draft: false }
-
-function populatedService(value: Service | number | string | null | undefined): Service | null {
-  return typeof value === 'object' && value !== null ? value : null
-}
 
 export default async function HomeDesignPreview() {
   const page = await getHomePage(ctx)
@@ -80,12 +76,6 @@ export default async function HomeDesignPreview() {
     })
     .filter((logo): logo is NonNullable<typeof logo> => logo !== null)
 
-  const expertiseImages = (page?.expertise?.items ?? []).map((item) => {
-    const service = populatedService(item.service)
-    if (!service) return undefined
-    return mediaURL(service.heroMedia, 'projectFeature') || mediaURL(service.heroMedia, 'hero')
-  })
-
   const workItems: SelectedWorkItem[] = projectTiles(projects, ctx.locale).map(
     ({ project, href, meta, image }) => ({
       id: String(project.id),
@@ -130,12 +120,12 @@ export default async function HomeDesignPreview() {
 
   return (
     <>
-      <GlobalHeader overDark />
+      <GlobalHeader overDark current="Work" />
       <main id="main" className="gc-design-page">
-        <Hero slides={heroSlides} logos={heroLogos} />
+        <Hero slides={heroSlides} />
         <PlatformExpertise />
         <PointOfView />
-        <FrozenExpertise images={expertiseImages} />
+        <Expertise />
         <SelectedWork items={workItems} />
         <ClientLogoCloud logos={heroLogos} />
         <EvidenceFaq media={evidenceMedia} />

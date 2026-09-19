@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { Minus, Plus } from 'lucide-react'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Container, SectionLabel } from '@/components/blocks/Layout'
 import { homeV5 } from '@/content/homeV5'
+import { cn } from '@/lib/utils'
 
 const { evidence, faq } = homeV5
 
@@ -14,140 +14,167 @@ export type EvidenceMedia = {
   alt: string
 }
 
+function titleCase(value: string) {
+  return value.charAt(0) + value.slice(1).toLowerCase()
+}
+
+/**
+ * Selected Evidence + FAQ — approved reference (04 §12.8).
+ *
+ * One split section: the evidence on the left behind a vertical category rail,
+ * the FAQ on the right behind a hairline. The evidence rail is a real tab set
+ * (Radix, vertical orientation) so arrow keys move between categories and the
+ * panel relationship is announced — the visual rail and the behaviour agree,
+ * which is what 03 §2A.2 asks for.
+ *
+ * Neither side becomes a card wall: rows are separated by hairlines, and only
+ * the open FAQ answer lifts onto its own surface, as in the reference.
+ */
 export function EvidenceFaq({ media = [] }: { media?: EvidenceMedia[] }) {
   const pathname = usePathname()
   const router = useRouter()
   const searchParams = useSearchParams()
-  const [activeEvidence, setActiveEvidence] = useState(0)
-  const evidenceRefs = useRef<Array<HTMLElement | null>>([])
+
+  const evidenceKeys = evidence.categories.map((category) => category.label.toLowerCase())
+  const requestedEvidence = searchParams.get('evidence')
+  const activeEvidence =
+    requestedEvidence && evidenceKeys.includes(requestedEvidence)
+      ? requestedEvidence
+      : evidenceKeys[0]
 
   const requestedFaq = searchParams.get('faq')
-  const validFaq =
+  const activeFaq =
     requestedFaq === 'none'
       ? undefined
       : faq.items.some((_, index) => `faq-${index}` === requestedFaq)
         ? requestedFaq
         : 'faq-0'
 
-  const updateFaq = (value: string | undefined) => {
+  const setParam = (key: string, value: string | undefined) => {
     const params = new URLSearchParams(searchParams.toString())
-    if (value) params.set('faq', value)
-    else params.delete('faq')
+    if (value) params.set(key, value)
+    else params.delete(key)
     const query = params.toString()
     router.push(query ? `${pathname}?${query}` : pathname, { scroll: false })
   }
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0]
-
-        if (!visible) return
-        const index = Number((visible.target as HTMLElement).dataset.index)
-        if (Number.isFinite(index)) setActiveEvidence(index)
-      },
-      { rootMargin: '-18% 0px -48% 0px', threshold: [0.2, 0.45, 0.7] },
-    )
-
-    evidenceRefs.current.forEach((node) => node && observer.observe(node))
-    return () => observer.disconnect()
-  }, [])
-
-  const jumpToEvidence = (index: number) => {
-    evidenceRefs.current[index]?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-  }
-
   return (
-    <section id="evidence" className="scroll-mt-20 bg-[#FAFAF8]" aria-labelledby="evidence-heading">
+    <section
+      id="evidence"
+      className="scroll-mt-24 border-t border-border bg-[#FAFAF8]"
+      aria-labelledby="evidence-heading"
+    >
       <Container className="py-20 md:py-28">
-        <div className="grid gap-14 lg:grid-cols-12 lg:gap-8">
-          <div className="min-w-0 lg:col-span-7">
+        <div className="grid gap-14 lg:grid-cols-12 lg:gap-0">
+          <div className="min-w-0 lg:col-span-7 lg:pr-14">
             <SectionLabel>{evidence.label}</SectionLabel>
-            <h2 id="evidence-heading" className="mt-4 max-w-[14ch] text-heading-32 text-foreground [text-wrap:balance] md:text-heading-40">
+            <h2
+              id="evidence-heading"
+              className="mt-6 max-w-[24ch] text-heading-32 leading-[1.14] tracking-[-0.03em] text-foreground [text-wrap:balance]"
+            >
               {evidence.heading}
             </h2>
 
-            <div className="mt-8 grid gap-6 md:grid-cols-[10rem_minmax(0,1fr)]">
-              <div className="self-start md:sticky md:top-24">
-                <div className="grid grid-cols-2 gap-1 border border-border bg-background p-1 md:grid-cols-1">
-                  {evidence.categories.map((category, index) => (
-                    <button
-                      key={category.label}
-                      type="button"
-                      onClick={() => jumpToEvidence(index)}
-                      aria-current={activeEvidence === index ? 'true' : undefined}
-                      className={`min-h-11 min-w-0 rounded-[3px] px-3 py-2 text-left text-label-12 transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring ${activeEvidence === index ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:bg-[#F5F5F2] hover:text-foreground'}`}
-                    >
-                      <span className="block truncate">{category.label}</span>
-                    </button>
-                  ))}
-                </div>
-              </div>
+            <Tabs
+              value={activeEvidence}
+              onValueChange={(value) => setParam('evidence', value)}
+              orientation="vertical"
+              className="mt-10 flex-col gap-8 sm:flex-row"
+            >
+              <TabsList className="h-fit w-full shrink-0 flex-col items-stretch gap-0 rounded-none bg-transparent p-0 sm:w-32">
+                {evidence.categories.map((category) => (
+                  <TabsTrigger
+                    key={category.label}
+                    value={category.label.toLowerCase()}
+                    className={cn(
+                      'group/cat relative min-h-11 justify-start rounded-none border-0 border-l border-border bg-transparent px-4 text-left text-copy-14',
+                      'text-muted-foreground data-[state=active]:bg-transparent data-[state=active]:text-primary',
+                    )}
+                  >
+                    {titleCase(category.label)}
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute inset-y-0 -left-px w-[2px] origin-top scale-y-0 bg-primary transition-transform duration-200 ease-out group-data-[state=active]/cat:scale-y-100"
+                    />
+                  </TabsTrigger>
+                ))}
+              </TabsList>
 
-              <div>
-                {evidence.categories.map((category, index) => {
-                  const picture = media.length > 0 ? media[index % media.length] : undefined
+              {evidence.categories.map((category, index) => {
+                const picture = media.length > 0 ? media[index % media.length] : undefined
 
-                  return (
-                    <article
-                      key={category.label}
-                      ref={(node) => { evidenceRefs.current[index] = node }}
-                      data-index={index}
-                      className="scroll-mt-28 border-t border-border py-10 first:border-t-0 first:pt-0"
-                    >
-                      {picture ? (
-                        <div className="relative min-h-64 overflow-hidden border border-border bg-background">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={picture.url} alt={picture.alt} loading="lazy" decoding="async" className="absolute inset-0 h-full w-full object-cover" />
-                        </div>
-                      ) : null}
+                return (
+                  <TabsContent
+                    key={category.label}
+                    value={category.label.toLowerCase()}
+                    className="mt-0 min-w-0 flex-1"
+                  >
+                    <div className="grid gap-8 sm:grid-cols-[minmax(0,1fr)_11rem]">
+                      <div className="min-w-0">
+                        <h3 className="text-copy-16 font-semibold tracking-[-0.01em] text-foreground">
+                          {category.deliverable}
+                        </h3>
+                        <p className="mt-2.5 max-w-[42ch] text-copy-14 leading-[1.55] text-muted-foreground [text-wrap:pretty]">
+                          {category.body}
+                        </p>
 
-                      <div className={picture ? 'pt-6' : ''}>
-                        <h3 className="text-heading-20 text-foreground">{category.deliverable}</h3>
-                        <p className="mt-3 text-copy-14 text-muted-foreground [text-wrap:pretty]">{category.body}</p>
-                        <ul className="mt-6 space-y-2">
+                        <ul className="mt-7">
                           {category.points.map((point) => (
-                            <li key={point} className="flex gap-3 text-copy-13 text-foreground">
-                              <span aria-hidden className="text-primary">—</span>
-                              <span>{point}</span>
+                            <li
+                              key={point}
+                              className="border-t border-border py-3.5 text-copy-14 text-foreground"
+                            >
+                              {point}
                             </li>
                           ))}
                         </ul>
                       </div>
-                    </article>
-                  )
-                })}
-              </div>
-            </div>
+
+                      {picture ? (
+                        <div className="relative aspect-[4/5] w-full overflow-hidden bg-[#EFEFEA] sm:aspect-auto sm:h-full sm:min-h-52">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
+                          <img
+                            src={picture.url}
+                            alt={picture.alt}
+                            loading="lazy"
+                            decoding="async"
+                            className="absolute inset-0 h-full w-full object-cover"
+                          />
+                        </div>
+                      ) : null}
+                    </div>
+                  </TabsContent>
+                )
+              })}
+            </Tabs>
           </div>
 
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-5 lg:border-l lg:border-border lg:pl-14">
             <SectionLabel>{faq.label}</SectionLabel>
-            <p className="mt-4 max-w-[34ch] text-copy-16 text-muted-foreground [text-wrap:pretty]">{faq.support}</p>
+            <p className="mt-3 max-w-[38ch] text-copy-14 text-muted-foreground [text-wrap:pretty]">
+              {faq.support}
+            </p>
 
             <Accordion
               type="single"
               collapsible
-              value={validFaq ?? undefined}
-              onValueChange={(value) => updateFaq(value || 'none')}
-              className="mt-8 overflow-hidden border border-border bg-background"
+              value={activeFaq ?? undefined}
+              onValueChange={(value) => setParam('faq', value || 'none')}
+              className="mt-8"
             >
               {faq.items.map((item, index) => (
-                <AccordionItem key={item.question} value={`faq-${index}`} className="px-5">
-                  <AccordionTrigger className="group min-h-14 py-4 text-left text-copy-14 font-semibold hover:no-underline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-ring">
-                    <span className="flex items-start gap-3 pr-4">
-                      <span className="mt-0.5 text-primary group-data-[state=open]:hidden">
-                        <Plus aria-hidden className="size-4" />
-                      </span>
-                      <span className="mt-0.5 hidden text-primary group-data-[state=open]:inline">
-                        <Minus aria-hidden className="size-4" />
-                      </span>
-                      <span className="[text-wrap:pretty]">{item.question}</span>
-                    </span>
+                <AccordionItem
+                  key={item.question}
+                  value={`faq-${index}`}
+                  className="border-b border-border data-[state=open]:border-transparent data-[state=open]:bg-background"
+                >
+                  <AccordionTrigger
+                    indicator="plus"
+                    className="min-h-14 px-4 py-4 text-copy-14 font-medium focus-visible:outline-offset-[-2px]"
+                  >
+                    <span className="[text-wrap:pretty]">{item.question}</span>
                   </AccordionTrigger>
-                  <AccordionContent className="pb-5 pl-7 pr-4 text-copy-13 text-muted-foreground [text-wrap:pretty]">
+                  <AccordionContent className="px-4 pb-5 text-copy-14 leading-[1.55] text-muted-foreground [text-wrap:pretty]">
                     {item.answer}
                   </AccordionContent>
                 </AccordionItem>

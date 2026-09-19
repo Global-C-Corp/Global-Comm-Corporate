@@ -1,8 +1,8 @@
 'use client'
 
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { ArrowLeft, ArrowRight, ArrowUpRight, Pause, Play } from 'lucide-react'
+import { ArrowLeft, ArrowRight, ArrowUpRight } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import {
   Carousel,
@@ -10,11 +10,11 @@ import {
   CarouselItem,
   type CarouselApi,
 } from '@/components/ui/carousel'
-import { Separator } from '@/components/ui/separator'
 import { Container, SectionLabel } from '@/components/blocks/Layout'
 import { homeV5 } from '@/content/homeV5'
+import { cn } from '@/lib/utils'
 
-const { hero, experience } = homeV5
+const { hero } = homeV5
 
 export type HeroSlide = {
   id: string
@@ -32,285 +32,221 @@ export type HeroLogo = {
   href?: string
 }
 
+/**
+ * Hero project carousel — approved reference (04 §12.2, 03 §21).
+ *
+ * The media is presented clean: no overlay text, no card chrome. Caption,
+ * index and controls sit on one quiet row *below* the image, which is what
+ * lets the photograph read as work rather than as a banner.
+ *
+ * Progression is manual only. The reference shows explicit previous/next
+ * controls and a visible index, and 01 §8 forbids autoplay without a reason of
+ * composition — so there is no timer here at all.
+ */
 function HeroVisual({ slides }: { slides: HeroSlide[] }) {
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
-  const [autoRotate, setAutoRotate] = useState(true)
 
   useEffect(() => {
     if (!api) return
 
     const sync = () => setCurrent(api.selectedScrollSnap())
-    const stopAutoRotate = () => setAutoRotate(false)
-
     sync()
     api.on('select', sync)
     api.on('reInit', sync)
-    api.on('pointerDown', stopAutoRotate)
 
     return () => {
       api.off('select', sync)
       api.off('reInit', sync)
-      api.off('pointerDown', stopAutoRotate)
     }
   }, [api])
 
-  useEffect(() => {
-    const media = window.matchMedia('(prefers-reduced-motion: reduce)')
-    const sync = () => {
-      if (media.matches) setAutoRotate(false)
-    }
-
-    sync()
-    media.addEventListener('change', sync)
-    return () => media.removeEventListener('change', sync)
-  }, [])
-
-  useEffect(() => {
-    if (!api || slides.length < 2 || !autoRotate) return
-
-    const timer = window.setInterval(() => {
-      if (document.visibilityState !== 'visible') return
-      const next = api.selectedScrollSnap() + 1
-      api.scrollTo(next >= slides.length ? 0 : next)
-    }, 6000)
-
-    return () => window.clearInterval(timer)
-  }, [api, autoRotate, slides.length])
-
-  if (slides.length === 0) {
-    return (
-      <div className="relative min-h-[29rem] overflow-hidden border border-white/14 bg-white/[0.06] sm:min-h-[32rem] lg:min-h-[35rem]">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_75%_20%,rgba(0,0,255,0.5),transparent_32%),linear-gradient(135deg,rgba(255,255,255,0.08),transparent)]" />
-        <div className="absolute inset-x-6 bottom-6 border border-white/16 bg-black/30 p-5 backdrop-blur-xl">
-          <span className="font-[family-name:var(--font-geist-mono)] text-label-12 text-white/62">
-            01 / 01
-          </span>
-        </div>
-      </div>
-    )
-  }
+  const active = slides[current]
+  const total = Math.max(slides.length, 1)
 
   return (
-    <Carousel setApi={setApi} opts={{ loop: true }} className="group">
-      <CarouselContent className="-ml-0">
-        {slides.map((slide, index) => (
-          <CarouselItem key={slide.id} className="pl-0">
-            <article className="relative min-h-[29rem] overflow-hidden border border-white/14 bg-foreground sm:min-h-[32rem] lg:min-h-[35rem]">
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={slide.image}
-                alt=""
-                loading={index === 0 ? 'eager' : 'lazy'}
-                fetchPriority={index === 0 ? 'high' : 'auto'}
-                decoding="async"
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/84 via-black/20 to-black/12" />
+    <div className="flex flex-col">
+      <div className="relative aspect-[16/13] w-full overflow-hidden bg-white/[0.04] sm:aspect-[4/3] lg:aspect-[16/15]">
+        {slides.length === 0 ? (
+          <div className="absolute inset-0 bg-[linear-gradient(135deg,#101018_0%,#16162a_60%,#1d1dff_240%)]" />
+        ) : (
+          <Carousel setApi={setApi} opts={{ loop: true }} className="h-full">
+            <CarouselContent className="-ml-0 h-full">
+              {slides.map((slide, index) => {
+                const media = (
+                  <>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={slide.image}
+                      alt={slide.href ? '' : slide.title}
+                      loading={index === 0 ? 'eager' : 'lazy'}
+                      fetchPriority={index === 0 ? 'high' : 'auto'}
+                      decoding="async"
+                      className="absolute inset-0 h-full w-full object-cover"
+                    />
+                    {slide.href ? (
+                      <span
+                        aria-hidden
+                        className="absolute right-4 top-4 grid size-9 place-items-center bg-black/45 text-white opacity-0 backdrop-blur-sm transition-opacity duration-200 group-hover/slide:opacity-100 group-focus-visible/slide:opacity-100"
+                      >
+                        <ArrowUpRight className="size-4" />
+                      </span>
+                    ) : null}
+                  </>
+                )
 
-              <div className="absolute inset-x-0 bottom-0 p-6 pb-20 text-white sm:p-8 sm:pb-20">
-                <p className="font-[family-name:var(--font-geist-mono)] text-label-12 uppercase tracking-[0.15em] text-white/65">
-                  {slide.eyebrow}
-                </p>
-                <h2 className="mt-3 max-w-[16ch] text-heading-24 text-white sm:text-heading-32">
-                  {slide.title}
-                </h2>
-                {slide.body ? <p className="mt-3 max-w-[42ch] text-copy-14 text-white/72">{slide.body}</p> : null}
-
-                {slide.href ? (
-                  <Link
-                    href={slide.href}
-                    className="group/link mt-5 inline-flex min-h-11 items-center gap-2 rounded-[4px] text-button-14 text-white focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                return (
+                  /*
+                   * Embla keeps every slide in the DOM, so without `inert` a
+                   * keyboard user tabs through six invisible case-study links
+                   * before reaching the controls (WCAG 2.4.3).
+                   */
+                  <CarouselItem
+                    key={slide.id}
+                    className="h-full pl-0"
+                    inert={index !== current ? true : undefined}
                   >
-                    View case study
-                    <ArrowUpRight aria-hidden className="size-4 transition-transform duration-200 group-hover/link:translate-x-0.5 group-hover/link:-translate-y-0.5" />
-                  </Link>
-                ) : null}
-              </div>
-            </article>
-          </CarouselItem>
-        ))}
-      </CarouselContent>
-
-      <div className="absolute bottom-4 left-4 right-4 z-10 flex items-center justify-between rounded-[4px] border border-white/18 bg-black/45 px-4 py-3 text-white shadow-[0_1px_2px_rgba(0,0,0,0.42),0_10px_28px_rgba(0,0,0,0.18)] backdrop-blur-xl">
-        <span className="font-[family-name:var(--font-geist-mono)] text-label-12 tabular-nums text-white/72">
-          {String(current + 1).padStart(2, '0')} / {String(slides.length).padStart(2, '0')}
-        </span>
-
-        <div className="flex gap-2">
-          <button
-            type="button"
-            aria-label={autoRotate ? 'Pause hero carousel' : 'Play hero carousel'}
-            onClick={() => setAutoRotate((value) => !value)}
-            className="grid size-11 place-items-center rounded-[4px] border border-white/22 bg-white/8 text-white transition-colors duration-150 hover:border-white/45 hover:bg-white/16 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-          >
-            {autoRotate ? <Pause aria-hidden className="size-4" /> : <Play aria-hidden className="size-4" />}
-          </button>
-          <button
-            type="button"
-            aria-label="Previous hero slide"
-            onClick={() => {
-              setAutoRotate(false)
-              api?.scrollPrev()
-            }}
-            className="grid size-11 place-items-center rounded-[4px] border border-white/22 bg-white/8 text-white transition-colors duration-150 hover:border-white/45 hover:bg-white/16 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-          >
-            <ArrowLeft aria-hidden className="size-4" />
-          </button>
-          <button
-            type="button"
-            aria-label="Next hero slide"
-            onClick={() => {
-              setAutoRotate(false)
-              api?.scrollNext()
-            }}
-            className="grid size-11 place-items-center rounded-[4px] border border-white/22 bg-white text-black transition-colors duration-150 hover:bg-primary hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-          >
-            <ArrowRight aria-hidden className="size-4" />
-          </button>
-        </div>
+                    <div className="relative h-full w-full overflow-hidden">
+                      {slide.href ? (
+                        <Link
+                          href={slide.href}
+                          aria-label={`View the ${slide.title} case study`}
+                          className="group/slide absolute inset-0 focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-white"
+                        >
+                          {media}
+                        </Link>
+                      ) : (
+                        media
+                      )}
+                    </div>
+                  </CarouselItem>
+                )
+              })}
+            </CarouselContent>
+          </Carousel>
+        )}
       </div>
-    </Carousel>
-  )
-}
 
-function LogoMark({ logo, duplicate = false }: { logo: HeroLogo; duplicate?: boolean }) {
-  const image = (
-    // eslint-disable-next-line @next/next/no-img-element
-    <img
-      src={logo.logo}
-      alt={duplicate ? '' : logo.name}
-      className="max-h-8 w-auto max-w-32 object-contain brightness-0 invert opacity-72 transition-opacity duration-150 group-hover:opacity-100"
-      loading={duplicate ? 'lazy' : 'eager'}
-    />
-  )
+      <div className="mt-4 flex items-center justify-between gap-4">
+        <p className="min-w-0 truncate text-copy-13 text-white/55">
+          {active?.eyebrow ?? 'Visual concept'}
+        </p>
 
-  const className =
-    'group flex h-12 min-w-32 shrink-0 items-center justify-center px-2 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white'
+        <div className="flex shrink-0 items-center gap-2">
+          <span
+            aria-hidden
+            className="mr-1 font-[family-name:var(--font-geist-mono)] text-label-12 tabular-nums text-white/55"
+          >
+            {String(Math.min(current + 1, total)).padStart(2, '0')} / {String(total).padStart(2, '0')}
+          </span>
+          <span className="sr-only" aria-live="polite">
+            Project {Math.min(current + 1, total)} of {total}
+          </span>
 
-  return logo.href ? (
-    <a
-      href={logo.href}
-      target="_blank"
-      rel="noreferrer"
-      className={className}
-      translate="no"
-      aria-hidden={duplicate || undefined}
-      tabIndex={duplicate ? -1 : undefined}
-    >
-      {image}
-    </a>
-  ) : (
-    <span className={className} translate="no" aria-hidden={duplicate || undefined}>
-      {image}
-    </span>
-  )
-}
-
-function LogoMarquee({ logos }: { logos: HeroLogo[] }) {
-  const [paused, setPaused] = useState(false)
-
-  const sequence = useMemo(() => {
-    if (logos.length === 0) return []
-    const repeats = Math.max(1, Math.ceil(8 / logos.length))
-    return Array.from({ length: repeats }, () => logos).flat()
-  }, [logos])
-
-  if (sequence.length === 0) return null
-
-  return (
-    <div className="gc-logo-marquee-viewport relative min-w-0 overflow-hidden pr-14 lg:col-span-9 [mask-image:linear-gradient(to_right,transparent,black_7%,black_88%,transparent)]">
-      <div className="gc-logo-marquee-track flex w-max" data-paused={paused}>
-        <div className="flex shrink-0 items-center gap-12 pr-12">
-          {sequence.map((logo, index) => (
-            <LogoMark key={`a-${logo.id}-${index}`} logo={logo} />
-          ))}
-        </div>
-        <div className="flex shrink-0 items-center gap-12 pr-12" aria-hidden>
-          {sequence.map((logo, index) => (
-            <LogoMark key={`b-${logo.id}-${index}`} logo={logo} duplicate />
+          {[
+            { label: 'Previous project', icon: ArrowLeft, action: () => api?.scrollPrev() },
+            { label: 'Next project', icon: ArrowRight, action: () => api?.scrollNext() },
+          ].map(({ label, icon: Icon, action }) => (
+            <button
+              key={label}
+              type="button"
+              aria-label={label}
+              disabled={slides.length < 2}
+              onClick={action}
+              className={cn(
+                'grid size-11 place-items-center rounded-[2px] border border-white/25 text-white',
+                'transition-colors duration-150 hover:border-white/60 hover:bg-white/10',
+                'disabled:pointer-events-none disabled:opacity-40',
+                'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white',
+              )}
+            >
+              <Icon aria-hidden className="size-4" />
+            </button>
           ))}
         </div>
       </div>
-
-      <button
-        type="button"
-        aria-label={paused ? 'Play client logo marquee' : 'Pause client logo marquee'}
-        onClick={() => setPaused((value) => !value)}
-        className="absolute right-0 top-1/2 z-10 grid size-11 -translate-y-1/2 place-items-center rounded-[4px] border border-white/22 bg-black/35 text-white backdrop-blur-xl transition-colors duration-150 hover:border-white/45 hover:bg-black/55 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-      >
-        {paused ? <Play aria-hidden className="size-4" /> : <Pause aria-hidden className="size-4" />}
-      </button>
     </div>
   )
 }
 
-export function Hero({
-  slides = [],
-  logos = [],
-}: {
-  slides?: HeroSlide[]
-  logos?: HeroLogo[]
-}) {
+export function Hero({ slides = [] }: { slides?: HeroSlide[]; logos?: HeroLogo[] }) {
   return (
-    <section className="gc-hero-grain relative isolate overflow-hidden bg-[#07070A] text-white" aria-labelledby="hero-heading">
+    <section
+      className="relative isolate overflow-hidden bg-[#08080B] text-white"
+      aria-labelledby="hero-heading"
+    >
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_76%_16%,rgba(0,0,255,0.62),transparent_28%),radial-gradient(circle_at_26%_26%,rgba(62,62,255,0.20),transparent_32%),linear-gradient(135deg,#050507_0%,#0B0B16_48%,#0000FF_170%)]"
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_88%_8%,rgba(0,0,255,0.28),transparent_42%),linear-gradient(160deg,#08080B_0%,#0B0B14_62%,#111134_100%)]"
       />
 
-      {/*
-        * The global header overlays this section rather than sitting above it,
-        * so the hero clears the bar's own height (5rem) on top of its own
-        * breathing room instead of starting under it.
-        */}
-      <Container className="pb-10 pt-[8rem] md:pb-12 md:pt-[9rem]">
-        <div className="grid gap-8 lg:grid-cols-12 lg:gap-6">
-          <div className="lg:col-span-5">
-            <SectionLabel className="text-white/68">{hero.eyebrow}</SectionLabel>
-            <h1 id="hero-heading" className="mt-7 max-w-[11ch] text-heading-40 text-white sm:text-heading-48 lg:text-heading-64 xl:text-heading-72">
-              {hero.heading}
+      {/* pt clears the overlaying header (5.5rem) plus the section's own room. */}
+      <Container className="pb-10 pt-[8.5rem] md:pb-12 md:pt-[10rem]">
+        <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-6">
+            <SectionLabel className="text-white/55">{hero.eyebrow}</SectionLabel>
+
+            <h1
+              id="hero-heading"
+              className="mt-7 max-w-[14ch] text-heading-40 leading-[1.08] tracking-[-0.035em] text-white sm:text-heading-48 lg:text-heading-56"
+            >
+              {hero.heading}{' '}
+              {/* The closing phrase carries the approved brand-blue rule. It is
+                  a drawn box-shadow rather than an underline so the weight and
+                  the gap to the baseline stay under our control. */}
+              <span className="relative inline-block">
+                {hero.headingAccent}
+                <span
+                  aria-hidden
+                  className="absolute inset-x-0 -bottom-1 block h-[4px] bg-primary"
+                />
+              </span>
             </h1>
-            <div className="mt-8 flex flex-wrap items-center gap-4">
-              <Button asChild size="lg" className="group shadow-[0_1px_2px_rgba(0,0,0,0.35),0_10px_28px_rgba(0,0,255,0.20)] focus-visible:outline-white">
+
+            <p className="mt-8 max-w-[46ch] text-copy-16 leading-[1.6] text-white/70 [text-wrap:pretty]">
+              {hero.support}
+            </p>
+
+            <div className="mt-9 flex flex-wrap items-center gap-6">
+              <Button asChild size="lg" className="group focus-visible:outline-white">
                 <Link href={hero.primaryCTA.href}>
                   {hero.primaryCTA.label}
-                  <ArrowRight aria-hidden className="transition-transform duration-200 group-hover:translate-x-1" />
+                  <ArrowUpRight
+                    aria-hidden
+                    className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
                 </Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="group border-white/24 bg-white/8 px-4 text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.08),0_1px_2px_rgba(0,0,0,0.24)] backdrop-blur-xl hover:border-white/42 hover:bg-white/14 hover:text-white focus-visible:outline-white">
-                <Link href={hero.secondaryCTA.href}>
-                  {hero.secondaryCTA.label}
-                  <ArrowRight aria-hidden className="transition-transform duration-200 group-hover:translate-x-1" />
-                </Link>
-              </Button>
+
+              <Link
+                href={hero.secondaryCTA.href}
+                className="group inline-flex min-h-11 items-center gap-2 rounded-[2px] text-copy-14 text-white transition-colors duration-150 hover:text-white/75 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+              >
+                {hero.secondaryCTA.label}
+                <ArrowRight
+                  aria-hidden
+                  className="size-4 transition-transform duration-200 group-hover:translate-x-1"
+                />
+              </Link>
             </div>
           </div>
 
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-6">
             <HeroVisual slides={slides} />
           </div>
-
-          <div className="flex flex-col justify-between lg:col-span-3 lg:pl-4">
-            <p className="max-w-[28ch] text-copy-18 text-white/72">{hero.support}</p>
-            <div className="mt-12 lg:mt-0">
-              <Separator className="bg-white/22" />
-              <p className="mt-5 max-w-[25ch] text-copy-14 text-white/66">{hero.closing}</p>
-            </div>
-          </div>
-        </div>
-
-        <Separator className="mt-10 bg-white/22" />
-
-        <div className="grid gap-6 py-8 lg:grid-cols-12 lg:items-center">
-          <div className="lg:col-span-3">
-            <SectionLabel className="text-white/68">{experience.label}</SectionLabel>
-            <p className="mt-2 max-w-[24ch] text-copy-14 text-white/62">{experience.support}</p>
-          </div>
-
-          <LogoMarquee logos={logos} />
         </div>
       </Container>
+
+      {/* Quiet closing statement, set off by a hairline across the full
+          measure and marked with a short brand rule. */}
+      <div className="border-t border-white/12">
+        <Container className="py-5">
+          <p className="flex items-start gap-4 text-copy-13 text-white/55">
+            <span aria-hidden className="mt-[0.35rem] block h-3 w-px shrink-0 bg-primary" />
+            <span className="[text-wrap:pretty]">{hero.closing}</span>
+          </p>
+        </Container>
+      </div>
     </section>
   )
 }

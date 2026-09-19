@@ -1,57 +1,41 @@
-'use client'
-
-import { useEffect, useMemo, useRef, useState, type CSSProperties } from 'react'
 import { Container, SectionLabel } from '@/components/blocks/Layout'
+import { homeV5 } from '@/content/homeV5'
 
-const STATEMENT = 'We make your brand impossible to ignore, easy to trust, and built to grow.'
+const { pointOfView } = homeV5
 
+/**
+ * Our Point of View — approved reference (04 §12.4).
+ *
+ * A single centred brand statement on the off-white surface, with the middle
+ * clause set in the serif accent in brand blue. No card, no illustration, no
+ * supporting copy: the whitespace is the composition.
+ *
+ * This is a server component. The section carries no state and the reference
+ * shows no entrance behaviour, so there is nothing here to ship to the client.
+ */
 export function PointOfView() {
-  const ref = useRef<HTMLElement>(null)
-  const [visible, setVisible] = useState(false)
-  const words = useMemo(() => STATEMENT.split(' '), [])
-
-  useEffect(() => {
-    const node = ref.current
-    if (!node) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry?.isIntersecting) return
-        setVisible(true)
-        observer.disconnect()
-      },
-      { threshold: 0.32 },
-    )
-
-    observer.observe(node)
-    return () => observer.disconnect()
-  }, [])
-
   return (
     <section
-      ref={ref}
       id="point-of-view"
-      className="relative flex min-h-[92vh] scroll-mt-20 items-center overflow-hidden border-b border-white/10 bg-[#0A0A0A] text-white"
+      className="scroll-mt-24 bg-[#FAFAF8]"
       aria-labelledby="point-of-view-heading"
     >
-      <div aria-hidden className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_48%,rgba(0,0,255,0.34),transparent_34%),linear-gradient(180deg,#0A0A0A_0%,#111111_100%)]" />
+      <Container className="py-24 md:py-32">
+        <div className="mx-auto max-w-[72rem] text-center">
+          <SectionLabel>{pointOfView.label}</SectionLabel>
 
-      <Container className="relative z-10 py-24 md:py-32">
-        <div className="mx-auto max-w-[74rem] text-center">
-          <SectionLabel className="text-white/50">OUR POINT OF VIEW</SectionLabel>
           <h2
             id="point-of-view-heading"
-            className="mx-auto mt-8 max-w-[18ch] text-heading-40 leading-[1.08] tracking-[-0.035em] text-white [text-wrap:balance] md:text-heading-56 lg:text-heading-64"
+            className="mx-auto mt-8 max-w-[40ch] text-heading-32 leading-[1.14] tracking-[-0.03em] text-foreground [text-wrap:balance] md:text-heading-40"
           >
-            {words.map((word, index) => (
-              <span
-                key={`${word}-${index}`}
-                className={`inline-block transition-[opacity,transform,filter] duration-500 ease-out motion-reduce:transition-none ${visible ? 'translate-y-0 opacity-100 blur-0' : 'translate-y-3 opacity-0 blur-[8px]'}`}
-                style={{ transitionDelay: `${index * 55}ms` } as CSSProperties}
-              >
-                {word}&nbsp;
-              </span>
-            ))}
+            {/* The reference breaks the statement after the first clause.
+                Below `md` it wraps naturally rather than forcing a short
+                second line on a narrow screen. */}
+            <span className="md:block">{pointOfView.statement.lead}</span>{' '}
+            <span className="md:block">
+              <em className="font-serif italic text-primary">{pointOfView.statement.accent}</em>{' '}
+              {pointOfView.statement.tail}
+            </span>
           </h2>
         </div>
       </Container>

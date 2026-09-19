@@ -1,13 +1,19 @@
 'use client'
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { Search, BarChart3, LineChart, Settings2 } from 'lucide-react'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Container, SectionLabel } from '@/components/blocks/Layout'
 import { homeV5 } from '@/content/homeV5'
 
 const { platforms } = homeV5
-const ICONS = [Search, BarChart3, LineChart, Settings2]
+
+/** Platform marks carry their own casing; title-casing them misspells two. */
+const PLATFORM_NAMES: Record<string, string> = {
+  google: 'Google',
+  meta: 'Meta',
+  tiktok: 'TikTok',
+  linkedin: 'LinkedIn',
+}
 
 const PLATFORM_LOGOS: Record<string, string> = {
   google: 'https://cdn.simpleicons.org/google',
@@ -16,6 +22,16 @@ const PLATFORM_LOGOS: Record<string, string> = {
   linkedin: 'https://cdn.simpleicons.org/linkedin/0A66C2',
 }
 
+/**
+ * Platform Expertise — approved reference (04 §12.3).
+ *
+ * Editorial heading on the left, a platform tab row on the right sitting on a
+ * single hairline with a brand-blue indicator under the active mark, and the
+ * active platform's capabilities as a plain 2 × 2 text grid.
+ *
+ * The capabilities are deliberately not cards: the reference presents them as
+ * typography on the page, and 03 §6 keeps cards for real semantic grouping.
+ */
 export function PlatformExpertise() {
   const pathname = usePathname()
   const router = useRouter()
@@ -34,63 +50,72 @@ export function PlatformExpertise() {
   return (
     <section
       id="platform-expertise"
-      className="scroll-mt-20 border-b border-border bg-background"
+      className="scroll-mt-24 bg-background"
       aria-labelledby="platform-heading"
     >
       <Container className="py-20 md:py-28">
-        <div className="grid gap-10 lg:grid-cols-12 lg:gap-6">
-          <div className="lg:col-span-4 lg:pr-8">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+          <div className="lg:col-span-5">
             <SectionLabel>{platforms.label}</SectionLabel>
-            <h2 id="platform-heading" className="mt-4 max-w-[12ch] text-heading-32 text-foreground [text-wrap:balance] md:text-heading-40">
-              {platforms.heading}
-            </h2>
-            <p className="mt-4 max-w-[34ch] text-copy-16 text-muted-foreground [text-wrap:pretty]">
+            <h2
+              id="platform-heading"
+              className="mt-6 max-w-[19ch] text-heading-32 leading-[1.14] tracking-[-0.03em] text-foreground"
+            >
               {platforms.support}
-            </p>
+            </h2>
           </div>
 
-          <div className="min-w-0 lg:col-span-8">
+          <div className="min-w-0 lg:col-span-7">
             <Tabs value={active} onValueChange={setPlatform}>
-              <TabsList className="grid h-auto w-full grid-cols-4 gap-1 overflow-hidden border border-border bg-[#F5F5F2] p-1">
+              <TabsList className="h-auto w-full flex-wrap justify-start gap-x-6 gap-y-0 rounded-none border-b border-border bg-transparent p-0 sm:flex-nowrap sm:gap-8">
                 {platforms.items.map((item) => (
                   <TabsTrigger
                     key={item.key}
                     value={item.key}
                     translate="no"
-                    aria-label={item.name}
-                    className="min-h-14 min-w-0 rounded-[3px] px-2 py-2 data-[state=active]:border-black/8 data-[state=active]:bg-background data-[state=active]:shadow-[0_1px_2px_rgba(0,0,0,0.08),0_4px_12px_rgba(0,0,0,0.04)]"
+                    className="group/tab relative min-h-14 flex-none justify-start gap-2.5 rounded-none border-0 bg-transparent px-0 pb-4 text-copy-14 data-[state=active]:bg-transparent data-[state=active]:text-foreground"
                   >
+                    {/* The official marks are served by an icon CDN. If it is
+                        unreachable the tab keeps working and simply shows the
+                        platform name — a broken-image glyph would be worse
+                        than no mark at all. */}
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={PLATFORM_LOGOS[item.key]}
                       alt=""
                       aria-hidden
-                      className="h-5 w-auto max-w-full object-contain sm:h-6"
+                      onError={(event) => {
+                        event.currentTarget.style.display = 'none'
+                      }}
+                      className="size-[1.125rem] shrink-0 object-contain opacity-80 transition-opacity duration-150 group-data-[state=active]/tab:opacity-100"
                     />
-                    <span className="sr-only">{item.name}</span>
+                    {PLATFORM_NAMES[item.key] ?? item.name}
+                    <span
+                      aria-hidden
+                      className="pointer-events-none absolute inset-x-0 -bottom-px h-[2px] origin-left scale-x-0 bg-primary transition-transform duration-200 ease-out group-data-[state=active]/tab:scale-x-100"
+                    />
                   </TabsTrigger>
                 ))}
               </TabsList>
 
               {platforms.items.map((item) => (
-                <TabsContent key={item.key} value={item.key} className="mt-5">
-                  <div className="grid overflow-hidden border border-border bg-border sm:grid-cols-2 xl:grid-cols-4">
-                    {item.capabilities.map((capability, index) => {
-                      const Icon = ICONS[index % ICONS.length]
-                      return (
-                        <div key={capability} className="min-h-44 bg-background p-5 sm:border-r sm:border-b sm:border-border xl:border-b-0">
-                          <div className="flex items-center justify-between gap-4">
-                            <Icon aria-hidden className="size-4 text-primary" />
-                            <span className="font-[family-name:var(--font-geist-mono)] text-label-12 tabular-nums text-muted-foreground">
-                              {String(index + 1).padStart(2, '0')}
-                            </span>
-                          </div>
-                          <p className="mt-8 text-label-13 font-semibold text-foreground">{capability}</p>
-                          <p className="mt-2 text-copy-13 text-muted-foreground [text-wrap:pretty]">{item.notes[index]}</p>
-                        </div>
-                      )
-                    })}
-                  </div>
+                <TabsContent
+                  key={item.key}
+                  value={item.key}
+                  className="mt-10"
+                >
+                  <dl className="grid gap-x-12 gap-y-9 sm:grid-cols-2">
+                    {item.capabilities.map((capability, index) => (
+                      <div key={capability}>
+                        <dt className="text-label-12 font-semibold uppercase tracking-[0.06em] text-foreground">
+                          {capability}
+                        </dt>
+                        <dd className="mt-2.5 max-w-[30ch] text-copy-14 leading-[1.55] text-muted-foreground [text-wrap:pretty]">
+                          {item.notes[index]}
+                        </dd>
+                      </div>
+                    ))}
+                  </dl>
                 </TabsContent>
               ))}
             </Tabs>
