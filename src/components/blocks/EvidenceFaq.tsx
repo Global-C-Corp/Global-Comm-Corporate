@@ -1,21 +1,28 @@
 'use client'
 
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
+import { useState } from 'react'
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Container, SectionLabel } from '@/components/blocks/Layout'
-import { homeV5 } from '@/content/homeV5'
+import { Container, SectionLabel } from '@/components/ui/Layout'
 import { cn } from '@/lib/utils'
-
-const { evidence, faq } = homeV5
 
 export type EvidenceMedia = {
   url: string
   alt: string
 }
 
-function titleCase(value: string) {
-  return value.charAt(0) + value.slice(1).toLowerCase()
+/** One entry on the evidence rail: what it is called, and what it says. */
+export type EvidenceCategory = {
+  key: string
+  label: string
+  deliverable?: string | null
+  body?: string | null
+  points?: string[]
+}
+
+export type FaqEntry = {
+  question: string
+  answer: string
 }
 
 /**
@@ -30,33 +37,32 @@ function titleCase(value: string) {
  * Neither side becomes a card wall: rows are separated by hairlines, and only
  * the open FAQ answer lifts onto its own surface, as in the reference.
  */
-export function EvidenceFaq({ media = [] }: { media?: EvidenceMedia[] }) {
-  const pathname = usePathname()
-  const router = useRouter()
-  const searchParams = useSearchParams()
+export function EvidenceFaq({
+  evidenceLabel,
+  evidenceHeading,
+  categories = [],
+  faqLabel,
+  faqSupport,
+  faqItems = [],
+  media = [],
+}: {
+  evidenceLabel?: string | null
+  evidenceHeading?: string | null
+  categories?: EvidenceCategory[]
+  faqLabel?: string | null
+  faqSupport?: string | null
+  faqItems?: FaqEntry[]
+  media?: EvidenceMedia[]
+}) {
+  /**
+   * Local state rather than URL search params: the homepage is statically
+   * rendered, and reading search params would opt the whole route out of
+   * prerendering for a deep link the approved composition never offers.
+   */
+  const [activeEvidence, setActiveEvidence] = useState(categories[0]?.key)
+  const [activeFaq, setActiveFaq] = useState<string | undefined>('faq-0')
 
-  const evidenceKeys = evidence.categories.map((category) => category.label.toLowerCase())
-  const requestedEvidence = searchParams.get('evidence')
-  const activeEvidence =
-    requestedEvidence && evidenceKeys.includes(requestedEvidence)
-      ? requestedEvidence
-      : evidenceKeys[0]
-
-  const requestedFaq = searchParams.get('faq')
-  const activeFaq =
-    requestedFaq === 'none'
-      ? undefined
-      : faq.items.some((_, index) => `faq-${index}` === requestedFaq)
-        ? requestedFaq
-        : 'faq-0'
-
-  const setParam = (key: string, value: string | undefined) => {
-    const params = new URLSearchParams(searchParams.toString())
-    if (value) params.set(key, value)
-    else params.delete(key)
-    const query = params.toString()
-    router.push(query ? `${pathname}?${query}` : pathname, { scroll: false })
-  }
+  if (categories.length === 0 && faqItems.length === 0) return null
 
   return (
     <section
@@ -67,31 +73,31 @@ export function EvidenceFaq({ media = [] }: { media?: EvidenceMedia[] }) {
       <Container className="py-20 md:py-28">
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-0">
           <div className="min-w-0 lg:col-span-7 lg:pr-14">
-            <SectionLabel>{evidence.label}</SectionLabel>
+            {evidenceLabel ? <SectionLabel>{evidenceLabel}</SectionLabel> : null}
             <h2
               id="evidence-heading"
               className="mt-6 max-w-[24ch] text-heading-32 leading-[1.14] tracking-[-0.03em] text-foreground [text-wrap:balance]"
             >
-              {evidence.heading}
+              {evidenceHeading}
             </h2>
 
             <Tabs
               value={activeEvidence}
-              onValueChange={(value) => setParam('evidence', value)}
+              onValueChange={setActiveEvidence}
               orientation="vertical"
               className="mt-10 flex-col gap-8 sm:flex-row"
             >
-              <TabsList className="h-fit w-full shrink-0 flex-col items-stretch gap-0 rounded-none bg-transparent p-0 sm:w-32">
-                {evidence.categories.map((category) => (
+              <TabsList className="h-fit w-full shrink-0 flex-col items-stretch gap-0 rounded-none bg-transparent p-0 sm:w-40">
+                {categories.map((category) => (
                   <TabsTrigger
-                    key={category.label}
-                    value={category.label.toLowerCase()}
+                    key={category.key}
+                    value={category.key}
                     className={cn(
-                      'group/cat relative min-h-11 justify-start rounded-none border-0 border-l border-border bg-transparent px-4 text-left text-copy-14',
+                      'group/cat relative min-h-11 justify-start whitespace-normal rounded-none border-0 border-l border-border bg-transparent px-4 py-2.5 text-left text-copy-14',
                       'text-muted-foreground data-[state=active]:bg-transparent data-[state=active]:text-primary',
                     )}
                   >
-                    {titleCase(category.label)}
+                    {category.label}
                     <span
                       aria-hidden
                       className="pointer-events-none absolute inset-y-0 -left-px w-[2px] origin-top scale-y-0 bg-primary transition-transform duration-200 ease-out group-data-[state=active]/cat:scale-y-100"
@@ -100,26 +106,33 @@ export function EvidenceFaq({ media = [] }: { media?: EvidenceMedia[] }) {
                 ))}
               </TabsList>
 
-              {evidence.categories.map((category, index) => {
+              {categories.map((category, index) => {
                 const picture = media.length > 0 ? media[index % media.length] : undefined
 
                 return (
                   <TabsContent
-                    key={category.label}
-                    value={category.label.toLowerCase()}
+                    key={category.key}
+                    value={category.key}
                     className="mt-0 min-w-0 flex-1"
                   >
                     <div className="grid gap-8 sm:grid-cols-[minmax(0,1fr)_11rem]">
                       <div className="min-w-0">
-                        <h3 className="text-copy-16 font-semibold tracking-[-0.01em] text-foreground">
-                          {category.deliverable}
-                        </h3>
-                        <p className="mt-2.5 max-w-[42ch] text-copy-14 leading-[1.55] text-muted-foreground [text-wrap:pretty]">
+                        {category.deliverable ? (
+                          <h3 className="text-copy-16 font-semibold tracking-[-0.01em] text-foreground">
+                            {category.deliverable}
+                          </h3>
+                        ) : null}
+                        <p
+                          className={cn(
+                            'max-w-[42ch] text-copy-14 leading-[1.55] text-muted-foreground [text-wrap:pretty]',
+                            category.deliverable && 'mt-2.5',
+                          )}
+                        >
                           {category.body}
                         </p>
 
                         <ul className="mt-7">
-                          {category.points.map((point) => (
+                          {(category.points ?? []).map((point) => (
                             <li
                               key={point}
                               className="border-t border-border py-3.5 text-copy-14 text-foreground"
@@ -150,19 +163,21 @@ export function EvidenceFaq({ media = [] }: { media?: EvidenceMedia[] }) {
           </div>
 
           <div className="lg:col-span-5 lg:border-l lg:border-border lg:pl-14">
-            <SectionLabel>{faq.label}</SectionLabel>
-            <p className="mt-3 max-w-[38ch] text-copy-14 text-muted-foreground [text-wrap:pretty]">
-              {faq.support}
-            </p>
+            {faqLabel ? <SectionLabel>{faqLabel}</SectionLabel> : null}
+            {faqSupport ? (
+              <p className="mt-3 max-w-[38ch] text-copy-14 text-muted-foreground [text-wrap:pretty]">
+                {faqSupport}
+              </p>
+            ) : null}
 
             <Accordion
               type="single"
               collapsible
               value={activeFaq ?? undefined}
-              onValueChange={(value) => setParam('faq', value || 'none')}
+              onValueChange={(value) => setActiveFaq(value || undefined)}
               className="mt-8"
             >
-              {faq.items.map((item, index) => (
+              {faqItems.map((item, index) => (
                 <AccordionItem
                   key={item.question}
                   value={`faq-${index}`}

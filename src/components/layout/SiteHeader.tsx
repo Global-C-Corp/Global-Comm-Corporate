@@ -10,14 +10,25 @@ export async function SiteHeader({
   route,
   availability,
   draft = false,
+  overDark = false,
 }: {
   locale: Locale
   route: Route
   availability: LocaleAvailability
   draft?: boolean
+  /** True on a page whose opening section is dark, so the bar overlays it. */
+  overDark?: boolean
 }) {
   const { navigation } = await getSiteChrome(locale, draft)
   const links = toNavLinks(locale, navigation?.primaryNavigation)
 
-  return <Header locale={locale} links={links} route={route} availability={availability} />
+  return (
+    <Header
+      locale={locale}
+      links={links}
+      route={route}
+      availability={availability}
+      overDark={overDark}
+    />
+  )
 }

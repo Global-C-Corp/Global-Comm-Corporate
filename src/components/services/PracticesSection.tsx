@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Service } from '@/payload-types'
 import { mediaURL } from '@/lib/media'
+import { Container } from '@/components/ui/Layout'
 
 /**
  * Four specialist practices — the page's primary informational section.
@@ -37,7 +38,7 @@ export function PracticesSection({
 
   return (
     <section className="bg-secondary" aria-labelledby="practices-heading">
-      <div className="mx-auto w-full max-w-[90rem] px-5 py-14 sm:px-6 md:px-8 md:py-16 lg:px-16">
+      <Container className="py-14 md:py-16">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-6">
             {label ? (
@@ -137,7 +138,7 @@ export function PracticesSection({
             )
           })}
         </ol>
-      </div>
+      </Container>
     </section>
   )
 }

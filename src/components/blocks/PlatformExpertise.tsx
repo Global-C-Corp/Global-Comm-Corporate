@@ -2,7 +2,7 @@
 
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import { Container, SectionLabel } from '@/components/blocks/Layout'
+import { Container, SectionLabel } from '@/components/ui/Layout'
 import { homeV5 } from '@/content/homeV5'
 
 const { platforms } = homeV5

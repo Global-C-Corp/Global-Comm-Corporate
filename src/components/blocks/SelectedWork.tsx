@@ -9,11 +9,9 @@ import {
   CarouselItem,
   type CarouselApi,
 } from '@/components/ui/carousel'
-import { Container, SectionLabel } from '@/components/blocks/Layout'
-import { homeV5 } from '@/content/homeV5'
+import { Container, SectionLabel } from '@/components/ui/Layout'
 import { cn } from '@/lib/utils'
 
-const { work } = homeV5
 
 export type SelectedWorkItem = {
   id: string
@@ -101,7 +99,19 @@ function ProjectTile({
  * and quiet captions under each image. No card chrome and no text panel — the
  * media carries the section, per 04 §12.6 and 03 §24.
  */
-export function SelectedWork({ items = [] }: { items?: SelectedWorkItem[] }) {
+export function SelectedWork({
+  label,
+  heading,
+  viewAll,
+  pendingAssetsNote,
+  items = [],
+}: {
+  label?: string | null
+  heading?: string | null
+  viewAll?: { label?: string | null; url?: string | null } | null
+  pendingAssetsNote?: string | null
+  items?: SelectedWorkItem[]
+}) {
   const [api, setApi] = useState<CarouselApi>()
   const [current, setCurrent] = useState(0)
   const groups = useMemo(() => buildBentoSlides(items), [items])
@@ -119,7 +129,9 @@ export function SelectedWork({ items = [] }: { items?: SelectedWorkItem[] }) {
     }
   }, [api])
 
-  if (groups.length === 0) return null
+  // After the hooks: an empty selection collapses the band rather than
+  // rendering an empty carousel (04 §34).
+  if (items.length === 0 || groups.length === 0) return null
 
   // The reference's support line names what is still missing. It is shown only
   // while that is true — never over approved media (01 §5, CLAUDE.md §105).
@@ -130,31 +142,33 @@ export function SelectedWork({ items = [] }: { items?: SelectedWorkItem[] }) {
       <Container className="py-20 md:py-28">
         <div className="flex flex-wrap items-start justify-between gap-6">
           <div>
-            <SectionLabel>{work.label}</SectionLabel>
+            {label ? <SectionLabel>{label}</SectionLabel> : null}
             <h2 id="work-heading" className="sr-only">
-              {work.label}
+              {heading ?? label}
             </h2>
-            {assetsPending ? (
-              <p className="mt-2 text-copy-13 text-muted-foreground">{work.pendingAssets}</p>
+            {assetsPending && pendingAssetsNote ? (
+              <p className="mt-2 text-copy-13 text-muted-foreground">{pendingAssetsNote}</p>
             ) : null}
           </div>
 
-          <Link
-            href={work.viewAll.href}
-            className="group/all inline-flex min-h-11 items-center gap-1.5 text-copy-14 text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-          >
-            <span className="relative">
-              {work.viewAll.label}
-              <span
+          {viewAll?.label && viewAll.url ? (
+            <Link
+              href={viewAll.url}
+              className="group/all inline-flex min-h-11 items-center gap-1.5 text-copy-14 text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+            >
+              <span className="relative">
+                {viewAll.label}
+                <span
+                  aria-hidden
+                  className="absolute inset-x-0 -bottom-0.5 block h-px bg-primary"
+                />
+              </span>
+              <ArrowUpRight
                 aria-hidden
-                className="absolute inset-x-0 -bottom-0.5 block h-px bg-primary"
+                className="size-3.5 transition-transform duration-200 group-hover/all:translate-x-0.5 group-hover/all:-translate-y-0.5"
               />
-            </span>
-            <ArrowUpRight
-              aria-hidden
-              className="size-3.5 transition-transform duration-200 group-hover/all:translate-x-0.5 group-hover/all:-translate-y-0.5"
-            />
-          </Link>
+            </Link>
+          ) : null}
         </div>
 
         <Carousel setApi={setApi} opts={{ loop: groups.length > 1, align: 'start' }} className="mt-8">
@@ -201,7 +215,7 @@ export function SelectedWork({ items = [] }: { items?: SelectedWorkItem[] }) {
           <div className="mt-6 flex items-center justify-end gap-2">
             <span
               aria-hidden
-              className="mr-1 font-[family-name:var(--font-geist-mono)] text-label-12 tabular-nums text-muted-foreground"
+              className="mr-1 font-mono text-label-12 tabular-nums text-muted-foreground"
             >
               {String(current + 1).padStart(2, '0')} / {String(groups.length).padStart(2, '0')}
             </span>

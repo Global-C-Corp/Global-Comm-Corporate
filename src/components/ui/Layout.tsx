@@ -40,7 +40,7 @@ export function SectionLabel({ children, className }: { children: React.ReactNod
   return (
     <p
       className={cn(
-        'font-[family-name:var(--font-geist-mono)] text-label-12 uppercase tracking-[0.1em] text-muted-foreground',
+        'font-mono text-label-12 uppercase tracking-[0.1em] text-muted-foreground',
         className,
       )}
     >
@@ -73,7 +73,9 @@ export function Wordmark({
       href={href}
       translate="no"
       className={cn(
-        'group/mark inline-flex flex-col justify-center gap-1 rounded-[2px]',
+        // py/-my gives the mark a 44px target while it still occupies only
+        // its own height in the bar (03 §32).
+        'group/mark inline-flex flex-col justify-center gap-1 rounded-[2px] py-2 -my-2',
         'focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring',
         tone === 'dark' && 'focus-visible:outline-white',
         className,

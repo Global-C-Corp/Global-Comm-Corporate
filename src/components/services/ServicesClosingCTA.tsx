@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { CTA } from '@/components/ui/Primitives'
 import type { Locale } from '@/i18n/locale'
+import { Container } from '@/components/ui/Layout'
 
 /**
  * Closing CTA — deliberately light.
@@ -30,7 +31,7 @@ export function ServicesClosingCTA({
 
   return (
     <section className="bg-secondary" aria-labelledby="services-closing-heading">
-      <div className="mx-auto w-full max-w-[90rem] px-5 py-10 sm:px-6 md:px-8 md:py-10 lg:px-16">
+      <Container className="py-10 md:py-10">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-start lg:gap-16">
           <div className="lg:col-span-7">
             {label ? (
@@ -69,7 +70,7 @@ export function ServicesClosingCTA({
             </div>
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   )
 }

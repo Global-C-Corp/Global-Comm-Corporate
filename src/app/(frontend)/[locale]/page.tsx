@@ -1,18 +1,24 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { ClientLogoCloud } from '@/components/blocks/ClientLogoCloud'
+import { EvidenceFaq, type EvidenceMedia } from '@/components/blocks/EvidenceFaq'
+import { Expertise, type ExpertiseItem } from '@/components/blocks/Expertise'
+import { FinalCta } from '@/components/blocks/FinalCta'
+import { Hero, type HeroLogo, type HeroSlide } from '@/components/blocks/Hero'
+import { PointOfView } from '@/components/blocks/PointOfView'
+import { SelectedWork, type SelectedWorkItem } from '@/components/blocks/SelectedWork'
 import { SiteHeader } from '@/components/layout/SiteHeader'
 import { JsonLd, organizationSchema } from '@/components/seo/JsonLd'
-import { TestimonialBlock } from '@/components/testimonial/TestimonialBlock'
-import { Band, Bullets, CTA, Heading, Kicker, Ordinal, Prose } from '@/components/ui/Primitives'
+import { getDictionary } from '@/i18n/dictionaries'
 import { isMedia, mediaURL } from '@/lib/media'
 import { populated } from '@/lib/relations'
-import type { Client, Project, Service, Testimonial } from '@/payload-types'
+import type { Client, Project, Service } from '@/payload-types'
 import { getGlobalAvailability } from '@/services/cms/availability'
 import { getHomePage, getSiteChrome } from '@/services/cms/globals'
 import { getPageContext } from '@/services/cms/pageContext'
+import { projectTiles } from '@/services/cms/projectTiles'
 import { getFeaturedProjects } from '@/services/cms/projects'
-import { getFeaturedClients, getFeaturedTestimonials } from '@/services/cms/proof'
+import { getFeaturedClients, getPublishedClients } from '@/services/cms/proof'
 import { resolvePageSEO } from '@/services/seo/resolvePageSEO'
 import { buildPath, type Route } from '@/services/seo/urls'
 
@@ -34,420 +40,230 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   })
 }
 
-const values = (items?: { value?: string | null }[] | null): string[] =>
-  (items ?? []).map((item) => item.value).filter((value): value is string => Boolean(value))
+/** Splits a CMS textarea into the paragraphs an editor separated by blank lines. */
+const paragraphs = (value?: string | null): string[] =>
+  (value ?? '').split(/\n{2,}/).map((part) => part.trim()).filter(Boolean)
 
-function projectMedia(project: Project): { url?: string; alt: string } {
-  const source = project.featuredMedia ?? project.heroMedia
-  return {
-    url: mediaURL(source, 'projectFeature') ?? mediaURL(source),
-    alt: isMedia(source) && source.alt ? source.alt : project.title,
-  }
-}
-
+/**
+ * Homepage — the approved composition (04 §12.1), on production data.
+ *
+ * Section order is the approved one: dark split hero, Point of View, the four
+ * expertises, Selected Work, Selected Experience, Evidence + FAQ, and the
+ * full-width blue closing band. Every string comes from the Home Page global
+ * in the requested locale; the blocks decide only where it sits.
+ *
+ * Two deliberate absences, both reported rather than filled:
+ *   - Platform Expertise (approved section 03) has no field anywhere in the
+ *     CMS, so rendering it would mean shipping untranslated English copy to
+ *     /fr and /es. The section is omitted until the model exists.
+ *   - The hero's brand-blue accent phrase and its closing statement line have
+ *     no field either, so the headline renders whole and the hairline band is
+ *     not drawn, rather than inventing an emphasis.
+ */
 export default async function HomePageRoute({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
   const { ctx, draft } = await getPageContext(locale)
+  const dictionary = getDictionary(ctx.locale)
 
   const page = await getHomePage(ctx)
   if (!page) notFound()
 
   const selectedClients = populated<Client>(page.featuredClients)
   const selectedProjects = populated<Project>(page.featuredProjects)
-  const selectedTestimonials = populated<Testimonial>(page.featuredTestimonials)
 
-  const [fallbackProjects, fallbackClients, fallbackTestimonials, availability] = await Promise.all([
+  const [fallbackProjects, fallbackClients, availability] = await Promise.all([
     selectedProjects.length === 0 ? getFeaturedProjects(ctx) : Promise.resolve([]),
-    selectedClients.length === 0 ? getFeaturedClients(ctx) : Promise.resolve([]),
-    selectedTestimonials.length === 0 ? getFeaturedTestimonials(ctx) : Promise.resolve([]),
+    selectedClients.length === 0 ? getFeaturedClients(ctx, 16) : Promise.resolve([]),
     getGlobalAvailability('home-page'),
   ])
 
   const { settings } = await getSiteChrome(ctx.locale, draft)
 
-  const clients = selectedClients.length > 0 ? selectedClients : fallbackClients
+  /**
+   * No client is marked `featured` in the CMS, so the featured query returns
+   * nothing and the reference band would disappear entirely. Widening to every
+   * approved published client is the same featured/fallback idiom the Services
+   * page uses — it selects more real records, it never invents one.
+   */
+  const featuredOrAll =
+    fallbackClients.length > 0 || selectedClients.length > 0
+      ? fallbackClients
+      : await getPublishedClients(ctx, 16)
+  const clients = selectedClients.length > 0 ? selectedClients : featuredOrAll
   const projects = selectedProjects.length > 0 ? selectedProjects : fallbackProjects
-  const testimonials = selectedTestimonials.length > 0 ? selectedTestimonials : fallbackTestimonials
-  const featuredProjects = projects.slice(0, 4)
 
-  const clientLogos = clients
-    .map((client) => ({ client, logo: mediaURL(client.logo, 'logo') }))
-    .filter((entry): entry is { client: Client; logo: string } => Boolean(entry.logo))
+  /** Hero carousel: only projects that actually carry an image can be a slide. */
+  const heroSlides: HeroSlide[] = projects
+    .map((project) => {
+      const image =
+        mediaURL(project.heroMedia, 'hero') ||
+        mediaURL(project.featuredMedia, 'projectFeature') ||
+        mediaURL(project.featuredMedia, 'projectCard')
+      if (!image) return null
 
-  const heroImage = mediaURL(page.heroMedia, 'hero')
-  const heroAlt = isMedia(page.heroMedia) && page.heroMedia.alt ? page.heroMedia.alt : ''
-  const overlayItems = values(page.hero?.overlayItems)
-  const serviceItems = page.expertise?.items ?? []
-  const approachSteps = page.approach?.steps ?? []
-  const faqItems = page.faq?.items ?? []
-  const positioningPillars = page.positioning?.pillars ?? []
+      const clientName =
+        typeof project.client === 'object' && project.client ? project.client.name : ''
+      const href = project.slug ? buildPath(ctx.locale, { type: 'project', slug: project.slug }) : null
+
+      return {
+        id: String(project.id),
+        image,
+        eyebrow: clientName || dictionary.sections.selectedWork,
+        title: project.shortStatement || project.title,
+        body: project.excerpt || '',
+        ...(href ? { href } : {}),
+      } satisfies HeroSlide
+    })
+    .filter((slide): slide is HeroSlide => slide !== null)
+
+  const clientLogos: HeroLogo[] = clients
+    .map((client) => {
+      const logo = mediaURL(client.logo, 'logo')
+      if (!logo) return null
+
+      return {
+        id: String(client.id),
+        name: client.name,
+        logo,
+        ...(client.websiteURL ? { href: client.websiteURL } : {}),
+      } satisfies HeroLogo
+    })
+    .filter((logo): logo is HeroLogo => logo !== null)
+
+  const workItems: SelectedWorkItem[] = projectTiles(projects, ctx.locale).map(
+    ({ project, href, meta, image }) => ({
+      id: String(project.id),
+      title: project.title,
+      disciplines: meta,
+      body: project.excerpt || project.shortStatement || '',
+      ...(image ? { image: image.url } : {}),
+      alt: image?.alt || project.title,
+      href: href || buildPath(ctx.locale, { type: 'work' }),
+    }),
+  )
+
+  /**
+   * The evidence rail shows the four positioning pillars the CMS already
+   * carries. They are the page's own statements of what the work produces, so
+   * nothing here is composed for the layout.
+   */
+  const evidenceCategories = (page.positioning?.pillars ?? [])
+    .filter((pillar) => Boolean(pillar.title))
+    .map((pillar, index) => ({
+      key: `pillar-${index}`,
+      label: pillar.title,
+      body: pillar.body,
+    }))
+
+  /** One image per evidence category, taken from the projects already selected. */
+  const evidenceMedia: EvidenceMedia[] = []
+  const seenEvidenceUrls = new Set<string>()
+
+  for (const project of projects) {
+    const candidates = [
+      project.featuredMedia,
+      project.heroMedia,
+      ...(project.gallery ?? []).map((entry) => entry.media),
+    ]
+
+    for (const candidate of candidates) {
+      const url =
+        mediaURL(candidate, 'projectFeature') ||
+        mediaURL(candidate, 'projectCard') ||
+        mediaURL(candidate, 'hero')
+
+      if (!url || seenEvidenceUrls.has(url)) continue
+      seenEvidenceUrls.add(url)
+      evidenceMedia.push({
+        url,
+        alt: isMedia(candidate) ? candidate.alt?.trim() || project.title : project.title,
+      })
+
+      if (evidenceMedia.length >= 4) break
+    }
+
+    if (evidenceMedia.length >= 4) break
+  }
 
   const serviceHref = (service: Service | number | null | undefined): string | null => {
-    if (!service || typeof service !== 'object') return null
-    return service.slug ? buildPath(ctx.locale, { type: 'service', slug: service.slug }) : null
+    if (!service || typeof service !== 'object' || !service.slug) return null
+    return buildPath(ctx.locale, { type: 'service', slug: service.slug })
   }
+
+  const expertiseItems: ExpertiseItem[] = (page.expertise?.items ?? [])
+    .filter((item) => Boolean(item.title))
+    .map((item, index) => ({
+      id: String(item.id ?? index),
+      number: item.number ?? String(index + 1).padStart(2, '0'),
+      name: item.title as string,
+      promise: item.tagline || item.body,
+      href: serviceHref(item.service),
+    }))
+
+  const faqItems = (page.faq?.items ?? []).map((item) => ({
+    question: item.question,
+    answer: item.answer,
+  }))
 
   return (
     <>
-      <SiteHeader locale={ctx.locale} route={route} availability={availability} draft={draft} />
+      <SiteHeader
+        locale={ctx.locale}
+        route={route}
+        availability={availability}
+        draft={draft}
+        overDark
+      />
       <JsonLd data={organizationSchema(settings, ctx.locale)} />
 
-      <main id="main" className="gc-tw bg-background">
-        {/* 01 — HERO: corporate mastery first, branded composition second. */}
-        <section className="mx-auto w-full max-w-[80rem] px-5 pb-24 pt-16 sm:px-6 md:px-8 md:pb-32 md:pt-24 lg:px-12 lg:pt-28">
-          <div className="grid items-end gap-14 lg:grid-cols-12 lg:gap-12">
-            <div className="lg:col-span-8">
-              {page.heroEyebrow && <Kicker>{page.heroEyebrow}</Kicker>}
-              {page.heroHeading && (
-                <Heading
-                  as="h1"
-                  className="mt-6 max-w-[15ch] text-[clamp(3.5rem,7vw,6.75rem)] leading-[0.94] tracking-[-0.055em]"
-                >
-                  {page.heroHeading}
-                </Heading>
-              )}
-              <Prose
-                text={page.heroBody}
-                className="mt-8 max-w-[54ch] text-lg leading-[1.6] text-muted-foreground md:text-xl"
-              />
-              <div className="mt-10 flex flex-wrap gap-3">
-                <CTA cta={page.primaryCTA} locale={ctx.locale} />
-                <CTA cta={page.secondaryCTA} locale={ctx.locale} variant="secondary" />
-              </div>
-            </div>
+      <main id="main" className="gc-design-page">
+        <Hero
+          eyebrow={page.heroEyebrow}
+          heading={page.heroHeading}
+          support={page.heroBody}
+          primaryCTA={page.primaryCTA}
+          secondaryCTA={page.secondaryCTA}
+          slides={heroSlides}
+        />
 
-            <div className="lg:col-span-4">
-              <div className="relative min-h-[21rem] overflow-hidden bg-secondary sm:min-h-[25rem] lg:min-h-[30rem]">
-                <div aria-hidden className="absolute left-0 top-0 h-2/5 w-2/3 bg-primary" />
-                {heroImage ? (
-                  <div className="absolute inset-x-5 bottom-5 top-14 overflow-hidden bg-background sm:inset-x-6 sm:bottom-6 sm:top-16">
-                    {/* Payload media may include SVG; keep the raw media path here rather than forcing image optimization. */}
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={heroImage} alt={heroAlt} className="h-full w-full object-cover" />
-                  </div>
-                ) : (
-                  <div aria-hidden className="absolute bottom-8 right-0 h-px w-3/4 bg-foreground" />
-                )}
+        <PointOfView label={page.positioning?.kicker} heading={page.positioning?.heading} />
 
-                {(page.hero?.overlayLabel || overlayItems.length > 0) && (
-                  <div className="absolute bottom-0 left-0 max-w-[88%] bg-background p-5 sm:p-6">
-                    {page.hero?.overlayLabel && <Kicker>{page.hero.overlayLabel}</Kicker>}
-                    {overlayItems.length > 0 && (
-                      <ul className="mt-3 space-y-1 text-sm leading-relaxed text-foreground">
-                        {overlayItems.slice(0, 4).map((item) => (
-                          <li key={item}>{item}</li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </section>
+        <Expertise
+          kicker={page.expertise?.kicker}
+          heading={page.expertise?.heading}
+          body={paragraphs(page.expertise?.intro)}
+          cta={page.expertise?.sectionCTA}
+          items={expertiseItems}
+        />
 
-        {/* 02 — BRAND MARKET POSITIONING: quiet, editorial, no card wall. */}
-        {page.positioning?.heading && (
-          <Band surface labelledBy="positioning-heading">
-            <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
-              <div className="lg:col-span-7">
-                {page.positioning.kicker && <Kicker>{page.positioning.kicker}</Kicker>}
-                <Heading id="positioning-heading" className="mt-5 max-w-[18ch]">
-                  {page.positioning.heading}
-                </Heading>
-              </div>
-              <div className="lg:col-span-5 lg:pt-8">
-                <Prose text={page.positioning.body} className="text-muted-foreground" />
-              </div>
-            </div>
+        <SelectedWork
+          label={page.workSection?.kicker}
+          heading={page.workSection?.heading}
+          viewAll={page.workSection?.sectionCTA}
+          items={workItems}
+        />
 
-            {positioningPillars.length > 0 && (
-              <ul className="mt-20 grid gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
-                {positioningPillars.map((pillar, index) => (
-                  <li key={pillar.id ?? index}>
-                    <span className="text-xs font-medium tracking-[0.08em] text-primary">
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    <h3 className="mt-4 text-lg font-semibold tracking-[-0.02em] text-foreground">{pillar.title}</h3>
-                    {pillar.body && (
-                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{pillar.body}</p>
-                    )}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </Band>
-        )}
+        <ClientLogoCloud
+          label={dictionary.sections.selectedClients}
+          support={page.proof?.body}
+          logos={clientLogos}
+        />
 
-        {/* 03 — SERVICES: structured editorial rows, not SaaS cards. */}
-        {serviceItems.length > 0 && (
-          <Band labelledBy="services-heading">
-            <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
-              <div className="lg:col-span-5">
-                {page.expertise?.kicker && <Kicker>{page.expertise.kicker}</Kicker>}
-                {page.expertise?.heading && (
-                  <Heading id="services-heading" className="mt-5">
-                    {page.expertise.heading}
-                  </Heading>
-                )}
-              </div>
-              <div className="lg:col-span-6 lg:col-start-7 lg:pt-8">
-                <Prose text={page.expertise?.intro} className="text-muted-foreground" />
-              </div>
-            </div>
+        <EvidenceFaq
+          evidenceLabel={page.proof?.kicker}
+          evidenceHeading={page.proof?.heading}
+          categories={evidenceCategories}
+          faqLabel={page.faq?.kicker}
+          faqSupport={page.faq?.heading}
+          faqItems={faqItems}
+          media={evidenceMedia}
+        />
 
-            <div className="mt-20">
-              {serviceItems.map((item, index) => {
-                const href = serviceHref(item.service)
-                const offerings = values(item.offerings)
-                return (
-                  <article
-                    key={item.id ?? index}
-                    className="grid gap-6 border-t border-border py-9 md:grid-cols-12 md:gap-8 md:py-11"
-                  >
-                    <div className="md:col-span-1">
-                      <Ordinal>{item.number ?? String(index + 1).padStart(2, '0')}</Ordinal>
-                    </div>
-                    <div className="md:col-span-4">
-                      {item.title && (
-                        <h3 className="text-xl font-semibold tracking-[-0.025em] text-foreground md:text-2xl">
-                          {item.title}
-                        </h3>
-                      )}
-                      {item.tagline && <p className="mt-3 text-sm font-medium text-foreground">{item.tagline}</p>}
-                    </div>
-                    <div className="md:col-span-4">
-                      {item.body && <p className="text-sm leading-relaxed text-muted-foreground">{item.body}</p>}
-                      {offerings.length > 0 && (
-                        <div className="mt-5">
-                          <Bullets items={offerings.slice(0, 4)} />
-                        </div>
-                      )}
-                    </div>
-                    <div className="md:col-span-3 md:text-right">
-                      {href && item.ctaLabel && (
-                        <Link
-                          href={href}
-                          className="text-sm font-medium text-foreground underline decoration-border underline-offset-4 transition-colors duration-150 hover:text-primary hover:decoration-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
-                        >
-                          {item.ctaLabel}
-                        </Link>
-                      )}
-                    </div>
-                  </article>
-                )
-              })}
-            </div>
-
-            <div className="mt-10">
-              <CTA cta={page.expertise?.sectionCTA} locale={ctx.locale} variant="secondary" />
-            </div>
-          </Band>
-        )}
-
-        {/* 04 — SELECTED WORK: strongest visual moment on the homepage. */}
-        {featuredProjects.length > 0 && (
-          <Band surface labelledBy="work-heading">
-            <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
-              <div className="lg:col-span-7">
-                {page.workSection?.kicker && <Kicker>{page.workSection.kicker}</Kicker>}
-                {page.workSection?.heading && (
-                  <Heading id="work-heading" className="mt-5 max-w-[16ch]">
-                    {page.workSection.heading}
-                  </Heading>
-                )}
-              </div>
-              <div className="lg:col-span-5 lg:pt-8">
-                <Prose text={page.workSection?.body} className="text-muted-foreground" />
-              </div>
-            </div>
-
-            <ul className="mt-20 grid gap-x-8 gap-y-16 md:grid-cols-2">
-              {featuredProjects.map((project, index) => {
-                const href = project.slug
-                  ? buildPath(ctx.locale, { type: 'project', slug: project.slug })
-                  : null
-                const client = typeof project.client === 'object' ? project.client?.name : undefined
-                const meta = [client, project.year ? String(project.year) : undefined].filter(Boolean).join(' · ')
-                const media = projectMedia(project)
-                const featured = index === 0
-
-                return (
-                  <li key={project.id} className={featured ? 'md:col-span-2' : undefined}>
-                    {media.url && (
-                      <div className={featured ? 'aspect-[16/9] overflow-hidden bg-background' : 'aspect-[4/3] overflow-hidden bg-background'}>
-                        {href ? (
-                          <Link href={href} className="block h-full focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img
-                              src={media.url}
-                              alt={media.alt}
-                              loading={featured ? 'eager' : 'lazy'}
-                              className="h-full w-full object-cover transition-transform duration-300 motion-safe:hover:scale-[1.01]"
-                            />
-                          </Link>
-                        ) : (
-                          // eslint-disable-next-line @next/next/no-img-element
-                          <img src={media.url} alt={media.alt} loading="lazy" className="h-full w-full object-cover" />
-                        )}
-                      </div>
-                    )}
-
-                    <div className="mt-5 flex items-start justify-between gap-6">
-                      <div>
-                        {meta && <p className="text-xs font-medium tracking-[0.06em] text-muted-foreground">{meta}</p>}
-                        <h3 className={featured ? 'mt-2 text-2xl font-semibold tracking-[-0.03em] text-foreground md:text-3xl' : 'mt-2 text-xl font-semibold tracking-[-0.025em] text-foreground'}>
-                          {href ? (
-                            <Link href={href} className="transition-colors duration-150 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring">
-                              {project.title}
-                            </Link>
-                          ) : (
-                            project.title
-                          )}
-                        </h3>
-                        {project.excerpt && (
-                          <p className="mt-3 max-w-[56ch] text-sm leading-relaxed text-muted-foreground">{project.excerpt}</p>
-                        )}
-                      </div>
-                      <span aria-hidden className="mt-1 h-2 w-2 shrink-0 bg-primary" />
-                    </div>
-                  </li>
-                )
-              })}
-            </ul>
-
-            <div className="mt-14">
-              <CTA cta={page.workSection?.sectionCTA} locale={ctx.locale} variant="secondary" />
-            </div>
-          </Band>
-        )}
-
-        {/* 05 — METHOD: numbered sequence, calm after the expressive work section. */}
-        {approachSteps.length > 0 && (
-          <Band labelledBy="approach-heading">
-            <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
-              <div className="lg:col-span-5">
-                {page.approach?.kicker && <Kicker>{page.approach.kicker}</Kicker>}
-                {page.approach?.heading && (
-                  <Heading id="approach-heading" className="mt-5">
-                    {page.approach.heading}
-                  </Heading>
-                )}
-              </div>
-              <div className="lg:col-span-6 lg:col-start-7 lg:pt-8">
-                <Prose text={page.approach?.body} className="text-muted-foreground" />
-              </div>
-            </div>
-
-            <ol className="mt-20 grid gap-10 md:grid-cols-3 md:gap-8">
-              {approachSteps.slice(0, 3).map((step, index) => (
-                <li key={step.id ?? index} className="border-t border-border pt-6">
-                  <Ordinal>{step.number ?? String(index + 1).padStart(2, '0')}</Ordinal>
-                  {step.title && (
-                    <h3 className="mt-5 text-xl font-semibold tracking-[-0.025em] text-foreground">{step.title}</h3>
-                  )}
-                  {step.tagline && <p className="mt-3 text-sm font-medium text-foreground">{step.tagline}</p>}
-                  <Prose text={step.body} className="mt-5 text-sm text-muted-foreground" />
-                  <div className="mt-6">
-                    <Bullets items={values(step.bullets).slice(0, 4)} />
-                  </div>
-                  {step.result && (
-                    <div className="mt-7 bg-secondary p-5">
-                      {step.resultLabel && <Kicker>{step.resultLabel}</Kicker>}
-                      <p className="mt-3 text-sm font-medium leading-relaxed text-foreground">{step.result}</p>
-                    </div>
-                  )}
-                </li>
-              ))}
-            </ol>
-          </Band>
-        )}
-
-        {/* 06 — PROOF: contextualized evidence, logos are no longer above the fold. */}
-        {(testimonials.length > 0 || clientLogos.length > 0) && page.proof?.heading && (
-          <Band surface labelledBy="proof-heading">
-            <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
-              <div className="lg:col-span-6">
-                {page.proof.kicker && <Kicker>{page.proof.kicker}</Kicker>}
-                <Heading id="proof-heading" className="mt-5">
-                  {page.proof.heading}
-                </Heading>
-              </div>
-              <div className="lg:col-span-5 lg:col-start-8 lg:pt-8">
-                <Prose text={page.proof.body} className="text-muted-foreground" />
-              </div>
-            </div>
-
-            {clientLogos.length > 0 && (
-              <ul className="mt-16 flex flex-wrap items-center gap-x-12 gap-y-8" aria-label="Selected clients">
-                {clientLogos.slice(0, 8).map(({ client, logo }) => (
-                  <li key={client.id}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={logo} alt={client.name} loading="lazy" className="max-h-7 w-auto opacity-70 grayscale" />
-                  </li>
-                ))}
-              </ul>
-            )}
-
-            {testimonials.length > 0 && (
-              <div className="mt-20 grid gap-12 md:grid-cols-2">
-                {testimonials.slice(0, 2).map((testimonial) => (
-                  <TestimonialBlock key={testimonial.id} testimonial={testimonial} locale={ctx.locale} />
-                ))}
-              </div>
-            )}
-          </Band>
-        )}
-
-        {/* Optional supporting FAQ: stays quiet and disappears when CMS has no items. */}
-        {faqItems.length > 0 && (
-          <Band labelledBy="faq-heading">
-            <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
-              <div className="lg:col-span-4">
-                {page.faq?.kicker && <Kicker>{page.faq.kicker}</Kicker>}
-                {page.faq?.heading && (
-                  <Heading id="faq-heading" className="mt-5 text-3xl md:text-4xl">
-                    {page.faq.heading}
-                  </Heading>
-                )}
-              </div>
-              <dl className="lg:col-span-7 lg:col-start-6">
-                {faqItems.map((item, index) => (
-                  <div key={item.id ?? index} className="border-t border-border py-7">
-                    <dt className="text-base font-semibold tracking-[-0.015em] text-foreground">{item.question}</dt>
-                    <dd className="mt-3 max-w-[62ch] text-sm leading-relaxed text-muted-foreground">{item.answer}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-          </Band>
-        )}
-
-        {/* 07 — FINAL CTA: one deliberate brand interruption. */}
-        {page.closing?.heading && (
-          <section className="bg-primary text-primary-foreground" aria-labelledby="closing-heading">
-            <div className="mx-auto w-full max-w-[80rem] px-5 py-24 sm:px-6 md:px-8 md:py-32 lg:px-12">
-              {page.closing.kicker && (
-                <p className="text-[0.7rem] font-medium uppercase tracking-[0.14em] text-primary-foreground/70">
-                  {page.closing.kicker}
-                </p>
-              )}
-              <Heading
-                id="closing-heading"
-                className="mt-5 max-w-[17ch] text-primary-foreground md:text-6xl"
-              >
-                {page.closing.heading}
-              </Heading>
-              <Prose text={page.closing.body} className="mt-8 max-w-[54ch] text-primary-foreground/80" />
-              <div className="mt-10">
-                <CTA cta={page.closingCTA} locale={ctx.locale} variant="secondary" />
-                {page.closing.reassurance && (
-                  <p className="mt-4 text-sm text-primary-foreground/70">{page.closing.reassurance}</p>
-                )}
-              </div>
-            </div>
-          </section>
-        )}
+        <FinalCta
+          heading={page.closing?.heading}
+          support={page.closing?.body}
+          cta={page.closingCTA}
+        />
       </main>
     </>
   )

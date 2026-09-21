@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import type { Project } from '@/payload-types'
 import { mediaURL } from '@/lib/media'
+import { Container } from '@/components/ui/Layout'
 
 /**
  * Selected Work — project imagery is the strongest element in the section.
@@ -39,7 +40,7 @@ export function ServicesSelectedWork({
 
   return (
     <section className="bg-background" aria-labelledby="services-work-heading">
-      <div className="mx-auto w-full max-w-[90rem] px-5 py-10 sm:px-6 md:px-8 md:py-8 lg:px-16">
+      <Container className="py-10 md:py-8">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-3">
             {label ? (
@@ -117,7 +118,7 @@ export function ServicesSelectedWork({
             </ul>
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   )
 }

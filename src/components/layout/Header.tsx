@@ -1,58 +1,64 @@
-import Link from 'next/link'
-import type { Locale } from '@/i18n/locale'
 import { getDictionary } from '@/i18n/dictionaries'
+import { locales, localeLabels, type Locale } from '@/i18n/locale'
 import type { LocaleAvailability } from '@/services/seo/hreflang'
 import { buildPath, type Route } from '@/services/seo/urls'
-import { LanguageSwitcher } from './LanguageSwitcher'
-import { MobileNav, type NavLink } from './MobileNav'
+import { HeaderBar, type LocaleChoice } from './HeaderBar'
+import type { NavLink } from '@/lib/nav'
 
+/**
+ * Server half of the site header: it resolves everything the bar renders —
+ * localized navigation, the current path, and which locales may actually be
+ * linked — and hands the result to the client bar, which owns only the
+ * condensing behaviour and the mobile sheet.
+ */
 export function Header({
   locale,
   links,
   route,
   availability,
+  overDark = false,
 }: {
   locale: Locale
   links: NavLink[]
   route: Route
   availability: LocaleAvailability
+  overDark?: boolean
 }) {
   const dictionary = getDictionary(locale)
+  const homeHref = buildPath(locale, { type: 'home' })
+  const currentUrl = buildPath(locale, route)
+
+  /**
+   * CLAUDE.md §61: switch to the equivalent entity's localized slug, and never
+   * offer a locale whose translation is not public.
+   */
+  const localeChoices: LocaleChoice[] = locales.map((code) => {
+    if (code === locale) {
+      return { code, label: localeLabels[code], href: null, isCurrent: true }
+    }
+
+    const entry = availability[code]
+    if (!entry?.isPublic) {
+      return { code, label: localeLabels[code], href: null, isCurrent: false }
+    }
+
+    const localeRoute: Route = 'slug' in route ? { ...route, slug: entry.slug ?? route.slug } : route
+    return { code, label: localeLabels[code], href: buildPath(code, localeRoute), isCurrent: false }
+  })
 
   return (
-    <header className="gc-tw sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur-sm">
-      <div className="mx-auto flex h-16 w-full max-w-[80rem] items-center justify-between gap-8 px-5 sm:px-6 md:px-8 lg:px-12">
-        <Link
-          href={buildPath(locale, { type: 'home' })}
-          className="text-sm font-semibold tracking-[-0.025em] text-foreground focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
-        >
-          GLOBAL COMM<span className="text-primary">.</span>
-        </Link>
-
-        <nav className="hidden items-center gap-7 md:flex" aria-label="Primary">
-          {links.map((link) => (
-            <Link
-              key={`${link.url}-${link.label}`}
-              href={link.url}
-              className="text-[0.8125rem] font-medium text-foreground transition-colors duration-150 hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
-              target={link.opensInNewTab ? '_blank' : undefined}
-              rel={link.opensInNewTab ? 'noopener noreferrer' : undefined}
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-
-        <div className="flex items-center gap-5">
-          <LanguageSwitcher
-            currentLocale={locale}
-            route={route}
-            availability={availability}
-            label={dictionary.a11y.languageSwitcher}
-          />
-          <MobileNav links={links} labels={{ menu: dictionary.nav.menu, close: dictionary.nav.close }} />
-        </div>
-      </div>
-    </header>
+    <HeaderBar
+      overDark={overDark}
+      homeHref={homeHref}
+      links={links}
+      currentUrl={currentUrl}
+      locales={localeChoices}
+      labels={{
+        menu: dictionary.nav.menu,
+        close: dictionary.nav.close,
+        primary: dictionary.a11y.primaryNavigation,
+        languages: dictionary.a11y.languageSwitcher,
+      }}
+    />
   )
 }

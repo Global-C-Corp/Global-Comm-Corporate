@@ -3,19 +3,22 @@ import type { Client, Project } from '@/payload-types'
 import { ClientLogoCloud } from '@/components/blocks/ClientLogoCloud'
 import { EvidenceFaq, type EvidenceMedia } from '@/components/blocks/EvidenceFaq'
 import { FinalCta } from '@/components/blocks/FinalCta'
-import { Footer } from '@/components/blocks/Footer'
 import { Expertise } from '@/components/blocks/Expertise'
-import { GlobalHeader } from '@/components/blocks/GlobalHeader'
 import { Hero, type HeroLogo, type HeroSlide } from '@/components/blocks/Hero'
 import { PlatformExpertise } from '@/components/blocks/PlatformExpertise'
 import { PointOfView } from '@/components/blocks/PointOfView'
 import { SelectedWork, type SelectedWorkItem } from '@/components/blocks/SelectedWork'
+import { SiteFooter } from '@/components/layout/SiteFooter'
+import { SiteHeader } from '@/components/layout/SiteHeader'
 import { isMedia, mediaURL } from '@/lib/media'
 import { populated } from '@/lib/relations'
+import { getGlobalAvailability } from '@/services/cms/availability'
 import { getHomePage } from '@/services/cms/globals'
 import { getFeaturedClients } from '@/services/cms/proof'
 import { getFeaturedProjects } from '@/services/cms/projects'
 import { projectTiles } from '@/services/cms/projectTiles'
+import { homeV5 } from '@/content/homeV5'
+import { homeHalbert } from '@/content/homeHalbert'
 
 export const dynamic = 'force-dynamic'
 
@@ -28,6 +31,7 @@ const ctx = { locale: 'fr' as const, draft: false }
 
 export default async function HomeDesignPreview() {
   const page = await getHomePage(ctx)
+  const availability = await getGlobalAvailability('home-page')
 
   const selectedProjects = populated<Project>(page?.featuredProjects)
   const fallbackProjects =
@@ -120,18 +124,74 @@ export default async function HomeDesignPreview() {
 
   return (
     <>
-      <GlobalHeader overDark current="Work" />
+      <SiteHeader locale={ctx.locale} route={{ type: 'home' }} availability={availability} overDark />
       <main id="main" className="gc-design-page">
-        <Hero slides={heroSlides} />
+        <Hero
+          eyebrow={homeV5.hero.eyebrow}
+          heading={homeV5.hero.heading}
+          headingAccent={homeV5.hero.headingAccent}
+          support={homeV5.hero.support}
+          primaryCTA={{ label: homeV5.hero.primaryCTA.label, url: homeV5.hero.primaryCTA.href }}
+          secondaryCTA={{ label: homeV5.hero.secondaryCTA.label, url: homeV5.hero.secondaryCTA.href }}
+          closing={homeV5.hero.closing}
+          slides={heroSlides}
+        />
         <PlatformExpertise />
-        <PointOfView />
-        <Expertise />
-        <SelectedWork items={workItems} />
-        <ClientLogoCloud logos={heroLogos} />
-        <EvidenceFaq media={evidenceMedia} />
-        <FinalCta />
+        <PointOfView
+          label={homeV5.pointOfView.label}
+          heading={`${homeV5.pointOfView.statement.lead} ${homeV5.pointOfView.statement.accent} ${homeV5.pointOfView.statement.tail}`}
+          accent={homeV5.pointOfView.statement.accent}
+        />
+        <Expertise
+          kicker={homeHalbert.expertise.kicker}
+          heading={homeHalbert.expertise.title}
+          body={[...homeHalbert.expertise.body]}
+          cta={{
+            label: homeHalbert.expertise.sectionCTA.label,
+            url: homeHalbert.expertise.sectionCTA.href,
+          }}
+          items={homeHalbert.expertise.items.map((item) => ({
+            id: item.number,
+            number: item.number,
+            name: item.name,
+            promise: item.promise,
+            href: item.cta.href,
+          }))}
+        />
+        <SelectedWork
+          label={homeV5.work.label}
+          viewAll={{ label: homeV5.work.viewAll.label, url: homeV5.work.viewAll.href }}
+          pendingAssetsNote={homeV5.work.pendingAssets}
+          items={workItems}
+        />
+        <ClientLogoCloud
+          label={homeV5.experience.label}
+          support={homeV5.experience.support}
+          logos={heroLogos}
+          pendingAssetsNote={homeV5.experience.pendingAssets}
+        />
+        <EvidenceFaq
+          evidenceLabel={homeV5.evidence.label}
+          evidenceHeading={homeV5.evidence.heading}
+          categories={homeV5.evidence.categories.map((category) => ({
+            key: category.label.toLowerCase(),
+            label: category.label.charAt(0) + category.label.slice(1).toLowerCase(),
+            deliverable: category.deliverable,
+            body: category.body,
+            points: [...category.points],
+          }))}
+          faqLabel={homeV5.faq.label}
+          faqSupport={homeV5.faq.support}
+          faqItems={homeV5.faq.items.map((item) => ({ question: item.question, answer: item.answer }))}
+          media={evidenceMedia}
+        />
+        <FinalCta
+          heading={homeV5.finalCTA.heading}
+          support={homeV5.finalCTA.support}
+          cta={{ label: homeV5.finalCTA.action.label, url: homeV5.finalCTA.action.href }}
+        />
       </main>
-      <Footer />
+      <SiteFooter locale={ctx.locale} />
     </>
   )
 }

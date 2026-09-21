@@ -33,7 +33,11 @@
   /* next/font variables are attached to <html> by the locale layout. */
   --gc-font-sans: var(--font-geist), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   --gc-font-serif: var(--font-source-serif), Georgia, 'Times New Roman', serif;
-  --gc-font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  /* The approved composition sets its small labels in Geist Mono. The design
+     route loads it as --font-geist-mono; the public layout does not, so the
+     token degrades to the system mono stack rather than to the sans. */
+  --gc-font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    monospace;
 
   --background: var(--gc-white);
   --foreground: var(--gc-foreground);

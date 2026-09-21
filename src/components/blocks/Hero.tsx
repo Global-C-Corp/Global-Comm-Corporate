@@ -10,11 +10,8 @@ import {
   CarouselItem,
   type CarouselApi,
 } from '@/components/ui/carousel'
-import { Container, SectionLabel } from '@/components/blocks/Layout'
-import { homeV5 } from '@/content/homeV5'
+import { Container, SectionLabel } from '@/components/ui/Layout'
 import { cn } from '@/lib/utils'
-
-const { hero } = homeV5
 
 export type HeroSlide = {
   id: string
@@ -135,7 +132,7 @@ function HeroVisual({ slides }: { slides: HeroSlide[] }) {
         <div className="flex shrink-0 items-center gap-2">
           <span
             aria-hidden
-            className="mr-1 font-[family-name:var(--font-geist-mono)] text-label-12 tabular-nums text-white/55"
+            className="mr-1 font-mono text-label-12 tabular-nums text-white/55"
           >
             {String(Math.min(current + 1, total)).padStart(2, '0')} / {String(total).padStart(2, '0')}
           </span>
@@ -169,7 +166,37 @@ function HeroVisual({ slides }: { slides: HeroSlide[] }) {
   )
 }
 
-export function Hero({ slides = [] }: { slides?: HeroSlide[]; logos?: HeroLogo[] }) {
+/**
+ * Homepage hero — approved reference (04 §12.2).
+ *
+ * Dark split composition: proposition, support and two actions on the left, an
+ * indexed and explicitly controlled project carousel on the right, and a quiet
+ * full-width statement beneath a hairline.
+ *
+ * `headingAccent` is the closing phrase the reference rules in brand blue. It
+ * is optional: when the CMS carries no accent phrase the headline renders
+ * whole rather than having one invented for it.
+ */
+export function Hero({
+  eyebrow,
+  heading,
+  headingAccent,
+  support,
+  primaryCTA,
+  secondaryCTA,
+  closing,
+  slides = [],
+}: {
+  eyebrow?: string | null
+  heading?: string | null
+  headingAccent?: string | null
+  support?: string | null
+  primaryCTA?: { label?: string | null; url?: string | null } | null
+  secondaryCTA?: { label?: string | null; url?: string | null } | null
+  closing?: string | null
+  slides?: HeroSlide[]
+  logos?: HeroLogo[]
+}) {
   return (
     <section
       className="relative isolate overflow-hidden bg-[#08080B] text-white"
@@ -184,50 +211,63 @@ export function Hero({ slides = [] }: { slides?: HeroSlide[]; logos?: HeroLogo[]
       <Container className="pb-10 pt-[8.5rem] md:pb-12 md:pt-[10rem]">
         <div className="grid items-start gap-12 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-6">
-            <SectionLabel className="text-white/55">{hero.eyebrow}</SectionLabel>
+            {eyebrow ? (
+              <SectionLabel className="text-white/55">{eyebrow}</SectionLabel>
+            ) : null}
 
             <h1
               id="hero-heading"
               className="mt-7 max-w-[14ch] text-heading-40 leading-[1.08] tracking-[-0.035em] text-white sm:text-heading-48 lg:text-heading-56"
             >
-              {hero.heading}{' '}
-              {/* The closing phrase carries the approved brand-blue rule. It is
-                  a drawn box-shadow rather than an underline so the weight and
-                  the gap to the baseline stay under our control. */}
-              <span className="relative inline-block">
-                {hero.headingAccent}
-                <span
-                  aria-hidden
-                  className="absolute inset-x-0 -bottom-1 block h-[4px] bg-primary"
-                />
-              </span>
+              {heading}
+              {headingAccent ? (
+                <>
+                  {' '}
+                  {/* The closing phrase carries the approved brand-blue rule.
+                      It is a drawn bar rather than an underline so the weight
+                      and the gap to the baseline stay under our control. */}
+                  <span className="relative inline-block">
+                    {headingAccent}
+                    <span
+                      aria-hidden
+                      className="absolute inset-x-0 -bottom-1 block h-[4px] bg-primary"
+                    />
+                  </span>
+                </>
+              ) : null}
             </h1>
 
-            <p className="mt-8 max-w-[46ch] text-copy-16 leading-[1.6] text-white/70 [text-wrap:pretty]">
-              {hero.support}
-            </p>
+            {support ? (
+              <p className="mt-8 max-w-[46ch] text-copy-16 leading-[1.6] text-white/70 [text-wrap:pretty]">
+                {support}
+              </p>
+            ) : null}
 
             <div className="mt-9 flex flex-wrap items-center gap-6">
-              <Button asChild size="lg" className="group focus-visible:outline-white">
-                <Link href={hero.primaryCTA.href}>
-                  {hero.primaryCTA.label}
-                  <ArrowUpRight
+              {primaryCTA?.label && primaryCTA.url ? (
+                <Button asChild size="lg" className="group focus-visible:outline-white">
+                  <Link href={primaryCTA.url}>
+                    {primaryCTA.label}
+                    <ArrowUpRight
+                      aria-hidden
+                      className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    />
+                  </Link>
+                </Button>
+              ) : null}
+
+              {secondaryCTA?.label && secondaryCTA.url ? (
+                <Link
+                  href={secondaryCTA.url}
+                  className="group inline-flex min-h-11 items-center gap-2 rounded-[2px] text-copy-14 text-white transition-colors duration-150 hover:text-white/75 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
+                >
+                  {secondaryCTA.label}
+                  <ArrowRight
                     aria-hidden
-                    className="transition-transform duration-200 group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                    className="size-4 transition-transform duration-200 group-hover:translate-x-1"
                   />
                 </Link>
-              </Button>
-
-              <Link
-                href={hero.secondaryCTA.href}
-                className="group inline-flex min-h-11 items-center gap-2 rounded-[2px] text-copy-14 text-white transition-colors duration-150 hover:text-white/75 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white"
-              >
-                {hero.secondaryCTA.label}
-                <ArrowRight
-                  aria-hidden
-                  className="size-4 transition-transform duration-200 group-hover:translate-x-1"
-                />
-              </Link>
+              ) : null}
             </div>
           </div>
 
@@ -239,14 +279,16 @@ export function Hero({ slides = [] }: { slides?: HeroSlide[]; logos?: HeroLogo[]
 
       {/* Quiet closing statement, set off by a hairline across the full
           measure and marked with a short brand rule. */}
-      <div className="border-t border-white/12">
-        <Container className="py-5">
-          <p className="flex items-start gap-4 text-copy-13 text-white/55">
-            <span aria-hidden className="mt-[0.35rem] block h-3 w-px shrink-0 bg-primary" />
-            <span className="[text-wrap:pretty]">{hero.closing}</span>
-          </p>
-        </Container>
-      </div>
+      {closing ? (
+        <div className="border-t border-white/12">
+          <Container className="py-5">
+            <p className="flex items-start gap-4 text-copy-13 text-white/55">
+              <span aria-hidden className="mt-[0.35rem] block h-3 w-px shrink-0 bg-primary" />
+              <span className="[text-wrap:pretty]">{closing}</span>
+            </p>
+          </Container>
+        </div>
+      ) : null}
     </section>
   )
 }

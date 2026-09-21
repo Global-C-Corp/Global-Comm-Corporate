@@ -1,8 +1,5 @@
 import type { HeroLogo } from '@/components/blocks/Hero'
-import { Container, SectionLabel } from '@/components/blocks/Layout'
-import { homeV5 } from '@/content/homeV5'
-
-const { experience } = homeV5
+import { Container, SectionLabel } from '@/components/ui/Layout'
 
 /**
  * Selected Experience — approved reference (04 §12.7).
@@ -13,15 +10,29 @@ const { experience } = homeV5
  *
  * When no approved logo exists the reference shows an explicit editorial line
  * naming what is missing. 04 §12.7 allows that only on preview/design routes,
- * and it is never replaced by invented proof.
+ * so `pendingAssetsNote` is passed there and nowhere else: in production the
+ * band collapses rather than announcing a gap, and it is never replaced by
+ * invented proof.
  */
-export function ClientLogoCloud({ logos = [] }: { logos?: HeroLogo[] }) {
+export function ClientLogoCloud({
+  label,
+  support,
+  logos = [],
+  pendingAssetsNote,
+}: {
+  label?: string | null
+  support?: string | null
+  logos?: HeroLogo[]
+  pendingAssetsNote?: string | null
+}) {
+  if (logos.length === 0 && !pendingAssetsNote) return null
+
   return (
     <section id="clients" className="scroll-mt-24 bg-background" aria-labelledby="clients-heading">
       <Container className="py-16 md:py-20">
-        <SectionLabel>{experience.label}</SectionLabel>
+        {label ? <SectionLabel>{label}</SectionLabel> : null}
         <h2 id="clients-heading" className="mt-3 max-w-[44ch] text-copy-14 text-muted-foreground">
-          {experience.support}
+          {support}
         </h2>
 
         {logos.length > 0 ? (
@@ -58,7 +69,7 @@ export function ClientLogoCloud({ logos = [] }: { logos?: HeroLogo[] }) {
           </ul>
         ) : (
           <p className="mt-12 text-center text-copy-14 text-muted-foreground/80">
-            {experience.pendingAssets}
+            {pendingAssetsNote}
           </p>
         )}
       </Container>

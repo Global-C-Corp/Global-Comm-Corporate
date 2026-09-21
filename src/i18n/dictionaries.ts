@@ -50,6 +50,7 @@ export type Dictionary = {
   a11y: {
     skipToContent: string
     languageSwitcher: string
+    primaryNavigation: string
   }
   notFound: {
     title: string
@@ -99,7 +100,11 @@ const dictionaries: Record<Locale, Dictionary> = {
       genericError: "Une erreur est survenue. Veuillez réessayer.",
       success: 'Merci, votre message a bien été envoyé.',
     },
-    a11y: { skipToContent: 'Aller au contenu', languageSwitcher: 'Changer de langue' },
+    a11y: {
+      skipToContent: 'Aller au contenu',
+      languageSwitcher: 'Changer de langue',
+      primaryNavigation: 'Navigation principale',
+    },
     notFound: {
       title: 'Page introuvable',
       body: "La page que vous recherchez n'existe pas ou a été déplacée.",
@@ -146,7 +151,11 @@ const dictionaries: Record<Locale, Dictionary> = {
       genericError: 'Something went wrong. Please try again.',
       success: 'Thank you, your message has been sent.',
     },
-    a11y: { skipToContent: 'Skip to content', languageSwitcher: 'Switch language' },
+    a11y: {
+      skipToContent: 'Skip to content',
+      languageSwitcher: 'Switch language',
+      primaryNavigation: 'Primary navigation',
+    },
     notFound: {
       title: 'Page not found',
       body: "The page you are looking for doesn't exist or has moved.",
@@ -193,7 +202,11 @@ const dictionaries: Record<Locale, Dictionary> = {
       genericError: 'Ha ocurrido un error. Inténtalo de nuevo.',
       success: 'Gracias, tu mensaje ha sido enviado.',
     },
-    a11y: { skipToContent: 'Ir al contenido', languageSwitcher: 'Cambiar idioma' },
+    a11y: {
+      skipToContent: 'Ir al contenido',
+      languageSwitcher: 'Cambiar idioma',
+      primaryNavigation: 'Navegación principal',
+    },
     notFound: {
       title: 'Página no encontrada',
       body: 'La página que buscas no existe o ha sido movida.',
