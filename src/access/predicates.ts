@@ -50,6 +50,22 @@ export const publicReadPublishedOnly: Access = ({ req }) => {
   }
 }
 
+/**
+ * Public read of a collection that has no drafts/versions — media being the
+ * only one. `publicReadPublishedOnly` cannot be used here: it constrains the
+ * query by `_status`, a column Payload only creates for collections with
+ * versions enabled, so an anonymous populated read throws
+ * `APIError: Cannot find field for path at _status` and the whole page 500s.
+ *
+ * Media rows are the metadata of assets that published content already points
+ * at, so the document itself is public. The internal rights-management fields
+ * are closed off individually with `fieldInternalOnly` (CLAUDE.md §38, §114).
+ */
+export const publicReadUnversioned: Access = () => true
+
+/** Field-level access restricting a field to any authenticated internal role. */
+export const fieldInternalOnly: FieldAccess = ({ req }) => Boolean(getRole(req))
+
 /** Field-level access restricting a field to publisher/admin only (e.g. canonicalOverride). */
 export const fieldPublisherOrAdmin: FieldAccess = ({ req }) => {
   const role = getRole(req)

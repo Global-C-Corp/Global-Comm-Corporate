@@ -57,6 +57,13 @@ export const Services: CollectionConfig = {
       type: 'textarea',
       admin: { position: 'sidebar', description: 'Internal only — never rendered publicly.' },
     }),
+    /**
+     * One short positioning line per practice, set in small caps on the
+     * Services page between the pillar name and its description. It is
+     * editorial copy about the practice, so it belongs on the service record
+     * rather than on the page that happens to list it.
+     */
+    { name: 'positioningLine', type: 'text', localized: true },
     { name: 'shortDescription', type: 'textarea', localized: true },
     { name: 'longDescription', type: 'richText', localized: true },
     { name: 'heroMedia', type: 'upload', relationTo: 'media' },

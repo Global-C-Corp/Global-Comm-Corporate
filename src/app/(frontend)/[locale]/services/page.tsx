@@ -1,23 +1,21 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
 import { SiteHeader } from '@/components/layout/SiteHeader'
-import {
-  Band,
-  CTA,
-  Heading,
-  Kicker,
-  PageHeader,
-  ProjectTile,
-  TileGrid,
-} from '@/components/ui/Primitives'
+import { BeliefSection } from '@/components/services/BeliefSection'
+import { ExperienceStrip } from '@/components/services/ExperienceStrip'
+import { MethodSection } from '@/components/services/MethodSection'
+import { PracticesSection } from '@/components/services/PracticesSection'
+import { ServicesClosingCTA } from '@/components/services/ServicesClosingCTA'
+import { ServicesHero } from '@/components/services/ServicesHero'
+import { ServicesSelectedWork } from '@/components/services/ServicesSelectedWork'
 import { getDictionary } from '@/i18n/dictionaries'
 import { populated } from '@/lib/relations'
-import type { Project } from '@/payload-types'
+import type { Client, Project, Service } from '@/payload-types'
 import { getGlobalAvailability } from '@/services/cms/availability'
 import { getServicesPage } from '@/services/cms/globals'
 import { getPageContext } from '@/services/cms/pageContext'
 import { getFeaturedProjects } from '@/services/cms/projects'
+import { getFeaturedClients, getPublishedClients } from '@/services/cms/proof'
 import { getServices } from '@/services/cms/services'
 import { resolvePageSEO } from '@/services/seo/resolvePageSEO'
 import { buildPath, type Route } from '@/services/seo/urls'
@@ -50,106 +48,103 @@ export default async function ServicesPageRoute({ params }: { params: Promise<{ 
   const t = getDictionary(ctx.locale)
   const selectedProjects = populated<Project>(page.featuredProjects)
 
-  const [allServices, fallbackProjects, availability] = await Promise.all([
+  const [allServices, fallbackProjects, featuredClients, availability] = await Promise.all([
     getServices(ctx),
     selectedProjects.length === 0 ? getFeaturedProjects(ctx) : Promise.resolve([]),
+    getFeaturedClients(ctx, 12),
     getGlobalAvailability('services-page'),
   ])
 
-  // Four public pillars, each listing what it absorbs. Grouping follows
-  // `foldedInto` rather than `parent`, so a term whose parent stopped being
-  // public still appears under the pillar that took it over (§29-§30).
-  const pillars = allServices.filter((service) => service.isPillar)
-  const foldedByPillar = new Map<string, typeof allServices>()
-  for (const service of allServices) {
-    const pillarId = typeof service.foldedInto === 'object' ? service.foldedInto?.id : service.foldedInto
-    if (pillarId === undefined || pillarId === null) continue
-    const key = String(pillarId)
-    foldedByPillar.set(key, [...(foldedByPillar.get(key) ?? []), service])
-  }
+  // Same featured/fallback idiom this page already uses for projects: prefer
+  // the editorial selection, otherwise show approved client records.
+  const clients = featuredClients.length > 0 ? featuredClients : await getPublishedClients(ctx, 6)
 
-  const projects = selectedProjects.length > 0 ? selectedProjects : fallbackProjects
+  /**
+   * Four public pillars. Grouping still follows `isPillar`, so the existing
+   * service taxonomy and the /{locale}/services/{slug} detail routes are
+   * unchanged by this composition — only their presentation is.
+   */
+  const pillars = allServices.filter((service) => service.isPillar)
+  const projects = (selectedProjects.length > 0 ? selectedProjects : fallbackProjects).slice(0, 3)
+
+  const servicePath = (service: Service) =>
+    service.slug ? buildPath(ctx.locale, { type: 'service', slug: service.slug }) : null
+  const projectPath = (project: Project) =>
+    project.slug ? buildPath(ctx.locale, { type: 'project', slug: project.slug }) : null
+
+  const contactHref = buildPath(ctx.locale, { type: 'contact' })
+  const workHref = buildPath(ctx.locale, { type: 'work' })
 
   return (
     <>
       <SiteHeader locale={ctx.locale} route={route} availability={availability} draft={draft} />
 
       <main id="main" className="gc-tw bg-background">
-        <PageHeader eyebrow={page.eyebrow} heading={page.heading} intro={page.intro} />
+        <ServicesHero
+          eyebrow={page.eyebrow}
+          heading={page.heading}
+          intro={page.intro}
+          media={page.heroMedia}
+          primary={{
+            label: page.primaryCTA?.label || t.actions.startProject,
+            href: page.primaryCTA?.url || contactHref,
+          }}
+          secondary={{
+            label: page.secondaryCTA?.label || t.actions.viewOurWork,
+            href: page.secondaryCTA?.url || workHref,
+          }}
+        />
 
-        {pillars.length > 0 && (
-          <Band surface labelledBy="pillars">
-            <Kicker id="pillars">{t.sections.whatWeDo}</Kicker>
+        <ExperienceStrip
+          label={page.experienceLabel}
+          clients={clients as Client[]}
+          andMoreLabel={t.actions.andMore}
+        />
 
-            <div className="mt-10 grid gap-px border border-border bg-border md:grid-cols-2">
-              {pillars.map((service) => {
-                const folded = foldedByPillar.get(String(service.id)) ?? []
-                const href = service.slug
-                  ? buildPath(ctx.locale, { type: 'service', slug: service.slug })
-                  : null
+        <PracticesSection
+          label={page.practices?.label}
+          heading={page.practices?.heading}
+          body={page.practices?.body}
+          practices={pillars}
+          hrefFor={servicePath}
+          exploreLabel={(service) => `${t.actions.explore} ${service.name}`}
+        />
 
-                return (
-                  <article key={service.id} className="flex flex-col bg-background p-8 md:p-10">
-                    <h3 className="text-xl font-semibold text-foreground">
-                      {href ? (
-                        <Link href={href} className="hover:text-primary">
-                          {service.name}
-                        </Link>
-                      ) : (
-                        service.name
-                      )}
-                    </h3>
-                    {service.shortDescription && (
-                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                        {service.shortDescription}
-                      </p>
-                    )}
+        <BeliefSection
+          label={page.belief?.label}
+          heading={page.belief?.heading}
+          body={page.belief?.body}
+          media={page.belief?.media}
+          cta={page.belief?.cta}
+          locale={ctx.locale}
+        />
 
-                    {/* Absorbed capabilities are listed, not linked: they have
-                        no public page of their own (§29-§30). */}
-                    {folded.length > 0 && (
-                      <ul className="mt-6 space-y-2 text-sm text-foreground">
-                        {folded.map((child) => (
-                          <li key={child.id} className="border-t border-border pt-2">
-                            {child.name}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </article>
-                )
-              })}
-            </div>
-          </Band>
-        )}
+        <MethodSection
+          label={page.method?.label}
+          heading={page.method?.heading}
+          intro={page.method?.intro}
+          steps={page.method?.steps ?? []}
+        />
 
-        {projects.length > 0 && (
-          <Band labelledBy="services-work">
-            <Heading id="services-work">{t.sections.selectedWork}</Heading>
-            <div className="mt-10">
-              <TileGrid>
-                {projects.map((project) => {
-                  const client = typeof project.client === 'object' ? project.client?.name : undefined
-                  return (
-                    <ProjectTile
-                      key={project.id}
-                      href={project.slug ? buildPath(ctx.locale, { type: 'project', slug: project.slug }) : null}
-                      title={project.title}
-                      meta={[client, project.year ? String(project.year) : undefined].filter(Boolean).join(' · ')}
-                      excerpt={project.excerpt}
-                    />
-                  )
-                })}
-              </TileGrid>
-            </div>
-          </Band>
-        )}
+        <ServicesSelectedWork
+          label={t.sections.selectedWork}
+          heading={page.workHeading}
+          projects={projects}
+          hrefFor={projectPath}
+          seeAllHref={workHref}
+          seeAllLabel={t.actions.seeAllWork}
+          viewLabel={t.actions.viewCaseStudy}
+        />
 
-        {page.closingCTA?.label && (
-          <Band surface>
-            <CTA cta={page.closingCTA} locale={ctx.locale} />
-          </Band>
-        )}
+        <ServicesClosingCTA
+          label={page.closing?.label}
+          heading={page.closing?.heading}
+          body={page.closing?.body}
+          cta={page.closingCTA}
+          secondaryLabel={page.closing?.secondaryLabel}
+          secondaryHref={contactHref}
+          locale={ctx.locale}
+        />
       </main>
     </>
   )

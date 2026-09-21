@@ -296,6 +296,46 @@ async function seedGlobals(payload: Payload) {
         eyebrow: pageCopy.services.eyebrow[locale],
         heading: pageCopy.services.heading[locale],
         intro: pageCopy.services.intro[locale],
+        experienceLabel: pageCopy.services.experienceLabel[locale],
+        practices: {
+          label: pageCopy.services.practices.label[locale],
+          heading: pageCopy.services.practices.heading[locale],
+          body: pageCopy.services.practices.body[locale],
+        },
+        belief: {
+          label: pageCopy.services.belief.label[locale],
+          heading: pageCopy.services.belief.heading[locale],
+          body: pageCopy.services.belief.body[locale],
+          cta: { label: pageCopy.services.belief.ctaLabel[locale], url: '/services' },
+        },
+        method: {
+          label: pageCopy.services.method.label[locale],
+          heading: pageCopy.services.method.heading[locale],
+          intro: pageCopy.services.method.intro[locale],
+          /*
+           * Stable row ids matter here. The array itself is not localized, so
+           * each locale pass writes into the same rows — but only if Payload
+           * can match them. Without an explicit id every pass creates fresh
+           * rows and drops the text written by the previous locale, leaving
+           * the numbers rendering with no titles.
+           */
+          steps: pageCopy.services.method.steps.map((step, index) => ({
+            id: `method-${String(index + 1).padStart(2, '0')}`,
+            title: step.title[locale],
+            body: step.body[locale],
+          })),
+        },
+        workHeading: pageCopy.services.workHeading[locale],
+        closing: {
+          label: pageCopy.services.closing.label[locale],
+          heading: pageCopy.services.closing.heading[locale],
+          body: pageCopy.services.closing.body[locale],
+          secondaryLabel: pageCopy.services.closing.secondaryLabel[locale],
+        },
+        closingCTA: {
+          label: pageCopy.services.closing.ctaLabel[locale],
+          url: pageCopy.services.closing.ctaUrl,
+        },
         ...editorialState(),
       },
     })

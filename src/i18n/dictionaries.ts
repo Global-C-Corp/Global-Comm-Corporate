@@ -36,6 +36,10 @@ export type Dictionary = {
     readMore: string
     startProject: string
     viewOurWork: string
+    explore: string
+    viewCaseStudy: string
+    seeAllWork: string
+    andMore: string
   }
   form: {
     required: string
@@ -84,6 +88,10 @@ const dictionaries: Record<Locale, Dictionary> = {
       readMore: 'En savoir plus',
       startProject: 'Démarrer un projet',
       viewOurWork: 'Voir nos réalisations',
+      explore: 'Découvrir',
+      viewCaseStudy: 'Voir l\u2019étude de cas',
+      seeAllWork: 'Voir toutes les réalisations',
+      andMore: 'et plus encore',
     },
     form: {
       required: 'Ce champ est requis',
@@ -127,6 +135,10 @@ const dictionaries: Record<Locale, Dictionary> = {
       readMore: 'Read more',
       startProject: 'Start a project',
       viewOurWork: 'View our work',
+      explore: 'Explore',
+      viewCaseStudy: 'View case study',
+      seeAllWork: 'See all work',
+      andMore: 'and more',
     },
     form: {
       required: 'This field is required',
@@ -170,6 +182,10 @@ const dictionaries: Record<Locale, Dictionary> = {
       readMore: 'Saber más',
       startProject: 'Iniciar un proyecto',
       viewOurWork: 'Ver nuestro trabajo',
+      explore: 'Descubrir',
+      viewCaseStudy: 'Ver el caso',
+      seeAllWork: 'Ver todo el trabajo',
+      andMore: 'y más',
     },
     form: {
       required: 'Este campo es obligatorio',

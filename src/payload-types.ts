@@ -309,6 +309,7 @@ export interface Service {
    * Internal only — never rendered publicly.
    */
   internalDefinition?: string | null;
+  positioningLine?: string | null;
   shortDescription?: string | null;
   longDescription?: {
     root: {
@@ -1545,6 +1546,7 @@ export interface ServicesSelect<T extends boolean = true> {
         id?: T;
       };
   internalDefinition?: T;
+  positioningLine?: T;
   shortDescription?: T;
   longDescription?: T;
   heroMedia?: T;
@@ -2468,7 +2470,51 @@ export interface ServicesPage {
   eyebrow?: string | null;
   heading?: string | null;
   intro?: string | null;
+  heroMedia?: (number | null) | Media;
+  primaryCTA?: {
+    label?: string | null;
+    url?: string | null;
+  };
+  secondaryCTA?: {
+    label?: string | null;
+    url?: string | null;
+  };
+  experienceLabel?: string | null;
+  practices?: {
+    label?: string | null;
+    heading?: string | null;
+    body?: string | null;
+  };
+  belief?: {
+    label?: string | null;
+    heading?: string | null;
+    body?: string | null;
+    media?: (number | null) | Media;
+    cta?: {
+      label?: string | null;
+      url?: string | null;
+    };
+  };
+  method?: {
+    label?: string | null;
+    heading?: string | null;
+    intro?: string | null;
+    steps?:
+      | {
+          title: string;
+          body?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  workHeading?: string | null;
   featuredProjects?: (number | Project)[] | null;
+  closing?: {
+    label?: string | null;
+    heading?: string | null;
+    body?: string | null;
+    secondaryLabel?: string | null;
+  };
   closingCTA?: {
     label?: string | null;
     url?: string | null;
@@ -3088,7 +3134,65 @@ export interface ServicesPageSelect<T extends boolean = true> {
   eyebrow?: T;
   heading?: T;
   intro?: T;
+  heroMedia?: T;
+  primaryCTA?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  secondaryCTA?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  experienceLabel?: T;
+  practices?:
+    | T
+    | {
+        label?: T;
+        heading?: T;
+        body?: T;
+      };
+  belief?:
+    | T
+    | {
+        label?: T;
+        heading?: T;
+        body?: T;
+        media?: T;
+        cta?:
+          | T
+          | {
+              label?: T;
+              url?: T;
+            };
+      };
+  method?:
+    | T
+    | {
+        label?: T;
+        heading?: T;
+        intro?: T;
+        steps?:
+          | T
+          | {
+              title?: T;
+              body?: T;
+              id?: T;
+            };
+      };
+  workHeading?: T;
   featuredProjects?: T;
+  closing?:
+    | T
+    | {
+        label?: T;
+        heading?: T;
+        body?: T;
+        secondaryLabel?: T;
+      };
   closingCTA?:
     | T
     | {
