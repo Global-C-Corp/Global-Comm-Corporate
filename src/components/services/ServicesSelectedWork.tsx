@@ -72,7 +72,7 @@ export function ServicesSelectedWork({
 
                 return (
                   <li key={project.id} className="flex min-w-0 flex-col">
-                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted">
+                    <div className="relative aspect-[3/2] w-full overflow-hidden bg-muted">
                       {image ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img

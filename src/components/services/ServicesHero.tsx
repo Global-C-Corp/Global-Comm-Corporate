@@ -8,8 +8,9 @@ import { mediaURL } from '@/lib/media'
  *
  * The headline is two statements: the first names what to stop doing, the
  * second what to start. The approved composition sets the second in brand
- * blue, so the string is split on its first sentence boundary rather than
- * stored as two fields — the copy stays one editable headline in Payload.
+ * blue and starts it on its own line, so the string is split on its first
+ * sentence boundary rather than stored as two fields — the copy stays one
+ * editable headline in Payload.
  *
  * The media bleeds to the right viewport edge and starts immediately under the
  * header, as in the reference: it reads as an editorial plate rather than a
@@ -63,12 +64,13 @@ export function ServicesHero({
               className="mt-8 max-w-[14ch] text-balance font-sans text-4xl font-semibold leading-[1.04] tracking-[-0.04em] text-foreground sm:text-5xl lg:text-[3.5rem]"
             >
               {lead}
-              {accent ? (
-                <>
-                  {' '}
-                  <span className="text-primary">{accent}</span>
-                </>
-              ) : null}
+              {/*
+                The reference starts the second statement on its own line. Left
+                inline it only fell there by luck of the English measure: FR and
+                ES began the blue mid-line, which reads as one run-on sentence
+                rather than the approved two-statement headline.
+              */}
+              {accent ? <span className="block text-primary">{accent}</span> : null}
             </h1>
 
             {intro ? (

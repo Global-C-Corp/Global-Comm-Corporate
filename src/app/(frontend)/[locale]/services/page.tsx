@@ -55,9 +55,16 @@ export default async function ServicesPageRoute({ params }: { params: Promise<{ 
     getGlobalAvailability('services-page'),
   ])
 
-  // Same featured/fallback idiom this page already uses for projects: prefer
-  // the editorial selection, otherwise show approved client records.
-  const clients = featuredClients.length > 0 ? featuredClients : await getPublishedClients(ctx, 6)
+  /**
+   * Same featured/fallback idiom this page already uses for projects: prefer
+   * the editorial selection, otherwise show approved client records.
+   *
+   * The fetch deliberately exceeds the six marks the band renders. Asking for
+   * exactly six made `clients.length > shown.length` false however many
+   * approved clients existed, so the band could never show its "and more"
+   * mark — the reference's closing element on that row.
+   */
+  const clients = featuredClients.length > 0 ? featuredClients : await getPublishedClients(ctx, 12)
 
   /**
    * Four public pillars. Grouping still follows `isPillar`, so the existing
