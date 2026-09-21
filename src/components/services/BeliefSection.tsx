@@ -50,7 +50,7 @@ export function BeliefSection({
 
         {/* Full-height media: no padding around it, so the band reads as one
             cinematic plate rather than a framed picture. */}
-        <div className="relative min-h-[14rem] overflow-hidden bg-background/10 lg:col-span-4 lg:min-h-[17rem]">
+        <div className="relative min-h-[14rem] overflow-hidden bg-background/10 lg:col-span-4 lg:min-h-64">
           {image ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img

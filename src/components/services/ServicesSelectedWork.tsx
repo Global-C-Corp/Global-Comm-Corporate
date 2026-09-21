@@ -11,6 +11,12 @@ import { mediaURL } from '@/lib/media'
  *
  * This is a page-specific presentation rather than the shared `ProjectTile`,
  * which carries its own bordered treatment and is used by other routes.
+ *
+ * Geometry is measured from the approved reference at 1440: media plates are
+ * 302x161 inside a 946px-wide field with a 20px gutter, which is 15/8, and the
+ * excerpt occupies a single line so the three links settle on one baseline.
+ * `mt-auto` rather than a grown excerpt keeps that baseline when a client name
+ * wraps, since the names in Payload are full legal names.
  */
 export function ServicesSelectedWork({
   label,
@@ -33,8 +39,8 @@ export function ServicesSelectedWork({
 
   return (
     <section className="bg-background" aria-labelledby="services-work-heading">
-      <div className="mx-auto w-full max-w-[90rem] px-5 py-10 sm:px-6 md:px-8 md:py-12 lg:px-16">
-        <div className="grid gap-12 lg:grid-cols-12 lg:gap-12">
+      <div className="mx-auto w-full max-w-[90rem] px-5 py-10 sm:px-6 md:px-8 md:py-8 lg:px-16">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
           <div className="lg:col-span-3">
             {label ? (
               <p className="text-[0.7rem] font-medium uppercase tracking-[0.14em] text-muted-foreground">
@@ -44,7 +50,7 @@ export function ServicesSelectedWork({
             {heading ? (
               <h2
                 id="services-work-heading"
-                className="mt-5 max-w-[12ch] text-balance font-sans text-2xl font-semibold leading-[1.12] tracking-[-0.03em] text-foreground md:text-3xl"
+                className="mt-4 max-w-[16ch] text-balance font-sans text-3xl font-semibold leading-[1.14] tracking-[-0.035em] text-foreground md:text-[2.375rem]"
               >
                 {heading}
               </h2>
@@ -61,7 +67,7 @@ export function ServicesSelectedWork({
               </Link>
             </div>
 
-            <ul className="mt-4 grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-3 grid gap-x-5 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
               {projects.map((project) => {
                 const href = hrefFor(project)
                 const image =
@@ -72,7 +78,7 @@ export function ServicesSelectedWork({
 
                 return (
                   <li key={project.id} className="flex min-w-0 flex-col">
-                    <div className="relative aspect-[16/9] w-full overflow-hidden bg-muted">
+                    <div className="relative aspect-[15/8] w-full overflow-hidden bg-muted">
                       {image ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
@@ -90,13 +96,13 @@ export function ServicesSelectedWork({
                     </h3>
 
                     {project.excerpt ? (
-                      <p className="mt-2 line-clamp-2 flex-1 text-pretty text-sm leading-relaxed text-muted-foreground">
+                      <p className="mt-2 line-clamp-1 text-pretty text-sm leading-normal text-muted-foreground">
                         {project.excerpt}
                       </p>
                     ) : null}
 
                     {href ? (
-                      <p className="mt-3">
+                      <p className="mt-auto pt-3">
                         <Link
                           href={href}
                           className="inline-flex items-center py-3 -my-3 text-sm font-medium text-primary transition-colors duration-150 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"

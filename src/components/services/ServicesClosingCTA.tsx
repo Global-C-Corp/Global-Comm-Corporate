@@ -30,7 +30,7 @@ export function ServicesClosingCTA({
 
   return (
     <section className="bg-secondary" aria-labelledby="services-closing-heading">
-      <div className="mx-auto w-full max-w-[90rem] px-5 py-10 sm:px-6 md:px-8 md:py-12 lg:px-16">
+      <div className="mx-auto w-full max-w-[90rem] px-5 py-10 sm:px-6 md:px-8 md:py-10 lg:px-16">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-start lg:gap-16">
           <div className="lg:col-span-7">
             {label ? (
