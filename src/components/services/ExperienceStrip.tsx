@@ -26,7 +26,7 @@ export function ExperienceStrip({
 
   return (
     <section className="border-y border-border bg-background" aria-label={label ?? undefined}>
-      <div className="mx-auto w-full max-w-[80rem] px-5 py-10 sm:px-6 md:px-8 lg:px-12">
+      <div className="mx-auto w-full max-w-[90rem] px-5 py-10 sm:px-6 md:px-8 lg:px-16">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between lg:gap-16">
           {label ? (
             <p className="max-w-[22ch] shrink-0 text-[0.7rem] font-medium uppercase leading-[1.5] tracking-[0.14em] text-muted-foreground">
@@ -57,8 +57,11 @@ export function ExperienceStrip({
             })}
 
             {hasMore ? (
-              <li className="text-[0.7rem] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-                {andMoreLabel}
+              <li className="flex items-center gap-10">
+                <span aria-hidden className="block h-6 w-px bg-border" />
+                <span className="text-[0.7rem] font-medium uppercase tracking-[0.14em] text-muted-foreground">
+                  {andMoreLabel}
+                </span>
               </li>
             ) : null}
           </ul>

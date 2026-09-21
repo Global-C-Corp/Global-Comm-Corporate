@@ -5,15 +5,16 @@ import { mediaURL } from '@/lib/media'
 /**
  * Four specialist practices — the page's primary informational section.
  *
- * The four pillars read as one editorial system: a number over a hairline,
- * the practice name, its positioning line, a wide media rectangle, the
- * description and a text link. Deliberately not four cards — no container,
- * no radius, no shadow, no icon (04 §12.5, 03 §6).
+ * The four pillars read as one editorial system: a blue number with a hairline
+ * running from it to the column edge, the practice name, its positioning line,
+ * a wide media rectangle, the description and a text link — separated by thin
+ * vertical rules rather than boxed. Deliberately not four cards: no container,
+ * no radius, no shadow, no icon (04 §13.4, 03 §6.2).
  *
- * The approved composition shows an index treatment beside the introduction.
- * It is omitted here: all four practices are visible at once, so an `01 / 04`
- * counter and previous/next controls would describe an interaction that does
- * not exist.
+ * The reference draws an index and previous/next controls at the far right of
+ * the introduction. All four practices are visible at once, so those controls
+ * would command nothing; the vertical rule that anchors that corner is kept
+ * and the deceptive controls are not built (brief §9).
  */
 export function PracticesSection({
   label,
@@ -35,10 +36,10 @@ export function PracticesSection({
   const paragraphs = (body ?? '').split(/\n{2,}/).filter(Boolean)
 
   return (
-    <section className="bg-background" aria-labelledby="practices-heading">
-      <div className="mx-auto w-full max-w-[80rem] px-5 py-24 sm:px-6 md:px-8 md:py-32 lg:px-12">
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
-          <div>
+    <section className="bg-secondary" aria-labelledby="practices-heading">
+      <div className="mx-auto w-full max-w-[90rem] px-5 py-16 sm:px-6 md:px-8 md:py-24 lg:px-16">
+        <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
+          <div className="lg:col-span-6">
             {label ? (
               <p className="text-[0.7rem] font-medium uppercase tracking-[0.14em] text-muted-foreground">
                 {label}
@@ -47,48 +48,63 @@ export function PracticesSection({
             {heading ? (
               <h2
                 id="practices-heading"
-                className="mt-6 max-w-[16ch] text-balance font-sans text-3xl font-semibold leading-[1.08] tracking-[-0.035em] text-foreground md:text-5xl"
+                className="mt-5 max-w-[18ch] text-balance font-sans text-3xl font-semibold leading-[1.08] tracking-[-0.035em] text-foreground md:text-[2.5rem]"
               >
                 {heading}
               </h2>
             ) : null}
           </div>
 
-          <div className="space-y-5 lg:pt-2">
+          <div className="space-y-4 lg:col-span-5 lg:pt-1">
             {paragraphs.map((paragraph) => (
               <p
                 key={paragraph}
-                className="max-w-[54ch] text-pretty text-base leading-relaxed text-muted-foreground"
+                className="max-w-[46ch] text-pretty text-sm leading-relaxed text-muted-foreground"
               >
                 {paragraph}
               </p>
             ))}
           </div>
+
+          {/* The rule that closes the introduction's right edge in the
+              reference. It carries no control, so it is decorative structure
+              and hidden from assistive technology. */}
+          <div aria-hidden className="hidden lg:col-span-1 lg:block">
+            <span className="block h-full w-px bg-border" />
+          </div>
         </div>
 
-        <ol className="mt-20 grid gap-x-8 gap-y-16 sm:grid-cols-2 lg:grid-cols-4">
+        <ol className="mt-14 grid grid-cols-1 gap-y-14 sm:grid-cols-2 lg:grid-cols-4 lg:gap-y-0">
           {practices.map((service, index) => {
             const href = hrefFor(service)
-            const image = mediaURL(service.heroMedia, 'projectCard') || mediaURL(service.heroMedia, 'projectFeature')
+            const image =
+              mediaURL(service.heroMedia, 'projectCard') ||
+              mediaURL(service.heroMedia, 'projectFeature')
 
             return (
-              <li key={service.id} className="flex min-w-0 flex-col">
-                <span className="text-xs font-medium tabular-nums tracking-[0.08em] text-primary">
-                  {String(index + 1).padStart(2, '0')}
-                </span>
-                <span aria-hidden className="mt-3 block h-px w-full bg-border" />
+              <li
+                key={service.id}
+                className="flex min-w-0 flex-col sm:border-l sm:border-border sm:px-7 [&:nth-child(-n+2)]:sm:border-l-0 [&:nth-child(-n+2)]:sm:pl-0 lg:[&:nth-child(2)]:border-l lg:[&:nth-child(2)]:pl-7 lg:[&:first-child]:border-l-0 lg:[&:first-child]:pl-0"
+              >
+                {/* Number and rule sit on one line, as in the reference. */}
+                <div className="flex items-center gap-4">
+                  <span className="text-xs font-medium tabular-nums tracking-[0.08em] text-primary">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <span aria-hidden className="h-px flex-1 bg-border" />
+                </div>
 
-                <h3 className="mt-6 text-xl font-semibold tracking-[-0.02em] text-foreground">
+                <h3 className="mt-7 text-lg font-semibold tracking-[-0.02em] text-foreground">
                   {service.name}
                 </h3>
 
                 {service.positioningLine ? (
-                  <p className="mt-3 max-w-[22ch] text-[0.7rem] font-medium uppercase leading-[1.5] tracking-[0.12em] text-muted-foreground">
+                  <p className="mt-3 max-w-[20ch] text-[0.65rem] font-medium uppercase leading-[1.6] tracking-[0.12em] text-muted-foreground">
                     {service.positioningLine}
                   </p>
                 ) : null}
 
-                <div className="relative mt-7 aspect-[4/3] w-full overflow-hidden bg-secondary">
+                <div className="relative mt-6 aspect-[16/9] w-full overflow-hidden bg-muted">
                   {image ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img

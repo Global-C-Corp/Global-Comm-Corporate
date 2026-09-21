@@ -33,7 +33,7 @@ export function ServicesSelectedWork({
 
   return (
     <section className="bg-background" aria-labelledby="services-work-heading">
-      <div className="mx-auto w-full max-w-[80rem] px-5 py-24 sm:px-6 md:px-8 md:py-32 lg:px-12">
+      <div className="mx-auto w-full max-w-[90rem] px-5 py-16 sm:px-6 md:px-8 md:py-20 lg:px-16">
         <div className="grid gap-12 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-3">
             {label ? (
@@ -44,7 +44,7 @@ export function ServicesSelectedWork({
             {heading ? (
               <h2
                 id="services-work-heading"
-                className="mt-6 max-w-[12ch] text-balance font-sans text-3xl font-semibold leading-[1.08] tracking-[-0.035em] text-foreground md:text-4xl"
+                className="mt-5 max-w-[12ch] text-balance font-sans text-2xl font-semibold leading-[1.12] tracking-[-0.03em] text-foreground md:text-3xl"
               >
                 {heading}
               </h2>
@@ -61,7 +61,7 @@ export function ServicesSelectedWork({
               </Link>
             </div>
 
-            <ul className="mt-6 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+            <ul className="mt-5 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
               {projects.map((project) => {
                 const href = hrefFor(project)
                 const image =
@@ -72,7 +72,7 @@ export function ServicesSelectedWork({
 
                 return (
                   <li key={project.id} className="flex min-w-0 flex-col">
-                    <div className="relative aspect-[4/3] w-full overflow-hidden bg-secondary">
+                    <div className="relative aspect-[16/10] w-full overflow-hidden bg-muted">
                       {image ? (
                         // eslint-disable-next-line @next/next/no-img-element
                         <img
@@ -85,12 +85,12 @@ export function ServicesSelectedWork({
                       ) : null}
                     </div>
 
-                    <h3 translate="no" className="mt-6 text-lg font-semibold tracking-[-0.015em] text-foreground">
+                    <h3 translate="no" className="mt-5 text-base font-semibold tracking-[-0.015em] text-foreground">
                       {client ?? project.title}
                     </h3>
 
                     {project.excerpt ? (
-                      <p className="mt-3 flex-1 text-pretty text-sm leading-relaxed text-muted-foreground">
+                      <p className="mt-2 flex-1 text-pretty text-sm leading-relaxed text-muted-foreground">
                         {project.excerpt}
                       </p>
                     ) : null}

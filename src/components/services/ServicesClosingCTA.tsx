@@ -29,8 +29,8 @@ export function ServicesClosingCTA({
   if (!heading && !cta?.label) return null
 
   return (
-    <section className="border-t border-border bg-secondary" aria-labelledby="services-closing-heading">
-      <div className="mx-auto w-full max-w-[80rem] px-5 py-24 sm:px-6 md:px-8 md:py-32 lg:px-12">
+    <section className="bg-secondary" aria-labelledby="services-closing-heading">
+      <div className="mx-auto w-full max-w-[90rem] px-5 py-16 sm:px-6 md:px-8 md:py-20 lg:px-16">
         <div className="grid gap-12 lg:grid-cols-12 lg:items-start lg:gap-16">
           <div className="lg:col-span-7">
             {label ? (
@@ -41,7 +41,7 @@ export function ServicesClosingCTA({
             {heading ? (
               <h2
                 id="services-closing-heading"
-                className="mt-6 max-w-[14ch] text-balance font-sans text-3xl font-semibold leading-[1.06] tracking-[-0.04em] text-foreground md:text-5xl"
+                className="mt-5 max-w-[16ch] text-balance font-sans text-3xl font-semibold leading-[1.08] tracking-[-0.035em] text-foreground md:text-[2.5rem]"
               >
                 {heading}
               </h2>
@@ -55,13 +55,13 @@ export function ServicesClosingCTA({
               </p>
             ) : null}
 
-            <div className="mt-8 flex flex-col items-start gap-4">
+            <div className="mt-8 flex flex-wrap items-center gap-6">
               {cta?.label ? <CTA cta={cta} locale={locale} /> : null}
 
               {secondaryLabel ? (
                 <Link
                   href={secondaryHref}
-                  className="inline-flex min-h-11 items-center text-sm text-muted-foreground underline decoration-border underline-offset-4 transition-colors duration-150 hover:text-foreground hover:decoration-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                  className="inline-flex min-h-11 items-center text-sm text-foreground underline decoration-border underline-offset-[6px] transition-colors duration-150 hover:text-primary hover:decoration-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                 >
                   {secondaryLabel}
                 </Link>

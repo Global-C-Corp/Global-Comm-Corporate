@@ -20,7 +20,7 @@ export function MethodSection({
 
   return (
     <section className="bg-secondary" aria-labelledby="method-heading">
-      <div className="mx-auto w-full max-w-[80rem] px-5 py-24 sm:px-6 md:px-8 md:py-32 lg:px-12">
+      <div className="mx-auto w-full max-w-[90rem] px-5 py-16 sm:px-6 md:px-8 md:py-20 lg:px-16">
         <div className="grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-16">
           <div className="lg:col-span-7">
             {label ? (
@@ -31,7 +31,7 @@ export function MethodSection({
             {heading ? (
               <h2
                 id="method-heading"
-                className="mt-6 max-w-[14ch] text-balance font-sans text-3xl font-semibold leading-[1.08] tracking-[-0.035em] text-foreground md:text-5xl"
+                className="mt-5 max-w-[14ch] text-balance font-sans text-3xl font-semibold leading-[1.08] tracking-[-0.035em] text-foreground md:text-[2.5rem]"
               >
                 {heading}
               </h2>
@@ -45,13 +45,13 @@ export function MethodSection({
           ) : null}
         </div>
 
-        <ol className="mt-16 grid grid-cols-1 border-t border-border sm:grid-cols-2 lg:grid-cols-6">
+        <ol className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6">
           {steps.map((step, index) => (
             <li
               key={step.id ?? step.title ?? index}
-              className="border-b border-border px-0 py-7 sm:border-b-0 sm:px-6 sm:py-8 sm:first:pl-0 lg:border-l lg:first:border-l-0 lg:first:pl-0"
+              className="border-b border-border py-7 sm:border-b-0 sm:border-l sm:px-6 sm:py-0 lg:px-5 [&:nth-child(-n+2)]:sm:border-l-0 lg:[&:nth-child(2)]:border-l lg:[&:first-child]:border-l-0 sm:[&:nth-child(-n+2)]:pl-0 lg:[&:nth-child(2)]:pl-5 lg:[&:first-child]:pl-0"
             >
-              <span className="text-xs font-medium tabular-nums tracking-[0.08em] text-primary">
+              <span className="text-xs font-medium tabular-nums tracking-[0.08em] text-muted-foreground">
                 {String(index + 1).padStart(2, '0')}
               </span>
               {step.title ? (
