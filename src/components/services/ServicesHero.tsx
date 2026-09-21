@@ -52,7 +52,7 @@ export function ServicesHero({
             measure on its right, so the type stays aligned with every section
             below while the media runs past it.
           */}
-          <div className="w-full px-5 py-16 sm:px-6 md:px-8 md:py-20 lg:py-24 lg:pl-16 lg:pr-12">
+          <div className="w-full px-5 py-16 sm:px-6 md:px-8 md:py-20 lg:py-20 lg:pl-16 lg:pr-12">
             {eyebrow ? (
               <p className="text-[0.7rem] font-medium uppercase tracking-[0.14em] text-muted-foreground">
                 {eyebrow}
@@ -61,7 +61,7 @@ export function ServicesHero({
 
             <h1
               id="services-hero-heading"
-              className="mt-8 max-w-[14ch] text-balance font-sans text-4xl font-semibold leading-[1.04] tracking-[-0.04em] text-foreground sm:text-5xl lg:text-[3.5rem]"
+              className="mt-8 max-w-[14ch] text-balance font-sans text-4xl font-semibold leading-[1.06] tracking-[-0.04em] text-foreground sm:text-5xl lg:text-[4.25rem]"
             >
               {lead}
               {/*

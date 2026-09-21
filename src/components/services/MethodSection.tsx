@@ -20,7 +20,7 @@ export function MethodSection({
 
   return (
     <section className="bg-secondary" aria-labelledby="method-heading">
-      <div className="mx-auto w-full max-w-[90rem] px-5 py-16 sm:px-6 md:px-8 md:py-20 lg:px-16">
+      <div className="mx-auto w-full max-w-[90rem] px-5 py-14 sm:px-6 md:px-8 md:py-14 lg:px-16">
         <div className="grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-16">
           <div className="lg:col-span-7">
             {label ? (
@@ -45,7 +45,7 @@ export function MethodSection({
           ) : null}
         </div>
 
-        <ol className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6">
+        <ol className="mt-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6">
           {steps.map((step, index) => (
             <li
               key={step.id ?? step.title ?? index}

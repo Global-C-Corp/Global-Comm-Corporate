@@ -23,6 +23,14 @@ export type PillarConfig = {
    * a migrated database would silently emit nine fewer 301s.
    */
   previousSlugs: Record<Locale, string>
+  /**
+   * The short uppercase line the approved Services composition sets under each
+   * practice name, and the paragraph beneath its media. Both are ordinary
+   * editable fields on the service (`positioningLine`, `shortDescription`);
+   * these values are the seed, and an editor's later change in Payload wins.
+   */
+  positioning: Record<Locale, string>
+  summary: Record<Locale, string>
 }
 
 export const PILLARS: Record<string, PillarConfig> = {
@@ -38,6 +46,16 @@ export const PILLARS: Record<string, PillarConfig> = {
       es: 'investigacion-auditoria-estrategia',
     },
     previousSlugs: { fr: 'strategie', en: 'strategy', es: 'estrategia' },
+    positioning: {
+      fr: 'La clarté avant l’engagement',
+      en: 'Clarity before commitment',
+      es: 'Claridad antes del compromiso',
+    },
+    summary: {
+      fr: 'Comprendre où vous en êtes, ce qui vous freine et où se trouvent les opportunités les plus fortes, avant d’engager davantage de budget dans l’exécution.',
+      en: 'Understand where you are, what is holding you back, and where the strongest opportunities are before more money gets thrown at execution.',
+      es: 'Entender dónde está, qué le está frenando y dónde están las mejores oportunidades, antes de destinar más presupuesto a la ejecución.',
+    },
   },
   branding: {
     names: {
@@ -51,6 +69,16 @@ export const PILLARS: Record<string, PillarConfig> = {
       es: 'branding-comunicacion',
     },
     previousSlugs: { fr: 'branding', en: 'branding', es: 'branding' },
+    positioning: {
+      fr: 'Une marque que l’on comprend et retient',
+      en: 'A brand people understand and remember',
+      es: 'Una marca que se entiende y se recuerda',
+    },
+    summary: {
+      fr: 'Transformer une stratégie d’entreprise en une marque que l’on reconnaît, en qui l’on a confiance et que l’on choisit.',
+      en: 'Turn business strategy into a brand people can recognise, trust and choose.',
+      es: 'Convertir la estrategia de negocio en una marca que se reconoce, en la que se confía y que se elige.',
+    },
   },
   'marketing-digital': {
     names: {
@@ -65,6 +93,16 @@ export const PILLARS: Record<string, PillarConfig> = {
       es: 'marketing-digital',
     },
     previousSlugs: { fr: 'marketing-digital', en: 'digital-marketing', es: 'marketing-digital' },
+    positioning: {
+      fr: 'Plus de ce qui fonctionne',
+      en: 'More of what works',
+      es: 'Más de lo que funciona',
+    },
+    summary: {
+      fr: 'Planifier, acheter et optimiser des médias qui amènent les bonnes personnes vers votre marque et produisent des résultats mesurables.',
+      en: 'Plan, buy and optimise media that drives the right people to your brand and delivers measurable results.',
+      es: 'Planificar, comprar y optimizar medios que atraen a las personas adecuadas y entregan resultados medibles.',
+    },
   },
   'web-technologie': {
     names: {
@@ -78,6 +116,16 @@ export const PILLARS: Record<string, PillarConfig> = {
       es: 'automatizacion-ia',
     },
     previousSlugs: { fr: 'web-technologie', en: 'web-technology', es: 'web-y-tecnologia' },
+    positioning: {
+      fr: 'Un marketing prêt pour la suite',
+      en: 'Marketing ready for what’s next',
+      es: 'Marketing preparado para lo que viene',
+    },
+    summary: {
+      fr: 'Construire des systèmes intelligents qui rendent votre marketing plus rapide, plus pertinent et plus efficace.',
+      en: 'Build intelligent systems that make your marketing faster, smarter and more effective.',
+      es: 'Construir sistemas inteligentes que hacen su marketing más rápido, más inteligente y más eficaz.',
+    },
   },
 }
 

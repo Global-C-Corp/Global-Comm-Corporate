@@ -32,7 +32,7 @@ export function BeliefSection({
   return (
     <section className="bg-foreground text-background" aria-labelledby="belief-heading">
       <div className="grid items-stretch lg:grid-cols-12">
-        <div className="flex items-center px-5 py-14 sm:px-6 md:px-8 lg:col-span-4 lg:py-14 lg:pl-16 lg:pr-10">
+        <div className="flex items-center px-5 py-10 sm:px-6 md:px-8 lg:col-span-4 lg:py-10 lg:pl-16 lg:pr-10">
           <div>
             {label ? (
               <p className="text-[0.7rem] font-medium uppercase tracking-[0.14em] text-background/55">
@@ -63,7 +63,7 @@ export function BeliefSection({
           ) : null}
         </div>
 
-        <div className="flex items-center px-5 py-14 sm:px-6 md:px-8 lg:col-span-4 lg:py-14 lg:pl-10 lg:pr-16">
+        <div className="flex items-center px-5 py-10 sm:px-6 md:px-8 lg:col-span-4 lg:py-10 lg:pl-10 lg:pr-16">
           <div>
             {body ? (
               <p className="max-w-[32ch] text-pretty text-sm leading-relaxed text-background/75">

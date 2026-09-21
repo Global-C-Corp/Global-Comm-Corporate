@@ -37,7 +37,7 @@ export function PracticesSection({
 
   return (
     <section className="bg-secondary" aria-labelledby="practices-heading">
-      <div className="mx-auto w-full max-w-[90rem] px-5 py-16 sm:px-6 md:px-8 md:py-24 lg:px-16">
+      <div className="mx-auto w-full max-w-[90rem] px-5 py-14 sm:px-6 md:px-8 md:py-16 lg:px-16">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-6">
             {label ? (
@@ -74,7 +74,7 @@ export function PracticesSection({
           </div>
         </div>
 
-        <ol className="mt-14 grid grid-cols-1 gap-y-14 sm:grid-cols-2 lg:grid-cols-4 lg:gap-y-0">
+        <ol className="mt-12 grid grid-cols-1 gap-y-14 sm:grid-cols-2 lg:-ml-10 lg:grid-cols-4 lg:gap-y-0">
           {practices.map((service, index) => {
             const href = hrefFor(service)
             const image =
@@ -84,7 +84,7 @@ export function PracticesSection({
             return (
               <li
                 key={service.id}
-                className="flex min-w-0 flex-col sm:border-l sm:border-border sm:px-7 [&:nth-child(-n+2)]:sm:border-l-0 [&:nth-child(-n+2)]:sm:pl-0 lg:[&:nth-child(2)]:border-l lg:[&:nth-child(2)]:pl-7 lg:[&:first-child]:border-l-0 lg:[&:first-child]:pl-0"
+                className="flex min-w-0 flex-col sm:border-l sm:border-border sm:px-7 [&:nth-child(-n+2)]:sm:border-l-0 [&:nth-child(-n+2)]:sm:pl-0 lg:border-l lg:px-0 lg:pl-10 lg:[&:nth-child(-n+2)]:pl-10 lg:[&:first-child]:border-l-0"
               >
                 {/* Number and rule sit on one line, as in the reference. */}
                 <div className="flex items-center gap-4">
@@ -99,12 +99,12 @@ export function PracticesSection({
                 </h3>
 
                 {service.positioningLine ? (
-                  <p className="mt-3 max-w-[20ch] text-[0.65rem] font-medium uppercase leading-[1.6] tracking-[0.12em] text-muted-foreground">
+                  <p className="mt-3 max-w-[15rem] text-[0.65rem] font-medium uppercase leading-[1.6] tracking-[0.12em] text-muted-foreground lg:min-h-[2.1rem]">
                     {service.positioningLine}
                   </p>
                 ) : null}
 
-                <div className="relative mt-6 aspect-[16/9] w-full overflow-hidden bg-muted">
+                <div className="relative mt-6 aspect-[16/10] w-full overflow-hidden bg-muted">
                   {image ? (
                     // eslint-disable-next-line @next/next/no-img-element
                     <img
@@ -127,7 +127,7 @@ export function PracticesSection({
                   <p className="mt-6">
                     <Link
                       href={href}
-                      className="inline-flex min-h-11 items-center text-sm font-medium text-primary transition-colors duration-150 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
+                      className="inline-flex items-center py-3 -my-3 text-sm font-medium text-primary transition-colors duration-150 hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
                     >
                       {exploreLabel(service)} →
                     </Link>
