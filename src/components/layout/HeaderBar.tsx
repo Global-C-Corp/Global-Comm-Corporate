@@ -45,6 +45,7 @@ export function HeaderBar({
 }) {
   const [open, setOpen] = useState(false)
   const [condensed, setCondensed] = useState(false)
+  const mobileSheetId = 'global-navigation-sheet'
   const triggerRef = useRef<HTMLButtonElement>(null)
   const sentinelRef = useRef<HTMLDivElement>(null)
 
@@ -238,6 +239,7 @@ export function HeaderBar({
                 )}
                 aria-haspopup="dialog"
                 aria-expanded={open}
+                aria-controls={mobileSheetId}
                 onClick={() => setOpen(true)}
               >
                 <span aria-hidden className="flex flex-col gap-[3px]">
@@ -248,6 +250,7 @@ export function HeaderBar({
               </button>
 
               <SheetContent
+                id={mobileSheetId}
                 side="right"
                 closeLabel={labels.close}
                 onCloseAutoFocus={(event) => {
