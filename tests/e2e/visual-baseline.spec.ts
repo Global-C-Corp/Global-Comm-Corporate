@@ -89,6 +89,27 @@ for (const viewport of VIEWPORTS) {
           expect(response?.status()).toBe(200)
           await expect(page.locator('h1').first()).toBeVisible()
 
+          // Visual baselines must not race lazy-loaded media. Waiting for the
+          // network plus image decode keeps the same page deterministic across
+          // separate Playwright invocations in CI.
+          await page.waitForLoadState('networkidle')
+          await page.waitForFunction(() =>
+            Array.from(document.images).every((image) => image.complete),
+          )
+          await page.evaluate(async () => {
+            await document.fonts.ready
+            await Promise.all(
+              Array.from(document.images).map(async (image) => {
+                try {
+                  await image.decode()
+                } catch {
+                  // Broken/optional media is already represented by its
+                  // rendered fallback; decoding must not block the baseline.
+                }
+              }),
+            )
+          })
+
           await expect(page).toHaveScreenshot(
             `${template.name}-${locale}-${viewport.name}.png`,
             { fullPage: true, animations: 'disabled' },
