@@ -88,6 +88,12 @@ jobs:
       - name: Seed service pillar copy
         run: pnpm exec tsx scripts/seed-pillar-copy.ts --apply
 
+      # The base seed writes the hero and the CTAs only. Without this step the
+      # homepage renders as a hero, an empty blue band and a footer, and the
+      # visual baseline records that as the approved page.
+      - name: Seed approved homepage copy
+        run: pnpm run seed:homepage -- --apply
+
       - name: Generate service redirects and localized pillar slugs
         run: pnpm run redirects:generate -- --apply
 
