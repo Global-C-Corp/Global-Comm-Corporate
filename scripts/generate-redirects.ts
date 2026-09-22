@@ -142,6 +142,17 @@ async function main() {
   const errors: string[] = [...resolverMismatches]
   const plans: RedirectPlan[] = []
 
+  // Redirects for folded terms must point straight at the pillar's FINAL
+  // localized slug. The pillar documents still carry their pre-consolidation
+  // slugs while this plan is computed; using those current document slugs
+  // would create an unnecessary two-hop chain (folded term -> old pillar URL
+  // -> renamed pillar URL) and would disagree with the committed manifest.
+  const pillarKeyById = new Map<number, string>()
+  for (const assignment of assignments.filter((item) => item.role === 'pillar')) {
+    const key = pillarKeyForFrSlug(assignment.node.slug)
+    if (key) pillarKeyById.set(assignment.node.id, key)
+  }
+
   // ---- 1. folded services --------------------------------------------------
   for (const node of nodes) {
     const state = stored.get(node.id)
@@ -158,10 +169,16 @@ async function main() {
       continue
     }
 
+    const targetPillarKey = pillarKeyById.get(state.foldedInto)
+    if (!targetPillarKey) {
+      errors.push(`"${node.name}" (${node.slug}) is folded into service ${state.foldedInto}, which is not a configured pillar`)
+      continue
+    }
+
     const source = services.get(node.id)
     for (const locale of locales) {
       const fromSlug = source?.slugs[locale]
-      const toSlug = target.slugs[locale]
+      const toSlug = PILLARS[targetPillarKey].slugs[locale]
       if (!fromSlug) {
         errors.push(`"${node.name}" has no ${locale.toUpperCase()} slug — its ${locale} URL cannot be redirected`)
         continue
