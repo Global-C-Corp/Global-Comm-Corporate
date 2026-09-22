@@ -56,7 +56,7 @@ export async function getProjects(
     limit,
     page,
     depth: 1,
-    sort: ['displayOrder', '-year'],
+    sort: ['displayOrder', '-year', 'id'],
   })
 
   return { docs: result.docs, totalPages: result.totalPages, page: result.page ?? 1, totalDocs: result.totalDocs }
@@ -70,7 +70,7 @@ export async function getFeaturedProjects(ctx: QueryContext, limit = 6): Promise
     where: combineWhere(approvedLocaleWhere(ctx), { featured: { equals: true } }),
     limit,
     depth: 1,
-    sort: ['displayOrder', '-year'],
+    sort: ['displayOrder', '-year', 'id'],
   })
   return result.docs
 }
@@ -104,7 +104,7 @@ export async function getProjectsByRelation(
     where: combineWhere(approvedLocaleWhere(ctx), { [relation]: { in: [id] } }),
     limit,
     depth: 1,
-    sort: ['displayOrder', '-year'],
+    sort: ['displayOrder', '-year', 'id'],
   })
   return result.docs
 }

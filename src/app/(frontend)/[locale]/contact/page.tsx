@@ -42,7 +42,7 @@ export default async function ContactPageRoute({ params }: { params: Promise<{ l
 
   const [projectTypes, availability] = await Promise.all([
     payload
-      .find({ collection: 'project-types', ...baseQueryOptions(ctx), limit: 50, depth: 0, sort: ['displayOrder'] })
+      .find({ collection: 'project-types', ...baseQueryOptions(ctx), limit: 50, depth: 0, sort: ['displayOrder', 'id'] })
       .then((result) => result.docs.map((doc) => ({ id: doc.id, name: doc.name }))),
     getGlobalAvailability('contact-page'),
   ])

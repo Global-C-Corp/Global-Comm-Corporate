@@ -9,7 +9,7 @@ export async function getFeaturedClients(ctx: QueryContext, limit = 12): Promise
     where: combineWhere(approvedLocaleWhere(ctx), { featured: { equals: true } }),
     limit,
     depth: 1,
-    sort: ['displayOrder', 'name'],
+    sort: ['displayOrder', 'name', 'id'],
   })
   return result.docs
 }
@@ -31,7 +31,7 @@ export async function getPublishedClients(ctx: QueryContext, limit = 12): Promis
     where: approvedLocaleWhere(ctx),
     limit,
     depth: 1,
-    sort: ['displayOrder', 'name'],
+    sort: ['displayOrder', 'name', 'id'],
   })
   return result.docs
 }
@@ -44,7 +44,7 @@ export async function getFeaturedTestimonials(ctx: QueryContext, limit = 6): Pro
     where: combineWhere(approvedLocaleWhere(ctx), { featured: { equals: true } }),
     limit,
     depth: 1,
-    sort: ['displayOrder'],
+    sort: ['displayOrder', 'id'],
   })
   return result.docs
 }
