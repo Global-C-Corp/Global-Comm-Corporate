@@ -76,6 +76,17 @@ type GuardArgs = {
  * REST, GraphQL, Local API, or an MCP tool). UI restrictions alone are
  * insufficient (§27) — this is the server-side authority.
  */
+/**
+ * True when the acting user corresponds to a real `users` row. Scripts that
+ * seed or migrate content act as an admin without creating an account, and
+ * such an actor must never be stored in a relationship column.
+ */
+function isPersistedUser(userId?: number | string | null): userId is number | string {
+  if (userId === null || userId === undefined) return false
+  if (typeof userId === 'number') return Number.isInteger(userId) && userId > 0
+  return userId.trim().length > 0 && userId !== '0'
+}
+
 export function applyEditorialGuard({ data, originalDoc, role, userId, requestLocale, operation }: GuardArgs) {
   const previousReviewStatus = isReviewStatus(originalDoc?.reviewStatus) ? originalDoc?.reviewStatus : undefined
 
@@ -206,7 +217,12 @@ export function applyEditorialGuard({ data, originalDoc, role, userId, requestLo
   // approved, so the manual path and the compound action record it alike, in
   // the same version snapshot as the publish.
   if (data.reviewStatus === 'approved' && previousReviewStatus !== 'approved') {
-    data.approvedBy = userId ?? null
+    // `approvedBy` is a foreign key. Operator scripts run as a synthetic admin
+    // so they satisfy the role check without creating credentials, and that
+    // actor carries id 0 — no such row exists, and Postgres serials start at 1.
+    // Writing it would abort the whole seed on a fresh database, so a
+    // non-persisted actor records no approver rather than a dangling one.
+    data.approvedBy = isPersistedUser(userId) ? userId : null
     data.approvedAt = new Date().toISOString()
   }
 
