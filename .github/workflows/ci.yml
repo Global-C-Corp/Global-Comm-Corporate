@@ -82,6 +82,12 @@ jobs:
       - name: Seed service pillar copy
         run: pnpm exec tsx scripts/seed-pillar-copy.ts --apply
 
+      - name: Generate service redirects and localized pillar slugs
+        run: pnpm run redirects:generate -- --apply
+
+      - name: Verify redirect manifest is current
+        run: git diff --exit-code -- tests/fixtures/redirects.json
+
       - name: Seed deterministic E2E fixture
         run: pnpm exec tsx scripts/seed-e2e.ts
 
