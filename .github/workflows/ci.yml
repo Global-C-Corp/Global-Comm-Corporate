@@ -76,6 +76,23 @@ jobs:
       - name: MCP contract tests
         run: pnpm run test:contract
 
+      # The integration specs publish their own fixtures — clients and services
+      # named `<label> ${Date.now()}` — and leave them behind. Those are real
+      # published, locale-approved records, so the Services experience band and
+      # the work archive's filters render them, with a different timestamp on
+      # every run. That made two templates impossible to baseline. The E2E
+      # database is rebuilt from the seed alone so the build sees only content
+      # this workflow put there.
+      - name: Reset the database before building the E2E fixture
+        run: |
+          PGPASSWORD=postgres psql -h localhost -U postgres -d postgres \
+            -c 'DROP DATABASE IF EXISTS globalcomm_test WITH (FORCE);'
+          PGPASSWORD=postgres psql -h localhost -U postgres -d postgres \
+            -c 'CREATE DATABASE globalcomm_test;'
+
+      - name: Run migrations on the rebuilt database
+        run: pnpm run migrate
+
       # The public routes are prerendered during the production build. Seed the
       # published fixtures before building so E2E exercises the real templates
       # instead of build-time 404 output.
