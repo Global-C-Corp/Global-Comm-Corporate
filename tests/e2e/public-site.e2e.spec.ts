@@ -124,7 +124,10 @@ test.describe('public site', () => {
     // keyboard or screen-reader user actually depends on.
     // Identified by its ARIA wiring rather than a role filter on `expanded`:
     // that state flips on click, so filtering by it loses the element.
-    const toggle = page.locator('button[aria-expanded][aria-controls]')
+    // Scoped to the global header: the homepage FAQ accordion exposes the
+    // same aria-expanded/aria-controls pairing on each of its triggers, and
+    // this test is about the navigation sheet, not about them.
+    const toggle = page.locator('header button[aria-expanded][aria-controls]')
     await expect(toggle).toBeVisible()
     await expect(toggle).toHaveAttribute('aria-expanded', 'false')
     await toggle.click()
