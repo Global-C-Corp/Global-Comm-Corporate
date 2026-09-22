@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { settleForScreenshot } from './visual-readiness'
 
 const BASE = 'http://localhost:3000'
 const locales = ['fr', 'en', 'es'] as const
@@ -82,33 +83,18 @@ for (const viewport of VIEWPORTS) {
     for (const template of TEMPLATES) {
       for (const locale of locales) {
         test(`${template.name} · ${locale}`, async ({ page }) => {
-          const response = await page.goto(`${BASE}${template.paths[locale]}`)
+          const response = await page.goto(`${BASE}${template.paths[locale]}`, {
+            waitUntil: 'domcontentloaded',
+          })
 
           // Without this a 404 or an error page would be captured as if it
           // were the template, and the baseline would encode the failure.
           expect(response?.status()).toBe(200)
           await expect(page.locator('h1').first()).toBeVisible()
 
-          // Visual baselines must not race lazy-loaded media. Waiting for the
-          // network plus image decode keeps the same page deterministic across
-          // separate Playwright invocations in CI.
-          await page.waitForLoadState('networkidle')
-          await page.waitForFunction(() =>
-            Array.from(document.images).every((image) => image.complete),
-          )
-          await page.evaluate(async () => {
-            await document.fonts.ready
-            await Promise.all(
-              Array.from(document.images).map(async (image) => {
-                try {
-                  await image.decode()
-                } catch {
-                  // Broken/optional media is already represented by its
-                  // rendered fallback; decoding must not block the baseline.
-                }
-              }),
-            )
-          })
+          // Visual baselines must not race lazy-loaded media, and must not
+          // wait on a network that never falls silent. See visual-readiness.ts.
+          await settleForScreenshot(page)
 
           await expect(page).toHaveScreenshot(
             `${template.name}-${locale}-${viewport.name}.png`,
