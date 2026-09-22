@@ -70,14 +70,30 @@ jobs:
       - name: MCP contract tests
         run: pnpm run test:contract
 
+      # The public routes are prerendered during the production build. Seed the
+      # published fixtures before building so E2E exercises the real templates
+      # instead of build-time 404 output.
+      - name: Seed published content for build and E2E
+        run: pnpm run seed -- --publish
+
       - name: Production build
         run: pnpm run build
 
-      - name: Seed published content for E2E
-        run: pnpm run seed -- --publish
-
       - name: Install Playwright browser
         run: pnpm exec playwright install --with-deps chromium
+
+      # Temporary baseline refresh for the approved global-shell migration.
+      # The generated snapshots are uploaded so they can be reviewed and
+      # committed, then this step is removed before merge.
+      - name: Generate approved visual baselines
+        run: pnpm run test:visual:update
+
+      - name: Upload generated visual baselines
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-baselines
+          path: tests/e2e/visual-baseline.spec.ts-snapshots/
+          retention-days: 7
 
       - name: E2E tests
         run: pnpm run test:e2e
