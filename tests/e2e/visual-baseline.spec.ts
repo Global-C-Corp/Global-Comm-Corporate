@@ -20,11 +20,10 @@ type Locale = (typeof locales)[number]
  * Exemplar entities are pinned deliberately rather than discovered at runtime,
  * so a content edit cannot silently change what is being compared:
  *
- *   service detail  → "Marketing digital", a root service that survives the
- *                     consolidation to four service pages.
- *   case study      → "AMREC — 55 ans / programme UNESCO", the published
- *                     project with the longest narrative and three metrics,
- *                     so the optional metrics block is exercised.
+ *   service detail  → "Marketing digital", one of the four public pillars.
+ *   case study      → "E2E Case Study", an explicitly synthetic fixture that
+ *                     exists only in the CI database. Production seeds never
+ *                     fabricate client proof or case studies.
  *
  * The industry-detail template was captured in the original baseline and has
  * been removed here along with the route itself: industries no longer have
@@ -61,9 +60,9 @@ const TEMPLATES: { name: string; paths: Record<Locale, string> }[] = [
   {
     name: 'case-study-detail',
     paths: {
-      fr: '/fr/work/amrec-55-ans-programme-unesco',
-      en: '/en/work/amrec-55-years-unesco-programme',
-      es: '/es/work/amrec-55-anos-programa-unesco',
+      fr: '/fr/work/e2e-case-study',
+      en: '/en/work/e2e-case-study',
+      es: '/es/work/e2e-case-study',
     },
   },
   {
