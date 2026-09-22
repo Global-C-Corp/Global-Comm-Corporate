@@ -81,7 +81,7 @@ export default async function WorkArchiveRoute({
         ...baseQueryOptions(ctx),
         limit: 50,
         depth: 0,
-        sort: ['displayOrder', 'name'],
+        sort: ['displayOrder', 'name', 'id'],
       })
       return result.docs
     })(),

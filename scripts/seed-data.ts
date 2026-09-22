@@ -188,14 +188,150 @@ export const pageCopy = {
   services: {
     eyebrow: { fr: 'Services', en: 'Services', es: 'Servicios' },
     heading: {
-      fr: 'Cinq domaines d\u2019expertise, un système intégré',
-      en: 'Five capability areas, one integrated system',
-      es: 'Cinco áreas de especialidad, un sistema integrado',
+      fr: 'Arrêtez d\u2019acheter des prestations marketing. Résolvez vos problèmes de croissance.',
+      en: 'Stop buying marketing services. Start solving growth problems.',
+      es: 'Deje de comprar servicios de marketing. Empiece a resolver problemas de crecimiento.',
     },
     intro: {
-      fr: 'De la stratégie à l\u2019exécution, nos expertises s\u2019articulent autour des besoins réels de nos clients.',
-      en: 'From strategy to execution, our capabilities are organized around real client needs.',
-      es: 'De la estrategia a la ejecución, nuestras capacidades se organizan en torno a necesidades reales de los clientes.',
+      fr: 'Stratégie. Création. Média. Technologie. Quatre pôles d\u2019experts. Un seul objectif : un impact réel.',
+      en: 'Strategy. Creative. Media. Technology. Four expert practices. One focus: real impact.',
+      es: 'Estrategia. Creatividad. Medios. Tecnología. Cuatro prácticas expertas. Un objetivo: impacto real.',
+    },
+    experienceLabel: {
+      fr: 'La confiance d\u2019organisations au Maroc et au-delà',
+      en: 'Trusted by organisations in Morocco and beyond',
+      es: 'La confianza de organizaciones en Marruecos y más allá',
+    },
+    practices: {
+      label: {
+        fr: 'Quatre pôles spécialisés',
+        en: 'Four specialist practices',
+        es: 'Cuatro prácticas especializadas',
+      },
+      heading: {
+        fr: 'Des problèmes différents demandent des experts différents.',
+        en: 'Different problems require different experts.',
+        es: 'Problemas distintos requieren expertos distintos.',
+      },
+      body: {
+        fr: 'Confier « tout » à une seule agence paraît pratique. Jusqu\u2019à ce que la stratégie reste vague, que les contenus soient beaux mais sans effet, que le budget média disparaisse et que plus personne ne sache ce que les chiffres signifient vraiment.\n\nNous avons construit Global Comm autrement. Chaque pôle prend en charge une partie précise du problème.',
+        en: 'Hiring one agency to “do everything” sounds convenient. Until the strategy is vague, the content looks good but does nothing, the media budget disappears, and nobody knows what the numbers actually mean.\n\nWe built Global Comm differently. Each practice owns a specific part of the problem.',
+        es: 'Contratar a una sola agencia para «hacerlo todo» suena cómodo. Hasta que la estrategia es vaga, el contenido luce bien pero no logra nada, el presupuesto de medios desaparece y nadie sabe qué significan realmente las cifras.\n\nConstruimos Global Comm de otra manera. Cada práctica se hace cargo de una parte concreta del problema.',
+      },
+    },
+    belief: {
+      label: { fr: 'Notre conviction', en: 'Our belief', es: 'Nuestra convicción' },
+      heading: {
+        fr: 'La structure suit le problème. Pas l\u2019inverse.',
+        en: 'The structure follows the problem. Not the other way around.',
+        es: 'La estructura sigue al problema. No al revés.',
+      },
+      body: {
+        fr: 'Vous pouvez travailler avec un seul pôle. Ou les réunir lorsque le problème dépasse une seule discipline.',
+        en: 'You can work with one practice. Or bring them together when the problem is bigger than one discipline.',
+        es: 'Puede trabajar con una sola práctica. O reunirlas cuando el problema supera a una sola disciplina.',
+      },
+      ctaLabel: {
+        fr: 'Voir comment nous travaillons',
+        en: 'See how it works',
+        es: 'Vea cómo funciona',
+      },
+    },
+    method: {
+      label: { fr: 'Notre méthode', en: 'Our method', es: 'Nuestro método' },
+      heading: {
+        fr: 'Du problème au progrès.',
+        en: 'From problem to progress.',
+        es: 'Del problema al progreso.',
+      },
+      intro: {
+        fr: 'Une manière simple et structurée de transformer des enjeux complexes en résultats marketing mesurables.',
+        en: 'A simple, structured way to turn complex challenges into measurable marketing results.',
+        es: 'Una manera simple y estructurada de convertir desafíos complejos en resultados de marketing medibles.',
+      },
+      steps: [
+        {
+          title: { fr: 'Comprendre', en: 'Understand', es: 'Comprender' },
+          body: {
+            fr: 'Clarifier le problème et les objectifs de l\u2019entreprise.',
+            en: 'Clarify the business problem and goals.',
+            es: 'Clarificar el problema y los objetivos del negocio.',
+          },
+        },
+        {
+          title: { fr: 'Diagnostiquer', en: 'Diagnose', es: 'Diagnosticar' },
+          body: {
+            fr: 'Identifier ce qui vous freine réellement.',
+            en: 'Find what is really holding you back.',
+            es: 'Encontrar qué le está frenando realmente.',
+          },
+        },
+        {
+          title: { fr: 'Prioriser', en: 'Prioritise', es: 'Priorizar' },
+          body: {
+            fr: 'Se concentrer sur ce qui aura le plus d\u2019impact.',
+            en: 'Focus on what will have the biggest impact.',
+            es: 'Centrarse en lo que tendrá mayor impacto.',
+          },
+        },
+        {
+          title: { fr: 'Construire', en: 'Build', es: 'Construir' },
+          body: {
+            fr: 'Créer et activer la solution.',
+            en: 'Create and activate the solution.',
+            es: 'Crear y activar la solución.',
+          },
+        },
+        {
+          title: { fr: 'Mesurer', en: 'Measure', es: 'Medir' },
+          body: {
+            fr: 'Suivre ce qui compte.',
+            en: 'Track what matters.',
+            es: 'Medir lo que importa.',
+          },
+        },
+        {
+          title: { fr: 'Améliorer', en: 'Improve', es: 'Mejorar' },
+          body: {
+            fr: 'Amplifier ce qui fonctionne.',
+            en: 'Scale what works.',
+            es: 'Escalar lo que funciona.',
+          },
+        },
+      ],
+    },
+    workHeading: {
+      fr: 'De vraies entreprises. De vrais résultats.',
+      en: 'Real businesses. Real results.',
+      es: 'Empresas reales. Resultados reales.',
+    },
+    closing: {
+      label: {
+        fr: 'Prêt à résoudre la suite ?',
+        en: 'Ready to solve what\u2019s next?',
+        es: '¿Listo para resolver lo que viene?',
+      },
+      heading: {
+        fr: 'Parlons de votre problème de croissance.',
+        en: 'Let\u2019s talk about your growth problem.',
+        es: 'Hablemos de su problema de crecimiento.',
+      },
+      body: {
+        fr: 'Dites-nous sur quoi vous travaillez. Nous vous aiderons à trouver la bonne approche, les bons experts et un chemin plus clair.',
+        en: 'Tell us what you are working on. We will help you find the right approach, the right experts, and a clearer path forward.',
+        es: 'Cuéntenos en qué está trabajando. Le ayudaremos a encontrar el enfoque adecuado, los expertos adecuados y un camino más claro.',
+      },
+      secondaryLabel: {
+        fr: 'Ou réserver un appel',
+        en: 'Or book a call',
+        es: 'O reserve una llamada',
+      },
+      ctaLabel: {
+        fr: 'Démarrer un projet',
+        en: 'Start a project',
+        es: 'Iniciar un proyecto',
+      },
+      ctaUrl: '/contact',
     },
   },
   work: {

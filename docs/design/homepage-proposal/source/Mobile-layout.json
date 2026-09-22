@@ -1,0 +1,2090 @@
+{
+  "width": 390,
+  "height": 12081,
+  "sections": [
+    {
+      "name": "GlobalHeader",
+      "y": 0,
+      "h": 72
+    },
+    {
+      "name": "Hero",
+      "y": 72,
+      "h": 1260
+    },
+    {
+      "name": "PlatformExpertise",
+      "y": 1332,
+      "h": 648
+    },
+    {
+      "name": "PointOfView",
+      "y": 1980,
+      "h": 505
+    },
+    {
+      "name": "FrozenExpertise",
+      "y": 2485,
+      "h": 4198
+    },
+    {
+      "name": "SelectedWork",
+      "y": 6683,
+      "h": 1393
+    },
+    {
+      "name": "ClientLogoCloud",
+      "y": 8076,
+      "h": 602
+    },
+    {
+      "name": "EvidenceFaq",
+      "y": 8678,
+      "h": 2280
+    },
+    {
+      "name": "FinalCta",
+      "y": 10958,
+      "h": 511
+    },
+    {
+      "name": "Footer",
+      "y": 11469,
+      "h": 612
+    }
+  ],
+  "text": [
+    {
+      "section": "GlobalHeader",
+      "text": "GLOBAL COMMUNICATION",
+      "x": 24,
+      "y": 23,
+      "w": 133.37,
+      "h": 13
+    },
+    {
+      "section": "GlobalHeader",
+      "text": "CORPORATE™",
+      "x": 24,
+      "y": 36,
+      "w": 71.94000000000001,
+      "h": 13
+    },
+    {
+      "section": "GlobalHeader",
+      "text": "MENU",
+      "x": 326,
+      "y": 30,
+      "w": 24.0,
+      "h": 15
+    },
+    {
+      "section": "Hero",
+      "text": "STRATEGY · BRANDING · DIGITAL MARKETING ·",
+      "x": 24,
+      "y": 110,
+      "w": 302.6,
+      "h": 16
+    },
+    {
+      "section": "Hero",
+      "text": "GROWTH",
+      "x": 24,
+      "y": 126,
+      "w": 43.6,
+      "h": 16
+    },
+    {
+      "section": "Hero",
+      "text": "A strategic",
+      "x": 24,
+      "y": 173,
+      "w": 219.243,
+      "h": 47
+    },
+    {
+      "section": "Hero",
+      "text": "marketing",
+      "x": 24,
+      "y": 220,
+      "w": 205.331,
+      "h": 47
+    },
+    {
+      "section": "Hero",
+      "text": "partner for",
+      "x": 24,
+      "y": 267,
+      "w": 215.545,
+      "h": 47
+    },
+    {
+      "section": "Hero",
+      "text": "brands ready to",
+      "x": 24,
+      "y": 314,
+      "w": 311.094,
+      "h": 47
+    },
+    {
+      "section": "Hero",
+      "text": "grow.",
+      "x": 24,
+      "y": 361,
+      "w": 110.728,
+      "h": 47
+    },
+    {
+      "section": "Hero",
+      "text": "We help companies build stronger brands,",
+      "x": 24,
+      "y": 434,
+      "w": 311.76,
+      "h": 26
+    },
+    {
+      "section": "Hero",
+      "text": "create better content and turn digital",
+      "x": 24,
+      "y": 460,
+      "w": 276.592,
+      "h": 26
+    },
+    {
+      "section": "Hero",
+      "text": "marketing into measurable business growth.",
+      "x": 24,
+      "y": 486,
+      "w": 330.416,
+      "h": 26
+    },
+    {
+      "section": "Hero",
+      "text": "Start a project",
+      "x": 44,
+      "y": 555.0,
+      "w": 96.698,
+      "h": 18
+    },
+    {
+      "section": "Hero",
+      "text": "View our work",
+      "x": 44,
+      "y": 615.0,
+      "w": 95.522,
+      "h": 18
+    },
+    {
+      "section": "Hero",
+      "text": "FEATURED PROJECT",
+      "x": 142.5,
+      "y": 811.5,
+      "w": 105.0,
+      "h": 14
+    },
+    {
+      "section": "Hero",
+      "text": "01",
+      "x": 48,
+      "y": 861,
+      "w": 68.04,
+      "h": 70
+    },
+    {
+      "section": "Hero",
+      "text": "Project title",
+      "x": 24,
+      "y": 969,
+      "w": 118.629,
+      "h": 27
+    },
+    {
+      "section": "Hero",
+      "text": "01 / 01",
+      "x": 304,
+      "y": 973,
+      "w": 51.0,
+      "h": 16
+    },
+    {
+      "section": "Hero",
+      "text": "From strategy to execution, one partner connecting",
+      "x": 24,
+      "y": 1032,
+      "w": 311.753,
+      "h": 22
+    },
+    {
+      "section": "Hero",
+      "text": "brand, marketing and digital growth.",
+      "x": 24,
+      "y": 1054,
+      "w": 218.712,
+      "h": 22
+    },
+    {
+      "section": "Hero",
+      "text": "SELECTED EXPERIENCE",
+      "x": 24,
+      "y": 1150,
+      "w": 139.8,
+      "h": 16
+    },
+    {
+      "section": "Hero",
+      "text": "CLIENT LOGO 01",
+      "x": 68.7,
+      "y": 1203,
+      "w": 75.6,
+      "h": 13
+    },
+    {
+      "section": "Hero",
+      "text": "CLIENT LOGO 02",
+      "x": 245.7,
+      "y": 1203,
+      "w": 75.6,
+      "h": 13
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "PLATFORM EXPERTISE",
+      "x": 24,
+      "y": 1385,
+      "w": 132.4,
+      "h": 16
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "Platform Expertise",
+      "x": 24,
+      "y": 1421,
+      "w": 289.65299999999996,
+      "h": 38
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "Built across the platforms your customers",
+      "x": 24,
+      "y": 1477,
+      "w": 313.392,
+      "h": 25
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "already use.",
+      "x": 24,
+      "y": 1502,
+      "w": 88.768,
+      "h": 25
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "01",
+      "x": 24,
+      "y": 1642,
+      "w": 14.0,
+      "h": 16
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "SEARCH",
+      "x": 24,
+      "y": 1671,
+      "w": 53.612,
+      "h": 18
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "Capture high-intent",
+      "x": 24,
+      "y": 1702,
+      "w": 119.288,
+      "h": 21
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "demand and grow",
+      "x": 24,
+      "y": 1723,
+      "w": 108.576,
+      "h": 21
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "visibility.",
+      "x": 24,
+      "y": 1744,
+      "w": 52.312,
+      "h": 21
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "02",
+      "x": 204,
+      "y": 1642,
+      "w": 14.0,
+      "h": 16
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "PAID MEDIA",
+      "x": 204,
+      "y": 1671,
+      "w": 75.803,
+      "h": 18
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "Drive qualified traffic",
+      "x": 204,
+      "y": 1702,
+      "w": 127.959,
+      "h": 21
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "with performance",
+      "x": 204,
+      "y": 1723,
+      "w": 107.692,
+      "h": 21
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "campaigns.",
+      "x": 204,
+      "y": 1744,
+      "w": 68.38,
+      "h": 21
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "03",
+      "x": 24,
+      "y": 1794,
+      "w": 14.0,
+      "h": 16
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "ANALYTICS",
+      "x": 24,
+      "y": 1823,
+      "w": 73.203,
+      "h": 18
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "Turn data into clearer",
+      "x": 24,
+      "y": 1854,
+      "w": 129.48,
+      "h": 21
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "decisions.",
+      "x": 24,
+      "y": 1875,
+      "w": 59.605,
+      "h": 21
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "04",
+      "x": 204,
+      "y": 1794,
+      "w": 14.0,
+      "h": 16
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "SEO",
+      "x": 204,
+      "y": 1823,
+      "w": 26.598,
+      "h": 18
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "Build long-term organic",
+      "x": 204,
+      "y": 1854,
+      "w": 142.636,
+      "h": 21
+    },
+    {
+      "section": "PlatformExpertise",
+      "text": "growth.",
+      "x": 204,
+      "y": 1875,
+      "w": 46.007,
+      "h": 21
+    },
+    {
+      "section": "PointOfView",
+      "text": "OUR POINT OF VIEW",
+      "x": 109,
+      "y": 2047,
+      "w": 125.0,
+      "h": 16
+    },
+    {
+      "section": "PointOfView",
+      "text": "We make your brand",
+      "x": 45.327999999999975,
+      "y": 2119,
+      "w": 299.34400000000005,
+      "h": 41
+    },
+    {
+      "section": "PointOfView",
+      "text": "impossible to ignore,",
+      "x": 45.57599999999999,
+      "y": 2177,
+      "w": 298.848,
+      "h": 41
+    },
+    {
+      "section": "PointOfView",
+      "text": "easy to trust,",
+      "x": 99.856,
+      "y": 2235,
+      "w": 190.288,
+      "h": 41
+    },
+    {
+      "section": "PointOfView",
+      "text": "and built to grow.",
+      "x": 70.04800000000002,
+      "y": 2293,
+      "w": 249.90399999999997,
+      "h": 41
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "QUATRE EXPERTISES. UN PROJET COORDONNÉ.",
+      "x": 24,
+      "y": 2547,
+      "w": 287.79999999999995,
+      "h": 16
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Mobilisez les",
+      "x": 24,
+      "y": 2588,
+      "w": 193.240625,
+      "h": 37
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "compétences utiles",
+      "x": 24,
+      "y": 2625,
+      "w": 291.06875,
+      "h": 37
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "sans multiplier les",
+      "x": 24,
+      "y": 2662,
+      "w": 266.30625,
+      "h": 37
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "interlocuteurs.",
+      "x": 24,
+      "y": 2699,
+      "w": 217.465625,
+      "h": 37
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Global Comm n'impose pas les quatre",
+      "x": 24,
+      "y": 2763,
+      "w": 268.95263671875,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "expertises à chaque client.",
+      "x": 24,
+      "y": 2788,
+      "w": 190.04150390625,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "",
+      "x": 24,
+      "y": 2813,
+      "w": 0.0,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Le périmètre dépend du problème, des priorités",
+      "x": 24,
+      "y": 2838,
+      "w": 338.642578125,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "et des ressources déjà présentes dans votre",
+      "x": 24,
+      "y": 2863,
+      "w": 315.54931640625,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "entreprise.",
+      "x": 24,
+      "y": 2888,
+      "w": 76.35498046875,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "SERVICE IMAGE",
+      "x": 152.4,
+      "y": 3069.5,
+      "w": 85.2,
+      "h": 14
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "01",
+      "x": 48,
+      "y": 3104,
+      "w": 68.04,
+      "h": 70
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "01",
+      "x": 24,
+      "y": 3228,
+      "w": 12.990234375,
+      "h": 17
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Recherche, audit et stratégie",
+      "x": 54,
+      "y": 3225,
+      "w": 309.73310546875,
+      "h": 29
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Sachez où agir avant",
+      "x": 24,
+      "y": 3276,
+      "w": 242.65200000000002,
+      "h": 33
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "d'engager vos ressources.",
+      "x": 24,
+      "y": 3309,
+      "w": 302.98,
+      "h": 33
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Nous étudions votre situation, votre marché et",
+      "x": 24,
+      "y": 3364,
+      "w": 328.46923828125,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "vos objectifs pour faire ressortir les décisions",
+      "x": 24,
+      "y": 3389,
+      "w": 323.291015625,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "prioritaires.",
+      "x": 24,
+      "y": 3414,
+      "w": 80.33203125,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "—",
+      "x": 24,
+      "y": 3463,
+      "w": 11.791,
+      "h": 20
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "recherche et session de découverte",
+      "x": 44,
+      "y": 3463,
+      "w": 221.5966796875,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "—",
+      "x": 24,
+      "y": 3493,
+      "w": 11.791,
+      "h": 20
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "audit de communication et de marketing",
+      "x": 44,
+      "y": 3493,
+      "w": 247.00634765625,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "—",
+      "x": 24,
+      "y": 3523,
+      "w": 11.791,
+      "h": 20
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "analyse du marché et de la concurrence",
+      "x": 44,
+      "y": 3523,
+      "w": 246.923828125,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "—",
+      "x": 24,
+      "y": 3553,
+      "w": 11.791,
+      "h": 20
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "positionnement, objectifs et indicateurs",
+      "x": 44,
+      "y": 3553,
+      "w": 242.27099609375,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "—",
+      "x": 24,
+      "y": 3583,
+      "w": 11.791,
+      "h": 20
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "feuille de route stratégique",
+      "x": 44,
+      "y": 3583,
+      "w": 165.3056640625,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "CE QUE VOUS RECEVEZ",
+      "x": 24,
+      "y": 3651,
+      "w": 139.8,
+      "h": 16
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Une lecture claire de la situation, des priorités",
+      "x": 24,
+      "y": 3683,
+      "w": 331.875,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "et un plan pour avancer.",
+      "x": 24,
+      "y": 3708,
+      "w": 175.90576171875,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Découvrir Recherche et stratégie",
+      "x": 24,
+      "y": 3758,
+      "w": 207.60009765625,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "SERVICE IMAGE",
+      "x": 152.4,
+      "y": 3966.5,
+      "w": 85.2,
+      "h": 14
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "02",
+      "x": 48,
+      "y": 4001,
+      "w": 81.8,
+      "h": 70
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "02",
+      "x": 24,
+      "y": 4125,
+      "w": 15.392578125,
+      "h": 17
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Branding et communication",
+      "x": 54,
+      "y": 4122,
+      "w": 295.92490234375,
+      "h": 29
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Faites reconnaître votre",
+      "x": 24,
+      "y": 4173,
+      "w": 283.78000000000003,
+      "h": 33
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "marque à chaque point de",
+      "x": 24,
+      "y": 4206,
+      "w": 307.31,
+      "h": 33
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "contact.",
+      "x": 24,
+      "y": 4239,
+      "w": 96.492,
+      "h": 33
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Nous déclinons le positionnement retenu en",
+      "x": 24,
+      "y": 4294,
+      "w": 311.72607421875,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "messages, en identité et en supports cohérents.",
+      "x": 24,
+      "y": 4319,
+      "w": 341.3232421875,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "—",
+      "x": 24,
+      "y": 4368,
+      "w": 11.791,
+      "h": 20
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "stratégie et plateforme de marque",
+      "x": 44,
+      "y": 4368,
+      "w": 209.35205078125,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "—",
+      "x": 24,
+      "y": 4398,
+      "w": 11.791,
+      "h": 20
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "identité visuelle et système graphique",
+      "x": 44,
+      "y": 4398,
+      "w": 232.53369140625,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "—",
+      "x": 24,
+      "y": 4428,
+      "w": 11.791,
+      "h": 20
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "messages et direction artistique",
+      "x": 44,
+      "y": 4428,
+      "w": 196.17431640625,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "—",
+      "x": 24,
+      "y": 4458,
+      "w": 11.791,
+      "h": 20
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "communication corporate et campagnes",
+      "x": 44,
+      "y": 4458,
+      "w": 248.2822265625,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "—",
+      "x": 24,
+      "y": 4488,
+      "w": 11.791,
+      "h": 20
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "supports digitaux, imprimés ou packaging",
+      "x": 44,
+      "y": 4488,
+      "w": 256.953125,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "CE QUE VOUS RECEVEZ",
+      "x": 24,
+      "y": 4556,
+      "w": 139.8,
+      "h": 16
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Une marque claire, reconnaissable et plus",
+      "x": 24,
+      "y": 4588,
+      "w": 303.99169921875,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "simple à déployer.",
+      "x": 24,
+      "y": 4613,
+      "w": 133.0810546875,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Découvrir Branding et communication",
+      "x": 24,
+      "y": 4663,
+      "w": 237.84033203125,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "SERVICE IMAGE",
+      "x": 152.4,
+      "y": 4871.5,
+      "w": 85.2,
+      "h": 14
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "03",
+      "x": 48,
+      "y": 4906,
+      "w": 81.48,
+      "h": 70
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "03",
+      "x": 24,
+      "y": 5030,
+      "w": 15.55078125,
+      "h": 17
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Marketing digital",
+      "x": 54,
+      "y": 5027,
+      "w": 180.3626953125,
+      "h": 29
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Transformez la stratégie en",
+      "x": 24,
+      "y": 5078,
+      "w": 324.792,
+      "h": 33
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "actions que votre équipe",
+      "x": 24,
+      "y": 5111,
+      "w": 291.112,
+      "h": 33
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "peut suivre.",
+      "x": 24,
+      "y": 5144,
+      "w": 138.47799999999998,
+      "h": 33
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Nous coordonnons les canaux digitaux autour",
+      "x": 24,
+      "y": 5199,
+      "w": 325.43701171875,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "d’objectifs définis avec votre équipe.",
+      "x": 24,
+      "y": 5224,
+      "w": 262.20703125,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "—",
+      "x": 24,
+      "y": 5273,
+      "w": 11.791,
+      "h": 20
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "contenus et réseaux sociaux",
+      "x": 44,
+      "y": 5273,
+      "w": 176.07763671875,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "—",
+      "x": 24,
+      "y": 5303,
+      "w": 11.791,
+      "h": 20
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "publicité sur les plateformes adaptées",
+      "x": 44,
+      "y": 5303,
+      "w": 234.330078125,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "—",
+      "x": 24,
+      "y": 5333,
+      "w": 11.791,
+      "h": 20
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "SEO, landing pages et email marketing",
+      "x": 44,
+      "y": 5333,
+      "w": 236.43115234375,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "—",
+      "x": 24,
+      "y": 5363,
+      "w": 11.791,
+      "h": 20
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "mesure, tests et optimisation",
+      "x": 44,
+      "y": 5363,
+      "w": 177.07421875,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "—",
+      "x": 24,
+      "y": 5393,
+      "w": 11.791,
+      "h": 20
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "tableau de bord et reporting",
+      "x": 44,
+      "y": 5393,
+      "w": 172.0087890625,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "CE QUE VOUS RECEVEZ",
+      "x": 24,
+      "y": 5461,
+      "w": 139.8,
+      "h": 16
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Des campagnes coordonnées, des",
+      "x": 24,
+      "y": 5493,
+      "w": 250.81787109375,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "responsabilités claires et un suivi régulier.",
+      "x": 24,
+      "y": 5518,
+      "w": 305.74951171875,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Découvrir Marketing digital",
+      "x": 24,
+      "y": 5568,
+      "w": 170.7138671875,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "SERVICE IMAGE",
+      "x": 152.4,
+      "y": 5776.5,
+      "w": 85.2,
+      "h": 14
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "04",
+      "x": 48,
+      "y": 5811,
+      "w": 81.864,
+      "h": 70
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "04",
+      "x": 24,
+      "y": 5935,
+      "w": 15.908203125,
+      "h": 17
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Automatisation et IA",
+      "x": 54,
+      "y": 5932,
+      "w": 217.862890625,
+      "h": 29
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Réduisez les tâches",
+      "x": 24,
+      "y": 5983,
+      "w": 228.704,
+      "h": 33
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "manuelles qui ralentissent",
+      "x": 24,
+      "y": 6016,
+      "w": 309.31,
+      "h": 33
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "votre équipe.",
+      "x": 24,
+      "y": 6049,
+      "w": 154.89600000000002,
+      "h": 33
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Nous repérons les étapes répétitives puis",
+      "x": 24,
+      "y": 6104,
+      "w": 294.23583984375,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "concevons les outils et les flux adaptés à votre",
+      "x": 24,
+      "y": 6129,
+      "w": 332.0654296875,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "fonctionnement.",
+      "x": 24,
+      "y": 6154,
+      "w": 115.95703125,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "—",
+      "x": 24,
+      "y": 6203,
+      "w": 11.791,
+      "h": 20
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "sites web et CMS",
+      "x": 44,
+      "y": 6203,
+      "w": 107.2626953125,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "—",
+      "x": 24,
+      "y": 6233,
+      "w": 11.791,
+      "h": 20
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "automatisation marketing et CRM",
+      "x": 44,
+      "y": 6233,
+      "w": 203.91845703125,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "—",
+      "x": 24,
+      "y": 6263,
+      "w": 11.791,
+      "h": 20
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "intégration de vos outils",
+      "x": 44,
+      "y": 6263,
+      "w": 147.06884765625,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "—",
+      "x": 24,
+      "y": 6293,
+      "w": 11.791,
+      "h": 20
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "assistants et fonctions basées sur l’IA",
+      "x": 44,
+      "y": 6293,
+      "w": 231.53076171875,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "—",
+      "x": 24,
+      "y": 6323,
+      "w": 11.791,
+      "h": 20
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "reporting automatisé",
+      "x": 44,
+      "y": 6323,
+      "w": 127.3974609375,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "CE QUE VOUS RECEVEZ",
+      "x": 24,
+      "y": 6391,
+      "w": 139.8,
+      "h": 16
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Un système plus fluide, documenté et",
+      "x": 24,
+      "y": 6423,
+      "w": 273.84521484375,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "utilisable par votre équipe.",
+      "x": 24,
+      "y": 6448,
+      "w": 192.94189453125,
+      "h": 25
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Découvrir Automatisation et IA",
+      "x": 24,
+      "y": 6498,
+      "w": 192.587890625,
+      "h": 21
+    },
+    {
+      "section": "FrozenExpertise",
+      "text": "Explorer toutes nos expertises",
+      "x": 44,
+      "y": 6591.0,
+      "w": 205.618,
+      "h": 18
+    },
+    {
+      "section": "SelectedWork",
+      "text": "SELECTED WORK",
+      "x": 24,
+      "y": 6738,
+      "w": 95.4,
+      "h": 16
+    },
+    {
+      "section": "SelectedWork",
+      "text": "View all work",
+      "x": 248,
+      "y": 6737,
+      "w": 76.608,
+      "h": 19
+    },
+    {
+      "section": "SelectedWork",
+      "text": "PROJECT IMAGE",
+      "x": 152.4,
+      "y": 6931.0,
+      "w": 85.2,
+      "h": 14
+    },
+    {
+      "section": "SelectedWork",
+      "text": "01",
+      "x": 48,
+      "y": 6993,
+      "w": 68.04,
+      "h": 70
+    },
+    {
+      "section": "SelectedWork",
+      "text": "Project title",
+      "x": 24,
+      "y": 7100,
+      "w": 128.238,
+      "h": 28
+    },
+    {
+      "section": "SelectedWork",
+      "text": "CLIENT · DISCIPLINES · YEAR",
+      "x": 24,
+      "y": 7142,
+      "w": 199.0,
+      "h": 16
+    },
+    {
+      "section": "SelectedWork",
+      "text": "PROJECT IMAGE",
+      "x": 152.4,
+      "y": 7324.0,
+      "w": 85.2,
+      "h": 14
+    },
+    {
+      "section": "SelectedWork",
+      "text": "02",
+      "x": 48,
+      "y": 7386,
+      "w": 81.8,
+      "h": 70
+    },
+    {
+      "section": "SelectedWork",
+      "text": "Project title",
+      "x": 24,
+      "y": 7493,
+      "w": 128.238,
+      "h": 28
+    },
+    {
+      "section": "SelectedWork",
+      "text": "CLIENT · DISCIPLINES · YEAR",
+      "x": 24,
+      "y": 7535,
+      "w": 199.0,
+      "h": 16
+    },
+    {
+      "section": "SelectedWork",
+      "text": "PROJECT IMAGE",
+      "x": 152.4,
+      "y": 7717.0,
+      "w": 85.2,
+      "h": 14
+    },
+    {
+      "section": "SelectedWork",
+      "text": "03",
+      "x": 48,
+      "y": 7779,
+      "w": 81.48,
+      "h": 70
+    },
+    {
+      "section": "SelectedWork",
+      "text": "Project title",
+      "x": 24,
+      "y": 7886,
+      "w": 128.238,
+      "h": 28
+    },
+    {
+      "section": "SelectedWork",
+      "text": "CLIENT · DISCIPLINES · YEAR",
+      "x": 24,
+      "y": 7928,
+      "w": 199.0,
+      "h": 16
+    },
+    {
+      "section": "SelectedWork",
+      "text": "DESIGN SLOTS · PROJECT CONTENT REQUIRED",
+      "x": 24,
+      "y": 8013,
+      "w": 287.79999999999995,
+      "h": 16
+    },
+    {
+      "section": "ClientLogoCloud",
+      "text": "SELECTED EXPERIENCE",
+      "x": 24,
+      "y": 8135,
+      "w": 139.8,
+      "h": 16
+    },
+    {
+      "section": "ClientLogoCloud",
+      "text": "Companies, institutions",
+      "x": 24,
+      "y": 8177,
+      "w": 315.63899999999995,
+      "h": 35
+    },
+    {
+      "section": "ClientLogoCloud",
+      "text": "and brands connected to",
+      "x": 24,
+      "y": 8212,
+      "w": 333.88,
+      "h": 35
+    },
+    {
+      "section": "ClientLogoCloud",
+      "text": "our work.",
+      "x": 24,
+      "y": 8247,
+      "w": 125.52099999999999,
+      "h": 35
+    },
+    {
+      "section": "ClientLogoCloud",
+      "text": "CLIENT LOGO 01",
+      "x": 69.1,
+      "y": 8356,
+      "w": 80.8,
+      "h": 14
+    },
+    {
+      "section": "ClientLogoCloud",
+      "text": "CLIENT LOGO 02",
+      "x": 240.1,
+      "y": 8356,
+      "w": 80.8,
+      "h": 14
+    },
+    {
+      "section": "ClientLogoCloud",
+      "text": "CLIENT LOGO 03",
+      "x": 69.1,
+      "y": 8425,
+      "w": 80.8,
+      "h": 14
+    },
+    {
+      "section": "ClientLogoCloud",
+      "text": "CLIENT LOGO 04",
+      "x": 240.1,
+      "y": 8425,
+      "w": 80.8,
+      "h": 14
+    },
+    {
+      "section": "ClientLogoCloud",
+      "text": "CLIENT LOGO 05",
+      "x": 69.1,
+      "y": 8494,
+      "w": 80.8,
+      "h": 14
+    },
+    {
+      "section": "ClientLogoCloud",
+      "text": "CLIENT LOGO 06",
+      "x": 240.1,
+      "y": 8494,
+      "w": 80.8,
+      "h": 14
+    },
+    {
+      "section": "ClientLogoCloud",
+      "text": "CLIENT LOGO 07",
+      "x": 69.1,
+      "y": 8563,
+      "w": 80.8,
+      "h": 14
+    },
+    {
+      "section": "ClientLogoCloud",
+      "text": "CLIENT LOGO 08",
+      "x": 240.1,
+      "y": 8563,
+      "w": 80.8,
+      "h": 14
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "SELECTED EVIDENCE",
+      "x": 24,
+      "y": 8736,
+      "w": 125.0,
+      "h": 16
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "What strategy",
+      "x": 24,
+      "y": 8776,
+      "w": 213.58399999999997,
+      "h": 38
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "becomes when it",
+      "x": 24,
+      "y": 8814,
+      "w": 250.792,
+      "h": 38
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "reaches execution.",
+      "x": 24,
+      "y": 8852,
+      "w": 280.796,
+      "h": 38
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "STRATEGY",
+      "x": 24,
+      "y": 8961,
+      "w": 58.4,
+      "h": 16
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "Strategic Foundations",
+      "x": 24,
+      "y": 8996,
+      "w": 261.55,
+      "h": 31
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "Market analysis, audience research and strategic",
+      "x": 24,
+      "y": 9048,
+      "w": 341.55,
+      "h": 25
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "roadmaps that identify the biggest",
+      "x": 24,
+      "y": 9073,
+      "w": 242.1,
+      "h": 25
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "opportunities.",
+      "x": 24,
+      "y": 9098,
+      "w": 96.375,
+      "h": 25
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "—  Market & competitor analysis",
+      "x": 24,
+      "y": 9145,
+      "w": 210.42,
+      "h": 23
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "—  Audience research",
+      "x": 24,
+      "y": 9173,
+      "w": 140.924,
+      "h": 23
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "—  Strategic roadmap",
+      "x": 24,
+      "y": 9201,
+      "w": 141.078,
+      "h": 23
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "BRAND",
+      "x": 24,
+      "y": 9298,
+      "w": 36.2,
+      "h": 16
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "Brand System",
+      "x": 24,
+      "y": 9333,
+      "w": 165.575,
+      "h": 31
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "Positioning translated into a clear verbal and",
+      "x": 24,
+      "y": 9385,
+      "w": 311.19,
+      "h": 25
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "visual system that teams can actually use.",
+      "x": 24,
+      "y": 9410,
+      "w": 294.57,
+      "h": 25
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "—  Positioning",
+      "x": 24,
+      "y": 9457,
+      "w": 92.442,
+      "h": 23
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "—  Identity system",
+      "x": 24,
+      "y": 9485,
+      "w": 120.904,
+      "h": 23
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "—  Messaging",
+      "x": 24,
+      "y": 9513,
+      "w": 90.286,
+      "h": 23
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "DIGITAL",
+      "x": 24,
+      "y": 9610,
+      "w": 51.0,
+      "h": 16
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "Campaign System",
+      "x": 24,
+      "y": 9645,
+      "w": 213.6,
+      "h": 31
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "Content, distribution and performance working",
+      "x": 24,
+      "y": 9697,
+      "w": 327.345,
+      "h": 25
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "together around one commercial objective.",
+      "x": 24,
+      "y": 9722,
+      "w": 298.38,
+      "h": 25
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "—  Content system",
+      "x": 24,
+      "y": 9769,
+      "w": 123.858,
+      "h": 23
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "—  Paid media",
+      "x": 24,
+      "y": 9797,
+      "w": 91.35,
+      "h": 23
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "—  Measurement",
+      "x": 24,
+      "y": 9825,
+      "w": 109.788,
+      "h": 23
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "TECHNOLOGY",
+      "x": 24,
+      "y": 9922,
+      "w": 73.2,
+      "h": 16
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "Digital Platform",
+      "x": 24,
+      "y": 9957,
+      "w": 185.175,
+      "h": 31
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "Web, automation and reporting combined into",
+      "x": 24,
+      "y": 10009,
+      "w": 318.72,
+      "h": 25
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "practical operating tools.",
+      "x": 24,
+      "y": 10034,
+      "w": 173.505,
+      "h": 25
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "—  Web experience",
+      "x": 24,
+      "y": 10081,
+      "w": 125.048,
+      "h": 23
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "—  Automation",
+      "x": 24,
+      "y": 10109,
+      "w": 95.662,
+      "h": 23
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "—  Reporting",
+      "x": 24,
+      "y": 10137,
+      "w": 83.972,
+      "h": 23
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "FREQUENTLY ASKED QUESTIONS",
+      "x": 24,
+      "y": 10242,
+      "w": 191.6,
+      "h": 16
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "A few things clients usually",
+      "x": 24,
+      "y": 10287,
+      "w": 334.692,
+      "h": 32
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "want to know.",
+      "x": 24,
+      "y": 10319,
+      "w": 171.97,
+      "h": 32
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "What kind of companies do you work",
+      "x": 24,
+      "y": 10410,
+      "w": 263.52,
+      "h": 24
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "with?",
+      "x": 24,
+      "y": 10434,
+      "w": 39.84,
+      "h": 24
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "−",
+      "x": 350,
+      "y": 10411,
+      "w": 9.36,
+      "h": 23
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "We work with ambitious companies, institutions and",
+      "x": 24,
+      "y": 10476,
+      "w": 338.912,
+      "h": 23
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "brands that value strategic thinking, strong creative",
+      "x": 24,
+      "y": 10499,
+      "w": 337.722,
+      "h": 23
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "systems and measurable execution.",
+      "x": 24,
+      "y": 10522,
+      "w": 233.24,
+      "h": 23
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "Do you work on strategy only?",
+      "x": 24,
+      "y": 10602,
+      "w": 216.99,
+      "h": 24
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "+",
+      "x": 350,
+      "y": 10603,
+      "w": 10.044,
+      "h": 23
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "Can Global Comm handle execution as",
+      "x": 24,
+      "y": 10675,
+      "w": 273.915,
+      "h": 24
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "well?",
+      "x": 24,
+      "y": 10699,
+      "w": 38.085,
+      "h": 24
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "+",
+      "x": 350,
+      "y": 10676,
+      "w": 10.044,
+      "h": 23
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "How does a project usually start?",
+      "x": 24,
+      "y": 10772,
+      "w": 238.83,
+      "h": 24
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "+",
+      "x": 350,
+      "y": 10773,
+      "w": 10.044,
+      "h": 23
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "Do you offer ongoing engagements?",
+      "x": 24,
+      "y": 10845,
+      "w": 259.335,
+      "h": 24
+    },
+    {
+      "section": "EvidenceFaq",
+      "text": "+",
+      "x": 350,
+      "y": 10846,
+      "w": 10.044,
+      "h": 23
+    },
+    {
+      "section": "FinalCta",
+      "text": "LET'S TALK",
+      "x": 24,
+      "y": 11023,
+      "w": 73.2,
+      "h": 16
+    },
+    {
+      "section": "FinalCta",
+      "text": "READY TO BUILD",
+      "x": 24,
+      "y": 11070,
+      "w": 309.64,
+      "h": 44
+    },
+    {
+      "section": "FinalCta",
+      "text": "WHAT COMES",
+      "x": 24,
+      "y": 11114,
+      "w": 265.64,
+      "h": 44
+    },
+    {
+      "section": "FinalCta",
+      "text": "NEXT?",
+      "x": 24,
+      "y": 11158,
+      "w": 122.72,
+      "h": 44
+    },
+    {
+      "section": "FinalCta",
+      "text": "New markets. Stronger brands. Real",
+      "x": 24,
+      "y": 11231,
+      "w": 301.788,
+      "h": 28
+    },
+    {
+      "section": "FinalCta",
+      "text": "business growth.",
+      "x": 24,
+      "y": 11259,
+      "w": 142.29,
+      "h": 28
+    },
+    {
+      "section": "FinalCta",
+      "text": "Tell us about your project",
+      "x": 44,
+      "y": 11334.0,
+      "w": 169.456,
+      "h": 18
+    },
+    {
+      "section": "Footer",
+      "text": "GLOBAL COMMUNICATION CORPORATE™",
+      "x": 24,
+      "y": 11523,
+      "w": 245.844,
+      "h": 18
+    },
+    {
+      "section": "Footer",
+      "text": "Rabat, Morocco",
+      "x": 24,
+      "y": 11557,
+      "w": 94.627,
+      "h": 20
+    },
+    {
+      "section": "Footer",
+      "text": "Work",
+      "x": 24,
+      "y": 11615,
+      "w": 33.267,
+      "h": 19
+    },
+    {
+      "section": "Footer",
+      "text": "Services",
+      "x": 114,
+      "y": 11615,
+      "w": 53.508,
+      "h": 19
+    },
+    {
+      "section": "Footer",
+      "text": "Company",
+      "x": 204,
+      "y": 11615,
+      "w": 58.539,
+      "h": 19
+    },
+    {
+      "section": "Footer",
+      "text": "Contact",
+      "x": 294,
+      "y": 11615,
+      "w": 49.92,
+      "h": 19
+    },
+    {
+      "section": "Footer",
+      "text": "FR    EN    ES",
+      "x": 24,
+      "y": 11665,
+      "w": 100.8,
+      "h": 18
+    },
+    {
+      "section": "Footer",
+      "text": "Building brands for a",
+      "x": 24,
+      "y": 11729,
+      "w": 312.739,
+      "h": 38
+    },
+    {
+      "section": "Footer",
+      "text": "brighter tomorrow.",
+      "x": 24,
+      "y": 11767,
+      "w": 286.369,
+      "h": 38
+    },
+    {
+      "section": "Footer",
+      "text": "© 2026 Global Communication Corporate™",
+      "x": 24,
+      "y": 11951,
+      "w": 222.112,
+      "h": 18
+    },
+    {
+      "section": "Footer",
+      "text": "Privacy",
+      "x": 24,
+      "y": 12000,
+      "w": 37.873,
+      "h": 18
+    },
+    {
+      "section": "Footer",
+      "text": "Terms",
+      "x": 109,
+      "y": 12000,
+      "w": 31.779,
+      "h": 18
+    },
+    {
+      "section": "Footer",
+      "text": "Cookies",
+      "x": 194,
+      "y": 12000,
+      "w": 41.404,
+      "h": 18
+    }
+  ]
+}

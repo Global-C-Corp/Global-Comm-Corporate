@@ -10,7 +10,11 @@ export async function getServices(ctx: QueryContext, { limit = 100 }: { limit?: 
     where: approvedLocaleWhere(ctx),
     limit,
     depth: 1,
-    sort: ['displayOrder', 'name'],
+    // `id` closes the ordering. Without it, rows sharing a displayOrder come
+    // back in whatever order Postgres finds them, which differs between two
+    // databases built from the same seed — and makes `limit` able to repeat or
+    // skip a row across pages.
+    sort: ['displayOrder', 'name', 'id'],
   })
   return result.docs
 }
@@ -31,7 +35,7 @@ export async function getServicePillars(ctx: QueryContext): Promise<Service[]> {
     where: combineWhere(approvedLocaleWhere(ctx), { isPillar: { equals: true } }),
     limit: 50,
     depth: 1,
-    sort: ['displayOrder', 'name'],
+    sort: ['displayOrder', 'name', 'id'],
   })
   return result.docs
 }
@@ -50,7 +54,7 @@ export async function getFoldedServices(ctx: QueryContext, pillarId: number | st
     where: combineWhere(approvedLocaleWhere(ctx), { foldedInto: { equals: pillarId } }),
     limit: 100,
     depth: 0,
-    sort: ['displayOrder', 'name'],
+    sort: ['displayOrder', 'name', 'id'],
   })
   return result.docs
 }

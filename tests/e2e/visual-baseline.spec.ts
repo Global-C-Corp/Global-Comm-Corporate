@@ -1,4 +1,5 @@
 import { expect, test } from '@playwright/test'
+import { settleForScreenshot } from './visual-readiness'
 
 const BASE = 'http://localhost:3000'
 const locales = ['fr', 'en', 'es'] as const
@@ -20,11 +21,10 @@ type Locale = (typeof locales)[number]
  * Exemplar entities are pinned deliberately rather than discovered at runtime,
  * so a content edit cannot silently change what is being compared:
  *
- *   service detail  → "Marketing digital", a root service that survives the
- *                     consolidation to four service pages.
- *   case study      → "AMREC — 55 ans / programme UNESCO", the published
- *                     project with the longest narrative and three metrics,
- *                     so the optional metrics block is exercised.
+ *   service detail  → "Marketing digital", one of the four public pillars.
+ *   case study      → "E2E Case Study", an explicitly synthetic fixture that
+ *                     exists only in the CI database. Production seeds never
+ *                     fabricate client proof or case studies.
  *
  * The industry-detail template was captured in the original baseline and has
  * been removed here along with the route itself: industries no longer have
@@ -61,9 +61,9 @@ const TEMPLATES: { name: string; paths: Record<Locale, string> }[] = [
   {
     name: 'case-study-detail',
     paths: {
-      fr: '/fr/work/amrec-55-ans-programme-unesco',
-      en: '/en/work/amrec-55-years-unesco-programme',
-      es: '/es/work/amrec-55-anos-programa-unesco',
+      fr: '/fr/work/e2e-case-study',
+      en: '/en/work/e2e-case-study',
+      es: '/es/work/e2e-case-study',
     },
   },
   {
@@ -83,12 +83,18 @@ for (const viewport of VIEWPORTS) {
     for (const template of TEMPLATES) {
       for (const locale of locales) {
         test(`${template.name} · ${locale}`, async ({ page }) => {
-          const response = await page.goto(`${BASE}${template.paths[locale]}`)
+          const response = await page.goto(`${BASE}${template.paths[locale]}`, {
+            waitUntil: 'domcontentloaded',
+          })
 
           // Without this a 404 or an error page would be captured as if it
           // were the template, and the baseline would encode the failure.
           expect(response?.status()).toBe(200)
           await expect(page.locator('h1').first()).toBeVisible()
+
+          // Visual baselines must not race lazy-loaded media, and must not
+          // wait on a network that never falls silent. See visual-readiness.ts.
+          await settleForScreenshot(page)
 
           await expect(page).toHaveScreenshot(
             `${template.name}-${locale}-${viewport.name}.png`,

@@ -1,5 +1,11 @@
 import type { Locale } from '@/i18n/locale'
-import type { NavLink } from '@/components/layout/MobileNav'
+
+/** A navigation target after localization, as the header and footer render it. */
+export type NavLink = {
+  label: string
+  url: string
+  opensInNewTab?: boolean | null
+}
 
 type StoredNavItem = {
   label?: string | null

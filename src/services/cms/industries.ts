@@ -10,7 +10,7 @@ export async function getIndustries(ctx: QueryContext, limit = 50): Promise<Indu
     where: approvedLocaleWhere(ctx),
     limit,
     depth: 0,
-    sort: ['displayOrder', 'name'],
+    sort: ['displayOrder', 'name', 'id'],
   })
   return result.docs
 }

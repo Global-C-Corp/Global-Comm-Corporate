@@ -1,26 +1,24 @@
 import type { Metadata } from 'next'
-import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { ClientLogoCloud } from '@/components/blocks/ClientLogoCloud'
+import { EvidenceFaq, type EvidenceMedia } from '@/components/blocks/EvidenceFaq'
+import { Expertise, type ExpertiseItem } from '@/components/blocks/Expertise'
+import { FinalCta } from '@/components/blocks/FinalCta'
+import { Hero, type HeroLogo, type HeroSlide } from '@/components/blocks/Hero'
+import { PointOfView } from '@/components/blocks/PointOfView'
+import { SelectedWork, type SelectedWorkItem } from '@/components/blocks/SelectedWork'
 import { SiteHeader } from '@/components/layout/SiteHeader'
 import { JsonLd, organizationSchema } from '@/components/seo/JsonLd'
-import { TestimonialBlock } from '@/components/testimonial/TestimonialBlock'
-import {
-  Band,
-  Bullets,
-  CTA,
-  Heading,
-  Kicker,
-  Ordinal,
-  Prose,
-} from '@/components/ui/Primitives'
-import { mediaURL } from '@/lib/media'
+import { getDictionary } from '@/i18n/dictionaries'
+import { isMedia, mediaURL } from '@/lib/media'
 import { populated } from '@/lib/relations'
-import type { Client, Project, Service, Testimonial } from '@/payload-types'
+import type { Client, Project, Service } from '@/payload-types'
 import { getGlobalAvailability } from '@/services/cms/availability'
 import { getHomePage, getSiteChrome } from '@/services/cms/globals'
 import { getPageContext } from '@/services/cms/pageContext'
+import { projectTiles } from '@/services/cms/projectTiles'
 import { getFeaturedProjects } from '@/services/cms/projects'
-import { getFeaturedClients, getFeaturedTestimonials } from '@/services/cms/proof'
+import { getFeaturedClients, getPublishedClients } from '@/services/cms/proof'
 import { resolvePageSEO } from '@/services/seo/resolvePageSEO'
 import { buildPath, type Route } from '@/services/seo/urls'
 
@@ -42,326 +40,230 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   })
 }
 
-const values = (items?: { value?: string | null }[] | null): string[] =>
-  (items ?? []).map((item) => item.value).filter((value): value is string => Boolean(value))
+/** Splits a CMS textarea into the paragraphs an editor separated by blank lines. */
+const paragraphs = (value?: string | null): string[] =>
+  (value ?? '').split(/\n{2,}/).map((part) => part.trim()).filter(Boolean)
 
+/**
+ * Homepage — the approved composition (04 §12.1), on production data.
+ *
+ * Section order is the approved one: dark split hero, Point of View, the four
+ * expertises, Selected Work, Selected Experience, Evidence + FAQ, and the
+ * full-width blue closing band. Every string comes from the Home Page global
+ * in the requested locale; the blocks decide only where it sits.
+ *
+ * Two deliberate absences, both reported rather than filled:
+ *   - Platform Expertise (approved section 03) has no field anywhere in the
+ *     CMS, so rendering it would mean shipping untranslated English copy to
+ *     /fr and /es. The section is omitted until the model exists.
+ *   - The hero's brand-blue accent phrase and its closing statement line have
+ *     no field either, so the headline renders whole and the hairline band is
+ *     not drawn, rather than inventing an emphasis.
+ */
 export default async function HomePageRoute({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params
   const { ctx, draft } = await getPageContext(locale)
+  const dictionary = getDictionary(ctx.locale)
 
   const page = await getHomePage(ctx)
-  // No approved translation means no page — never fabricate a fallback (CLAUDE.md §14, §139).
   if (!page) notFound()
 
   const selectedClients = populated<Client>(page.featuredClients)
   const selectedProjects = populated<Project>(page.featuredProjects)
-  const selectedTestimonials = populated<Testimonial>(page.featuredTestimonials)
 
-  const [fallbackProjects, fallbackClients, fallbackTestimonials, availability] = await Promise.all([
+  const [fallbackProjects, fallbackClients, availability] = await Promise.all([
     selectedProjects.length === 0 ? getFeaturedProjects(ctx) : Promise.resolve([]),
-    selectedClients.length === 0 ? getFeaturedClients(ctx) : Promise.resolve([]),
-    selectedTestimonials.length === 0 ? getFeaturedTestimonials(ctx) : Promise.resolve([]),
+    selectedClients.length === 0 ? getFeaturedClients(ctx, 16) : Promise.resolve([]),
     getGlobalAvailability('home-page'),
   ])
 
   const { settings } = await getSiteChrome(ctx.locale, draft)
 
-  const clients = selectedClients.length > 0 ? selectedClients : fallbackClients
+  /**
+   * No client is marked `featured` in the CMS, so the featured query returns
+   * nothing and the reference band would disappear entirely. Widening to every
+   * approved published client is the same featured/fallback idiom the Services
+   * page uses — it selects more real records, it never invents one.
+   */
+  const featuredOrAll =
+    fallbackClients.length > 0 || selectedClients.length > 0
+      ? fallbackClients
+      : await getPublishedClients(ctx, 16)
+  const clients = selectedClients.length > 0 ? selectedClients : featuredOrAll
   const projects = selectedProjects.length > 0 ? selectedProjects : fallbackProjects
-  const testimonials = selectedTestimonials.length > 0 ? selectedTestimonials : fallbackTestimonials
 
-  // Only clients with an approved logo can appear in the wall. With none, the
-  // strip hides rather than rendering a row of bare names (§105, §139).
-  const clientLogos = clients
-    .map((client) => ({ client, logo: mediaURL(client.logo, 'logo') }))
-    .filter((entry): entry is { client: Client; logo: string } => Boolean(entry.logo))
+  /** Hero carousel: only projects that actually carry an image can be a slide. */
+  const heroSlides: HeroSlide[] = projects
+    .map((project) => {
+      const image =
+        mediaURL(project.heroMedia, 'hero') ||
+        mediaURL(project.featuredMedia, 'projectFeature') ||
+        mediaURL(project.featuredMedia, 'projectCard')
+      if (!image) return null
 
-  const heroImage = mediaURL(page.heroMedia, 'hero')
-  const overlayItems = values(page.hero?.overlayItems)
-  const serviceItems = page.expertise?.items ?? []
-  const approachSteps = page.approach?.steps ?? []
-  const faqItems = page.faq?.items ?? []
-  const positioningPillars = page.positioning?.pillars ?? []
+      const clientName =
+        typeof project.client === 'object' && project.client ? project.client.name : ''
+      const href = project.slug ? buildPath(ctx.locale, { type: 'project', slug: project.slug }) : null
+
+      return {
+        id: String(project.id),
+        image,
+        eyebrow: clientName || dictionary.sections.selectedWork,
+        title: project.shortStatement || project.title,
+        body: project.excerpt || '',
+        ...(href ? { href } : {}),
+      } satisfies HeroSlide
+    })
+    .filter((slide): slide is HeroSlide => slide !== null)
+
+  const clientLogos: HeroLogo[] = clients
+    .map((client) => {
+      const logo = mediaURL(client.logo, 'logo')
+      if (!logo) return null
+
+      return {
+        id: String(client.id),
+        name: client.name,
+        logo,
+        ...(client.websiteURL ? { href: client.websiteURL } : {}),
+      } satisfies HeroLogo
+    })
+    .filter((logo): logo is HeroLogo => logo !== null)
+
+  const workItems: SelectedWorkItem[] = projectTiles(projects, ctx.locale).map(
+    ({ project, href, meta, image }) => ({
+      id: String(project.id),
+      title: project.title,
+      disciplines: meta,
+      body: project.excerpt || project.shortStatement || '',
+      ...(image ? { image: image.url } : {}),
+      alt: image?.alt || project.title,
+      href: href || buildPath(ctx.locale, { type: 'work' }),
+    }),
+  )
+
+  /**
+   * The evidence rail shows the four positioning pillars the CMS already
+   * carries. They are the page's own statements of what the work produces, so
+   * nothing here is composed for the layout.
+   */
+  const evidenceCategories = (page.positioning?.pillars ?? [])
+    .filter((pillar) => Boolean(pillar.title))
+    .map((pillar, index) => ({
+      key: `pillar-${index}`,
+      label: pillar.title,
+      body: pillar.body,
+    }))
+
+  /** One image per evidence category, taken from the projects already selected. */
+  const evidenceMedia: EvidenceMedia[] = []
+  const seenEvidenceUrls = new Set<string>()
+
+  for (const project of projects) {
+    const candidates = [
+      project.featuredMedia,
+      project.heroMedia,
+      ...(project.gallery ?? []).map((entry) => entry.media),
+    ]
+
+    for (const candidate of candidates) {
+      const url =
+        mediaURL(candidate, 'projectFeature') ||
+        mediaURL(candidate, 'projectCard') ||
+        mediaURL(candidate, 'hero')
+
+      if (!url || seenEvidenceUrls.has(url)) continue
+      seenEvidenceUrls.add(url)
+      evidenceMedia.push({
+        url,
+        alt: isMedia(candidate) ? candidate.alt?.trim() || project.title : project.title,
+      })
+
+      if (evidenceMedia.length >= 4) break
+    }
+
+    if (evidenceMedia.length >= 4) break
+  }
 
   const serviceHref = (service: Service | number | null | undefined): string | null => {
-    if (!service || typeof service !== 'object') return null
-    return service.slug ? buildPath(ctx.locale, { type: 'service', slug: service.slug }) : null
+    if (!service || typeof service !== 'object' || !service.slug) return null
+    return buildPath(ctx.locale, { type: 'service', slug: service.slug })
   }
+
+  const expertiseItems: ExpertiseItem[] = (page.expertise?.items ?? [])
+    .filter((item) => Boolean(item.title))
+    .map((item, index) => ({
+      id: String(item.id ?? index),
+      number: item.number ?? String(index + 1).padStart(2, '0'),
+      name: item.title as string,
+      promise: item.tagline || item.body,
+      href: serviceHref(item.service),
+    }))
+
+  const faqItems = (page.faq?.items ?? []).map((item) => ({
+    question: item.question,
+    answer: item.answer,
+  }))
 
   return (
     <>
-      <SiteHeader locale={ctx.locale} route={route} availability={availability} draft={draft} />
+      <SiteHeader
+        locale={ctx.locale}
+        route={route}
+        availability={availability}
+        draft={draft}
+        overDark
+      />
       <JsonLd data={organizationSchema(settings, ctx.locale)} />
 
-      {/* Everything below is inside the Preflight boundary (CLAUDE.md §83). */}
-      <main id="main" className="gc-tw bg-background">
-        {/* ---- 1. Hero ------------------------------------------------- */}
-        <section className="mx-auto w-full max-w-[76rem] px-6 pt-16 pb-20 md:px-10 md:pt-24 md:pb-28">
-          {clientLogos.length > 0 && page.heroEyebrow && (
-            <div className="mb-12 border-b border-border pb-8">
-              <Kicker>{page.heroEyebrow}</Kicker>
-              <ul className="mt-5 flex flex-wrap items-center gap-x-10 gap-y-6">
-                {clientLogos.map(({ client, logo }) => (
-                  <li key={client.id}>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={logo} alt={client.name} loading="lazy" className="max-h-8 w-auto" />
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
+      <main id="main" className="gc-design-page">
+        <Hero
+          eyebrow={page.heroEyebrow}
+          heading={page.heroHeading}
+          support={page.heroBody}
+          primaryCTA={page.primaryCTA}
+          secondaryCTA={page.secondaryCTA}
+          slides={heroSlides}
+        />
 
-          <div className="grid gap-12 lg:grid-cols-12 lg:gap-16">
-            <div className="lg:col-span-7">
-              {page.heroHeading && <Heading as="h1">{page.heroHeading}</Heading>}
-              <Prose text={page.heroBody} className="mt-8 text-lg" />
-              <div className="mt-10 flex flex-wrap gap-4">
-                <CTA cta={page.primaryCTA} locale={ctx.locale} />
-                <CTA cta={page.secondaryCTA} locale={ctx.locale} variant="secondary" />
-              </div>
-            </div>
+        <PointOfView label={page.positioning?.kicker} heading={page.positioning?.heading} />
 
-            {(heroImage || overlayItems.length > 0) && (
-              <div className="lg:col-span-5">
-                {/* Without a hero image the panel sizes to its content rather
-                    than stretching to a tall empty box. */}
-                <div className={heroImage ? 'relative h-full border border-border' : 'border border-border'}>
-                  {heroImage ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={heroImage} alt="" className="h-full w-full object-cover" />
-                  ) : null}
-                  {overlayItems.length > 0 && (
-                    <div className={heroImage ? 'absolute inset-x-0 bottom-0 bg-background/95 p-6' : 'p-6'}>
-                      {page.hero?.overlayLabel && <Kicker>{page.hero.overlayLabel}</Kicker>}
-                      <ul className="mt-4 space-y-1 text-sm text-foreground">
-                        {overlayItems.map((item) => (
-                          <li key={item}>{item}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
-        </section>
+        <Expertise
+          kicker={page.expertise?.kicker}
+          heading={page.expertise?.heading}
+          body={paragraphs(page.expertise?.intro)}
+          cta={page.expertise?.sectionCTA}
+          items={expertiseItems}
+        />
 
-        {/* ---- 2. Positionnement --------------------------------------- */}
-        {page.positioning?.heading && (
-          <Band surface labelledBy="positioning">
-            {page.positioning.kicker && <Kicker id="positioning">{page.positioning.kicker}</Kicker>}
-            <Heading className="mt-5">{page.positioning.heading}</Heading>
-            <Prose text={page.positioning.body} className="mt-8" />
+        <SelectedWork
+          label={page.workSection?.kicker}
+          heading={page.workSection?.heading}
+          viewAll={page.workSection?.sectionCTA}
+          items={workItems}
+        />
 
-            {positioningPillars.length > 0 && (
-              <ul className="mt-14 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
-                {positioningPillars.map((pillar, index) => (
-                  <li key={pillar.id ?? index} className="border-t border-foreground pt-5">
-                    <h3 className="text-base font-semibold text-foreground">{pillar.title}</h3>
-                    {pillar.body && <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{pillar.body}</p>}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </Band>
-        )}
+        <ClientLogoCloud
+          label={dictionary.sections.selectedClients}
+          support={page.proof?.body}
+          logos={clientLogos}
+        />
 
-        {/* ---- 3. Services --------------------------------------------- */}
-        {serviceItems.length > 0 && (
-          <Band labelledBy="services">
-            {page.expertise?.kicker && <Kicker id="services">{page.expertise.kicker}</Kicker>}
-            {page.expertise?.heading && <Heading className="mt-5">{page.expertise.heading}</Heading>}
-            <Prose text={page.expertise?.intro} className="mt-8" />
+        <EvidenceFaq
+          evidenceLabel={page.proof?.kicker}
+          evidenceHeading={page.proof?.heading}
+          categories={evidenceCategories}
+          faqLabel={page.faq?.kicker}
+          faqSupport={page.faq?.heading}
+          faqItems={faqItems}
+          media={evidenceMedia}
+        />
 
-            <div className="mt-16 grid gap-px border border-border bg-border md:grid-cols-2">
-              {serviceItems.map((item, index) => {
-                const href = serviceHref(item.service)
-                const offerings = values(item.offerings)
-                return (
-                  <article key={item.id ?? index} className="flex flex-col bg-background p-8 md:p-10">
-                    <div className="flex items-baseline gap-4">
-                      {item.number && <Ordinal>{item.number}</Ordinal>}
-                      {item.title && <h3 className="text-xl font-semibold text-foreground">{item.title}</h3>}
-                    </div>
-                    {item.tagline && <p className="mt-4 text-base font-medium text-foreground">{item.tagline}</p>}
-                    {item.body && <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{item.body}</p>}
-
-                    {offerings.length > 0 && (
-                      <ul className="mt-6 space-y-2 text-sm text-foreground">
-                        {offerings.map((offering) => (
-                          <li key={offering} className="border-t border-border pt-2">
-                            {offering}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-
-                    {href && item.ctaLabel && (
-                      <p className="mt-8">
-                        <Link
-                          href={href}
-                          className="text-sm font-medium text-primary underline underline-offset-4 hover:text-foreground"
-                        >
-                          {item.ctaLabel}
-                        </Link>
-                      </p>
-                    )}
-                  </article>
-                )
-              })}
-            </div>
-
-            <div className="mt-12">
-              <CTA cta={page.expertise?.sectionCTA} locale={ctx.locale} variant="secondary" />
-            </div>
-          </Band>
-        )}
-
-        {/* ---- 4. Réalisations ----------------------------------------- */}
-        {projects.length > 0 && (
-          <Band surface labelledBy="work">
-            {page.workSection?.kicker && <Kicker id="work">{page.workSection.kicker}</Kicker>}
-            {page.workSection?.heading && <Heading className="mt-5">{page.workSection.heading}</Heading>}
-            <Prose text={page.workSection?.body} className="mt-8" />
-
-            <ul className="mt-16 grid gap-px border border-border bg-border md:grid-cols-2 lg:grid-cols-3">
-              {projects.map((project) => {
-                const href = project.slug
-                  ? buildPath(ctx.locale, { type: 'project', slug: project.slug })
-                  : null
-                const client = typeof project.client === 'object' ? project.client?.name : undefined
-                const meta = [client, project.year ? String(project.year) : undefined]
-                  .filter(Boolean)
-                  .join(' · ')
-
-                return (
-                  <li key={project.id} className="bg-background p-8">
-                    {meta && <p className="font-mono text-xs tracking-[0.14em] text-muted-foreground">{meta}</p>}
-                    <h3 className="mt-4 text-lg font-semibold leading-snug text-foreground">
-                      {href ? (
-                        <Link href={href} className="hover:text-primary">
-                          {project.title}
-                        </Link>
-                      ) : (
-                        project.title
-                      )}
-                    </h3>
-                    {project.excerpt && (
-                      <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{project.excerpt}</p>
-                    )}
-                    {href && page.workSection?.itemCTALabel && (
-                      <p className="mt-6">
-                        <Link
-                          href={href}
-                          className="text-sm font-medium text-primary underline underline-offset-4 hover:text-foreground"
-                        >
-                          {page.workSection.itemCTALabel}
-                        </Link>
-                      </p>
-                    )}
-                  </li>
-                )
-              })}
-            </ul>
-
-            <div className="mt-12">
-              <CTA cta={page.workSection?.sectionCTA} locale={ctx.locale} variant="secondary" />
-            </div>
-          </Band>
-        )}
-
-        {/* ---- 5. Notre approche --------------------------------------- */}
-        {approachSteps.length > 0 && (
-          <Band labelledBy="approach">
-            {page.approach?.kicker && <Kicker id="approach">{page.approach.kicker}</Kicker>}
-            {page.approach?.heading && <Heading className="mt-5">{page.approach.heading}</Heading>}
-            <Prose text={page.approach?.body} className="mt-8" />
-
-            <ol className="mt-16 space-y-px border border-border bg-border">
-              {approachSteps.map((step, index) => (
-                <li key={step.id ?? index} className="bg-background p-8 md:p-10">
-                  <div className="grid gap-8 lg:grid-cols-12">
-                    <div className="lg:col-span-4">
-                      <div className="flex items-baseline gap-4">
-                        {step.number && <Ordinal>{step.number}</Ordinal>}
-                        {step.title && <h3 className="text-lg font-semibold text-foreground">{step.title}</h3>}
-                      </div>
-                      {step.tagline && <p className="mt-4 text-base text-foreground">{step.tagline}</p>}
-                    </div>
-
-                    <div className="lg:col-span-5">
-                      <Prose text={step.body} className="text-sm" />
-                      <div className="mt-6">
-                        <Bullets items={values(step.bullets)} />
-                      </div>
-                    </div>
-
-                    {step.result && (
-                      <div className="lg:col-span-3">
-                        {step.resultLabel && <Kicker>{step.resultLabel}</Kicker>}
-                        <p className="mt-3 text-sm font-medium text-foreground">{step.result}</p>
-                      </div>
-                    )}
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </Band>
-        )}
-
-        {/* ---- 6. Preuves ----------------------------------------------
-            Copy renders only when there is real evidence to introduce.
-            Zero approved testimonials and zero client logos means the whole
-            band is hidden rather than shown empty (CLAUDE.md §105, §139). */}
-        {(testimonials.length > 0 || clientLogos.length > 0) && page.proof?.heading && (
-          <Band surface labelledBy="proof">
-            {page.proof.kicker && <Kicker id="proof">{page.proof.kicker}</Kicker>}
-            <Heading className="mt-5">{page.proof.heading}</Heading>
-            <Prose text={page.proof.body} className="mt-8" />
-
-            {testimonials.length > 0 && (
-              <div className="mt-14 grid gap-px border border-border bg-border md:grid-cols-2">
-                {testimonials.map((testimonial) => (
-                  <div key={testimonial.id} className="bg-background p-8">
-                    <TestimonialBlock testimonial={testimonial} locale={ctx.locale} />
-                  </div>
-                ))}
-              </div>
-            )}
-          </Band>
-        )}
-
-        {/* ---- 7. Questions fréquentes --------------------------------- */}
-        {faqItems.length > 0 && (
-          <Band labelledBy="faq">
-            {page.faq?.kicker && <Kicker id="faq">{page.faq.kicker}</Kicker>}
-            {page.faq?.heading && <Heading className="mt-5">{page.faq.heading}</Heading>}
-
-            <dl className="mt-14 border-t border-border">
-              {faqItems.map((item, index) => (
-                <div key={item.id ?? index} className="grid gap-4 border-b border-border py-8 lg:grid-cols-12 lg:gap-10">
-                  <dt className="text-base font-semibold text-foreground lg:col-span-5">{item.question}</dt>
-                  <dd className="text-sm leading-relaxed text-muted-foreground lg:col-span-7">{item.answer}</dd>
-                </div>
-              ))}
-            </dl>
-          </Band>
-        )}
-
-        {/* ---- 8. Appel à l'action final -------------------------------- */}
-        {page.closing?.heading && (
-          <Band surface labelledBy="closing">
-            {page.closing.kicker && <Kicker id="closing">{page.closing.kicker}</Kicker>}
-            <Heading className="mt-5">{page.closing.heading}</Heading>
-            <Prose text={page.closing.body} className="mt-8" />
-            <div className="mt-10">
-              <CTA cta={page.closingCTA} locale={ctx.locale} />
-              {page.closing.reassurance && (
-                <p className="mt-4 text-sm text-muted-foreground">{page.closing.reassurance}</p>
-              )}
-            </div>
-          </Band>
-        )}
+        <FinalCta
+          heading={page.closing?.heading}
+          support={page.closing?.body}
+          cta={page.closingCTA}
+        />
       </main>
     </>
   )

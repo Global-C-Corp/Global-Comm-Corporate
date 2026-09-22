@@ -42,6 +42,9 @@ next-env.d.ts
 
 /media
 
+# Local render output (screenshot runs, visual comparisons)
+/artifacts/
+
 # Playwright
 node_modules/
 /test-results/

@@ -74,9 +74,9 @@ test.describe('public site', () => {
     // Slugs differ per locale and are not a translation of one another, so the
     // switcher must resolve the sibling document rather than swap the prefix.
     await page.goto(`${BASE}/fr/services/recherche-audit-strategie`)
-    // Selected by attribute rather than class: the switcher's styling is free
-    // to change, its hreflang contract is not.
-    const enLink = page.locator('a[hreflang="en"]')
+    // Scope to the global header switcher: the footer also exposes locale
+    // hreflang links, while this test specifically verifies sibling-route switching.
+    const enLink = page.locator('header a[hreflang="en"]')
     await expect(enLink).toHaveAttribute('href', '/en/services/research-audit-strategy')
     await enLink.click()
     await expect(page).toHaveURL(`${BASE}/en/services/research-audit-strategy`)
@@ -124,7 +124,10 @@ test.describe('public site', () => {
     // keyboard or screen-reader user actually depends on.
     // Identified by its ARIA wiring rather than a role filter on `expanded`:
     // that state flips on click, so filtering by it loses the element.
-    const toggle = page.locator('button[aria-expanded][aria-controls]')
+    // Scoped to the global header: the homepage FAQ accordion exposes the
+    // same aria-expanded/aria-controls pairing on each of its triggers, and
+    // this test is about the navigation sheet, not about them.
+    const toggle = page.locator('header button[aria-expanded][aria-controls]')
     await expect(toggle).toBeVisible()
     await expect(toggle).toHaveAttribute('aria-expanded', 'false')
     await toggle.click()

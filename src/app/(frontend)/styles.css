@@ -1,16 +1,8 @@
 /*
- * Global Communication Corporate — stylesheet entry point.
+ * Global Communication Corporate — public frontend design-system entry point.
  *
- * The hand-written design system is gone: every public template now renders
- * with Tailwind utilities against the shadcn variable contract, so Preflight
- * applies at the root rather than being scoped to a migration boundary.
- *
- * The `.gc-tw` class remains on each template's outermost element. It costs
- * nothing, and it keeps the boundary available should a future template need
- * to opt out of the reset.
- *
- * Imported solely by (frontend)/[locale]/layout.tsx, so Payload Admin — which
- * ships its own stylesheet — is untouched by any of it.
+ * Imported only by the frontend locale layout, so Payload Admin remains isolated.
+ * The public site consumes semantic Tailwind/shadcn variables defined here.
  */
 @layer theme, base, components, utilities;
 
@@ -20,54 +12,64 @@
 
 @source '../../components';
 @source '../../app/(frontend)';
+@source '../../app/(design)';
 
-/*
- * The Global Comm palette (CLAUDE.md §83), and shadcn's variable contract
- * expressed in terms of it so the palette keeps a single definition.
- */
 :root {
+  /* Locked Global Comm primitives — 02_DESIGN_SYSTEM_FINAL.md */
   --gc-white: #ffffff;
-  --gc-black: #000000;
+  --gc-off-white: #fafafa;
+  --gc-muted: #f5f5f5;
+  --gc-border: #eaeaea;
+  --gc-border-strong: #d4d4d4;
+  --gc-foreground: #171717;
+  --gc-foreground-strong: #0a0a0a;
+  --gc-secondary: #737373;
+
   --gc-blue: #0000ff;
-  --gc-surface: #f5f5f2;
-  --gc-secondary: #5f5f5f;
-  --gc-border: rgba(0, 0, 0, 0.15);
+  --gc-blue-hover: #0000d6;
+  --gc-blue-active: #0000b8;
+  --gc-blue-soft: #eeeeff;
 
-  --gc-font-sans: Inter, 'Helvetica Neue', Arial, system-ui, sans-serif;
-  --gc-font-serif: Lora, Georgia, 'Times New Roman', serif;
-  --gc-font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-
-  --gc-radius: 2px;
+  /* next/font variables are attached to <html> by the locale layout. */
+  --gc-font-sans: var(--font-geist), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --gc-font-serif: var(--font-source-serif), Georgia, 'Times New Roman', serif;
+  /* The approved composition sets its small labels in Geist Mono. The design
+     route loads it as --font-geist-mono; the public layout does not, so the
+     token degrades to the system mono stack rather than to the sans. */
+  --gc-font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    monospace;
 
   --background: var(--gc-white);
-  --foreground: var(--gc-black);
+  --foreground: var(--gc-foreground);
 
   --card: var(--gc-white);
-  --card-foreground: var(--gc-black);
+  --card-foreground: var(--gc-foreground);
   --popover: var(--gc-white);
-  --popover-foreground: var(--gc-black);
+  --popover-foreground: var(--gc-foreground);
 
   --primary: var(--gc-blue);
   --primary-foreground: var(--gc-white);
+  --brand-hover: var(--gc-blue-hover);
+  --brand-active: var(--gc-blue-active);
+  --brand-soft: var(--gc-blue-soft);
 
-  --secondary: var(--gc-surface);
-  --secondary-foreground: var(--gc-black);
+  --secondary: var(--gc-off-white);
+  --secondary-foreground: var(--gc-foreground);
 
-  --muted: var(--gc-surface);
+  --muted: var(--gc-muted);
   --muted-foreground: var(--gc-secondary);
 
-  --accent: var(--gc-surface);
-  --accent-foreground: var(--gc-black);
+  --accent: var(--gc-off-white);
+  --accent-foreground: var(--gc-foreground);
 
-  /* Not in §83; a restrained oxblood rather than an alerting red. */
-  --destructive: #8c1c1c;
+  --destructive: #b91c1c;
   --destructive-foreground: var(--gc-white);
 
   --border: var(--gc-border);
   --input: var(--gc-border);
   --ring: var(--gc-blue);
 
-  --radius: var(--gc-radius);
+  --radius: 2px;
 }
 
 @theme inline {
@@ -79,6 +81,9 @@
   --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-active: var(--brand-active);
+  --color-brand-soft: var(--brand-soft);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
@@ -95,25 +100,123 @@
   --font-serif: var(--gc-font-serif);
   --font-mono: var(--gc-font-mono);
 
-  /* §83 geometry: 0-4px radius. Capped here so no primitive can exceed it. */
+  /*
+   * Geist type scale — consumed only by the /design prototype under
+   * src/app/(design). Declared here because this is the single stylesheet
+   * Tailwind processes; it costs the public site nothing, since Tailwind v4
+   * emits a utility only where a scanned file actually uses the token.
+   *
+   * Capped at 72: there is deliberately no token above it.
+   */
+  --text-heading-72: 4.5rem;
+  --text-heading-72--line-height: 1.05;
+  --text-heading-72--letter-spacing: -0.035em;
+  --text-heading-72--font-weight: 600;
+
+  --text-heading-64: 4rem;
+  --text-heading-64--line-height: 1.06;
+  --text-heading-64--letter-spacing: -0.033em;
+  --text-heading-64--font-weight: 600;
+
+  --text-heading-56: 3.5rem;
+  --text-heading-56--line-height: 1.08;
+  --text-heading-56--letter-spacing: -0.031em;
+  --text-heading-56--font-weight: 600;
+
+  --text-heading-48: 3rem;
+  --text-heading-48--line-height: 1.1;
+  --text-heading-48--letter-spacing: -0.029em;
+  --text-heading-48--font-weight: 600;
+
+  --text-heading-40: 2.5rem;
+  --text-heading-40--line-height: 1.15;
+  --text-heading-40--letter-spacing: -0.027em;
+  --text-heading-40--font-weight: 600;
+
+  --text-heading-32: 2rem;
+  --text-heading-32--line-height: 1.2;
+  --text-heading-32--letter-spacing: -0.024em;
+  --text-heading-32--font-weight: 600;
+
+  --text-heading-24: 1.5rem;
+  --text-heading-24--line-height: 1.25;
+  --text-heading-24--letter-spacing: -0.02em;
+  --text-heading-24--font-weight: 600;
+
+  --text-copy-20: 1.25rem;
+  --text-copy-20--line-height: 1.6;
+  --text-copy-20--letter-spacing: -0.008em;
+
+  --text-copy-18: 1.125rem;
+  --text-copy-18--line-height: 1.6;
+  --text-copy-18--letter-spacing: -0.006em;
+
+  --text-copy-16: 1rem;
+  --text-copy-16--line-height: 1.65;
+
+  --text-copy-14: 0.875rem;
+  --text-copy-14--line-height: 1.6;
+
+  --text-label-14: 0.875rem;
+  --text-label-14--line-height: 1.4;
+  --text-label-14--font-weight: 500;
+
+  --text-label-12: 0.75rem;
+  --text-label-12--line-height: 1.3;
+  --text-label-12--letter-spacing: 0.06em;
+  --text-label-12--font-weight: 500;
+
+  --text-button-16: 1rem;
+  --text-button-16--line-height: 1.2;
+  --text-button-16--font-weight: 500;
+
+  --text-button-14: 0.875rem;
+  --text-button-14--line-height: 1.2;
+  --text-button-14--font-weight: 500;
+
+  /* Sharp system: surfaces 0–2px, controls 4px, overlays up to 6px. */
   --radius-sm: 2px;
-  --radius-md: 2px;
-  --radius-lg: 4px;
-  --radius-xl: 4px;
-  --radius-2xl: 4px;
-  --radius-3xl: 4px;
-  --radius-full: 4px;
+  --radius-md: 4px;
+  --radius-lg: 6px;
+  --radius-xl: 6px;
+  --radius-2xl: 6px;
+  --radius-3xl: 6px;
+  --radius-full: 9999px;
 }
 
 @layer base {
+  html {
+    background: var(--background);
+  }
+
   body {
+    min-height: 100vh;
     background-color: var(--background);
     color: var(--foreground);
     font-family: var(--gc-font-sans);
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
-  /* §118 — motion is a preference, not a default. */
+  ::selection {
+    background: var(--gc-blue);
+    color: var(--gc-white);
+  }
+
+  :focus-visible {
+    outline-color: var(--ring);
+  }
+
+  /*
+   * Anchor offset for the /design prototype, whose header is fixed. Scoped to
+   * .gc-design-page so no public template is affected.
+   */
+  .gc-design-page section[id] {
+    scroll-margin-top: 5rem;
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *,
     ::before,

@@ -36,6 +36,10 @@ export type Dictionary = {
     readMore: string
     startProject: string
     viewOurWork: string
+    explore: string
+    viewCaseStudy: string
+    seeAllWork: string
+    andMore: string
   }
   form: {
     required: string
@@ -46,6 +50,7 @@ export type Dictionary = {
   a11y: {
     skipToContent: string
     languageSwitcher: string
+    primaryNavigation: string
   }
   notFound: {
     title: string
@@ -84,6 +89,10 @@ const dictionaries: Record<Locale, Dictionary> = {
       readMore: 'En savoir plus',
       startProject: 'Démarrer un projet',
       viewOurWork: 'Voir nos réalisations',
+      explore: 'Découvrir',
+      viewCaseStudy: 'Voir l\u2019étude de cas',
+      seeAllWork: 'Voir toutes les réalisations',
+      andMore: 'et plus encore',
     },
     form: {
       required: 'Ce champ est requis',
@@ -91,7 +100,11 @@ const dictionaries: Record<Locale, Dictionary> = {
       genericError: "Une erreur est survenue. Veuillez réessayer.",
       success: 'Merci, votre message a bien été envoyé.',
     },
-    a11y: { skipToContent: 'Aller au contenu', languageSwitcher: 'Changer de langue' },
+    a11y: {
+      skipToContent: 'Aller au contenu',
+      languageSwitcher: 'Changer de langue',
+      primaryNavigation: 'Navigation principale',
+    },
     notFound: {
       title: 'Page introuvable',
       body: "La page que vous recherchez n'existe pas ou a été déplacée.",
@@ -127,6 +140,10 @@ const dictionaries: Record<Locale, Dictionary> = {
       readMore: 'Read more',
       startProject: 'Start a project',
       viewOurWork: 'View our work',
+      explore: 'Explore',
+      viewCaseStudy: 'View case study',
+      seeAllWork: 'See all work',
+      andMore: 'and more',
     },
     form: {
       required: 'This field is required',
@@ -134,7 +151,11 @@ const dictionaries: Record<Locale, Dictionary> = {
       genericError: 'Something went wrong. Please try again.',
       success: 'Thank you, your message has been sent.',
     },
-    a11y: { skipToContent: 'Skip to content', languageSwitcher: 'Switch language' },
+    a11y: {
+      skipToContent: 'Skip to content',
+      languageSwitcher: 'Switch language',
+      primaryNavigation: 'Primary navigation',
+    },
     notFound: {
       title: 'Page not found',
       body: "The page you are looking for doesn't exist or has moved.",
@@ -170,6 +191,10 @@ const dictionaries: Record<Locale, Dictionary> = {
       readMore: 'Saber más',
       startProject: 'Iniciar un proyecto',
       viewOurWork: 'Ver nuestro trabajo',
+      explore: 'Descubrir',
+      viewCaseStudy: 'Ver el caso',
+      seeAllWork: 'Ver todo el trabajo',
+      andMore: 'y más',
     },
     form: {
       required: 'Este campo es obligatorio',
@@ -177,7 +202,11 @@ const dictionaries: Record<Locale, Dictionary> = {
       genericError: 'Ha ocurrido un error. Inténtalo de nuevo.',
       success: 'Gracias, tu mensaje ha sido enviado.',
     },
-    a11y: { skipToContent: 'Ir al contenido', languageSwitcher: 'Cambiar idioma' },
+    a11y: {
+      skipToContent: 'Ir al contenido',
+      languageSwitcher: 'Cambiar idioma',
+      primaryNavigation: 'Navegación principal',
+    },
     notFound: {
       title: 'Página no encontrada',
       body: 'La página que buscas no existe o ha sido movida.',

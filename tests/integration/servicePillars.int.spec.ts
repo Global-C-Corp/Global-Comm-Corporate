@@ -1,4 +1,4 @@
-import { beforeAll, describe, expect, it } from 'vitest'
+import { afterAll, beforeAll, describe, expect, it } from 'vitest'
 import type { Payload } from 'payload'
 import { ensureUser, getTestPayload, type TestUser } from '../helpers/payload'
 
@@ -15,6 +15,7 @@ describe('service pillars', () => {
 
   let pillarId: number
   let plainId: number
+  let nonPillarId: number | undefined
 
   const run = Date.now()
 
@@ -45,6 +46,21 @@ describe('service pillars', () => {
       user: admin as never,
     })
     plainId = plain.id
+  })
+
+  afterAll(async () => {
+    // These structural fixtures must not leak into later CI phases. The E2E
+    // seed/consolidation step intentionally validates every service in the
+    // database, so stale synthetic roots would look like real taxonomy drift.
+    for (const id of [plainId, nonPillarId, pillarId]) {
+      if (!id) continue
+      await payload.delete({
+        collection: 'services',
+        id,
+        overrideAccess: true,
+        user: admin as never,
+      })
+    }
   })
 
   it('lets a publisher fold a term into a pillar', async () => {
@@ -100,6 +116,8 @@ describe('service pillars', () => {
       overrideAccess: false,
       user: admin as never,
     })
+
+    nonPillarId = other.id
 
     await expect(
       payload.update({
