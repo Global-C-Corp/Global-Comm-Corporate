@@ -76,6 +76,15 @@ jobs:
       - name: Seed published content for build and E2E
         run: pnpm run seed -- --publish
 
+      - name: Consolidate public service pillars
+        run: pnpm run services:consolidate -- --apply
+
+      - name: Seed service pillar copy
+        run: pnpm exec tsx scripts/seed-pillar-copy.ts --apply
+
+      - name: Seed deterministic E2E fixture
+        run: pnpm exec tsx scripts/seed-e2e.ts
+
       - name: Production build
         run: pnpm run build
 
@@ -89,6 +98,7 @@ jobs:
         run: pnpm run test:visual:update
 
       - name: Upload generated visual baselines
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: visual-baselines
