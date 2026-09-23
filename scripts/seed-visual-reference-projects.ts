@@ -249,7 +249,8 @@ async function main() {
   const payload = await getPayload({ config })
   const actor = await resolveActor(payload)
 
-  const ids: number[] = []
+  const projectIds: number[] = []
+  const clientIds: number[] = []
 
   for (const [index, source] of loadApproved().entries()) {
     const clientName = source.client
@@ -259,22 +260,33 @@ async function main() {
 
     const clientId = await upsertClient(payload, actor, clientName)
     const projectId = await upsertProject(payload, actor, source, clientId, index + 1)
-    ids.push(projectId)
+    projectIds.push(projectId)
+    clientIds.push(clientId)
 
     console.log(`✓ ${clientName} — project=${projectId} client=${clientId}`)
   }
 
-  // Explicit selection rather than the `featured` fallback, so what the
-  // baseline photographs is stated here instead of emerging from a flag.
+  /**
+   * Explicit selection rather than the `featured` fallback, so what the
+   * baseline photographs is stated here instead of emerging from a flag.
+   *
+   * The client selection matters for the same reason: the experience band
+   * otherwise falls through to every published client, and the synthetic
+   * client the technical fixture needs would appear in a public proof band.
+   * Naming both lists keeps that decision here, and keeps `featured` free for
+   * genuine editorial use — which is also what stops the home page, whose own
+   * globals stay empty, from picking any of this up.
+   */
   await payload.updateGlobal({
     slug: 'services-page',
     draft: false,
     overrideAccess: true,
     user: actor,
-    data: { featuredProjects: ids } as never,
+    data: { featuredProjects: projectIds, featuredClients: clientIds } as never,
   })
 
-  console.log(`✓ services-page.featuredProjects = [${ids.join(', ')}]`)
+  console.log(`✓ services-page.featuredProjects = [${projectIds.join(', ')}]`)
+  console.log(`✓ services-page.featuredClients  = [${clientIds.join(', ')}]`)
 }
 
 main()

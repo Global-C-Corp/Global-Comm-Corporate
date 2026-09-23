@@ -47,24 +47,36 @@ export default async function ServicesPageRoute({ params }: { params: Promise<{ 
 
   const t = getDictionary(ctx.locale)
   const selectedProjects = populated<Project>(page.featuredProjects)
+  const selectedClients = populated<Client>(page.featuredClients)
 
   const [allServices, fallbackProjects, featuredClients, availability] = await Promise.all([
     getServices(ctx),
     selectedProjects.length === 0 ? getFeaturedProjects(ctx) : Promise.resolve([]),
-    getFeaturedClients(ctx, 12),
+    selectedClients.length === 0 ? getFeaturedClients(ctx, 12) : Promise.resolve([]),
     getGlobalAvailability('services-page'),
   ])
 
   /**
-   * Same featured/fallback idiom this page already uses for projects: prefer
-   * the editorial selection, otherwise show approved client records.
+   * Same three-step idiom this page uses for projects: an explicit editorial
+   * selection first, then featured clients, then any approved client record.
+   *
+   * The explicit step exists because the two fallbacks answer "who may be
+   * shown", not "who should be". Every published client qualified, so a
+   * fixture record could reach this band — a public proof section. Naming the
+   * selection makes the band's contents a decision rather than a side effect,
+   * and an empty selection still falls through to the old behaviour.
    *
    * The fetch deliberately exceeds the six marks the band renders. Asking for
    * exactly six made `clients.length > shown.length` false however many
    * approved clients existed, so the band could never show its "and more"
    * mark — the reference's closing element on that row.
    */
-  const clients = featuredClients.length > 0 ? featuredClients : await getPublishedClients(ctx, 12)
+  const clients =
+    selectedClients.length > 0
+      ? selectedClients
+      : featuredClients.length > 0
+        ? featuredClients
+        : await getPublishedClients(ctx, 12)
 
   /**
    * Four public pillars. Grouping still follows `isPillar`, so the existing
