@@ -100,7 +100,14 @@ async function main() {
         slug: 'e2e-case-study',
         client: client.id,
         year: 2026,
-        featured: false,
+        // Featured on purpose. Both the home page and the Services page fall
+        // back to `getFeaturedProjects` when their global names no projects,
+        // and that query filters on this flag. Left false, the fixture is
+        // invisible to both, their Selected Work sections render nothing, and
+        // the visual baselines silently stop covering that part of the
+        // composition. This is CI-only synthetic content, so featuring it
+        // asserts nothing about real work.
+        featured: true,
         displayOrder: 9999,
         shortStatement: 'Synthetic fixture used only for automated visual regression.',
         excerpt: 'Synthetic fixture used only for automated visual regression.',
