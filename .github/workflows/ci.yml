@@ -120,6 +120,12 @@ jobs:
       - name: Seed deterministic E2E fixture
         run: pnpm exec tsx scripts/seed-e2e.ts
 
+      # Real, source-backed content for the visual baselines. Runs after the
+      # other seeds because it is the one that sets
+      # `services-page.featuredProjects`, and last writer wins.
+      - name: Seed approved visual reference projects
+        run: pnpm exec tsx scripts/seed-visual-reference-projects.ts
+
       - name: Production build
         run: pnpm run build
 
