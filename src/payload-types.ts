@@ -794,6 +794,10 @@ export interface Project {
   externalURL?: string | null;
   featured?: boolean | null;
   displayOrder?: number | null;
+  /**
+   * Set by automated test seeds only. Excludes the project from public listings while keeping its route reachable.
+   */
+  isTestFixture?: boolean | null;
   shortStatement?: string | null;
   excerpt?: string | null;
   services?: (number | Service)[] | null;
@@ -1828,6 +1832,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   externalURL?: T;
   featured?: T;
   displayOrder?: T;
+  isTestFixture?: T;
   shortStatement?: T;
   excerpt?: T;
   services?: T;

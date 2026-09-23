@@ -112,6 +112,11 @@ async function main() {
         // reference content is a separate concern and must come from approved
         // real projects. Do not merge the two again.
         featured: false,
+        // Keeps the row out of every public listing while leaving its route
+        // reachable, so the detail page stays testable and the Work archive
+        // stays portfolio work. This is the flag the separation rests on;
+        // `featured` is not a substitute and must not be used as one.
+        isTestFixture: true,
         displayOrder: 9999,
         shortStatement: 'Synthetic fixture used only for automated visual regression.',
         excerpt: 'Synthetic fixture used only for automated visual regression.',

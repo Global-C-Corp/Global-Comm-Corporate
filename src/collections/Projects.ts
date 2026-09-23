@@ -65,6 +65,32 @@ export const Projects: CollectionConfig = {
     { name: 'externalURL', type: 'text' },
     { name: 'featured', type: 'checkbox', defaultValue: false, admin: { position: 'sidebar' } },
     { name: 'displayOrder', type: 'number', defaultValue: 0, admin: { position: 'sidebar' } },
+
+    /**
+     * Marks a row as automated-test infrastructure rather than portfolio work.
+     *
+     * The E2E suite needs one stable project-detail route on a fresh CI
+     * database, so a fixture project genuinely exists and is genuinely
+     * published — otherwise `/work/e2e-case-study` could not be tested. Being
+     * published also made it a member of every public listing, which is how
+     * synthetic content reached the public Work archive.
+     *
+     * Separating the two at the data layer keeps the route testable while
+     * leaving the portfolio to real work. Listings exclude these rows; direct
+     * slug lookups do not, so the fixture stays routable. Nothing in the UI
+     * knows a slug, and `featured` stays free for genuine editorial use.
+     */
+    {
+      name: 'isTestFixture',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        hidden: true,
+        description:
+          'Set by automated test seeds only. Excludes the project from public listings while keeping its route reachable.',
+      },
+    },
     { name: 'shortStatement', type: 'text', localized: true },
     { name: 'excerpt', type: 'textarea', localized: true },
 
