@@ -38,7 +38,7 @@ export function PracticesSection({
 
   return (
     <section className="bg-secondary" aria-labelledby="practices-heading">
-      <Container className="py-14 md:py-16">
+      <Container className="py-14 md:py-12">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-12">
           <div className="lg:col-span-6">
             {label ? (
@@ -49,7 +49,7 @@ export function PracticesSection({
             {heading ? (
               <h2
                 id="practices-heading"
-                className="mt-5 max-w-[18ch] text-balance font-sans text-3xl font-semibold leading-[1.08] tracking-[-0.035em] text-foreground md:text-[2.5rem]"
+                className="mt-5 max-w-[18ch] text-balance font-sans text-3xl font-semibold leading-[1.08] tracking-[-0.035em] text-foreground md:mt-2 md:text-[3.5rem] md:leading-[1.07]"
               >
                 {heading}
               </h2>

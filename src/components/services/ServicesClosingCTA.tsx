@@ -42,7 +42,7 @@ export function ServicesClosingCTA({
             {heading ? (
               <h2
                 id="services-closing-heading"
-                className="mt-5 max-w-[16ch] text-balance font-sans text-3xl font-semibold leading-[1.08] tracking-[-0.035em] text-foreground md:text-[2.5rem]"
+                className="mt-5 max-w-[16ch] text-balance font-sans text-3xl font-semibold leading-[1.08] tracking-[-0.035em] text-foreground md:mt-2 md:text-[3.4375rem] md:leading-[1.05]"
               >
                 {heading}
               </h2>
