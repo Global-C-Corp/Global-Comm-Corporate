@@ -100,14 +100,18 @@ async function main() {
         slug: 'e2e-case-study',
         client: client.id,
         year: 2026,
-        // Featured on purpose. Both the home page and the Services page fall
-        // back to `getFeaturedProjects` when their global names no projects,
-        // and that query filters on this flag. Left false, the fixture is
-        // invisible to both, their Selected Work sections render nothing, and
-        // the visual baselines silently stop covering that part of the
-        // composition. This is CI-only synthetic content, so featuring it
-        // asserts nothing about real work.
-        featured: true,
+        // MUST STAY false. Featuring this fixture was tried in 9e265d8 and
+        // reverted: `getFeaturedProjects` is the fallback behind both the home
+        // page's and the Services page's Selected Work, so featuring it put a
+        // synthetic client and project into two public-facing proof sections
+        // and into twelve visual baselines. A reference baseline must show
+        // real, source-backed composition, never invented work.
+        //
+        // This record is technical infrastructure only: route mechanics,
+        // /work/e2e-case-study existing, and localization behaviour. Visual
+        // reference content is a separate concern and must come from approved
+        // real projects. Do not merge the two again.
+        featured: false,
         displayOrder: 9999,
         shortStatement: 'Synthetic fixture used only for automated visual regression.',
         excerpt: 'Synthetic fixture used only for automated visual regression.',
