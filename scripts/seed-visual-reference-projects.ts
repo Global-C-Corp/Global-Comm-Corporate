@@ -10,19 +10,17 @@ import { locales, translationStatusKey } from '../src/i18n/locale'
 /**
  * Real, source-backed content for the visual-regression baselines.
  *
- * This is deliberately NOT `seed-e2e.ts`. The two serve different purposes and
- * must not be merged again:
+ * This is the only seed that creates projects and clients, and every record it
+ * writes is a reproduction of an owner-approved entry in
+ * scripts/project-import-data.json. There is deliberately no synthetic
+ * alternative: a fixture project and client used to exist for E2E route
+ * mechanics, and the attempt to make them serve the baselines too (9e265d8)
+ * put an invented client into two public proof sections and twelve snapshots.
+ * They were removed rather than hidden. Nothing here may be replaced with a
+ * fabricated project or client to make a page look fuller.
  *
- *   seed-e2e.ts                  technical fixture. Synthetic and isolated.
- *                                Route mechanics, /work/e2e-case-study,
- *                                localization behaviour. Never public-facing.
- *
- *   seed-visual-reference-*.ts   visual reference. Real projects only, so a
- *                                baseline photographs the composition the
- *                                public will actually see.
- *
- * Featuring the synthetic fixture was tried in 9e265d8 and reverted: it put an
- * invented client into two public proof sections and twelve baselines.
+ * The E2E suite's project-detail coverage rides on these same records, by
+ * localized slug — see tests/e2e/visual-baseline.spec.ts.
  *
  * SCOPE, and why it is this narrow
  *

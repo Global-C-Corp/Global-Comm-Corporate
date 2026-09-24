@@ -10,19 +10,6 @@ export type ProjectFilters = {
 }
 
 /**
- * The portfolio is the set of projects a visitor may be shown in a listing.
- *
- * It excludes automated-test fixtures, which are real published rows because
- * the E2E suite needs a stable project-detail route on a fresh database. They
- * are infrastructure, not work, so they belong to no listing — but they stay
- * reachable by slug, which is what keeps `/work/{slug}` testable.
- *
- * `not_equals` rather than `equals: false` so rows written before the flag
- * existed, which carry no value for it, are still portfolio work.
- */
-const PORTFOLIO_ONLY: Where = { isTestFixture: { not_equals: true } }
-
-/**
  * Work archive filters are matched on localized slugs of the related
  * taxonomy terms (CLAUDE.md §77).
  */
@@ -65,7 +52,7 @@ export async function getProjects(
   const result = await payload.find({
     collection: 'projects',
     ...baseQueryOptions(ctx),
-    where: combineWhere(approvedLocaleWhere(ctx), PORTFOLIO_ONLY, ...filterClauses),
+    where: combineWhere(approvedLocaleWhere(ctx), ...filterClauses),
     limit,
     page,
     depth: 1,
@@ -80,7 +67,7 @@ export async function getFeaturedProjects(ctx: QueryContext, limit = 6): Promise
   const result = await payload.find({
     collection: 'projects',
     ...baseQueryOptions(ctx),
-    where: combineWhere(approvedLocaleWhere(ctx), PORTFOLIO_ONLY, { featured: { equals: true } }),
+    where: combineWhere(approvedLocaleWhere(ctx), { featured: { equals: true } }),
     limit,
     depth: 1,
     sort: ['displayOrder', '-year', 'id'],
@@ -114,7 +101,7 @@ export async function getProjectsByRelation(
   const result = await payload.find({
     collection: 'projects',
     ...baseQueryOptions(ctx),
-    where: combineWhere(approvedLocaleWhere(ctx), PORTFOLIO_ONLY, { [relation]: { in: [id] } }),
+    where: combineWhere(approvedLocaleWhere(ctx), { [relation]: { in: [id] } }),
     limit,
     depth: 1,
     sort: ['displayOrder', '-year', 'id'],
