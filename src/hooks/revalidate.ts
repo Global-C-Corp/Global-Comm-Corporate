@@ -19,16 +19,35 @@ const ROUTE_PATTERNS = {
 
 type RouteKey = keyof typeof ROUTE_PATTERNS
 
-function revalidateRoutes(keys: RouteKey[]) {
+/**
+ * A revalidation that does not happen is a page that keeps serving stale
+ * HTML, so a failure is reported rather than swallowed. Silence here is what
+ * let a published Services edit sit behind build-time output indefinitely.
+ *
+ * Payload also writes outside a Next.js request scope — seed scripts,
+ * migrations, tests — where `revalidatePath` throws because there is no cache
+ * to invalidate. That is expected and not an incident, but it still earns a
+ * line: it says the route was not refreshed, which is the fact that matters.
+ * Each path is attempted on its own, so one failure cannot skip the rest.
+ *
+ * Only the path and the error's name and message are logged. Payload write
+ * context, which can carry document data, is deliberately not included.
+ */
+function safeRevalidate(path: string, run: () => void): void {
   try {
-    for (const key of keys) {
-      revalidatePath(ROUTE_PATTERNS[key], 'page')
-    }
-    revalidatePath('/sitemap.xml')
-  } catch {
-    // Payload writes also happen outside a Next.js request scope (seed
-    // scripts, migrations, tests), where there is no cache to invalidate.
+    run()
+  } catch (error) {
+    const message = error instanceof Error ? `${error.name}: ${error.message}` : String(error)
+    console.error(`[revalidate] ${path} was not invalidated. ${message}`)
   }
+}
+
+function revalidateRoutes(keys: RouteKey[]) {
+  for (const key of keys) {
+    const pattern = ROUTE_PATTERNS[key]
+    safeRevalidate(pattern, () => revalidatePath(pattern, 'page'))
+  }
+  safeRevalidate('/sitemap.xml', () => revalidatePath('/sitemap.xml'))
 }
 
 const AFFECTED_ROUTES: Record<string, RouteKey[]> = {

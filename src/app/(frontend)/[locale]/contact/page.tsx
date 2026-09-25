@@ -12,6 +12,9 @@ import { resolvePageSEO } from '@/services/seo/resolvePageSEO'
 import type { Route } from '@/services/seo/urls'
 import { submitInquiry } from './actions'
 
+/** ISR backstop for CMS edits `revalidatePath` cannot reach — see src/hooks/revalidate.ts. */
+export const revalidate = 60
+
 const route: Route = { type: 'contact' }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {

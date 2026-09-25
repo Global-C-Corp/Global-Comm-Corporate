@@ -14,6 +14,9 @@ import { getPageContext } from '@/services/cms/pageContext'
 import { resolvePageSEO } from '@/services/seo/resolvePageSEO'
 import type { Route } from '@/services/seo/urls'
 
+/** ISR backstop for CMS edits `revalidatePath` cannot reach — see src/hooks/revalidate.ts. */
+export const revalidate = 60
+
 const route: Route = { type: 'company' }
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
