@@ -22,9 +22,15 @@ type Locale = (typeof locales)[number]
  * so a content edit cannot silently change what is being compared:
  *
  *   service detail  → "Marketing digital", one of the four public pillars.
- *   case study      → "E2E Case Study", an explicitly synthetic fixture that
- *                     exists only in the CI database. Production seeds never
- *                     fabricate client proof or case studies.
+ *   case study      → AMSD, one of the three owner-approved real projects
+ *                     seeded by scripts/seed-visual-reference-projects.ts. It
+ *                     is pinned because it carries a year, so the metadata
+ *                     block is exercised rather than skipped. Its slug differs
+ *                     per locale, which also proves localized routing.
+ *
+ * There is no synthetic fixture behind any of these. A baseline photographs
+ * the composition the public will actually see, so every record it depends on
+ * is real and source-backed (CLAUDE.md §105, §126).
  *
  * The industry-detail template was captured in the original baseline and has
  * been removed here along with the route itself: industries no longer have
@@ -61,9 +67,9 @@ const TEMPLATES: { name: string; paths: Record<Locale, string> }[] = [
   {
     name: 'case-study-detail',
     paths: {
-      fr: '/fr/work/e2e-case-study',
-      en: '/en/work/e2e-case-study',
-      es: '/es/work/e2e-case-study',
+      fr: '/fr/work/amsd-communication-institutionnelle-integree',
+      en: '/en/work/amsd-integrated-institutional-communication',
+      es: '/es/work/amsd-comunicacion-institucional-integrada',
     },
   },
   {

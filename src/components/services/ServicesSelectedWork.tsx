@@ -41,7 +41,7 @@ export function ServicesSelectedWork({
   return (
     <section className="bg-background" aria-labelledby="services-work-heading">
       <Container className="py-10 md:py-8">
-        <div className="grid gap-12 lg:grid-cols-12 lg:gap-10">
+        <div className="grid gap-12 lg:grid-cols-12 lg:gap-6">
           <div className="lg:col-span-3">
             {label ? (
               <p className="text-[0.7rem] font-medium uppercase tracking-[0.14em] text-muted-foreground">
@@ -51,7 +51,7 @@ export function ServicesSelectedWork({
             {heading ? (
               <h2
                 id="services-work-heading"
-                className="mt-4 max-w-[16ch] text-balance font-sans text-3xl font-semibold leading-[1.14] tracking-[-0.035em] text-foreground md:text-[2.375rem]"
+                className="mt-4 max-w-[16ch] text-balance font-sans text-3xl font-semibold leading-[1.14] tracking-[-0.035em] text-foreground md:text-[2.5625rem] md:leading-[1.10]"
               >
                 {heading}
               </h2>
@@ -92,7 +92,14 @@ export function ServicesSelectedWork({
                       ) : null}
                     </div>
 
-                    <h3 translate="no" className="mt-3 text-base font-semibold tracking-[-0.015em] text-foreground">
+                    <h3
+                      translate="no"
+                      // Real client names run far longer than the short brand names the
+                      // reference mocked up; unbounded, one three-line title inflates the
+                      // whole row because the cards equalise. Two lines keeps the grid even
+                      // and leaves the full name in the DOM for assistive technology.
+                      className="mt-3 line-clamp-2 text-base font-semibold tracking-[-0.015em] text-foreground"
+                    >
                       {client ?? project.title}
                     </h3>
 

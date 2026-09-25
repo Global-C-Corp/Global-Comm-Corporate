@@ -16,6 +16,9 @@ import { getProjectBySlug, getProjectsByRelation } from '@/services/cms/projects
 import { resolvePageSEO } from '@/services/seo/resolvePageSEO'
 import { buildPath, type Route } from '@/services/seo/urls'
 
+/** ISR backstop for CMS edits `revalidatePath` cannot reach — see src/hooks/revalidate.ts. */
+export const revalidate = 60
+
 export async function generateMetadata({
   params,
 }: {

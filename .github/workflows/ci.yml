@@ -117,8 +117,12 @@ jobs:
       - name: Verify redirect manifest is current
         run: git diff --exit-code -- tests/fixtures/redirects.json
 
-      - name: Seed deterministic E2E fixture
-        run: pnpm exec tsx scripts/seed-e2e.ts
+      # The only seed that creates projects and clients. It reproduces three
+      # owner-approved records from scripts/project-import-data.json, and it is
+      # the step that sets `services-page.featuredProjects` and
+      # `.featuredClients`, so it runs after the other seeds — last writer wins.
+      - name: Seed approved visual reference projects
+        run: pnpm exec tsx scripts/seed-visual-reference-projects.ts
 
       - name: Production build
         run: pnpm run build

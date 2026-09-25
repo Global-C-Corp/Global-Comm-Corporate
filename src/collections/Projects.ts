@@ -65,6 +65,7 @@ export const Projects: CollectionConfig = {
     { name: 'externalURL', type: 'text' },
     { name: 'featured', type: 'checkbox', defaultValue: false, admin: { position: 'sidebar' } },
     { name: 'displayOrder', type: 'number', defaultValue: 0, admin: { position: 'sidebar' } },
+
     { name: 'shortStatement', type: 'text', localized: true },
     { name: 'excerpt', type: 'textarea', localized: true },
 
