@@ -117,7 +117,7 @@ test('every legacy URL reaches its destination in a single hop', async ({ reques
   // A redirect chain leaks link equity and costs the visitor a round trip, so
   // the form the site actually published — no trailing slash, as buildPath and
   // the sitemap always emitted — must land in one.
-  for (const { from, to } of cases) {
+  for (const { from } of cases) {
     const hop = await request.get(`${BASE}${from}`, { maxRedirects: 0 })
     const target = new URL(hop.headers()['location'] ?? '', BASE)
     const second = await request.get(target.toString(), { maxRedirects: 0 })
