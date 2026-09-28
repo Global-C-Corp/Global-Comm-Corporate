@@ -1,3 +1,5 @@
+export {}
+
 /**
  * One-time deployment hook for the approved homepage content.
  *
