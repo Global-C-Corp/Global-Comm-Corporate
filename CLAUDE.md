@@ -79,7 +79,19 @@ src/
 Full reference spec (SEO, canonicals, editorial workflow, MCP tools): `docs/SPEC.md`.
 Do not read it whole — `grep -n "^# " docs/SPEC.md` and read the section you need.
 
-## 6. Next.js conventions
+## 6. Languages
+
+- Locales: `fr` (default), `en`, `es`. Every public URL is prefixed: `/fr/`, `/en/`, `/es/`.
+- Never show one language's content under another language's URL. No fallback.
+- Each locale is published independently; a page goes live in a locale only when
+  that locale is complete.
+- hreflang only lists translations that are actually published.
+- Localized fields (translated): titles, descriptions, SEO, slugs.
+- Shared fields (same in all languages): client names, dates, logos, prices, media.
+- **Before touching i18n, publishing or slugs, read `docs/SPEC.md` §10–20.**
+  Code: `src/i18n/`, `src/middleware.ts`.
+
+## 7. Next.js conventions
 
 - Server Components by default; `"use client"` only on interactive leaves.
 - Read CMS data server-side via the Payload Local API in `services/cms/` — not API routes, not `useEffect`.
@@ -89,7 +101,7 @@ Do not read it whole — `grep -n "^# " docs/SPEC.md` and read the section you n
 - `next/image` with dimensions; parallel fetches with `Promise.all`.
 - This Next.js version differs from training data — check `node_modules/next/dist/docs/` for APIs you're unsure about.
 
-## 7. Definition of done (scales with the change)
+## 8. Definition of done (scales with the change)
 
 | Change | Verify with |
 |---|---|
@@ -100,7 +112,7 @@ Do not read it whole — `grep -n "^# " docs/SPEC.md` and read the section you n
 
 Report what you changed and which commands you actually ran. Never claim a run that didn't happen.
 
-## 8. Working style
+## 9. Working style
 
 - Do the task directly. No mandatory audit phase or phase reports.
 - Understand code before deleting it; keep what works.
