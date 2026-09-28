@@ -1,6 +1,5 @@
 import { expect, test } from '@playwright/test'
 import { services } from '../../src/content/services'
-import { locales } from '../../src/i18n/locale'
 import { PILLARS, ROOT_MERGES } from '../../src/services/cms/pillarConfig'
 
 const BASE = 'http://localhost:3000'
@@ -15,12 +14,17 @@ const BASE = 'http://localhost:3000'
  * source data it reads, so a term's bucket and its redirect target cannot
  * disagree.
  *
+ * The prefixes are written out here for the same reason `src/proxy.ts` writes
+ * them out: they are historical fact, not the live Payload locale setting.
+ *
  * Next's `permanentRedirect()` serves 308, not 301. The two are equivalent for
  * SEO — Google passes the same signals — and 308 additionally preserves the
  * request method. The assertion names the status actually served, so a
  * regression to a temporary redirect (307) or a 404 fails loudly.
  */
 const PERMANENT = 308
+
+const LEGACY_LOCALE_PREFIXES = ['fr', 'en', 'es'] as const
 
 type RedirectCase = { from: string; to: string; reason: string }
 
@@ -31,7 +35,7 @@ const add = (entry: RedirectCase) => {
   if (!bySource.has(entry.from)) bySource.set(entry.from, entry)
 }
 
-for (const locale of locales) {
+for (const locale of LEGACY_LOCALE_PREFIXES) {
   add({ from: `/${locale}`, to: '/home', reason: 'locale-home' })
   add({ from: `/${locale}/company`, to: '/company', reason: 'locale-page' })
   add({ from: `/${locale}/services`, to: '/services', reason: 'locale-page' })
@@ -107,6 +111,39 @@ test('every locale-prefixed URL permanently redirects to a page that returns 200
     failures,
     `${failures.length} of ${cases.length} redirects are broken:\n${failures.join('\n')}`,
   ).toEqual([])
+})
+
+test('every legacy URL reaches its destination in a single hop', async ({ request }) => {
+  // A redirect chain leaks link equity and costs the visitor a round trip, so
+  // the form the site actually published — no trailing slash, as buildPath and
+  // the sitemap always emitted — must land in one.
+  for (const { from, to } of cases) {
+    const hop = await request.get(`${BASE}${from}`, { maxRedirects: 0 })
+    const target = new URL(hop.headers()['location'] ?? '', BASE)
+    const second = await request.get(target.toString(), { maxRedirects: 0 })
+    expect(second.status(), `${from} -> ${target.pathname} should be the last hop`).not.toBe(
+      PERMANENT,
+    )
+  }
+})
+
+/*
+ * A trailing-slash variant takes two hops: Next.js normalizes the slash away
+ * with its own 308 before the proxy runs, so "/fr/work/" becomes "/fr/work"
+ * and only then maps to "/work". Collapsing that would mean disabling
+ * normalization for /admin and /api too. The site never published these URLs,
+ * so the chain is accepted; what matters is that they still arrive.
+ */
+test('a legacy URL with a trailing slash still arrives at the right page', async ({ request }) => {
+  for (const [from, to] of [
+    ['/fr/', '/home'],
+    ['/fr/work/', '/work'],
+    ['/en/services/strategy/', '/services/recherche-audit-strategie'],
+  ]) {
+    const response = await request.get(`${BASE}${from}`)
+    expect(response.status(), `${from} status`).toBe(200)
+    expect(new URL(response.url()).pathname, `${from} destination`).toBe(to)
+  }
 })
 
 test('an unknown service slug still 404s rather than redirecting somewhere', async ({ request }) => {

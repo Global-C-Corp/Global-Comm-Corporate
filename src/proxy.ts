@@ -1,6 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { services } from '@/content/services'
-import { locales } from '@/i18n/locale'
 import { PILLARS, ROOT_MERGES } from '@/services/cms/pillarConfig'
 
 /**
@@ -19,6 +18,17 @@ import { PILLARS, ROOT_MERGES } from '@/services/cms/pillarConfig'
  * Payload still stores three locales; the frontend simply no longer routes on
  * them.
  */
+
+/**
+ * The prefixes the site actually published under, written out here rather than
+ * imported from `src/i18n/locale.ts`.
+ *
+ * This list is historical fact: it must keep matching `/fr`, `/en` and `/es`
+ * for as long as those URLs exist on the web. The Payload locale list is a
+ * live setting — adding or removing a locale there must not silently start or
+ * stop redirecting a public URL.
+ */
+const LEGACY_LOCALE_PREFIXES = ['fr', 'en', 'es'] as const
 
 const PILLAR_SLUGS = new Set(services.map((service) => service.slug))
 
@@ -80,23 +90,31 @@ function successorPath(rest: string): string {
 export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl
 
-  if (pathname.length > 1 && pathname.endsWith('/')) {
-    const url = request.nextUrl.clone()
-    url.pathname = pathname.replace(/\/+$/, '')
-    return NextResponse.redirect(url, 308)
-  }
-
-  const segments = pathname.split('/').filter(Boolean)
+  const trimmed = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname
+  const segments = trimmed.split('/').filter(Boolean)
   const [first, ...rest] = segments
 
-  if (first && (locales as readonly string[]).includes(first)) {
-    const url = request.nextUrl.clone()
-    url.pathname = successorPath(rest.join('/'))
-    url.search = search
-    return NextResponse.redirect(url, 308)
-  }
+  /*
+   * Both corrections are decided before responding, so nothing here can bounce
+   * a URL through an intermediate address.
+   *
+   * Next.js normalizes a trailing slash away with its own 308 before the proxy
+   * runs, so in practice `trimmed` already equals `pathname`. Keeping the trim
+   * means a URL that does reach here with a slash is still mapped in one hop
+   * rather than falling through unhandled. Disabling that framework redirect
+   * (`skipTrailingSlashRedirect`) would let the proxy own both corrections, but
+   * it also turns normalization off for /admin and /api, which this refactor
+   * has no business changing.
+   */
+  const isLegacyLocale = Boolean(first) && (LEGACY_LOCALE_PREFIXES as readonly string[]).includes(first)
+  const destination = isLegacyLocale ? successorPath(rest.join('/')) : trimmed
 
-  return NextResponse.next()
+  if (destination === pathname) return NextResponse.next()
+
+  const url = request.nextUrl.clone()
+  url.pathname = destination
+  url.search = search
+  return NextResponse.redirect(url, 308)
 }
 
 export const config = {

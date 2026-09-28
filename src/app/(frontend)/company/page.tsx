@@ -13,6 +13,12 @@ import { getFeaturedTestimonials, getPublishedClients } from '@/services/cms/pro
 import { resolvePageSEO } from '@/services/seo/resolvePageSEO'
 import type { Route } from '@/services/seo/urls'
 
+/**
+ * ISR backstop: the page copy is source-owned, but the industries, clients and
+ * testimonials it shows come from Payload — see src/hooks/revalidate.ts.
+ */
+export const revalidate = 60
+
 const route: Route = { type: 'company' }
 
 export async function generateMetadata(): Promise<Metadata> {
