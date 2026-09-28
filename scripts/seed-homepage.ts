@@ -1,6 +1,7 @@
 import 'dotenv/config'
 import { getPayload } from 'payload'
 import type { Payload } from 'payload'
+import type { HomePage } from '../src/payload-types'
 import config from '../src/payload.config'
 import { locales, type Locale } from '../src/i18n/locale'
 import { pillarKeyForFrSlug } from '../src/services/cms/pillarConfig'
@@ -232,8 +233,9 @@ async function main() {
     })
 
     if (index === 0) {
-      serviceItemIds = (updated.expertise?.items ?? []).map((item) => String(item.id))
-      approachStepIds = (updated.approach?.steps ?? []).map((step) => String(step.id))
+      const saved = updated as HomePage
+      serviceItemIds = (saved.expertise?.items ?? []).map((item) => String(item.id))
+      approachStepIds = (saved.approach?.steps ?? []).map((step) => String(step.id))
     }
 
     console.log(`  wrote ${locale}`)
