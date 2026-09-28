@@ -140,6 +140,108 @@ If a change would break one of these, stop and ask. Full list: `docs/SPEC.md` §
 
 <!-- BEGIN:nextjs-agent-rules -->
 
+## 10. Coding standards
+
+### Empty states (SPEC §139)
+
+No testimonials:
+
+```text
+hide section
+```
+
+No related work:
+
+```text
+hide section
+```
+
+No Client logo:
+
+```text
+show Client name
+```
+
+No Project image:
+
+```text
+use intentional typography
+```
+
+No metric:
+
+```text
+hide metric
+```
+
+No OG image:
+
+```text
+use defined fallback
+```
+
+No translation:
+
+```text
+do not fabricate fallback page
+```
+
+
+### Coding standard (SPEC §140)
+
+TypeScript:
+
+```text
+strict
+generated Payload types
+minimal any
+no casual ts-ignore
+```
+
+React:
+
+```text
+server-first
+composition
+clear props
+```
+
+Payload:
+
+```text
+modular configs
+central access controls
+small hooks
+domain services for business logic
+```
+
+CSS:
+
+```text
+tokens
+responsive
+controlled specificity
+```
+
+
+### Dependency discipline (SPEC §141)
+
+Before installing:
+
+```text
+Does Next/Payload already solve this?
+
+Is package maintained?
+
+Does it reduce complexity?
+
+Does it add browser weight?
+
+Can a small internal utility solve it?
+```
+
+Avoid dependency inflation.
+
 # This is NOT the Next.js you know
 
 This version has breaking changes — APIs, conventions, and file structure may all differ from your training data. Read the relevant guide in `node_modules/next/dist/docs/` (resolved from this file's directory; in monorepos the `next` package may not be visible from the repo root) before writing any code. Heed deprecation notices.
