@@ -45,9 +45,13 @@ pnpm build               # runs verify:env + migrate first — needs a DB
 
 These prevent real damage. Everything else in this file is a default.
 
-1. **No invented facts.** No fake clients, projects, metrics or testimonials on public pages.
-   Missing data stays empty — a blank is honest, a made-up number is not.
-2. **AI never publishes, approves or deletes content.** A human publishes.
+1. **No invented facts.** No fake clients, projects or testimonials on public pages.
+   Metrics: a **measured** value needs a source. An **estimate** or **target** needs none,
+   but must be saved with that kind so the page labels it ("Estimation" / "Objectif").
+   Never present an estimate as a measured result.
+2. **AI editor rights** (owner decision 2026-09-28): the AI may draft, edit any content
+   field, approve and publish. It never deletes content, creates taxonomy or reads
+   contact inquiries. Every AI write records provenance and an audit log entry.
 3. **Public pages show published content only.** No draft leaks, no fallback to another locale.
 4. **Fail loudly.** No silent catches, no placeholder text ("Lorem ipsum", "Your headline here").
 5. **Ask first** before: destructive migrations, dropping data, force-push, deleting files you
@@ -71,7 +75,7 @@ src/
 ├── services/seo/              canonicals, hreflang, metadata
 ├── hooks/revalidate.ts        cache invalidation on publish
 ├── i18n/                      locale config + UI dictionaries
-├── mcp/                       AI editorial tools (draft-only)
+├── mcp/                       AI editorial tools (draft, edit, publish)
 ├── components/                ui/ (shadcn), layout/, blocks/, feature folders
 └── middleware.ts              locale redirects
 ```
@@ -118,18 +122,22 @@ Report what you changed and which commands you actually ran. Never claim a run t
 PAYLOAD_IS_CONTENT_SOURCE_OF_TRUTH   = true
 PUBLIC_CONTENT_IS_PUBLISHED_ONLY     = true
 PUBLIC_LOCALE_FALLBACK               = false
-AI_CAN_PUBLISH / APPROVE / DELETE    = false
+AI_CAN_PUBLISH / APPROVE             = true
+AI_CAN_DELETE                        = false
 AI_CAN_MANAGE_USERS / CREATE_TAXONOMY = false
-AI_METRICS_REQUIRE_EVIDENCE          = true
+AI_CAN_READ_INQUIRIES                = false
+AI_WRITES_ARE_AUDITED                = true
+MEASURED_METRICS_REQUIRE_SOURCE      = true
+ESTIMATES_AND_TARGETS_ARE_LABELLED   = true
 AI_TESTIMONIALS_REQUIRE_SOURCE       = true
-HUMAN_IS_FINAL_PUBLISHER             = true
 LOCALIZED_PAGES_SELF_CANONICALIZE    = true
 HREFLANG_ONLY_FOR_PUBLIC_TRANSLATIONS = true
 SITEMAP_CONTAINS_CANONICAL_URLS_ONLY = true
 TEST_DATA_IN_PUBLIC_OR_PREVIEW_DB    = false
 ```
 
-If a change would break one of these, stop and ask. Full list: `docs/SPEC.md` §138.
+If a change would break one of these, stop and ask. Full list: `docs/SPEC.md` §138
+(the SPEC still describes the older draft-only AI; this file wins on AI rights and metrics).
 
 ## 9. Working style
 
