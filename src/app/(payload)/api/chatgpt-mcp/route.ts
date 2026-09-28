@@ -14,13 +14,11 @@ function metadataURL(request: Request): string {
 
 function authChallenge(request: Request, error: 'invalid_token' | 'insufficient_scope', description: string) {
   const scopes = getMcpOAuthScopes().join(' ')
-  const challenge = [
-    'Bearer',
-    `resource_metadata="${metadataURL(request)}"`,
-    `scope="${scopes}"`,
-    `error="${error}"`,
-    `error_description="${description.replace(/"/g, "'")}"`,
-  ].join(', ')
+  const challenge =
+    `Bearer resource_metadata="${metadataURL(request)}", ` +
+    `scope="${scopes}", ` +
+    `error="${error}", ` +
+    `error_description="${description.replace(/"/g, "'")}"`
 
   return Response.json(
     { error, error_description: description },
