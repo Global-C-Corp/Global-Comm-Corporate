@@ -112,6 +112,25 @@ Do not read it whole — `grep -n "^# " docs/SPEC.md` and read the section you n
 
 Report what you changed and which commands you actually ran. Never claim a run that didn't happen.
 
+### System invariants (the site's constitution — tests guard these)
+
+```text
+PAYLOAD_IS_CONTENT_SOURCE_OF_TRUTH   = true
+PUBLIC_CONTENT_IS_PUBLISHED_ONLY     = true
+PUBLIC_LOCALE_FALLBACK               = false
+AI_CAN_PUBLISH / APPROVE / DELETE    = false
+AI_CAN_MANAGE_USERS / CREATE_TAXONOMY = false
+AI_METRICS_REQUIRE_EVIDENCE          = true
+AI_TESTIMONIALS_REQUIRE_SOURCE       = true
+HUMAN_IS_FINAL_PUBLISHER             = true
+LOCALIZED_PAGES_SELF_CANONICALIZE    = true
+HREFLANG_ONLY_FOR_PUBLIC_TRANSLATIONS = true
+SITEMAP_CONTAINS_CANONICAL_URLS_ONLY = true
+TEST_DATA_IN_PUBLIC_OR_PREVIEW_DB    = false
+```
+
+If a change would break one of these, stop and ask. Full list: `docs/SPEC.md` §138.
+
 ## 9. Working style
 
 - Do the task directly. No mandatory audit phase or phase reports.
