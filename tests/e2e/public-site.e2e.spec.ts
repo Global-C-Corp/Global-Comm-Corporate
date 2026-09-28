@@ -1,95 +1,80 @@
 import { expect, test } from '@playwright/test'
+import { services } from '../../src/content/services'
 
 const BASE = 'http://localhost:3000'
-const locales = ['fr', 'en', 'es'] as const
 
-/** CLAUDE.md §131-§133 — public site, canonical, hreflang and 404 behaviour. */
+/**
+ * CLAUDE.md §131-§133 — public site, canonical and 404 behaviour.
+ *
+ * The site is single-language French and unprefixed, so there is one URL per
+ * page and no hreflang cluster. Payload still stores three locales; nothing
+ * public routes on them.
+ */
 test.describe('public site', () => {
-  test('redirects the root to the default locale', async ({ page }) => {
+  test('redirects the root to /home', async ({ page }) => {
     await page.goto(BASE)
-    await expect(page).toHaveURL(`${BASE}/fr`)
+    await expect(page).toHaveURL(`${BASE}/home`)
   })
 
-  for (const locale of locales) {
-    test(`renders the ${locale.toUpperCase()} home page`, async ({ page }) => {
-      await page.goto(`${BASE}/${locale}`)
-      await expect(page.locator('html')).toHaveAttribute('lang', locale)
+  test('renders the home page in French', async ({ page }) => {
+    await page.goto(`${BASE}/home`)
+    await expect(page.locator('html')).toHaveAttribute('lang', 'fr')
+    await expect(page.locator('h1')).toBeVisible()
+  })
+
+  test('renders the services page and every service detail page', async ({ page }) => {
+    await page.goto(`${BASE}/services`)
+    await expect(page.locator('h1')).toBeVisible()
+
+    for (const service of services) {
+      const response = await page.goto(`${BASE}/services/${service.slug}`)
+      expect(response?.status(), `/services/${service.slug}`).toBe(200)
       await expect(page.locator('h1')).toBeVisible()
-    })
+    }
+  })
 
-    test(`renders the ${locale.toUpperCase()} services page and a service detail page`, async ({ page }) => {
-      await page.goto(`${BASE}/${locale}/services`)
+  test('renders the work, company and contact pages', async ({ page }) => {
+    for (const path of ['work', 'company', 'contact']) {
+      const response = await page.goto(`${BASE}/${path}`)
+      expect(response?.status(), `/${path}`).toBe(200)
       await expect(page.locator('h1')).toBeVisible()
+    }
+  })
 
-      const firstService = page.locator(`a[href^="/${locale}/services/"]`).first()
-      await expect(firstService).toBeVisible()
-      await firstService.click()
-      await expect(page.locator('h1')).toBeVisible()
-    })
-
-    test(`renders the ${locale.toUpperCase()} work, company and contact pages`, async ({ page }) => {
-      for (const path of ['work', 'company', 'contact']) {
-        const response = await page.goto(`${BASE}/${locale}/${path}`)
-        expect(response?.status()).toBe(200)
-        await expect(page.locator('h1')).toBeVisible()
-      }
-    })
-  }
-
-  test('self-canonicalizes each locale on the production host', async ({ page }) => {
-    for (const locale of locales) {
-      await page.goto(`${BASE}/${locale}`)
+  test('self-canonicalizes on the production host', async ({ page }) => {
+    for (const path of ['home', 'services', 'work', 'company', 'contact']) {
+      await page.goto(`${BASE}/${path}`)
       const canonical = await page.locator('link[rel="canonical"]').getAttribute('href')
-      expect(canonical).toBe(`https://globalcomm.ma/${locale}`)
+      expect(canonical).toBe(`https://globalcomm.ma/${path}`)
     }
   })
 
   test('strips tracking parameters from the canonical URL', async ({ page }) => {
-    await page.goto(`${BASE}/en?utm_source=linkedin&utm_campaign=launch`)
+    await page.goto(`${BASE}/home?utm_source=linkedin&utm_campaign=launch`)
     const canonical = await page.locator('link[rel="canonical"]').getAttribute('href')
-    expect(canonical).toBe('https://globalcomm.ma/en')
+    expect(canonical).toBe('https://globalcomm.ma/home')
   })
 
-  test('emits reciprocal hreflang alternates including x-default', async ({ page }) => {
-    await page.goto(`${BASE}/fr`)
-    const hrefs = await page.locator('link[rel="alternate"]').evaluateAll((links) =>
-      links.map((link) => [link.getAttribute('hreflang'), link.getAttribute('href')]),
-    )
-    const map = Object.fromEntries(hrefs)
-
-    expect(map.fr).toBe('https://globalcomm.ma/fr')
-    expect(map.en).toBe('https://globalcomm.ma/en')
-    expect(map.es).toBe('https://globalcomm.ma/es')
-    expect(map['x-default']).toBe('https://globalcomm.ma/fr')
+  test('emits no hreflang alternates', async ({ page }) => {
+    await page.goto(`${BASE}/home`)
+    await expect(page.locator('link[rel="alternate"][hreflang]')).toHaveCount(0)
   })
 
   test('sets og:url equal to the canonical URL', async ({ page }) => {
-    await page.goto(`${BASE}/en/services`)
+    await page.goto(`${BASE}/services`)
     const canonical = await page.locator('link[rel="canonical"]').getAttribute('href')
     const ogUrl = await page.locator('meta[property="og:url"]').getAttribute('content')
     expect(ogUrl).toBe(canonical)
   })
 
-  test('uses the localized slug when switching language', async ({ page }) => {
-    // Slugs differ per locale and are not a translation of one another, so the
-    // switcher must resolve the sibling document rather than swap the prefix.
-    await page.goto(`${BASE}/fr/services/recherche-audit-strategie`)
-    // Scope to the global header switcher: the footer also exposes locale
-    // hreflang links, while this test specifically verifies sibling-route switching.
-    const enLink = page.locator('header a[hreflang="en"]')
-    await expect(enLink).toHaveAttribute('href', '/en/services/research-audit-strategy')
-    await enLink.click()
-    await expect(page).toHaveURL(`${BASE}/en/services/research-audit-strategy`)
-  })
-
   test('marks the work archive noindex when filters are applied', async ({ page }) => {
-    await page.goto(`${BASE}/fr/work?service=strategie`)
+    await page.goto(`${BASE}/work?service=strategie`)
     const robots = await page.locator('meta[name="robots"]').getAttribute('content')
     expect(robots).toContain('noindex')
   })
 
   test('returns 404 for an unknown slug', async ({ page }) => {
-    const response = await page.goto(`${BASE}/fr/services/ceci-nexiste-pas`)
+    const response = await page.goto(`${BASE}/services/ceci-nexiste-pas`)
     expect(response?.status()).toBe(404)
   })
 
@@ -101,7 +86,7 @@ test.describe('public site', () => {
   })
 
   test('requires a secret to enter preview mode', async ({ request }) => {
-    const response = await request.get(`${BASE}/preview?collection=home-page&locale=fr`, {
+    const response = await request.get(`${BASE}/preview?collection=projects`, {
       maxRedirects: 0,
     })
     expect(response.status()).toBe(401)
@@ -118,7 +103,7 @@ test.describe('public site', () => {
 
   test('supports mobile navigation', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 })
-    await page.goto(`${BASE}/fr`)
+    await page.goto(`${BASE}/home`)
 
     // Role and ARIA state, not class names — this asserts the behaviour a
     // keyboard or screen-reader user actually depends on.
@@ -139,7 +124,7 @@ test.describe('public site', () => {
   })
 
   test('exposes a keyboard skip link', async ({ page }) => {
-    await page.goto(`${BASE}/fr`)
+    await page.goto(`${BASE}/home`)
     await page.keyboard.press('Tab')
     const skipLink = page.locator('a[href="#main"]')
     await expect(skipLink).toBeFocused()

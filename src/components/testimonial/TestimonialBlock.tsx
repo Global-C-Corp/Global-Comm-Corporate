@@ -5,7 +5,9 @@ import type { Testimonial } from '@/payload-types'
  * CLAUDE.md §37 — a translated quote must never be presented as if it were
  * the original wording, so a translation is labelled with its source locale.
  */
-export function TestimonialBlock({ testimonial, locale }: { testimonial: Testimonial; locale: Locale }) {
+export function TestimonialBlock({ testimonial }: { testimonial: Testimonial }) {
+  // The public site renders French only; a quote is "original" when it was given in French.
+  const locale: Locale = 'fr'
   const isOriginalLocale = testimonial.originalLocale === locale
   const quote = isOriginalLocale ? testimonial.originalQuote : (testimonial.translatedQuote ?? undefined)
 

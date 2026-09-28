@@ -2492,6 +2492,7 @@ export interface ServicesPage {
     url?: string | null;
   };
   experienceLabel?: string | null;
+  featuredClients?: (number | Client)[] | null;
   practices?: {
     label?: string | null;
     heading?: string | null;
@@ -3160,6 +3161,7 @@ export interface ServicesPageSelect<T extends boolean = true> {
         url?: T;
       };
   experienceLabel?: T;
+  featuredClients?: T;
   practices?:
     | T
     | {

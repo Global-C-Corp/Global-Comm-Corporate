@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import type { Client, Project } from '@/payload-types'
 import { ClientLogoCloud } from '@/components/blocks/ClientLogoCloud'
 import { EvidenceFaq, type EvidenceMedia } from '@/components/blocks/EvidenceFaq'
 import { FinalCta } from '@/components/blocks/FinalCta'
@@ -11,9 +10,6 @@ import { SelectedWork, type SelectedWorkItem } from '@/components/blocks/Selecte
 import { SiteFooter } from '@/components/layout/SiteFooter'
 import { SiteHeader } from '@/components/layout/SiteHeader'
 import { isMedia, mediaURL } from '@/lib/media'
-import { populated } from '@/lib/relations'
-import { getGlobalAvailability } from '@/services/cms/availability'
-import { getHomePage } from '@/services/cms/globals'
 import { getFeaturedClients } from '@/services/cms/proof'
 import { getFeaturedProjects } from '@/services/cms/projects'
 import { projectTiles } from '@/services/cms/projectTiles'
@@ -30,16 +26,11 @@ export const metadata: Metadata = {
 const ctx = { locale: 'fr' as const, draft: false }
 
 export default async function HomeDesignPreview() {
-  const page = await getHomePage(ctx)
-  const availability = await getGlobalAvailability('home-page')
-
-  const selectedProjects = populated<Project>(page?.featuredProjects)
-  const fallbackProjects =
-    selectedProjects.length === 0 ? await getFeaturedProjects(ctx) : []
-  const projects = selectedProjects.length > 0 ? selectedProjects : fallbackProjects
-
-  const selectedClients = populated<Client>(page?.featuredClients)
-  const clients = selectedClients.length > 0 ? selectedClients : await getFeaturedClients(ctx, 16)
+  // The editorial selection used to come from the `home-page` global. Page
+  // copy is source-owned now, so this design experiment reads the same real
+  // records the public homepage does.
+  const projects = await getFeaturedProjects(ctx)
+  const clients = await getFeaturedClients(ctx, 16)
 
   const heroSlides: HeroSlide[] = projects
     .map((project) => {
@@ -80,7 +71,7 @@ export default async function HomeDesignPreview() {
     })
     .filter((logo): logo is NonNullable<typeof logo> => logo !== null)
 
-  const workItems: SelectedWorkItem[] = projectTiles(projects, ctx.locale).map(
+  const workItems: SelectedWorkItem[] = projectTiles(projects).map(
     ({ project, href, meta, image }) => ({
       id: String(project.id),
       title: project.title,
@@ -88,7 +79,7 @@ export default async function HomeDesignPreview() {
       body: project.excerpt || project.shortStatement || '',
       ...(image ? { image: image.url } : {}),
       alt: image?.alt || project.title,
-      href: href || '/fr/work',
+      href: href || '/work',
     }),
   )
 
@@ -124,7 +115,7 @@ export default async function HomeDesignPreview() {
 
   return (
     <>
-      <SiteHeader locale={ctx.locale} route={{ type: 'home' }} availability={availability} overDark />
+      <SiteHeader route={{ type: 'home' }} overDark />
       <main id="main" className="gc-design-page">
         <Hero
           eyebrow={homeV5.hero.eyebrow}
@@ -191,7 +182,7 @@ export default async function HomeDesignPreview() {
           cta={{ label: homeV5.finalCTA.action.label, url: homeV5.finalCTA.action.href }}
         />
       </main>
-      <SiteFooter locale={ctx.locale} />
+      <SiteFooter />
     </>
   )
 }

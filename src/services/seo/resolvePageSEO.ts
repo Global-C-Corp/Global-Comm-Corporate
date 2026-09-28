@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
-import type { Locale } from '@/i18n/locale'
+import { siteConfig } from '@/config/site'
 import { absoluteMediaURL } from '@/lib/media'
-import { buildAlternates, type LocaleAvailability } from './hreflang'
 import { resolveCanonical } from './canonical'
 import type { Route } from './urls'
 
@@ -31,16 +30,9 @@ export type SeoEntity = {
   meta?: SeoMeta | null
 }
 
-export type SiteDefaults = {
-  siteName: string
-  defaultTitle?: string | null
-  defaultDescription?: string | null
-  defaultOGImage?: unknown
-}
-
 /**
  * Only production is indexable. Preview/staging deployments are always
- * noindex (CLAUDE.md §69).
+ * noindex.
  */
 export function isIndexableEnvironment(): boolean {
   if (process.env.VERCEL_ENV) return process.env.VERCEL_ENV === 'production'
@@ -56,45 +48,39 @@ function entityDescription(entity: SeoEntity): string | undefined {
 }
 
 /**
- * Centralized metadata resolution (CLAUDE.md §66-§67). No textual
- * cross-language fallback: everything passed in is already resolved for
- * one locale with `fallbackLocale: false`.
+ * Centralized metadata resolution.
+ *
+ * The site is single-language, so there are no `alternates.languages` and no
+ * hreflang cluster to keep reciprocal — a single self-canonical URL is the
+ * whole story.
  */
 export function resolvePageSEO({
   entity,
-  locale,
   route,
-  site,
-  availability,
   isPreview = false,
 }: {
   entity: SeoEntity
-  locale: Locale
   route: Route
-  site: SiteDefaults
-  availability: LocaleAvailability
   isPreview?: boolean
 }): Metadata {
   const meta = entity.meta ?? undefined
 
   const title =
     meta?.title ||
-    (entityTitle(entity) ? `${entityTitle(entity)} — ${site.siteName}` : undefined) ||
-    site.defaultTitle ||
-    site.siteName
+    (entityTitle(entity) ? `${entityTitle(entity)} — ${siteConfig.shortName}` : undefined) ||
+    siteConfig.name
 
-  const description = meta?.description || entityDescription(entity) || site.defaultDescription || undefined
+  const description = meta?.description || entityDescription(entity) || siteConfig.tagline
 
   const ogTitle = meta?.openGraph?.title || meta?.title || entityTitle(entity) || title
-  const ogDescription = meta?.openGraph?.description || meta?.description || entityDescription(entity) || description
+  const ogDescription =
+    meta?.openGraph?.description || meta?.description || entityDescription(entity) || description
   const ogImage =
     absoluteMediaURL(meta?.openGraph?.image, 'openGraph') ??
     absoluteMediaURL(meta?.image, 'openGraph') ??
-    absoluteMediaURL(entity.heroMedia, 'openGraph') ??
-    absoluteMediaURL(site.defaultOGImage, 'openGraph')
+    absoluteMediaURL(entity.heroMedia, 'openGraph')
 
-  const canonical = resolveCanonical({ locale, route, canonicalOverride: meta?.canonicalOverride })
-  const alternates = buildAlternates({ route, availability })
+  const canonical = resolveCanonical({ route, canonicalOverride: meta?.canonicalOverride })
 
   const noIndex = isPreview || !isIndexableEnvironment() || Boolean(meta?.robots?.noIndex)
   const noFollow = Boolean(meta?.robots?.noFollow)
@@ -102,21 +88,15 @@ export function resolvePageSEO({
   return {
     title,
     description,
-    alternates: {
-      canonical,
-      languages: alternates.languages,
-    },
-    robots: {
-      index: !noIndex,
-      follow: !noFollow,
-    },
+    alternates: { canonical },
+    robots: { index: !noIndex, follow: !noFollow },
     openGraph: {
-      // og:url always equals the canonical URL (CLAUDE.md §57).
+      // og:url always equals the canonical URL.
       url: canonical,
       title: ogTitle,
       description: ogDescription ?? undefined,
-      siteName: site.siteName,
-      locale,
+      siteName: siteConfig.shortName,
+      locale: 'fr',
       type: 'website',
       images: ogImage ? [{ url: ogImage }] : undefined,
     },

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { Sheet, SheetClose, SheetContent, SheetTitle } from '@/components/ui/sheet'
 import { Container, Wordmark } from '@/components/ui/Layout'
-import type { NavLink } from '@/lib/nav'
+import type { NavLink } from '@/config/navigation'
 import { cn } from '@/lib/utils'
 
 /** One locale entry in the switcher. A null href means the translation is not public. */
@@ -23,10 +23,9 @@ export type LocaleChoice = {
  * surface and condenses to 64px with a brand-blue hairline once the page
  * scrolls past it (04 §12.2, 03 §20).
  *
- * Nothing here is authored: the navigation comes from the Payload Navigation
- * global and the locale entries from the route's real availability, so a
- * locale whose translation is not public is rendered inert rather than linked
- * to a 404 (CLAUDE.md §61).
+ * Nothing here is authored: the navigation comes from src/config/navigation.ts.
+ * The locale switcher is kept but takes an empty list on a single-language
+ * site, so it is simply not rendered.
  */
 export function HeaderBar({
   overDark = false,
@@ -38,8 +37,9 @@ export function HeaderBar({
 }: {
   overDark?: boolean
   homeHref: string
-  links: NavLink[]
+  links: readonly NavLink[]
   currentUrl: string
+  /** Empty on a single-language site; the switcher is then not rendered. */
   locales: LocaleChoice[]
   labels: { menu: string; close: string; primary: string; languages: string }
 }) {
@@ -219,11 +219,13 @@ export function HeaderBar({
           </nav>
 
           <div className="flex items-center justify-end gap-1">
-            <ul className="hidden items-center md:flex" aria-label={labels.languages}>
-              {locales.map((locale) => (
-                <li key={locale.code}>{localeItem(locale, false)}</li>
-              ))}
-            </ul>
+            {locales.length > 0 && (
+              <ul className="hidden items-center md:flex" aria-label={labels.languages}>
+                {locales.map((locale) => (
+                  <li key={locale.code}>{localeItem(locale, false)}</li>
+                ))}
+              </ul>
+            )}
 
             <Sheet open={open} onOpenChange={setOpen}>
               <button
@@ -299,17 +301,19 @@ export function HeaderBar({
                   </ul>
                 </nav>
 
-                <ul className="mt-8 flex items-center gap-1" aria-label={labels.languages}>
-                  {locales.map((locale) => (
-                    <li key={locale.code}>
-                      {locale.href && !locale.isCurrent ? (
-                        <SheetClose asChild>{localeItem(locale, true)}</SheetClose>
-                      ) : (
-                        localeItem(locale, true)
-                      )}
-                    </li>
-                  ))}
-                </ul>
+                {locales.length > 0 && (
+                  <ul className="mt-8 flex items-center gap-1" aria-label={labels.languages}>
+                    {locales.map((locale) => (
+                      <li key={locale.code}>
+                        {locale.href && !locale.isCurrent ? (
+                          <SheetClose asChild>{localeItem(locale, true)}</SheetClose>
+                        ) : (
+                          localeItem(locale, true)
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </SheetContent>
             </Sheet>
           </div>

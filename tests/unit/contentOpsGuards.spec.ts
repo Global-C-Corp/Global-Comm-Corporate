@@ -3,7 +3,6 @@ import { applyFieldWhitelist, detectConflict, filterEvidencedMetrics } from '@/s
 import { isLocalePublic } from '@/lib/publication'
 import { logCmsFailure } from '@/lib/log'
 import { slugify } from '@/lib/slugify'
-import { localizeNavHref } from '@/lib/nav'
 import { translateApprovedTerm } from '@/i18n/terminology'
 
 /** CLAUDE.md §36, §105, §112, §113, §128. */
@@ -92,13 +91,6 @@ describe('slug and nav helpers', () => {
   it('slugifies accented multilingual names', () => {
     expect(slugify('Stratégie de marque')).toBe('strategie-de-marque')
     expect(slugify('Généración & Leads!')).toBe('generacion-leads')
-  })
-
-  it('prefixes internal nav targets with the locale and leaves external URLs alone', () => {
-    expect(localizeNavHref('es', '/work')).toBe('/es/work')
-    expect(localizeNavHref('fr', '/')).toBe('/fr')
-    expect(localizeNavHref('en', 'https://example.com')).toBe('https://example.com')
-    expect(localizeNavHref('en', 'mailto:hello@example.com')).toBe('mailto:hello@example.com')
   })
 })
 

@@ -1,5 +1,4 @@
 import type { CollectionConfig, GlobalConfig } from 'payload'
-import { locales } from '@/i18n/locale'
 import { buildPreviewURL } from './preview'
 
 const serverURL = () => process.env.NEXT_PUBLIC_SERVER_URL ?? 'http://localhost:3000'
@@ -10,20 +9,18 @@ type DocLike = { slug?: unknown }
 /** Preview + Live Preview wiring for a collection (CLAUDE.md §87, §152). */
 export function collectionPreview(collection: string): NonNullable<CollectionConfig['admin']> {
   return {
-    preview: (doc: DocLike, { locale }: { locale?: string }) =>
+    preview: (doc: DocLike) =>
       buildPreviewURL({
         collection,
         slug: typeof doc?.slug === 'string' ? doc.slug : undefined,
-        locale: locale ?? locales[0],
         serverURL: serverURL(),
         secret: previewSecret(),
       }),
     livePreview: {
-      url: ({ data, locale }: { data: DocLike; locale?: { code: string } | string }) =>
+      url: ({ data }: { data: DocLike }) =>
         buildPreviewURL({
           collection,
           slug: typeof data?.slug === 'string' ? data.slug : undefined,
-          locale: typeof locale === 'string' ? locale : (locale?.code ?? locales[0]),
           serverURL: serverURL(),
           secret: previewSecret(),
         }),
@@ -39,18 +36,16 @@ export function collectionPreview(collection: string): NonNullable<CollectionCon
 /** Same for a page global, whose route carries no slug. */
 export function globalPreview(globalSlug: string): NonNullable<GlobalConfig['admin']> {
   return {
-    preview: (_doc: unknown, { locale }: { locale?: string }) =>
+    preview: () =>
       buildPreviewURL({
         collection: globalSlug,
-        locale: locale ?? locales[0],
         serverURL: serverURL(),
         secret: previewSecret(),
       }),
     livePreview: {
-      url: ({ locale }: { locale?: { code: string } | string }) =>
+      url: () =>
         buildPreviewURL({
           collection: globalSlug,
-          locale: typeof locale === 'string' ? locale : (locale?.code ?? locales[0]),
           serverURL: serverURL(),
           secret: previewSecret(),
         }),

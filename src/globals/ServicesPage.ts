@@ -46,6 +46,15 @@ export const ServicesPage: GlobalConfig = {
      */
     { name: 'experienceLabel', type: 'textarea', localized: true },
 
+    /**
+     * Explicit editorial selection for the experience band, mirroring
+     * `featuredProjects` below. Without it the band falls back to featured
+     * clients and then to every published client, which is how a fixture
+     * record reached a public proof section. An empty selection keeps the
+     * old fallback, so existing content is unaffected.
+     */
+    { name: 'featuredClients', type: 'relationship', relationTo: 'clients', hasMany: true },
+
     {
       name: 'practices',
       type: 'group',

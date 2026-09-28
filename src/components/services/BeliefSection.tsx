@@ -1,5 +1,4 @@
 import { CTA } from '@/components/ui/Primitives'
-import type { Locale } from '@/i18n/locale'
 import { mediaURL } from '@/lib/media'
 
 /**
@@ -17,14 +16,12 @@ export function BeliefSection({
   body,
   media,
   cta,
-  locale,
 }: {
   label?: string | null
   heading?: string | null
   body?: string | null
   media?: unknown
   cta?: { label?: string | null; url?: string | null } | null
-  locale: Locale
 }) {
   if (!heading) return null
   const image = mediaURL(media, 'projectFeature') || mediaURL(media, 'hero')
@@ -32,7 +29,7 @@ export function BeliefSection({
   return (
     <section className="bg-foreground text-background" aria-labelledby="belief-heading">
       <div className="grid items-stretch lg:grid-cols-12">
-        <div className="flex items-center px-5 py-10 sm:px-6 md:px-8 lg:col-span-4 lg:py-10 lg:pl-16 lg:pr-10">
+        <div className="flex items-center px-5 py-10 sm:px-6 md:px-8 lg:col-span-5 lg:py-10 lg:pl-16 lg:pr-10">
           <div>
             {label ? (
               <p className="text-[0.7rem] font-medium uppercase tracking-[0.14em] text-background/55">
@@ -41,7 +38,7 @@ export function BeliefSection({
             ) : null}
             <h2
               id="belief-heading"
-              className="mt-5 max-w-[18ch] text-balance font-sans text-2xl font-semibold leading-[1.16] tracking-[-0.03em] md:text-[2rem]"
+              className="mt-5 max-w-[18ch] text-balance font-sans text-2xl font-semibold leading-[1.16] tracking-[-0.03em] md:text-[2.5625rem]"
             >
               {heading}
             </h2>
@@ -50,7 +47,7 @@ export function BeliefSection({
 
         {/* Full-height media: no padding around it, so the band reads as one
             cinematic plate rather than a framed picture. */}
-        <div className="relative min-h-[14rem] overflow-hidden bg-background/10 lg:col-span-4 lg:min-h-64">
+        <div className={`relative overflow-hidden lg:col-span-3 lg:min-h-64 ${image ? "min-h-[14rem] bg-background/10" : "min-h-0"}`}>
           {image ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
@@ -73,7 +70,7 @@ export function BeliefSection({
 
             {cta?.label ? (
               <div className="mt-7 [&_a]:border-background/35 [&_a]:bg-transparent [&_a]:text-background hover:[&_a]:border-background hover:[&_a]:bg-background hover:[&_a]:text-foreground [&_a]:focus-visible:outline-background">
-                <CTA cta={cta} locale={locale} variant="secondary" />
+                <CTA cta={cta} variant="secondary" />
               </div>
             ) : null}
           </div>

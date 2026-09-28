@@ -15,8 +15,8 @@ function routeForReference(reference: ReferenceValue): Route | null {
       return { type: 'service', slug }
     case 'projects':
       return { type: 'project', slug }
-    case 'industries':
-      return { type: 'industry', slug }
+    // Industries have no public page; a record pointing at one resolves to
+    // nothing rather than to a URL that 404s.
     default:
       return null
   }
@@ -26,9 +26,12 @@ function routeForReference(reference: ReferenceValue): Route | null {
  * CLAUDE.md §70 — Payload owns redirect records, Next.js performs the HTTP
  * redirect. Looked up when a route would otherwise 404, so a changed
  * published slug keeps its old URL working. A reference target resolves
- * through the same route builder as canonicals, in the requested locale.
+ * through the same route builder as canonicals.
+ *
+ * Redirect records are still stored per locale; the public site only ever
+ * reads the French row.
  */
-export async function findRedirect(fromPath: string, locale: Locale): Promise<ResolvedRedirect | null> {
+export async function findRedirect(fromPath: string, locale: Locale = 'fr'): Promise<ResolvedRedirect | null> {
   const payload = await getPayloadClient()
 
   const result = await payload.find({
@@ -53,7 +56,7 @@ export async function findRedirect(fromPath: string, locale: Locale): Promise<Re
   const reference = record.to.reference as ReferenceValue | null | undefined
   if (reference) {
     const route = routeForReference(reference)
-    if (route) return { destination: buildPath(locale, route), permanent }
+    if (route) return { destination: buildPath(route), permanent }
   }
 
   return null

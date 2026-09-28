@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { CTA } from '@/components/ui/Primitives'
-import type { Locale } from '@/i18n/locale'
 import { Container } from '@/components/ui/Layout'
 
 /**
@@ -17,15 +16,13 @@ export function ServicesClosingCTA({
   cta,
   secondaryLabel,
   secondaryHref,
-  locale,
 }: {
   label?: string | null
   heading?: string | null
   body?: string | null
   cta?: { label?: string | null; url?: string | null } | null
   secondaryLabel?: string | null
-  secondaryHref: string
-  locale: Locale
+  secondaryHref?: string
 }) {
   if (!heading && !cta?.label) return null
 
@@ -42,7 +39,7 @@ export function ServicesClosingCTA({
             {heading ? (
               <h2
                 id="services-closing-heading"
-                className="mt-5 max-w-[16ch] text-balance font-sans text-3xl font-semibold leading-[1.08] tracking-[-0.035em] text-foreground md:text-[2.5rem]"
+                className="mt-5 max-w-[16ch] text-balance font-sans text-3xl font-semibold leading-[1.08] tracking-[-0.035em] text-foreground md:mt-2 md:text-[3.4375rem] md:leading-[1.05]"
               >
                 {heading}
               </h2>
@@ -57,9 +54,9 @@ export function ServicesClosingCTA({
             ) : null}
 
             <div className="mt-8 flex flex-wrap items-center gap-6">
-              {cta?.label ? <CTA cta={cta} locale={locale} /> : null}
+              {cta?.label ? <CTA cta={cta} /> : null}
 
-              {secondaryLabel ? (
+              {secondaryLabel && secondaryHref ? (
                 <Link
                   href={secondaryHref}
                   className="inline-flex min-h-11 items-center text-sm text-foreground underline decoration-border underline-offset-[6px] transition-colors duration-150 hover:text-primary hover:decoration-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
