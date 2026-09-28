@@ -44,15 +44,16 @@ import { locales, translationStatusKey } from '../src/i18n/locale'
  * They keep `_status: draft` and `reviewStatus: needs_review`. This script
  * writes approved, published copies into a CI database only.
  *
- * WIRING, and why it protects the home baselines
+ * WIRING
  *
- * The projects are created with `featured: false` and attached explicitly to
- * `services-page.featuredProjects`. The home page reads its own global and
- * otherwise falls back to `getFeaturedProjects`, which filters on `featured`.
- * Leaving the flag false means the home page still finds nothing, so the
- * approved locked home baselines stay exactly as they are. Covering the home
- * page's Selected Work is a separate decision, because it necessarily changes
- * those baselines.
+ * The three projects and their clients are created with `featured: true`.
+ *
+ * They used to be left unfeatured and attached to `services-page`
+ * .featuredProjects instead, for two reasons that have both gone away: the
+ * page globals are no longer read by any public route, and the synthetic
+ * fixture record that made a published-client fallback unsafe no longer
+ * exists. `featured` is now the one selection mechanism, and every record it
+ * selects is real and owner-approved.
  */
 
 if (process.env.CI !== 'true' && process.env.E2E_FIXTURE_SEED !== 'true') {
@@ -159,9 +160,9 @@ async function upsertClient(payload: Payload, actor: AdminActor, name: string): 
     user: actor,
     data: {
       name,
-      // Not featured: the client band already falls back to published clients,
-      // and featuring these would change what the home page shows.
-      featured: false,
+      // Featured: the reference bands on the homepage and the services page
+      // select on this flag now that no page global is read at runtime.
+      featured: true,
       displayOrder: 100,
       ...editorialState,
     } as never,
@@ -193,8 +194,8 @@ async function upsertProject(
 
   const base = {
     client: clientId,
-    // Left false on purpose — see the wiring note at the top of this file.
-    featured: false,
+    // Featured: see the wiring note at the top of this file.
+    featured: true,
     displayOrder,
     ...(year === undefined ? {} : { year }),
     ...(source.sourceReferences ? { sourceReferences: source.sourceReferences } : {}),
@@ -264,27 +265,8 @@ async function main() {
     console.log(`✓ ${clientName} — project=${projectId} client=${clientId}`)
   }
 
-  /**
-   * Explicit selection rather than the `featured` fallback, so what the
-   * baseline photographs is stated here instead of emerging from a flag.
-   *
-   * The client selection matters for the same reason: the experience band
-   * otherwise falls through to every published client, and the synthetic
-   * client the technical fixture needs would appear in a public proof band.
-   * Naming both lists keeps that decision here, and keeps `featured` free for
-   * genuine editorial use — which is also what stops the home page, whose own
-   * globals stay empty, from picking any of this up.
-   */
-  await payload.updateGlobal({
-    slug: 'services-page',
-    draft: false,
-    overrideAccess: true,
-    user: actor,
-    data: { featuredProjects: projectIds, featuredClients: clientIds } as never,
-  })
-
-  console.log(`✓ services-page.featuredProjects = [${projectIds.join(', ')}]`)
-  console.log(`✓ services-page.featuredClients  = [${clientIds.join(', ')}]`)
+  console.log(`✓ featured projects = [${projectIds.join(', ')}]`)
+  console.log(`✓ featured clients  = [${clientIds.join(', ')}]`)
 }
 
 main()

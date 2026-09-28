@@ -10,6 +10,12 @@ import { resolvePageSEO } from '@/services/seo/resolvePageSEO'
 import type { Route } from '@/services/seo/urls'
 import { submitInquiry } from './actions'
 
+/**
+ * ISR backstop: the page copy is source-owned, but the project-type options
+ * come from Payload — see src/hooks/revalidate.ts.
+ */
+export const revalidate = 60
+
 const route: Route = { type: 'contact' }
 
 export async function generateMetadata(): Promise<Metadata> {

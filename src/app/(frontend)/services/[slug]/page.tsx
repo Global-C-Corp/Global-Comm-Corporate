@@ -18,6 +18,12 @@ export function generateStaticParams() {
 /** Only the four code-owned slugs resolve; anything else is a 404. */
 export const dynamicParams = false
 
+/**
+ * ISR backstop: the page copy is source-owned, but the client strip and the
+ * project cards come from Payload — see src/hooks/revalidate.ts.
+ */
+export const revalidate = 60
+
 export async function generateMetadata({
   params,
 }: {

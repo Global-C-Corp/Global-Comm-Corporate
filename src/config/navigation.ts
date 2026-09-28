@@ -22,10 +22,11 @@ const serviceLinks: readonly NavLink[] = services.map((service) => ({
   url: `/services/${service.slug}`,
 }))
 
+/** The order the site has shipped with; only the source has changed. */
 export const primaryNavigation: readonly NavLink[] = [
-  { label: 'Entreprise', url: '/company' },
   { label: 'Services', url: '/services', children: serviceLinks },
   { label: 'Réalisations', url: '/work' },
+  { label: 'Entreprise', url: '/company' },
   { label: 'Contact', url: '/contact' },
 ]
 

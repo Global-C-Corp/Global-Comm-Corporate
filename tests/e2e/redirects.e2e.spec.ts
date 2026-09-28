@@ -10,7 +10,7 @@ const BASE = 'http://localhost:3000'
  *
  * The site was localized (`/fr/...`, `/en/...`, `/es/...`) and its services
  * were consolidated from many terms onto four pillars. Both URL sets were
- * indexed, so both still have to land somewhere real. `src/middleware.ts` is
+ * indexed, so both still have to land somewhere real. `src/proxy.ts` is
  * the single authority for that mapping; these cases are built from the same
  * source data it reads, so a term's bucket and its redirect target cannot
  * disagree.

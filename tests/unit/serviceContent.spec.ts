@@ -10,7 +10,7 @@ import { buildPath } from '@/services/seo/urls'
  * `pillarConfig` still classifies Payload's `services` taxonomy onto the same
  * four buckets. Nothing forces the two to agree at runtime, so it is asserted
  * here: if a slug or a name drifts on either side, the service pages, the
- * legacy-URL redirects in `src/middleware.ts` and the related-services links on
+ * legacy-URL redirects in `src/proxy.ts` and the related-services links on
  * a case study stop lining up.
  */
 describe('the four services', () => {

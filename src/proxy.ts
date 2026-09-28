@@ -4,6 +4,9 @@ import { locales } from '@/i18n/locale'
 import { PILLARS, ROOT_MERGES } from '@/services/cms/pillarConfig'
 
 /**
+ * Edge request handling — the `middleware` convention, renamed to `proxy` in
+ * Next.js 16.
+ *
  * The public site is single-language and unprefixed. Two things still need to
  * happen at the edge:
  *
@@ -74,7 +77,7 @@ function successorPath(rest: string): string {
   }
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname, search } = request.nextUrl
 
   if (pathname.length > 1 && pathname.endsWith('/')) {

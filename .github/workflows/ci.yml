@@ -112,9 +112,9 @@ jobs:
         run: pnpm run seed:homepage -- --apply
 
       # The only seed that creates projects and clients. It reproduces three
-      # owner-approved records from scripts/project-import-data.json, and it is
-      # the step that sets `services-page.featuredProjects` and
-      # `.featuredClients`, so it runs after the other seeds — last writer wins.
+      # owner-approved records from scripts/project-import-data.json and marks
+      # them `featured`, which is what the homepage and the services page
+      # select on. It runs after the other seeds — last writer wins.
       - name: Seed approved visual reference projects
         run: pnpm exec tsx scripts/seed-visual-reference-projects.ts
 

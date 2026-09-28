@@ -2,19 +2,25 @@ import { revalidatePath } from 'next/cache'
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, GlobalAfterChangeHook } from 'payload'
 
 /**
- * Centralized revalidation (CLAUDE.md §86). Paths are invalidated by their
- * dynamic route pattern, which covers every locale of that route — shared
- * relationships and media are visible in all locales, so a change to one
- * document must not leave another locale stale.
+ * Centralized revalidation (CLAUDE.md §86).
+ *
+ * The routes carry no locale segment any more, so a page is invalidated by its
+ * own path. `[slug]` is still a dynamic pattern: one edit can change several
+ * case studies at once (a renamed client, a replaced image), so the whole
+ * segment is invalidated rather than a single document's URL.
+ *
+ * The corporate pages are source-owned and change only with a deploy, but they
+ * still render Payload records — projects, clients, testimonials — so they stay
+ * in the table.
  */
 const ROUTE_PATTERNS = {
-  home: '/[locale]',
-  services: '/[locale]/services',
-  serviceDetail: '/[locale]/services/[slug]',
-  work: '/[locale]/work',
-  projectDetail: '/[locale]/work/[slug]',
-  company: '/[locale]/company',
-  contact: '/[locale]/contact',
+  home: '/home',
+  services: '/services',
+  serviceDetail: '/services/[slug]',
+  work: '/work',
+  projectDetail: '/work/[slug]',
+  company: '/company',
+  contact: '/contact',
 } as const
 
 type RouteKey = keyof typeof ROUTE_PATTERNS
@@ -59,12 +65,8 @@ const AFFECTED_ROUTES: Record<string, RouteKey[]> = {
   media: ['home', 'services', 'serviceDetail', 'work', 'projectDetail', 'company'],
   'project-types': ['work', 'contact'],
   'context-tags': ['work'],
-  'home-page': ['home'],
-  'services-page': ['services'],
-  'work-page': ['work'],
-  'company-page': ['company'],
-  'contact-page': ['contact'],
-  navigation: ['home', 'services', 'serviceDetail', 'work', 'projectDetail', 'company', 'contact'],
+  // The page globals and `navigation` are still registered in Payload, but no
+  // public route reads them any more, so editing one invalidates nothing.
   'site-settings': ['home', 'services', 'serviceDetail', 'work', 'projectDetail', 'company', 'contact'],
 }
 

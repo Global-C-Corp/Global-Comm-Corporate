@@ -7,8 +7,9 @@ Audience: B2B decision-makers. Goal: credible proof + one CTA (free diagnostic).
 
 - Next.js 16 (App Router) · React 19 · Payload CMS 3.88 · TypeScript strict · pnpm
 - Neon Postgres · Vercel Blob (media) · Vercel (hosting)
-- Locales: `fr` (default), `en`, `es` — every public route is locale-prefixed
-- Copy is French with vouvoiement unless a locale says otherwise
+- The public site is **single-language French** and **unprefixed**. Payload still
+  stores `fr` / `en` / `es`; no public route reads the other two (see §6).
+- Copy is French with vouvoiement
 
 ## 2. Commands
 
@@ -62,26 +63,51 @@ These prevent real damage. Everything else in this file is a default.
    don't understand, merging to `main`, or Next/Payload major upgrades.
 6. Payload is the only CMS. No WordPress, second backend or second database.
 
-## 5. Architecture map
+## 5. Where content lives
+
+Two sources, and the line between them is the point:
+
+| | Source of truth | Changed by |
+|---|---|---|
+| Corporate page copy, navigation, the four services, site identity | `src/content/`, `src/config/` — **code** | a pull request |
+| Case studies, clients, testimonials, industries, media, inquiries | **Payload** | an editor or the AI tools |
+
+A corporate page is a deploy-time decision, so it ships with the code and is
+reviewable in a diff. Proof is a content decision that must not need a deploy,
+so it stays in the CMS. The page globals (`home-page`, `services-page`, …) and
+`navigation` are still registered in Payload, but no public route reads them.
+
+### Public routes
+
+`/` → 308 → `/home` · `/home` · `/company` · `/services` ·
+`/services/[slug]` (exactly four) · `/work` · `/work/[slug]` · `/contact`
+
+No locale prefix. `src/proxy.ts` permanently redirects every URL the site
+published under `/fr`, `/en` or `/es`, including the pre-consolidation service
+slugs.
+
+### Architecture map
 
 ```
 src/
 ├── app/
-│   ├── (frontend)/[locale]/   public site (routing only)
-│   ├── (frontend)/preview/    draft preview
+│   ├── (frontend)/            public site (routing only)
+│   ├── (frontend)/preview/    draft preview — projects only
 │   ├── (payload)/             Payload admin + API
 │   ├── (design)/              design experiments, not public
 │   └── sitemap.ts, robots.ts
+├── content/                   page copy — home, company, services, work, contact, ui
+├── config/                    site identity + navigation
 ├── collections/               Projects, Clients, Services, Industries, Testimonials, Media, Users…
-├── globals/                   HomePage, ServicesPage, WorkPage, CompanyPage, ContactPage, Navigation, SiteSettings
+├── globals/                   registered but not read by any public route
 ├── access/                    role-based access control
 ├── services/cms/              data access — pages read the CMS through here
-├── services/seo/              canonicals, hreflang, metadata
+├── services/seo/              canonicals, metadata, sitemap entries
 ├── hooks/revalidate.ts        cache invalidation on publish
-├── i18n/                      locale config + UI dictionaries
+├── i18n/                      locale config (Payload-side)
 ├── mcp/                       AI editorial tools (draft, edit, publish)
 ├── components/                ui/ (shadcn), layout/, blocks/, feature folders
-└── middleware.ts              locale redirects
+└── proxy.ts                   legacy locale-prefixed URL redirects
 ```
 
 Full reference spec (SEO, canonicals, editorial workflow, MCP tools): `docs/SPEC.md`.
@@ -89,15 +115,20 @@ Do not read it whole — `grep -n "^# " docs/SPEC.md` and read the section you n
 
 ## 6. Languages
 
-- Locales: `fr` (default), `en`, `es`. Every public URL is prefixed: `/fr/`, `/en/`, `/es/`.
+The public site serves French only, at unprefixed URLs. There are no hreflang
+alternates and no language switcher; each page is its own canonical.
+
+Payload has not changed: fields are still localized, `en` and `es` rows still
+exist, and the per-locale approval rules still gate publishing. The frontend
+simply pins every query to `fr` (`src/services/cms/pageContext.ts`).
+
 - Never show one language's content under another language's URL. No fallback.
-- Each locale is published independently; a page goes live in a locale only when
-  that locale is complete.
-- hreflang only lists translations that are actually published.
 - Localized fields (translated): titles, descriptions, SEO, slugs.
 - Shared fields (same in all languages): client names, dates, logos, prices, media.
-- **Before touching i18n, publishing or slugs, read `docs/SPEC.md` §10–20.**
-  Code: `src/i18n/`, `src/middleware.ts`.
+- To add a language back: `src/content/*` becomes `Record<Locale, …>`, and the
+  route segment returns. The content shapes are already flat enough for that.
+- **Before touching publishing or slugs, read `docs/SPEC.md` §10–20.**
+  Code: `src/i18n/`, `src/proxy.ts`.
 
 ## 7. Next.js conventions
 
@@ -124,8 +155,11 @@ Report what you changed and which commands you actually ran. Never claim a run t
 ### System invariants (the site's constitution — tests guard these)
 
 ```text
-PAYLOAD_IS_CONTENT_SOURCE_OF_TRUTH   = true
+PAYLOAD_IS_SOURCE_OF_TRUTH_FOR_PROOF = true   # projects, clients, testimonials
+CORPORATE_PAGE_COPY_LIVES_IN_SOURCE  = true   # src/content, src/config
 PUBLIC_CONTENT_IS_PUBLISHED_ONLY     = true
+PUBLIC_SITE_IS_SINGLE_LANGUAGE       = true
+PUBLIC_URLS_CARRY_NO_LOCALE_PREFIX   = true
 PUBLIC_LOCALE_FALLBACK               = false
 AI_CAN_PUBLISH / APPROVE             = true
 AI_CAN_DELETE                        = false
@@ -135,8 +169,8 @@ AI_WRITES_ARE_AUDITED                = true
 MEASURED_METRICS_REQUIRE_SOURCE      = true
 ESTIMATES_AND_TARGETS_ARE_LABELLED   = true
 AI_TESTIMONIALS_REQUIRE_SOURCE       = true
-LOCALIZED_PAGES_SELF_CANONICALIZE    = true
-HREFLANG_ONLY_FOR_PUBLIC_TRANSLATIONS = true
+PAGES_SELF_CANONICALIZE              = true
+PUBLISHED_URLS_KEEP_WORKING           = true   # src/proxy.ts
 SITEMAP_CONTAINS_CANONICAL_URLS_ONLY = true
 TEST_DATA_IN_PUBLIC_OR_PREVIEW_DB    = false
 ```

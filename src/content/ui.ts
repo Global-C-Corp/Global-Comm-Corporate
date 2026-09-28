@@ -49,6 +49,16 @@ export const ui = {
     "andMore": "et plus encore"
   },
   "form": {
+    "name": "Nom",
+    "company": "Société",
+    "email": "E-mail",
+    "phone": "Téléphone",
+    "website": "Site web",
+    "projectType": "Type de projet",
+    "estimatedBudget": "Budget estimé",
+    "desiredStart": "Démarrage souhaité",
+    "message": "Message",
+    "consent": "J’accepte que Global Communication Corporate conserve ces informations afin de répondre à ma demande.",
     "required": "Ce champ est requis",
     "invalidEmail": "Adresse e-mail invalide",
     "genericError": "Une erreur est survenue. Veuillez réessayer.",
