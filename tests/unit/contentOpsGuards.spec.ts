@@ -45,9 +45,8 @@ describe('AI evidence policy', () => {
 })
 
 describe('concurrency guard', () => {
-  it('refuses to modify an approved document', () => {
-    const conflict = detectConflict({ reviewStatus: 'approved' })
-    expect(conflict?.ok).toBe(false)
+  it('allows AI to modify an approved document (owner decision 2026-09-28)', () => {
+    expect(detectConflict({ reviewStatus: 'approved' })).toBeNull()
   })
 
   it('refuses when the document changed since it was read', () => {

@@ -50,17 +50,13 @@ export function buildProvenance(
 }
 
 /**
- * CLAUDE.md §112 — AI must not overwrite current human work. An approved or
- * published document is off-limits until a human moves it back into a
- * drafting state.
+ * AI must not overwrite work that changed since it was read. Approved and
+ * published documents are editable by the AI editor (owner decision 2026-09-28).
  */
 export function detectConflict(
   doc: { reviewStatus?: string | null; _status?: string | null; updatedAt?: string | null },
   expectedUpdatedAt?: string,
 ): OperationResult<true> | null {
-  if (doc.reviewStatus === 'approved') {
-    return failure('conflict', 'Document is approved; AI may not modify it until a human requests revisions.')
-  }
   if (expectedUpdatedAt && doc.updatedAt && doc.updatedAt !== expectedUpdatedAt) {
     return failure('conflict', 'Document changed since it was read. Re-read the document and retry.')
   }

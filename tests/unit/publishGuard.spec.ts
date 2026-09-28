@@ -5,7 +5,7 @@ const approvedAll = { frStatus: 'approved', enStatus: 'approved', esStatus: 'app
 
 /** CLAUDE.md §18, §27, §128 — the server-side publish guard. */
 describe('publish guard', () => {
-  it('blocks AI from publishing', () => {
+  it('lets AI publish approved content (owner decision 2026-09-28)', () => {
     expect(() =>
       applyEditorialGuard({
         data: { _status: 'published' },
@@ -13,7 +13,7 @@ describe('publish guard', () => {
         role: 'ai_editor',
         operation: 'update',
       }),
-    ).toThrow()
+    ).not.toThrow()
   })
 
   it('blocks an editor from publishing', () => {
@@ -96,8 +96,8 @@ describe('publish guard', () => {
     expect(() =>
       applyEditorialGuard({
         data: { reviewStatus: 'approved' },
-        originalDoc: { reviewStatus: 'ai_draft' },
-        role: 'ai_editor',
+        originalDoc: { reviewStatus: 'editorial_draft' },
+        role: 'editor',
         operation: 'update',
       }),
     ).toThrow()
@@ -141,11 +141,11 @@ describe('publish guard error messages', () => {
     expect(() =>
       applyEditorialGuard({
         data: { reviewStatus: 'approved' },
-        originalDoc: { reviewStatus: 'ai_draft' },
-        role: 'ai_editor',
+        originalDoc: { reviewStatus: 'editorial_draft' },
+        role: 'editor',
         operation: 'update',
       }),
-    ).toThrow(/cannot move the review status from “ai_draft” to “approved”/i)
+    ).toThrow(/cannot move the review status from “editorial_draft” to “approved”/i)
   })
 
   it('explains why a published slug change was refused', () => {
@@ -230,15 +230,14 @@ describe('approve-and-publish as one action', () => {
     ).toThrow(/only a publisher or admin can publish/i)
   })
 
-  it('refuses AI outright', () => {
-    expect(() =>
-      applyEditorialGuard({
-        data: { _status: 'published', _approveAndPublish: true },
-        originalDoc: { ...seededGlobal, reviewStatus: 'ai_draft' },
-        role: 'ai_editor',
-        operation: 'update',
-      }),
-    ).toThrow(/only a publisher or admin can publish/i)
+  it('lets AI approve and publish in one operation (owner decision 2026-09-28)', () => {
+    const data = applyEditorialGuard({
+      data: { _status: 'published', _approveAndPublish: true },
+      originalDoc: { ...seededGlobal, reviewStatus: 'ai_draft' },
+      role: 'ai_editor',
+      operation: 'update',
+    })
+    expect(data.reviewStatus).toBe('approved')
   })
 
   it('leaves a bare publish, with no flag, refused exactly as before', () => {

@@ -9,6 +9,7 @@ import { draftTestimonial, draftTestimonialSchema } from '@/services/content-ops
 import { prepareSEO, prepareSEOSchema } from '@/services/content-ops/prepareSEO'
 import { submitForReview, submitForReviewSchema } from '@/services/content-ops/submitForReview'
 import { translateContent, translateContentSchema } from '@/services/content-ops/translateContent'
+import { updateContent, updateContentSchema } from '@/services/content-ops/updateContent'
 import type { OperationContext, OperationResult } from '@/services/content-ops/types'
 
 type ToolResponse = { content: Array<{ text: string; type: 'text' }> }
@@ -111,5 +112,11 @@ export const aiTools = [
     'Move an AI draft or a revision-requested document to needs_review. Never approves or publishes.',
     submitForReviewSchema,
     submitForReview,
+  ),
+  buildTool(
+    'updateContent',
+    'Edit any content field of one document (optionally in one locale) and, with publish: true, approve and publish it. Metric values still need a sourceNote. Records provenance and an audit log entry.',
+    updateContentSchema,
+    updateContent,
   ),
 ]

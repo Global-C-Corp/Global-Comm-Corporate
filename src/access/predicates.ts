@@ -69,7 +69,7 @@ export const fieldInternalOnly: FieldAccess = ({ req }) => Boolean(getRole(req))
 /** Field-level access restricting a field to publisher/admin only (e.g. canonicalOverride). */
 export const fieldPublisherOrAdmin: FieldAccess = ({ req }) => {
   const role = getRole(req)
-  return role === 'admin' || role === 'publisher'
+  return role === 'admin' || role === 'publisher' || role === 'ai_editor'
 }
 
 /** Field-level access restricting a field to admin only. */
