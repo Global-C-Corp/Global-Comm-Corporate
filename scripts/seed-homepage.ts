@@ -128,7 +128,7 @@ async function main() {
 
   for (const [index, locale] of (locales as readonly Locale[]).entries()) {
     const withIds = index > 0
-    await payload.updateGlobal({
+    const updated = await payload.updateGlobal({
       slug: 'home-page',
       locale,
       data: {
@@ -232,14 +232,8 @@ async function main() {
     })
 
     if (index === 0) {
-      const created = await payload.findGlobal({
-        slug: 'home-page',
-        locale,
-        depth: 0,
-        overrideAccess: true,
-      })
-      serviceItemIds = (created.expertise?.items ?? []).map((item) => String(item.id))
-      approachStepIds = (created.approach?.steps ?? []).map((step) => String(step.id))
+      serviceItemIds = (updated.expertise?.items ?? []).map((item) => String(item.id))
+      approachStepIds = (updated.approach?.steps ?? []).map((step) => String(step.id))
     }
 
     console.log(`  wrote ${locale}`)
