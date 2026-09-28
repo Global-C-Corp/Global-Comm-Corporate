@@ -10,6 +10,7 @@ import { prepareSEO, prepareSEOSchema } from '@/services/content-ops/prepareSEO'
 import { submitForReview, submitForReviewSchema } from '@/services/content-ops/submitForReview'
 import { translateContent, translateContentSchema } from '@/services/content-ops/translateContent'
 import { updateContent, updateContentSchema } from '@/services/content-ops/updateContent'
+import { updateGlobalContent, updateGlobalContentSchema } from '@/services/content-ops/updateGlobalContent'
 import type { OperationContext, OperationResult } from '@/services/content-ops/types'
 
 type ToolResponse = { content: Array<{ text: string; type: 'text' }> }
@@ -118,5 +119,11 @@ export const aiTools = [
     'Edit any content field of one document (optionally in one locale) and, with publish: true, approve and publish it. Measured metric values need a sourceNote; estimates and targets do not. Records provenance and an audit log entry.',
     updateContentSchema,
     updateContent,
+  ),
+  buildTool(
+    'updateGlobalContent',
+    'Edit any content field of a page global (optionally in one locale) and, with publish: true, approve and publish it. Records provenance and an audit log entry.',
+    updateGlobalContentSchema,
+    updateGlobalContent,
   ),
 ]

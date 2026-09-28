@@ -43,7 +43,7 @@ describe('AI tool contract', () => {
     anonReq = await requestFor(null)
   })
 
-  it('exposes exactly the nine AI tools', () => {
+  it('exposes exactly the ten AI tools', () => {
     expect(aiTools.map((tool) => tool.name).sort()).toEqual(
       [
         'auditContent',
@@ -55,6 +55,7 @@ describe('AI tool contract', () => {
         'submitForReview',
         'translateContent',
         'updateContent',
+        'updateGlobalContent',
       ].sort(),
     )
   })
