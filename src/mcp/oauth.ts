@@ -1,4 +1,4 @@
-import { createPublicKey, verify } from 'node:crypto'
+import { createPublicKey, verify, type JsonWebKey } from 'node:crypto'
 
 type OAuthConfig = {
   issuer: string
@@ -170,7 +170,7 @@ export async function verifyMcpOAuthAccessToken(token: string): Promise<OAuthAcc
     throw new Error('OAuth access token must be a signed JWT.')
   }
 
-  const [encodedHeader, encodedPayload, encodedSignature] = parts
+  const [encodedHeader, encodedPayload, _encodedSignature] = parts
   const header = decodeJsonSegment<{ alg?: string; kid?: string }>(encodedHeader)
   const claims = decodeJsonSegment<OAuthAccessClaims>(encodedPayload)
 
