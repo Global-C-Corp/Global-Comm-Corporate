@@ -40,10 +40,36 @@ pnpm build               # runs verify:env + migrate first — needs a DB.
   (`global-comm-corporate-three.vercel.app/admin` → `/fr/...`). Preview is for code changes only.
 - **Edits in production Payload do not show on Preview.** They are different databases.
   If a change "doesn't appear", check which database you wrote to first.
-- Real content (homepage copy, services, projects) lives in the CMS or a real seed
-  (`seed.ts`, `seed-homepage.ts`) — **never only in test fixtures**.
+- Case-study content (projects, their media, relationships and SEO) lives in Payload.
+  Corporate page copy lives in the code (see §4a). Neither lives only in test fixtures.
 - Test fixtures (`seed-e2e.ts`) never run against a database the public or preview site reads.
 - Env vars: see `.env.example`. `DATABASE_URI` in `.env` must never be the production URI.
+
+## 4a. Content sources (owner decision 2026-09-28)
+
+```text
+STATIC_CORPORATE_CONTENT_SOURCE = CODE
+CASE_STUDY_CONTENT_SOURCE       = PAYLOAD
+```
+
+**Payload is the source of truth for:**
+- Projects / Case Studies
+- Project media
+- Project relationships (client, services, industries, project types, tags)
+- Case-study SEO data
+
+**Next.js source code is the source of truth for:**
+- Home
+- Services
+- Method
+- Industries
+- Contact
+
+Consequences:
+- To change corporate page copy, edit the code (all 3 locales), not Payload.
+- Do not add Payload fields or AI tools for corporate page copy.
+- Existing page globals (HomePage, ServicesPage, CompanyPage, ContactPage) are legacy
+  until migrated to code — ask before removing them, since that deletes stored data.
 
 ## 4. Hard rules
 
@@ -60,7 +86,7 @@ These prevent real damage. Everything else in this file is a default.
 4. **Fail loudly.** No silent catches, no placeholder text ("Lorem ipsum", "Your headline here").
 5. **Ask first** before: destructive migrations, dropping data, force-push, deleting files you
    don't understand, merging to `main`, or Next/Payload major upgrades.
-6. Payload is the only CMS. No WordPress, second backend or second database.
+6. Payload is the only CMS (for case studies, §4a). No WordPress, second backend or second database.
 
 ## 5. Architecture map
 
@@ -73,7 +99,7 @@ src/
 │   ├── (design)/              design experiments, not public
 │   └── sitemap.ts, robots.ts
 ├── collections/               Projects, Clients, Services, Industries, Testimonials, Media, Users…
-├── globals/                   HomePage, ServicesPage, WorkPage, CompanyPage, ContactPage, Navigation, SiteSettings
+├── globals/                   Navigation, SiteSettings, WorkPage; page-copy globals are legacy (§4a)
 ├── access/                    role-based access control
 ├── services/cms/              data access — pages read the CMS through here
 ├── services/seo/              canonicals, hreflang, metadata
@@ -124,7 +150,8 @@ Report what you changed and which commands you actually ran. Never claim a run t
 ### System invariants (the site's constitution — tests guard these)
 
 ```text
-PAYLOAD_IS_CONTENT_SOURCE_OF_TRUTH   = true
+STATIC_CORPORATE_CONTENT_SOURCE      = CODE
+CASE_STUDY_CONTENT_SOURCE            = PAYLOAD
 PUBLIC_CONTENT_IS_PUBLISHED_ONLY     = true
 PUBLIC_LOCALE_FALLBACK               = false
 AI_CAN_PUBLISH / APPROVE             = true
