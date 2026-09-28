@@ -1,16 +1,18 @@
-export {}
-
 /**
- * One-time deployment hook for the approved homepage content.
- *
- * Preview deployments are a no-op. Production runs the existing idempotent
- * homepage seed with --apply. Remove this hook immediately after the content
- * has been verified in production.
+ * One-time production-only deployment hook for the approved homepage seed.
+ * Preview and local builds are no-ops.
  */
-if (process.env.VERCEL_ENV !== 'production') {
-  console.log('homepage seed: preview/non-Vercel environment — skipped')
-  process.exit(0)
+async function run() {
+  if (process.env.VERCEL_ENV !== 'production') {
+    console.log('homepage seed: preview/non-production environment — skipped')
+    return
+  }
+
+  process.argv.push('--apply')
+  await import('./seed-homepage')
 }
 
-process.argv.push('--apply')
-await import('./seed-homepage')
+run().catch((error) => {
+  console.error(error)
+  process.exit(1)
+})
