@@ -81,14 +81,19 @@ export function aiTranslationStatus(locale: Locale) {
 }
 
 /**
- * CLAUDE.md §36, §105 — a metric may only be written when it carries a
- * source. Unsupported values are dropped, never estimated.
+ * A measured metric may only be written when it carries a source.
+ * Estimates and targets are allowed because the page labels them.
  */
+type MetricInput = { kind?: 'measured' | 'estimate' | 'target'; value?: string; label: string; sourceNote?: string }
+
 export function filterEvidencedMetrics(
-  metrics: { value?: string; label: string; sourceNote?: string }[] | undefined,
-): { kept: { value?: string; label: string; sourceNote?: string }[]; dropped: number } {
+  metrics: MetricInput[] | undefined,
+): { kept: MetricInput[]; dropped: number } {
   if (!metrics) return { kept: [], dropped: 0 }
 
-  const kept = metrics.filter((metric) => !metric.value || Boolean(metric.sourceNote))
+  // Estimates and targets are kept: the page labels them as such.
+  const kept = metrics.filter(
+    (metric) => !metric.value || (metric.kind ?? 'measured') !== 'measured' || Boolean(metric.sourceNote),
+  )
   return { kept, dropped: metrics.length - kept.length }
 }

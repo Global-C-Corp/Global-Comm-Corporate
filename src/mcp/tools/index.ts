@@ -73,7 +73,7 @@ export const aiTools = [
   ),
   buildTool(
     'draftProject',
-    'Create or update a Project as an AI draft. Resolves the client, assigns only existing taxonomy terms (unknown terms are returned as suggestions), and drops any metric that has no source. Never publishes.',
+    'Create or update a Project as an AI draft. Resolves the client, assigns only existing taxonomy terms (unknown terms are returned as suggestions), and drops any measured metric that has no source (estimates and targets are kept and labelled on the page). Never publishes.',
     draftProjectSchema,
     draftProject,
   ),
@@ -115,7 +115,7 @@ export const aiTools = [
   ),
   buildTool(
     'updateContent',
-    'Edit any content field of one document (optionally in one locale) and, with publish: true, approve and publish it. Metric values still need a sourceNote. Records provenance and an audit log entry.',
+    'Edit any content field of one document (optionally in one locale) and, with publish: true, approve and publish it. Measured metric values need a sourceNote; estimates and targets do not. Records provenance and an audit log entry.',
     updateContentSchema,
     updateContent,
   ),

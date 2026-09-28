@@ -103,6 +103,31 @@ describe('publish guard', () => {
     ).toThrow()
   })
 
+  it('rejects a measured metric without a source', () => {
+    expect(() =>
+      applyEditorialGuard({
+        data: { metrics: [{ kind: 'measured', value: '+35 %', label: 'Ventes' }] },
+        role: 'ai_editor',
+        operation: 'create',
+      }),
+    ).toThrow()
+  })
+
+  it('accepts an estimate or a target without a source', () => {
+    expect(() =>
+      applyEditorialGuard({
+        data: {
+          metrics: [
+            { kind: 'estimate', value: '+20 %', label: 'Ventes' },
+            { kind: 'target', value: '10 000', label: 'Leads' },
+          ],
+        },
+        role: 'ai_editor',
+        operation: 'create',
+      }),
+    ).not.toThrow()
+  })
+
   it('defaults a new AI document to ai_draft', () => {
     const data = applyEditorialGuard({ data: { title: 'x' }, role: 'ai_editor', operation: 'create' })
     expect(data.reviewStatus).toBe('ai_draft')
