@@ -48,6 +48,27 @@ async function resolveActor(payload: Payload): Promise<AdminActor> {
 
 const list = (values: string[]) => values.map((value) => ({ value }))
 
+const seoCopy: Record<Locale, { title: string; description: string; openGraphTitle: string; openGraphDescription: string }> = {
+  fr: {
+    title: 'Global Comm | Agence de communication & marketing',
+    description: 'Global Comm aide les PME et les marques de grande consommation au Maroc à clarifier leurs priorités, structurer leur marque et coordonner leur communication.',
+    openGraphTitle: 'Global Comm — Une direction claire pour votre communication',
+    openGraphDescription: 'Recherche, stratégie, branding, marketing digital et automatisation coordonnés autour d’une même direction.',
+  },
+  en: {
+    title: 'Global Comm | Communication & Marketing Agency',
+    description: 'Global Comm helps SMEs and consumer goods brands in Morocco clarify priorities, structure their brand and coordinate their communication.',
+    openGraphTitle: 'Global Comm — A clear direction for your communication',
+    openGraphDescription: 'Research, strategy, branding, digital marketing and automation coordinated around one direction.',
+  },
+  es: {
+    title: 'Global Comm | Agencia de comunicación y marketing',
+    description: 'Global Comm ayuda a las pymes y a las marcas de gran consumo en Marruecos a clarificar prioridades, estructurar su marca y coordinar su comunicación.',
+    openGraphTitle: 'Global Comm — Una dirección clara para su comunicación',
+    openGraphDescription: 'Investigación, estrategia, branding, marketing digital y automatización coordinados en torno a una misma dirección.',
+  },
+}
+
 async function main() {
   const payload = await getPayload({ config })
   const actor = await resolveActor(payload)
@@ -65,9 +86,13 @@ async function main() {
 
   const pillarIdByKey = new Map<string, number>()
   for (const doc of services.docs) {
-    if (!doc.isPillar) continue
     const key = pillarKeyForFrSlug(String(doc.slug ?? ''))
-    if (key) pillarIdByKey.set(key, Number(doc.id))
+    if (!key) continue
+
+    // Prefer a consolidated public pillar when it exists, but remain compatible
+    // with environments that still carry the original root service records.
+    // This keeps the homepage seed usable before and after services consolidation.
+    if (!pillarIdByKey.has(key) || doc.isPillar) pillarIdByKey.set(key, Number(doc.id))
   }
 
   const missing = servicesCopy.items.filter((item) => !pillarIdByKey.has(item.pillarKey))
@@ -189,6 +214,16 @@ async function main() {
           heading: closingCopy.heading[locale],
           body: closingCopy.body[locale],
           reassurance: closingCopy.reassurance[locale],
+        },
+
+        meta: {
+          title: seoCopy[locale].title,
+          description: seoCopy[locale].description,
+          openGraph: {
+            title: seoCopy[locale].openGraphTitle,
+            description: seoCopy[locale].openGraphDescription,
+          },
+          robots: { noIndex: false, noFollow: false },
         },
       } as never,
       draft: false,
