@@ -1,54 +1,111 @@
 # CLAUDE.md — Global Communication Corporate
 
-Corporate site for Global Comm (Moroccan FMCG communication agency).
-Stack: Next.js (App Router) + Payload CMS + PostgreSQL + Vercel, TypeScript strict, pnpm.
+## 1. Project snapshot
 
-The full architecture spec lives in `docs/SPEC.md` (~4,600 lines).
-**Do not read it all.** Grep it for the section relevant to your task
-(e.g. `grep -n "^# " docs/SPEC.md`, then read that section).
+Corporate site for Global Comm, a Moroccan communication agency for FMCG brands.
+Audience: B2B decision-makers. Goal: credible proof + one CTA (free diagnostic).
 
----
+- Next.js 16 (App Router) · React 19 · Payload CMS 3.88 · TypeScript strict · pnpm
+- Neon Postgres · Vercel Blob (media) · Vercel (hosting)
+- Locales: `fr` (default), `en`, `es` — every public route is locale-prefixed
+- Copy is French with vouvoiement unless a locale says otherwise
 
-## Hard rules (the only non-negotiables)
-
-1. **No WordPress / WPGraphQL / other CMS / second backend.** Payload is the only content source.
-2. **AI never publishes, approves, deletes, manages users, or creates taxonomy.** The human publishes.
-3. **Public pages show published content only.** No draft leaks, no locale fallback (fr, en, es).
-4. **Never connect previews or PRs to the production database.** No secrets in code or logs.
-5. **Ask before destructive actions:** dropping tables, destructive migrations, force-push, deleting files you don't understand, major framework upgrades.
-
-Everything else is a default, not a law. If a default blocks the task, pick the
-sensible option, say why in one line, and continue.
-
-## Defaults
-
-- Server Components by default; fetch CMS data server-side via Payload Local API.
-- Schema change → create a migration (`pnpm migrate:create`), never edit the DB by hand.
-- Don't add dependencies without a reason; don't upgrade Next/Payload incidentally.
-- Canonicals: https, production host, self-canonical per locale, no tracking params (details: SPEC §46–59).
-- Fix bugs at the root cause; don't delete tests to get green.
-
-## Commands
+## 2. Commands
 
 ```bash
-pnpm dev              # local dev
-pnpm typecheck        # fast check — run after code changes
+pnpm dev                 # local dev
+pnpm typecheck           # after any code change (fast)
 pnpm lint
-pnpm test:unit        # fast; run the suite related to what you changed
-pnpm test:int / test:contract / test:e2e   # run when touching those areas
-pnpm build            # runs verify:env + migrate first; needs a DB
-pnpm generate:types   # after Payload schema changes
+pnpm test:unit           # fast, run the tests related to your change
+pnpm test:int            # integration (Payload + DB), uses .env.test
+pnpm test:contract       # MCP tool contracts
+pnpm test:e2e            # Playwright incl. visual snapshots — release-level
+pnpm migrate:create      # after any collection/global schema change
+pnpm generate:types      # after schema changes (updates payload-types.ts)
+pnpm build               # runs verify:env + migrate first — needs a DB
 ```
 
-Verification scales with the change: a copy/style edit needs typecheck at most;
-a schema or access-control change needs the related tests. The full `pnpm test`
-is for pre-release, not every edit.
+## 3. Environments and data
 
-## Working style
+| Env | Database | Content source |
+|---|---|---|
+| Local | dev Neon branch (never production) | seed scripts / manual edits |
+| Test | `.env.test` disposable DB | `scripts/seed-e2e.ts` fixtures |
+| Preview (Vercel) | isolated staging branch | copy of prod content |
+| Production | production Neon branch | Payload admin (humans) |
 
-- Just do the task. No mandatory audit phase, no phase reports, no reading the whole repo first.
-- Keep useful existing code; understand before deleting.
-- Report what changed and what you ran. Never claim a command ran if it didn't.
+- **Edits in production Payload do not show on Preview.** They are different databases.
+  If a change "doesn't appear", check which database you wrote to first.
+- Real content (homepage copy, services, projects) lives in the CMS or a real seed
+  (`seed.ts`, `seed-homepage.ts`) — **never only in test fixtures**.
+- Test fixtures (`seed-e2e.ts`) never run against a database the public or preview site reads.
+- Env vars: see `.env.example`. `DATABASE_URI` in `.env` must never be the production URI.
+
+## 4. Hard rules
+
+These prevent real damage. Everything else in this file is a default.
+
+1. **No invented facts.** No fake clients, projects, metrics or testimonials on public pages.
+   Missing data stays empty — a blank is honest, a made-up number is not.
+2. **AI never publishes, approves or deletes content.** A human publishes.
+3. **Public pages show published content only.** No draft leaks, no fallback to another locale.
+4. **Fail loudly.** No silent catches, no placeholder text ("Lorem ipsum", "Your headline here").
+5. **Ask first** before: destructive migrations, dropping data, force-push, deleting files you
+   don't understand, merging to `main`, or Next/Payload major upgrades.
+6. Payload is the only CMS. No WordPress, second backend or second database.
+
+## 5. Architecture map
+
+```
+src/
+├── app/
+│   ├── (frontend)/[locale]/   public site (routing only)
+│   ├── (frontend)/preview/    draft preview
+│   ├── (payload)/             Payload admin + API
+│   ├── (design)/              design experiments, not public
+│   └── sitemap.ts, robots.ts
+├── collections/               Projects, Clients, Services, Industries, Testimonials, Media, Users…
+├── globals/                   HomePage, ServicesPage, WorkPage, CompanyPage, ContactPage, Navigation, SiteSettings
+├── access/                    role-based access control
+├── services/cms/              data access — pages read the CMS through here
+├── services/seo/              canonicals, hreflang, metadata
+├── hooks/revalidate.ts        cache invalidation on publish
+├── i18n/                      locale config + UI dictionaries
+├── mcp/                       AI editorial tools (draft-only)
+├── components/                ui/ (shadcn), layout/, blocks/, feature folders
+└── middleware.ts              locale redirects
+```
+
+Full reference spec (SEO, canonicals, editorial workflow, MCP tools): `docs/SPEC.md`.
+Do not read it whole — `grep -n "^# " docs/SPEC.md` and read the section you need.
+
+## 6. Next.js conventions
+
+- Server Components by default; `"use client"` only on interactive leaves.
+- Read CMS data server-side via the Payload Local API in `services/cms/` — not API routes, not `useEffect`.
+- Caching: `revalidateTag()` on publish **plus** a time-based fallback (`revalidate`) so a failed
+  invalidation can't freeze a page. Log invalidation failures.
+- Server Actions (contact form): Zod validation, spam protection, sanitized errors.
+- `next/image` with dimensions; parallel fetches with `Promise.all`.
+- This Next.js version differs from training data — check `node_modules/next/dist/docs/` for APIs you're unsure about.
+
+## 7. Definition of done (scales with the change)
+
+| Change | Verify with |
+|---|---|
+| Copy, styling | `pnpm typecheck` |
+| Component / logic | + related `test:unit` |
+| Schema, access control, SEO, caching | + `test:int`, migration, `generate:types` |
+| Release to production | full `pnpm test` + re-approve visual snapshots |
+
+Report what you changed and which commands you actually ran. Never claim a run that didn't happen.
+
+## 8. Working style
+
+- Do the task directly. No mandatory audit phase or phase reports.
+- Understand code before deleting it; keep what works.
+- Fix bugs at the root cause; never delete a test to get green.
+- If a default blocks the task, pick the sensible option, say why in one line, continue.
 
 <!-- BEGIN:nextjs-agent-rules -->
 
