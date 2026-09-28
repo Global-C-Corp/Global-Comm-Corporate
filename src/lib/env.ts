@@ -51,5 +51,31 @@ export function checkEnv(): EnvCheckResult {
     issues.push({ variable: 'NEXT_PUBLIC_SERVER_URL', message: 'must be an absolute URL' })
   }
 
+  if (process.env.MCP_OAUTH_ENABLED === 'true') {
+    for (const variable of ['MCP_OAUTH_ISSUER', 'MCP_OAUTH_RESOURCE', 'PAYLOAD_MCP_INTERNAL_KEY']) {
+      if (!process.env[variable] || process.env[variable]?.trim() === '') {
+        issues.push({ variable, message: 'is required when MCP_OAUTH_ENABLED=true' })
+      }
+    }
+
+    for (const variable of ['MCP_OAUTH_ISSUER', 'MCP_OAUTH_RESOURCE']) {
+      const value = process.env[variable]
+      if (value) {
+        try {
+          const url = new URL(value)
+          if (url.protocol !== 'https:') {
+            issues.push({ variable, message: 'must use https' })
+          }
+        } catch {
+          issues.push({ variable, message: 'must be an absolute HTTPS URL' })
+        }
+      }
+    }
+
+    if (!process.env.MCP_OAUTH_SCOPES?.trim()) {
+      issues.push({ variable: 'MCP_OAUTH_SCOPES', message: 'must declare at least one required OAuth scope' })
+    }
+  }
+
   return { ok: issues.length === 0, issues }
 }

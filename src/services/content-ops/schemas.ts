@@ -13,6 +13,7 @@ export const sourceReferenceSchema = z.object({
 })
 
 export const metricSchema = z.object({
+  kind: z.enum(['measured', 'estimate', 'target']).optional(),
   value: z.string().max(60).optional(),
   label: z.string().min(1).max(160),
   sourceNote: z.string().max(500).optional(),

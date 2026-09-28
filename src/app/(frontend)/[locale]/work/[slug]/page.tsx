@@ -65,8 +65,12 @@ export default async function ProjectDetailRoute({
     .map((item) => mediaURL(item.media, 'projectFeature'))
     .filter((url): url is string => Boolean(url))
 
-  // Metrics without evidence are never rendered (CLAUDE.md §36, §139).
-  const metrics = (project.metrics ?? []).filter((metric) => metric.value && metric.sourceNote)
+  // A measured value renders only with its source. Estimates and targets
+  // render with a visible label, so no projection reads as a result.
+  const metrics = (project.metrics ?? []).filter(
+    (metric) => metric.value && ((metric.kind ?? 'measured') !== 'measured' || metric.sourceNote),
+  )
+  const allMeasured = metrics.every((metric) => (metric.kind ?? 'measured') === 'measured')
 
   const [relatedProjects, availability] = await Promise.all([
     services[0] ? getProjectsByRelation(ctx, 'services', services[0].id, 4) : Promise.resolve([]),
@@ -187,17 +191,21 @@ export default async function ProjectDetailRoute({
           </Band>
         )}
 
-        {/* Every metric shown carries its source; unsourced values never
-            render (CLAUDE.md §36, §139). */}
+        {/* Measured metrics carry their source; estimates and targets carry a label. */}
         {metrics.length > 0 && (
           <Band labelledBy="metrics">
-            <Heading id="metrics">{t.sections.metrics}</Heading>
+            <Heading id="metrics">{allMeasured ? t.sections.metrics : t.sections.metricsMixed}</Heading>
             <div className="mt-10 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
               {metrics.map((metric) => (
                 <div key={metric.id ?? metric.label} className="bg-background p-8">
+                  {(metric.kind ?? 'measured') !== 'measured' && (
+                    <p className="mb-3 inline-block border border-border px-2 py-0.5 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                      {metric.kind === 'target' ? t.sections.metricTarget : t.sections.metricEstimate}
+                    </p>
+                  )}
                   <p className="text-4xl font-semibold tracking-[-0.02em] text-primary">{metric.value}</p>
                   <p className="mt-3 text-sm font-medium text-foreground">{metric.label}</p>
-                  <p className="mt-2 text-xs text-muted-foreground">{metric.sourceNote}</p>
+                  {metric.sourceNote && <p className="mt-2 text-xs text-muted-foreground">{metric.sourceNote}</p>}
                 </div>
               ))}
             </div>

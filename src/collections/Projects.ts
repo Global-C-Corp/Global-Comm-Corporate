@@ -11,18 +11,37 @@ import { enforceEditorialWorkflowCollection } from '@/hooks/enforceEditorialWork
  * CLAUDE.md §35-§36. The core portfolio entity. Metrics require evidence —
  * AI must never fabricate a plausible-looking number (§105, §138).
  */
+/**
+ * A metric is one of three kinds, and the public page always says which:
+ * - measured: a real result — requires a sourceNote;
+ * - estimate: a projection — shown with an "Estimation" label, no source needed;
+ * - target: an objective — shown with an "Objectif" label, no source needed.
+ * Owner decision 2026-09-28 (option A): estimates are allowed, but only when
+ * labelled as such, never presented as measured results.
+ */
 const metricsField: Field = {
   name: 'metrics',
   type: 'array',
   fields: [
     {
+      name: 'kind',
+      type: 'select',
+      defaultValue: 'measured',
+      required: true,
+      options: [
+        { label: 'Measured result (needs a source)', value: 'measured' },
+        { label: 'Estimate (shown as “Estimation”)', value: 'estimate' },
+        { label: 'Target (shown as “Objectif”)', value: 'target' },
+      ],
+    },
+    {
       name: 'value',
       type: 'text',
-      admin: { description: 'Leave empty rather than estimating a plausible number (CLAUDE.md §36).' },
+      admin: { description: 'A measured value needs a sourceNote. Otherwise mark it as an estimate or a target.' },
       validate: (value: string | null | undefined, { siblingData }: { siblingData: unknown }) => {
-        const sibling = siblingData as { sourceNote?: string } | undefined
-        if (value && !sibling?.sourceNote) {
-          return 'A metric value requires a sourceNote citing where it came from.'
+        const sibling = siblingData as { sourceNote?: string; kind?: string } | undefined
+        if (value && (sibling?.kind ?? 'measured') === 'measured' && !sibling?.sourceNote) {
+          return 'A measured value requires a sourceNote. Mark it as an estimate or a target otherwise.'
         }
         return true
       },

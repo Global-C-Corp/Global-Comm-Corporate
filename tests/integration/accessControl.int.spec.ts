@@ -52,7 +52,7 @@ describe('access control', () => {
     expect(doc._status).toBe('draft')
   })
 
-  it('does not let AI publish', async () => {
+  it('lets AI approve and publish (owner decision 2026-09-28)', async () => {
     const doc = await payload.create({
       collection: 'projects',
       locale: 'fr',
@@ -66,14 +66,14 @@ describe('access control', () => {
       payload.update({
         collection: 'projects',
         id: doc.id,
-        data: { _status: 'published' } as never,
+        data: { _status: 'published', _approveAndPublish: true } as never,
         overrideAccess: false,
         user: aiEditor as never,
       }),
-    ).rejects.toThrow()
+    ).resolves.toMatchObject({ _status: 'published', reviewStatus: 'approved' })
   })
 
-  it('does not let AI approve', async () => {
+  it('lets AI approve (owner decision 2026-09-28)', async () => {
     const doc = await payload.create({
       collection: 'projects',
       locale: 'fr',
@@ -92,7 +92,7 @@ describe('access control', () => {
         overrideAccess: false,
         user: aiEditor as never,
       }),
-    ).rejects.toThrow()
+    ).resolves.toMatchObject({ reviewStatus: 'approved' })
   })
 
   it('does not let AI delete production content', async () => {

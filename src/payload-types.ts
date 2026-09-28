@@ -871,8 +871,9 @@ export interface Project {
     | null;
   metrics?:
     | {
+        kind: 'measured' | 'estimate' | 'target';
         /**
-         * Leave empty rather than estimating a plausible number (CLAUDE.md §36).
+         * A measured value needs a sourceNote. Otherwise mark it as an estimate or a target.
          */
         value?: string | null;
         label: string;
@@ -1243,7 +1244,7 @@ export interface PayloadMcpApiKey {
      */
     draftClient?: boolean | null;
     /**
-     * Create or update a Project as an AI draft. Resolves the client, assigns only existing taxonomy terms (unknown terms are returned as suggestions), and drops any metric that has no source. Never publishes.
+     * Create or update a Project as an AI draft. Resolves the client, assigns only existing taxonomy terms (unknown terms are returned as suggestions), and drops any measured metric that has no source (estimates and targets are kept and labelled on the page). Never publishes.
      */
     draftProject?: boolean | null;
     /**
@@ -1270,6 +1271,14 @@ export interface PayloadMcpApiKey {
      * Move an AI draft or a revision-requested document to needs_review. Never approves or publishes.
      */
     submitForReview?: boolean | null;
+    /**
+     * Edit any content field of one document (optionally in one locale) and, with publish: true, approve and publish it. Measured metric values need a sourceNote; estimates and targets do not. Records provenance and an audit log entry.
+     */
+    updateContent?: boolean | null;
+    /**
+     * Edit any content field of a page global (optionally in one locale) and, with publish: true, approve and publish it. Records provenance and an audit log entry.
+     */
+    updateGlobalContent?: boolean | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -1850,6 +1859,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   metrics?:
     | T
     | {
+        kind?: T;
         value?: T;
         label?: T;
         sourceNote?: T;
@@ -2145,6 +2155,8 @@ export interface PayloadMcpApiKeysSelect<T extends boolean = true> {
         prepareSEO?: T;
         auditContent?: T;
         submitForReview?: T;
+        updateContent?: T;
+        updateGlobalContent?: T;
       };
   updatedAt?: T;
   createdAt?: T;

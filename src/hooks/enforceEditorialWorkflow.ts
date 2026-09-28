@@ -118,12 +118,17 @@ export function applyEditorialGuard({ data, originalDoc, role, userId, requestLo
   // skips field validation on draft saves, so this invariant is enforced here
   // for every write path rather than only at publish time.
   if (Array.isArray(data.metrics)) {
-    const unsupported = (data.metrics as { value?: unknown; sourceNote?: unknown }[]).some(
-      (metric) => Boolean(metric?.value) && !metric?.sourceNote,
+    const unsupported = (data.metrics as { value?: unknown; sourceNote?: unknown; kind?: unknown }[]).some(
+      (metric) => Boolean(metric?.value) && (metric?.kind ?? 'measured') === 'measured' && !metric?.sourceNote,
     )
     if (unsupported) {
       throw new ValidationError({
-        errors: [{ path: 'metrics', message: 'A metric value requires a sourceNote citing where it came from.' }],
+        errors: [
+          {
+            path: 'metrics',
+            message: 'A measured value requires a sourceNote. Mark it as an estimate or a target otherwise.',
+          },
+        ],
       })
     }
   }

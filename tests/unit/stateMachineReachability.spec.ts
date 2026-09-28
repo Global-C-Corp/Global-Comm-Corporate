@@ -12,7 +12,7 @@ import { roles, type Role } from '@/access/roles'
  * `approved`; publisher and admin are the approval authority.
  */
 const TERMINALS: Record<Role, ReviewStatus[]> = {
-  ai_editor: ['needs_review'],
+  ai_editor: ['approved', 'revision_requested'],
   editor: ['needs_review'],
   publisher: ['approved', 'revision_requested'],
   admin: ['approved', 'revision_requested'],
@@ -24,7 +24,7 @@ const TERMINALS: Record<Role, ReviewStatus[]> = {
  * whatever anyone else produced, so they must cope with every state.
  */
 const ENCOUNTERED: Record<Role, ReviewStatus[]> = {
-  ai_editor: ['ai_draft', 'revision_requested'],
+  ai_editor: [...reviewStatuses],
   editor: ['editorial_draft', 'revision_requested'],
   publisher: [...reviewStatuses],
   admin: [...reviewStatuses],
@@ -60,8 +60,8 @@ describe('editorial state machine reachability', () => {
     }
   }
 
-  it('never lets an editor or AI reach approved', () => {
-    for (const role of ['editor', 'ai_editor'] as const) {
+  it('never lets an editor reach approved', () => {
+    for (const role of ['editor'] as const) {
       for (const from of reviewStatuses) {
         expect(canTransitionReviewStatus(role, from, 'approved')).toBe(from === 'approved')
       }

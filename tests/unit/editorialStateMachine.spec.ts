@@ -11,10 +11,10 @@ describe('editorial state machine', () => {
     expect(canTransitionReviewStatus('ai_editor', 'revision_requested', 'needs_review')).toBe(true)
   })
 
-  it('never lets AI approve', () => {
-    expect(canTransitionReviewStatus('ai_editor', 'needs_review', 'approved')).toBe(false)
-    expect(canTransitionReviewStatus('ai_editor', 'ai_draft', 'approved')).toBe(false)
-    expect(canTransitionReviewStatus('ai_editor', 'revision_requested', 'approved')).toBe(false)
+  it('lets AI approve, like a publisher (owner decision 2026-09-28)', () => {
+    expect(canTransitionReviewStatus('ai_editor', 'needs_review', 'approved')).toBe(true)
+    expect(canTransitionReviewStatus('ai_editor', 'ai_draft', 'approved')).toBe(true)
+    expect(canTransitionReviewStatus('ai_editor', 'revision_requested', 'approved')).toBe(true)
   })
 
   it('never lets an editor approve', () => {
@@ -39,7 +39,7 @@ describe('editorial state machine', () => {
     expect(canPublish('publisher')).toBe(true)
     expect(canPublish('admin')).toBe(true)
     expect(canPublish('editor')).toBe(false)
-    expect(canPublish('ai_editor')).toBe(false)
+    expect(canPublish('ai_editor')).toBe(true)
     expect(canPublish(undefined)).toBe(false)
   })
 
