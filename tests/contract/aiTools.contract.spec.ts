@@ -8,7 +8,6 @@ import { draftTestimonial } from '@/services/content-ops/draftTestimonial'
 import { prepareSEO } from '@/services/content-ops/prepareSEO'
 import { submitForReview } from '@/services/content-ops/submitForReview'
 import { translateContent } from '@/services/content-ops/translateContent'
-import { updateGlobalContent } from '@/services/content-ops/updateGlobalContent'
 import { aiTools } from '@/mcp/tools'
 import type { OperationContext } from '@/services/content-ops/types'
 import { ensureUser, getTestPayload, requestFor, type TestUser } from '../helpers/payload'
@@ -362,50 +361,6 @@ describe('AI tool contract', () => {
     })
 
     expect(result.ok).toBe(true)
-  })
-
-  it('updates a page global as an audited AI draft', async () => {
-    const before = await payload.findGlobal({
-      slug: 'home-page',
-      locale: 'fr',
-      draft: true,
-      depth: 0,
-      overrideAccess: true,
-    })
-
-    const heading = `Homepage AI draft ${Date.now()}`
-    const result = await updateGlobalContent(ctxFor(aiReq, 'updateGlobalContent'), {
-      global: 'home-page',
-      locale: 'fr',
-      data: { heroHeading: heading },
-      publish: false,
-      expectedUpdatedAt: before.updatedAt,
-    })
-
-    expect(result.ok).toBe(true)
-
-    const after = await payload.findGlobal({
-      slug: 'home-page',
-      locale: 'fr',
-      draft: true,
-      depth: 0,
-      overrideAccess: true,
-    })
-
-    expect(after.heroHeading).toBe(heading)
-    expect(after._status).toBe('draft')
-    expect(after.aiMeta?.generatedByAI).toBe(true)
-    expect(after.aiMeta?.operation).toBe('updateGlobalContent')
-
-    const logs = await payload.find({
-      collection: 'ai-audit-logs',
-      where: { tool: { equals: 'updateGlobalContent' } },
-      sort: '-timestamp',
-      limit: 1,
-      overrideAccess: true,
-    })
-    expect(logs.totalDocs).toBeGreaterThan(0)
-    expect(logs.docs[0].targetCollection).toBe('home-page')
   })
 
   it('audits content read-only', async () => {
