@@ -22,7 +22,9 @@ pnpm test:contract       # MCP tool contracts
 pnpm test:e2e            # Playwright incl. visual snapshots — release-level
 pnpm migrate:create      # after any collection/global schema change
 pnpm generate:types      # after schema changes (updates payload-types.ts)
-pnpm build               # runs verify:env + migrate first — needs a DB
+pnpm build               # runs verify:env + migrate first — needs a DB.
+                         # Every deploy therefore applies pending DB schema changes
+                         # to the database that environment points at.
 ```
 
 ## 3. Environments and data
@@ -34,6 +36,8 @@ pnpm build               # runs verify:env + migrate first — needs a DB
 | Preview (Vercel) | isolated staging branch | copy of prod content |
 | Production | production Neon branch | Payload admin (humans) |
 
+- **Until `globalcomm.ma` launches:** edit and check content on the production URL
+  (`global-comm-corporate-three.vercel.app/admin` → `/fr/...`). Preview is for code changes only.
 - **Edits in production Payload do not show on Preview.** They are different databases.
   If a change "doesn't appear", check which database you wrote to first.
 - Real content (homepage copy, services, projects) lives in the CMS or a real seed
@@ -99,8 +103,9 @@ Do not read it whole — `grep -n "^# " docs/SPEC.md` and read the section you n
 
 - Server Components by default; `"use client"` only on interactive leaves.
 - Read CMS data server-side via the Payload Local API in `services/cms/` — not API routes, not `useEffect`.
-- Caching: `revalidateTag()` on publish **plus** a time-based fallback (`revalidate`) so a failed
-  invalidation can't freeze a page. Log invalidation failures.
+- Caching: publishing calls `revalidatePath()` for the affected routes (`src/hooks/revalidate.ts`).
+  A time-based page fallback (`revalidate`) is planned but **not on `main` yet** — only the sitemap
+  has one. Until it lands, a failed invalidation can leave a page stale: log failures, never swallow them.
 - Server Actions (contact form): Zod validation, spam protection, sanitized errors.
 - `next/image` with dimensions; parallel fetches with `Promise.all`.
 - This Next.js version differs from training data — check `node_modules/next/dist/docs/` for APIs you're unsure about.
