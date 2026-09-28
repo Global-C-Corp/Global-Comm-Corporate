@@ -1,34 +1,10 @@
-import type { Locale } from '@/i18n/locale'
-import { toNavLinks } from '@/lib/nav'
-import { getSiteChrome } from '@/services/cms/globals'
-import type { LocaleAvailability } from '@/services/seo/hreflang'
 import type { Route } from '@/services/seo/urls'
 import { Header } from './Header'
 
-export async function SiteHeader({
-  locale,
-  route,
-  availability,
-  draft = false,
-  overDark = false,
-}: {
-  locale: Locale
-  route: Route
-  availability: LocaleAvailability
-  draft?: boolean
-  /** True on a page whose opening section is dark, so the bar overlays it. */
-  overDark?: boolean
-}) {
-  const { navigation } = await getSiteChrome(locale, draft)
-  const links = toNavLinks(locale, navigation?.primaryNavigation)
-
-  return (
-    <Header
-      locale={locale}
-      links={links}
-      route={route}
-      availability={availability}
-      overDark={overDark}
-    />
-  )
+/**
+ * Kept as a thin seam so pages carry on importing `SiteHeader`. It no longer
+ * reaches for Payload: navigation is code-owned.
+ */
+export function SiteHeader({ route, overDark = false }: { route: Route; overDark?: boolean }) {
+  return <Header route={route} overDark={overDark} />
 }

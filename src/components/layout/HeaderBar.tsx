@@ -40,6 +40,7 @@ export function HeaderBar({
   homeHref: string
   links: NavLink[]
   currentUrl: string
+  /** Empty on a single-language site; the switcher is then not rendered. */
   locales: LocaleChoice[]
   labels: { menu: string; close: string; primary: string; languages: string }
 }) {
@@ -219,11 +220,13 @@ export function HeaderBar({
           </nav>
 
           <div className="flex items-center justify-end gap-1">
-            <ul className="hidden items-center md:flex" aria-label={labels.languages}>
-              {locales.map((locale) => (
-                <li key={locale.code}>{localeItem(locale, false)}</li>
-              ))}
-            </ul>
+            {locales.length > 0 && (
+              <ul className="hidden items-center md:flex" aria-label={labels.languages}>
+                {locales.map((locale) => (
+                  <li key={locale.code}>{localeItem(locale, false)}</li>
+                ))}
+              </ul>
+            )}
 
             <Sheet open={open} onOpenChange={setOpen}>
               <button
@@ -299,17 +302,19 @@ export function HeaderBar({
                   </ul>
                 </nav>
 
-                <ul className="mt-8 flex items-center gap-1" aria-label={labels.languages}>
-                  {locales.map((locale) => (
-                    <li key={locale.code}>
-                      {locale.href && !locale.isCurrent ? (
-                        <SheetClose asChild>{localeItem(locale, true)}</SheetClose>
-                      ) : (
-                        localeItem(locale, true)
-                      )}
-                    </li>
-                  ))}
-                </ul>
+                {locales.length > 0 && (
+                  <ul className="mt-8 flex items-center gap-1" aria-label={labels.languages}>
+                    {locales.map((locale) => (
+                      <li key={locale.code}>
+                        {locale.href && !locale.isCurrent ? (
+                          <SheetClose asChild>{localeItem(locale, true)}</SheetClose>
+                        ) : (
+                          localeItem(locale, true)
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </SheetContent>
             </Sheet>
           </div>

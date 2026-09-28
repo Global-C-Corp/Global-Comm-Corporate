@@ -2,7 +2,6 @@ import { draftMode } from 'next/headers'
 import { redirect } from 'next/navigation'
 import type { NextRequest } from 'next/server'
 import { getRole } from '@/access/predicates'
-import { defaultLocale, isLocale } from '@/i18n/locale'
 import { previewPathFor } from '@/lib/preview'
 import { getPayloadClient } from '@/services/cms/context'
 
@@ -16,7 +15,6 @@ export async function GET(request: NextRequest) {
   const secret = searchParams.get('secret')
   const collection = searchParams.get('collection')
   const slug = searchParams.get('slug')
-  const localeParam = searchParams.get('locale') ?? defaultLocale
 
   const expectedSecret = process.env.PREVIEW_SECRET
   if (!expectedSecret || secret !== expectedSecret) {
@@ -34,8 +32,7 @@ export async function GET(request: NextRequest) {
     return new Response('Authentication required', { status: 403 })
   }
 
-  const locale = isLocale(localeParam) ? localeParam : defaultLocale
-  const path = previewPathFor({ collection, slug }, locale)
+  const path = previewPathFor({ collection, slug })
   if (!path) {
     return new Response('Preview is not available for this document', { status: 400 })
   }

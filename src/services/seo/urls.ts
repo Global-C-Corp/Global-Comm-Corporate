@@ -1,14 +1,11 @@
-import type { Locale } from '@/i18n/locale'
-import { routeFamilies } from '@/i18n/routing'
-
 /**
- * The one canonical production host (CLAUDE.md §50, §55). Deliberately a
- * constant rather than an env var: canonical URLs must never point at
- * localhost, a preview deployment or a CMS alias (§138).
+ * The one canonical production host. Deliberately a constant rather than an
+ * env var: canonical URLs must never point at localhost, a preview deployment
+ * or a CMS alias.
  */
 export const PRODUCTION_ORIGIN = 'https://globalcomm.ma'
 
-/** CLAUDE.md §52 — stripped from every canonical URL. */
+/** Stripped from every canonical URL. */
 export const TRACKING_PARAMS = [
   'utm_source',
   'utm_medium',
@@ -19,47 +16,50 @@ export const TRACKING_PARAMS = [
   'fbclid',
 ] as const
 
+/**
+ * Every public page the site serves. The site is single-language, so a route
+ * is fully described by its type and slug — there is no locale to carry.
+ */
 export type Route =
   | { type: 'home' }
+  | { type: 'company' }
   | { type: 'services' }
   | { type: 'service'; slug: string }
   | { type: 'work' }
   | { type: 'project'; slug: string }
-  | { type: 'industry'; slug: string }
-  | { type: 'company' }
   | { type: 'contact' }
 
 /**
- * The single route builder used by canonical, hreflang, the language
- * switcher, the sitemap, internal links, OG URLs and redirects
- * (CLAUDE.md §49). No trailing slash (§54).
+ * The single route builder used by canonical URLs, the sitemap, internal
+ * links, OG URLs and redirects. No trailing slash.
+ *
+ * `/home` is the homepage. `/` redirects to it rather than serving the same
+ * content at two addresses.
  */
-export function buildPath(locale: Locale, route: Route): string {
+export function buildPath(route: Route): string {
   switch (route.type) {
     case 'home':
-      return `/${locale}`
-    case 'services':
-      return `/${locale}/${routeFamilies.services}`
-    case 'service':
-      return `/${locale}/${routeFamilies.services}/${route.slug}`
-    case 'work':
-      return `/${locale}/${routeFamilies.work}`
-    case 'project':
-      return `/${locale}/${routeFamilies.work}/${route.slug}`
-    case 'industry':
-      return `/${locale}/${routeFamilies.industries}/${route.slug}`
+      return '/home'
     case 'company':
-      return `/${locale}/${routeFamilies.company}`
+      return '/company'
+    case 'services':
+      return '/services'
+    case 'service':
+      return `/services/${route.slug}`
+    case 'work':
+      return '/work'
+    case 'project':
+      return `/work/${route.slug}`
     case 'contact':
-      return `/${locale}/${routeFamilies.contact}`
+      return '/contact'
   }
 }
 
-export function buildAbsoluteURL(locale: Locale, route: Route): string {
-  return `${PRODUCTION_ORIGIN}${buildPath(locale, route)}`
+export function buildAbsoluteURL(route: Route): string {
+  return `${PRODUCTION_ORIGIN}${buildPath(route)}`
 }
 
-/** Removes tracking parameters and any trailing slash (CLAUDE.md §52, §54). */
+/** Removes tracking parameters and any trailing slash. */
 export function stripTrackingParams(input: string): string {
   const url = new URL(input, PRODUCTION_ORIGIN)
   for (const param of TRACKING_PARAMS) {
