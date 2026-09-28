@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import type { Locale } from '@/i18n/locale'
 import { cn } from '@/lib/utils'
 
 /**
@@ -111,16 +110,14 @@ export function ActionLink({
 /** A call to action stored as { label, url }; renders nothing without a label. */
 export function CTA({
   cta,
-  locale,
   variant = 'primary',
 }: {
   cta?: { label?: string | null; url?: string | null } | null
-  locale: Locale
   variant?: 'primary' | 'secondary' | 'quiet'
 }) {
   if (!cta?.label) return null
-  const raw = cta.url ?? '/'
-  const href = raw.startsWith('/') && !raw.startsWith(`/${locale}`) ? `/${locale}${raw}` : raw
+  // Public URLs carry no locale prefix, so the stored path is the path.
+  const href = cta.url ?? '/'
   return (
     <ActionLink href={href} variant={variant}>
       {cta.label}

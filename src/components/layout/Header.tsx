@@ -15,7 +15,7 @@ export function Header({ route, overDark = false }: { route: Route; overDark?: b
     <HeaderBar
       overDark={overDark}
       homeHref={buildPath({ type: 'home' })}
-      links={[...primaryNavigation]}
+      links={primaryNavigation}
       currentUrl={buildPath(route)}
       locales={[]}
       labels={{

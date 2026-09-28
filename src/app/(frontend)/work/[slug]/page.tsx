@@ -5,12 +5,12 @@ import { breadcrumbSchema, JsonLd } from '@/components/seo/JsonLd'
 import { TestimonialBlock } from '@/components/testimonial/TestimonialBlock'
 import { RichText } from '@/components/ui/RichText'
 import { Band, Heading, PageHeader, ProjectTile, RichProse, TileGrid } from '@/components/ui/Primitives'
-import { getDictionary } from '@/i18n/dictionaries'
+import { ui } from '@/content/ui'
+import { findService } from '@/content/services'
 import { redirectOrNotFound } from '@/lib/routing'
 import { mediaURL } from '@/lib/media'
 import { populated } from '@/lib/relations'
 import type { Industry, Service, Testimonial } from '@/payload-types'
-import { getLocalizedAvailability } from '@/services/cms/availability'
 import { getPageContext } from '@/services/cms/pageContext'
 import { getProjectBySlug, getProjectsByRelation } from '@/services/cms/projects'
 import { resolvePageSEO } from '@/services/seo/resolvePageSEO'
@@ -22,10 +22,10 @@ export const revalidate = 60
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<{ locale: string; slug: string }>
+  params: Promise<{ slug: string }>
 }): Promise<Metadata> {
-  const { locale, slug } = await params
-  const { ctx, site, draft } = await getPageContext(locale)
+  const { slug } = await params
+  const { ctx, draft } = await getPageContext()
   const project = await getProjectBySlug(ctx, slug)
   if (!project) return {}
 
@@ -36,26 +36,23 @@ export async function generateMetadata({
       heroMedia: project.heroMedia,
       meta: project.meta,
     },
-    locale: ctx.locale,
     route: { type: 'project', slug },
-    site,
-    availability: await getLocalizedAvailability('projects', project.id),
     isPreview: draft,
   })
 }
 
-export default async function ProjectDetailRoute({
-  params,
-}: {
-  params: Promise<{ locale: string; slug: string }>
-}) {
-  const { locale, slug } = await params
-  const { ctx, draft } = await getPageContext(locale)
+/**
+ * The case study is the one page type that is genuinely dynamic: every field
+ * below comes from the `projects` collection in Payload. Only the section
+ * labels around it are source-owned.
+ */
+export default async function ProjectDetailRoute({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params
+  const { ctx } = await getPageContext()
 
   const project = await getProjectBySlug(ctx, slug)
-  if (!project) return redirectOrNotFound(buildPath(ctx.locale, { type: 'project', slug }), ctx.locale)
+  if (!project) return redirectOrNotFound(buildPath({ type: 'project', slug }))
 
-  const t = getDictionary(ctx.locale)
   const route: Route = { type: 'project', slug }
 
   const services = populated<Service>(project.services)
@@ -72,10 +69,9 @@ export default async function ProjectDetailRoute({
   )
   const allMeasured = metrics.every((metric) => (metric.kind ?? 'measured') === 'measured')
 
-  const [relatedProjects, availability] = await Promise.all([
-    services[0] ? getProjectsByRelation(ctx, 'services', services[0].id, 4) : Promise.resolve([]),
-    getLocalizedAvailability('projects', project.id),
-  ])
+  const relatedProjects = services[0]
+    ? await getProjectsByRelation(ctx, 'services', services[0].id, 4)
+    : []
 
   const heroImage = mediaURL(project.heroMedia ?? project.featuredMedia, 'hero')
   const clientName = typeof project.client === 'object' && project.client ? project.client.name : undefined
@@ -84,10 +80,10 @@ export default async function ProjectDetailRoute({
 
   return (
     <>
-      <SiteHeader locale={ctx.locale} route={route} availability={availability} draft={draft} />
+      <SiteHeader route={route} />
       <JsonLd
-        data={breadcrumbSchema(ctx.locale, [
-          { name: t.sections.selectedWork, route: { type: 'work' } },
+        data={breadcrumbSchema([
+          { name: ui.sections.selectedWork, route: { type: 'work' } },
           { name: project.title, route },
         ])}
       />
@@ -115,7 +111,7 @@ export default async function ProjectDetailRoute({
             {services.length > 0 && (
               <div className="bg-background p-6">
                 <dt className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                  {t.sections.capabilities}
+                  {ui.sections.capabilities}
                 </dt>
                 <dd className="mt-2 text-sm text-foreground">
                   {services.map((service) => service.name).join(', ')}
@@ -125,7 +121,7 @@ export default async function ProjectDetailRoute({
             {industries.length > 0 && (
               <div className="bg-background p-6">
                 <dt className="font-mono text-xs uppercase tracking-[0.18em] text-muted-foreground">
-                  {t.sections.industries}
+                  {ui.sections.industries}
                 </dt>
                 <dd className="mt-2 text-sm text-foreground">
                   {industries.map((industry) => industry.name).join(', ')}
@@ -143,7 +139,7 @@ export default async function ProjectDetailRoute({
 
         {project.challenge && (
           <Band labelledBy="challenge">
-            <Heading id="challenge">{t.sections.challenge}</Heading>
+            <Heading id="challenge">{ui.sections.challenge}</Heading>
             <RichProse className="mt-8">
               <RichText data={project.challenge} />
             </RichProse>
@@ -152,7 +148,7 @@ export default async function ProjectDetailRoute({
 
         {project.approach && (
           <Band surface labelledBy="approach">
-            <Heading id="approach">{t.sections.approach}</Heading>
+            <Heading id="approach">{ui.sections.approach}</Heading>
             <RichProse className="mt-8">
               <RichText data={project.approach} />
             </RichProse>
@@ -172,7 +168,7 @@ export default async function ProjectDetailRoute({
 
         {project.deliverables && (
           <Band labelledBy="deliverables">
-            <Heading id="deliverables">{t.sections.deliverables}</Heading>
+            <Heading id="deliverables">{ui.sections.deliverables}</Heading>
             <RichProse className="mt-8">
               <RichText data={project.deliverables} />
             </RichProse>
@@ -181,7 +177,7 @@ export default async function ProjectDetailRoute({
 
         {project.outcome && (
           <Band surface labelledBy="outcome">
-            <Heading id="outcome">{t.sections.outcome}</Heading>
+            <Heading id="outcome">{ui.sections.outcome}</Heading>
             <RichProse className="mt-8">
               <RichText data={project.outcome} />
             </RichProse>
@@ -194,13 +190,13 @@ export default async function ProjectDetailRoute({
         {/* Measured metrics carry their source; estimates and targets carry a label. */}
         {metrics.length > 0 && (
           <Band labelledBy="metrics">
-            <Heading id="metrics">{allMeasured ? t.sections.metrics : t.sections.metricsMixed}</Heading>
+            <Heading id="metrics">{allMeasured ? ui.sections.metrics : ui.sections.metricsMixed}</Heading>
             <div className="mt-10 grid gap-px border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
               {metrics.map((metric) => (
                 <div key={metric.id ?? metric.label} className="bg-background p-8">
                   {(metric.kind ?? 'measured') !== 'measured' && (
                     <p className="mb-3 inline-block border border-border px-2 py-0.5 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                      {metric.kind === 'target' ? t.sections.metricTarget : t.sections.metricEstimate}
+                      {metric.kind === 'target' ? ui.sections.metricTarget : ui.sections.metricEstimate}
                     </p>
                   )}
                   <p className="text-4xl font-semibold tracking-[-0.02em] text-primary">{metric.value}</p>
@@ -214,11 +210,11 @@ export default async function ProjectDetailRoute({
 
         {testimonials.length > 0 && (
           <Band surface labelledBy="proof">
-            <Heading id="proof">{t.sections.testimonials}</Heading>
+            <Heading id="proof">{ui.sections.testimonials}</Heading>
             <div className="mt-10 grid gap-px border border-border bg-border md:grid-cols-2">
               {testimonials.map((testimonial) => (
                 <div key={testimonial.id} className="bg-background p-8">
-                  <TestimonialBlock testimonial={testimonial} locale={ctx.locale} />
+                  <TestimonialBlock testimonial={testimonial} />
                 </div>
               ))}
             </div>
@@ -227,32 +223,36 @@ export default async function ProjectDetailRoute({
 
         {services.length > 0 && (
           <Band labelledBy="related-services">
-            <Heading id="related-services">{t.sections.relatedServices}</Heading>
-            {/* Only the four pillars have pages. A folded term is named but not
-                linked, so the page never sends a reader through a redirect
-                (§29-§30, §70). */}
+            <Heading id="related-services">{ui.sections.relatedServices}</Heading>
+            {/* Only the four service pages exist, and they are source-owned. A
+                Payload service is linked when its slug matches one of them;
+                every other term is named but not linked, so the page never
+                sends a reader through a redirect or into a 404. */}
             <ul className="mt-8 flex flex-wrap gap-x-6 gap-y-3 text-sm">
-              {services.map((service) => (
-                <li key={service.id}>
-                  {service.isPillar && service.slug ? (
-                    <Link
-                      href={buildPath(ctx.locale, { type: 'service', slug: service.slug })}
-                      className="text-primary underline underline-offset-4 hover:text-foreground"
-                    >
-                      {service.name}
-                    </Link>
-                  ) : (
-                    <span className="text-muted-foreground">{service.name}</span>
-                  )}
-                </li>
-              ))}
+              {services.map((service) => {
+                const page = service.slug ? findService(service.slug) : undefined
+                return (
+                  <li key={service.id}>
+                    {page ? (
+                      <Link
+                        href={buildPath({ type: 'service', slug: page.slug })}
+                        className="text-primary underline underline-offset-4 hover:text-foreground"
+                      >
+                        {service.name}
+                      </Link>
+                    ) : (
+                      <span className="text-muted-foreground">{service.name}</span>
+                    )}
+                  </li>
+                )
+              })}
             </ul>
           </Band>
         )}
 
         {related.length > 0 && (
           <Band surface labelledBy="related-work">
-            <Heading id="related-work">{t.sections.relatedWork}</Heading>
+            <Heading id="related-work">{ui.sections.relatedWork}</Heading>
             <div className="mt-10">
               <TileGrid>
                 {related.map((item) => {
@@ -260,7 +260,7 @@ export default async function ProjectDetailRoute({
                   return (
                     <ProjectTile
                       key={item.id}
-                      href={item.slug ? buildPath(ctx.locale, { type: 'project', slug: item.slug }) : null}
+                      href={item.slug ? buildPath({ type: 'project', slug: item.slug }) : null}
                       title={item.title}
                       meta={[itemClient, item.year ? String(item.year) : undefined].filter(Boolean).join(' · ')}
                       excerpt={item.excerpt}

@@ -1,7 +1,7 @@
 'use client'
 
 import { useActionState } from 'react'
-import type { Dictionary } from '@/i18n/dictionaries'
+import type { UI } from '@/content/ui'
 
 export type ContactFormState = {
   status: 'idle' | 'success' | 'error'
@@ -16,7 +16,7 @@ export function ContactForm({
   projectTypes,
 }: {
   action: ContactFormAction
-  dictionary: Dictionary
+  dictionary: UI
   projectTypes: { id: number | string; name: string }[]
 }) {
   const [state, formAction, pending] = useActionState(action, { status: 'idle' } as ContactFormState)

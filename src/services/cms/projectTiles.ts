@@ -1,4 +1,3 @@
-import type { Locale } from '@/i18n/locale'
 import { tileImage, type TileImage } from '@/lib/media'
 import type { Project } from '@/payload-types'
 import { buildPath } from '@/services/seo/urls'
@@ -18,10 +17,10 @@ export type ProjectTileModel = {
  * `featuredMedia` wins over `heroMedia`: the hero is composed for a full-width
  * banner, the featured image for a card.
  */
-export function projectTiles(projects: Project[], locale: Locale): ProjectTileModel[] {
+export function projectTiles(projects: Project[]): ProjectTileModel[] {
   return projects.map((project) => ({
     project,
-    href: project.slug ? buildPath(locale, { type: 'project', slug: project.slug }) : null,
+    href: project.slug ? buildPath({ type: 'project', slug: project.slug }) : null,
     meta: [
       typeof project.client === 'object' ? project.client?.name : undefined,
       project.year ? String(project.year) : undefined,

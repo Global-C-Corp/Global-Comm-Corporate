@@ -6,6 +6,15 @@
  * `generateStaticParams()` all derive from the array below. Do not restate a
  * name or a slug anywhere else.
  *
+ * NOT MIGRATED, deliberately: several section bodies in the live CMS were
+ * unfinished drafts containing literal placeholders — "demo contenu dans
+ * cette section", "test test test", and method step bodies reading "Tes test
+ * du test" / "tester le test" / "tester par ordre". Copying those into source
+ * would ship placeholder text (CLAUDE.md hard rule 4). The sections render
+ * without a body until someone writes one; the labels, headings and step
+ * titles beside them were real and are migrated verbatim, typos included,
+ * because this migration does not rewrite copy.
+ *
  * Values migrated from the approved French entries in
  * `src/services/cms/pillarConfig.ts`, which remains in place for a different
  * job: mapping these four buckets onto the Payload `services` taxonomy that
@@ -74,7 +83,41 @@ export const servicesContent = {
   heading: 'Quatre domaines d’expertise, un système intégré',
   intro:
     'De la stratégie à l’exécution, nos expertises s’articulent autour des besoins réels de nos clients.',
+  primaryCTA: { label: 'Démarrer un projet', url: '/contact' },
+  secondaryCTA: { label: 'Voir nos realisations', url: '/work' },
+
   experienceLabel: 'La confiance d’organisations au Maroc et au-delà',
+
+  practices: {
+    label: 'QUATRE POLES SPECIALISES',
+    heading: 'Des problèmes demandant des experts différents.',
+  },
+
+  belief: {
+    label: 'Notre conviction',
+    heading: 'La structure suit le problème. Pas l’iverse.',
+    ctaLabel: 'Voir comment nous travaillons',
+  },
+
+  method: {
+    label: 'Notre methode',
+    heading: 'Du probleme au progres',
+    steps: [
+      { title: 'Comprendre' },
+      { title: 'Diagnostique' },
+      { title: 'Prioriser' },
+    ],
+  },
+
+  workHeading: 'Nos meilleurs projets',
+
+  closing: {
+    label: 'Preet à resoudre la suite?',
+    heading: 'Parlons de votre probleme de croissance',
+    body: 'Dites moi d’ou il vient',
+    cta: { label: 'Démarrer un projet', url: '/contact' },
+  },
+
   meta: {
     title: 'Services — Global Comm',
     description:

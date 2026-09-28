@@ -1,5 +1,4 @@
 import { CTA } from '@/components/ui/Primitives'
-import type { Locale } from '@/i18n/locale'
 import { mediaURL } from '@/lib/media'
 
 /**
@@ -17,14 +16,12 @@ export function BeliefSection({
   body,
   media,
   cta,
-  locale,
 }: {
   label?: string | null
   heading?: string | null
   body?: string | null
   media?: unknown
   cta?: { label?: string | null; url?: string | null } | null
-  locale: Locale
 }) {
   if (!heading) return null
   const image = mediaURL(media, 'projectFeature') || mediaURL(media, 'hero')
@@ -73,7 +70,7 @@ export function BeliefSection({
 
             {cta?.label ? (
               <div className="mt-7 [&_a]:border-background/35 [&_a]:bg-transparent [&_a]:text-background hover:[&_a]:border-background hover:[&_a]:bg-background hover:[&_a]:text-foreground [&_a]:focus-visible:outline-background">
-                <CTA cta={cta} locale={locale} variant="secondary" />
+                <CTA cta={cta} variant="secondary" />
               </div>
             ) : null}
           </div>

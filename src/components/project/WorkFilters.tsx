@@ -1,4 +1,4 @@
-import type { Dictionary } from '@/i18n/dictionaries'
+import type { UI } from '@/content/ui'
 
 export type FilterOption = { slug: string; label: string }
 
@@ -19,7 +19,7 @@ export function WorkFilters({
   industries: FilterOption[]
   projectTypes: FilterOption[]
   selected: { service?: string; industry?: string; type?: string }
-  dictionary: Dictionary
+  dictionary: UI
 }) {
   const groups: { name: 'service' | 'industry' | 'type'; label: string; options: FilterOption[]; value?: string }[] = [
     { name: 'service', label: dictionary.sections.capabilities, options: services, value: selected.service },

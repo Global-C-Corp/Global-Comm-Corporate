@@ -111,12 +111,6 @@ jobs:
       - name: Seed approved homepage copy
         run: pnpm run seed:homepage -- --apply
 
-      - name: Generate service redirects and localized pillar slugs
-        run: pnpm run redirects:generate -- --apply
-
-      - name: Verify redirect manifest is current
-        run: git diff --exit-code -- tests/fixtures/redirects.json
-
       # The only seed that creates projects and clients. It reproduces three
       # owner-approved records from scripts/project-import-data.json, and it is
       # the step that sets `services-page.featuredProjects` and

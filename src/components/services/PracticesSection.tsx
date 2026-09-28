@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import type { Service } from '@/payload-types'
 import { mediaURL } from '@/lib/media'
 import { Container } from '@/components/ui/Layout'
 
@@ -17,6 +16,19 @@ import { Container } from '@/components/ui/Layout'
  * would command nothing; the vertical rule that anchors that corner is kept
  * and the deceptive controls are not built (brief §9).
  */
+/**
+ * The four practices are source-owned (src/content/services.ts), so this
+ * section takes the shape it renders rather than a Payload document.
+ */
+export type PracticeItem = {
+  slug: string
+  name: string
+  positioningLine?: string | null
+  summary?: string | null
+  /** Optional illustration; the rectangle is part of the layout either way. */
+  media?: unknown
+}
+
 export function PracticesSection({
   label,
   heading,
@@ -28,9 +40,9 @@ export function PracticesSection({
   label?: string | null
   heading?: string | null
   body?: string | null
-  practices: Service[]
-  hrefFor: (service: Service) => string | null
-  exploreLabel: (service: Service) => string
+  practices: readonly PracticeItem[]
+  hrefFor: (service: PracticeItem) => string | null
+  exploreLabel: (service: PracticeItem) => string
 }) {
   if (practices.length === 0) return null
 
@@ -79,12 +91,12 @@ export function PracticesSection({
           {practices.map((service, index) => {
             const href = hrefFor(service)
             const image =
-              mediaURL(service.heroMedia, 'projectCard') ||
-              mediaURL(service.heroMedia, 'projectFeature')
+              mediaURL(service.media, 'projectCard') ||
+              mediaURL(service.media, 'projectFeature')
 
             return (
               <li
-                key={service.id}
+                key={service.slug}
                 className="flex min-w-0 flex-col sm:border-l sm:border-border sm:px-7 [&:nth-child(-n+2)]:sm:border-l-0 [&:nth-child(-n+2)]:sm:pl-0 lg:border-l lg:px-0 lg:pl-10 lg:[&:nth-child(-n+2)]:pl-10 lg:[&:first-child]:border-l-0"
               >
                 {/* Number and rule sit on one line, as in the reference. */}
@@ -118,9 +130,9 @@ export function PracticesSection({
                   ) : null}
                 </div>
 
-                {service.shortDescription ? (
+                {service.summary ? (
                   <p className="mt-6 flex-1 text-pretty text-sm leading-relaxed text-muted-foreground">
-                    {service.shortDescription}
+                    {service.summary}
                   </p>
                 ) : null}
 

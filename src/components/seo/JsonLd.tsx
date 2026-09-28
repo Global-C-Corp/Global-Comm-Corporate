@@ -1,44 +1,36 @@
-import type { Locale } from '@/i18n/locale'
-import { absoluteMediaURL } from '@/lib/media'
-import type { SiteSetting } from '@/payload-types'
+import { siteConfig } from '@/config/site'
 import { buildAbsoluteURL, type Route } from '@/services/seo/urls'
 
 /**
- * CLAUDE.md §71 — generated only from verified Payload content. Never emits
- * ratings, review counts, awards or offers.
+ * Generated only from verified content. Never emits ratings, review counts,
+ * awards or offers.
  */
 export function JsonLd({ data }: { data: Record<string, unknown> }) {
   return (
     <script
       type="application/ld+json"
-      // Payload content only; no user-supplied HTML reaches this string.
+      // Source-owned and CMS content only; no user-supplied HTML reaches this string.
       dangerouslySetInnerHTML={{ __html: JSON.stringify(data).replace(/</g, '\\u003c') }}
     />
   )
 }
 
-export function organizationSchema(settings: SiteSetting | null, locale: Locale): Record<string, unknown> {
-  const logo = absoluteMediaURL(settings?.organizationLogo)
-
+export function organizationSchema(): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
     '@type': 'ProfessionalService',
-    name: settings?.companyName ?? 'Global Communication Corporate',
-    url: buildAbsoluteURL(locale, { type: 'home' }),
-    ...(settings?.tagline ? { description: settings.tagline } : {}),
-    ...(logo ? { logo } : {}),
-    ...(settings?.primaryEmail ? { email: settings.primaryEmail } : {}),
-    ...(settings?.primaryPhone ? { telephone: settings.primaryPhone } : {}),
-    ...(settings?.socialLinks?.length
-      ? { sameAs: settings.socialLinks.map((link) => link.url).filter(Boolean) }
+    name: siteConfig.name,
+    url: buildAbsoluteURL({ type: 'home' }),
+    description: siteConfig.tagline,
+    email: siteConfig.email,
+    telephone: siteConfig.phone,
+    ...(siteConfig.socialLinks.length > 0
+      ? { sameAs: siteConfig.socialLinks.map((link) => link.url) }
       : {}),
   }
 }
 
-export function breadcrumbSchema(
-  locale: Locale,
-  trail: { name: string; route: Route }[],
-): Record<string, unknown> {
+export function breadcrumbSchema(trail: { name: string; route: Route }[]): Record<string, unknown> {
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -46,7 +38,7 @@ export function breadcrumbSchema(
       '@type': 'ListItem',
       position: index + 1,
       name: item.name,
-      item: buildAbsoluteURL(locale, item.route),
+      item: buildAbsoluteURL(item.route),
     })),
   }
 }

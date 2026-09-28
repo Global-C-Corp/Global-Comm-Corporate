@@ -16,7 +16,7 @@ export function MethodSection({
   label?: string | null
   heading?: string | null
   intro?: string | null
-  steps: Array<{ id?: string | null; title?: string | null; body?: string | null }>
+  steps: readonly { id?: string | null; title?: string | null; body?: string | null }[]
 }) {
   if (steps.length === 0) return null
 

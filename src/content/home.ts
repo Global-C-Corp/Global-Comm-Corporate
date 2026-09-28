@@ -10,6 +10,11 @@
  *
  * To translate later, this object becomes the `fr` entry of a
  * `Record<Locale, HomeContent>` — the shape is already flat enough for that.
+ *
+ * One deliberate departure from the CMS values: each expertise item carried a
+ * `pillarKey` that pointed at a Payload service record. The four service pages
+ * are source-owned now, so the item names the page it links to directly — the
+ * slugs in src/content/services.ts.
  */
 export const homeContent = {
   "hero": {
@@ -57,7 +62,7 @@ export const homeContent = {
     "items": [
       {
         "number": "01",
-        "pillarKey": "strategie",
+        "serviceSlug": "recherche-audit-strategie",
         "title": "Recherche, audit et stratégie",
         "tagline": "Sachez où agir en premier.",
         "body": "Nous étudions votre situation, votre marché et vos objectifs pour identifier les priorités qui guideront le projet.",
@@ -71,7 +76,7 @@ export const homeContent = {
       },
       {
         "number": "02",
-        "pillarKey": "branding",
+        "serviceSlug": "branding-communication",
         "title": "Branding et communication",
         "tagline": "Construisez une marque claire et cohérente.",
         "body": "Nous transformons votre positionnement en une identité que vos clients peuvent comprendre, reconnaître et retrouver sur chaque support.",
@@ -85,7 +90,7 @@ export const homeContent = {
       },
       {
         "number": "03",
-        "pillarKey": "marketing-digital",
+        "serviceSlug": "marketing-digital",
         "title": "Marketing digital",
         "tagline": "Transformez votre stratégie en actions visibles.",
         "body": "Nous coordonnons vos contenus, vos campagnes et vos plateformes digitales pour faire avancer un même objectif.",
@@ -99,7 +104,7 @@ export const homeContent = {
       },
       {
         "number": "04",
-        "pillarKey": "web-technologie",
+        "serviceSlug": "automatisation-ia",
         "title": "Automatisation et IA",
         "tagline": "Libérez vos équipes des tâches répétitives.",
         "body": "Nous identifions les processus qui ralentissent votre travail puis nous concevons les outils et automatisations adaptés.",
