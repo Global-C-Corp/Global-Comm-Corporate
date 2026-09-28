@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import { execFileSync } from 'node:child_process'
 
 /**
  * Schema push must never run during a migration (CLAUDE.md §89). Payload's own
@@ -160,6 +161,22 @@ async function main() {
   } finally {
     await lock.release()
     console.log('migration lock released')
+  }
+
+  // ONE-TIME CONTENT OPERATION.
+  // Only Vercel production executes this; previews and local builds are no-ops.
+  // Run after releasing the migration lock so the child Payload process does not
+  // contend with the schema migration critical section.
+  if (process.env.VERCEL_ENV === 'production') {
+    console.log('applying approved multilingual homepage content')
+    const seedEnv = { ...process.env }
+    delete seedEnv.PAYLOAD_MIGRATING
+
+    execFileSync('pnpm', ['exec', 'tsx', 'scripts/seed-homepage.ts', '--apply'], {
+      stdio: 'inherit',
+      env: seedEnv,
+    })
+    console.log('approved multilingual homepage content applied')
   }
 }
 
