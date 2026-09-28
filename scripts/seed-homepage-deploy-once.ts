@@ -10,5 +10,10 @@ if (process.env.VERCEL_ENV !== 'production') {
   process.exit(0)
 }
 
+// `export {}` makes this a module. Without it TypeScript rejects the
+// top-level `await` below (TS1375), which fails `next build` and so fails
+// every production deploy and the CI typecheck gate.
+export {}
+
 process.argv.push('--apply')
 await import('./seed-homepage')
