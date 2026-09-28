@@ -43,7 +43,7 @@ describe('AI tool contract', () => {
     anonReq = await requestFor(null)
   })
 
-  it('exposes exactly the eight required tools', () => {
+  it('exposes exactly the nine AI tools', () => {
     expect(aiTools.map((tool) => tool.name).sort()).toEqual(
       [
         'auditContent',
@@ -54,6 +54,7 @@ describe('AI tool contract', () => {
         'prepareSEO',
         'submitForReview',
         'translateContent',
+        'updateContent',
       ].sort(),
     )
   })
@@ -286,7 +287,7 @@ describe('AI tool contract', () => {
     expect(doc.meta?.canonicalOverride).toBeFalsy()
   })
 
-  it('submits for review but can never approve', async () => {
+  it('submits for review, and can approve (owner decision 2026-09-28)', async () => {
     const created = await draftProject(ctxFor(aiReq, 'draftProject'), {
       clientId,
       title: `Review Project ${Date.now()}`,
@@ -310,7 +311,7 @@ describe('AI tool contract', () => {
     })
     expect(doc.reviewStatus).toBe('needs_review')
 
-    // Submitting again is idempotent, and approving is never available to AI.
+    // Submitting again is idempotent; the AI editor can now approve.
     const again = await submitForReview(ctxFor(aiReq, 'submitForReview'), {
       collection: 'projects',
       documentId: created.data.id,
@@ -326,10 +327,10 @@ describe('AI tool contract', () => {
         overrideAccess: false,
         user: aiEditor as never,
       }),
-    ).rejects.toThrow()
+    ).resolves.toMatchObject({ reviewStatus: 'approved' })
   })
 
-  it('refuses to modify an approved document', async () => {
+  it('can modify an approved document (owner decision 2026-09-28)', async () => {
     const publisher = await ensureUser('publisher')
     const created = await draftProject(ctxFor(aiReq, 'draftProject'), {
       clientId,
@@ -358,8 +359,7 @@ describe('AI tool contract', () => {
       services: ['Branding'],
     })
 
-    expect(result.ok).toBe(false)
-    if (!result.ok) expect(result.code).toBe('conflict')
+    expect(result.ok).toBe(true)
   })
 
   it('audits content read-only', async () => {

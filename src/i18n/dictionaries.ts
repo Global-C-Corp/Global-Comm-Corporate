@@ -22,6 +22,9 @@ export type Dictionary = {
     deliverables: string
     outcome: string
     metrics: string
+    metricsMixed: string
+    metricEstimate: string
+    metricTarget: string
     relatedWork: string
     clientProblem: string
     method: string
@@ -75,6 +78,9 @@ const dictionaries: Record<Locale, Dictionary> = {
       deliverables: 'Livrables',
       outcome: 'Résultat',
       metrics: 'Indicateurs vérifiés',
+      metricsMixed: 'Indicateurs',
+      metricEstimate: 'Estimation',
+      metricTarget: 'Objectif',
       relatedWork: 'Projets associés',
       clientProblem: 'Problématique client',
       method: 'Méthode',
@@ -126,6 +132,9 @@ const dictionaries: Record<Locale, Dictionary> = {
       deliverables: 'Deliverables',
       outcome: 'Outcome',
       metrics: 'Verified metrics',
+      metricsMixed: 'Metrics',
+      metricEstimate: 'Estimate',
+      metricTarget: 'Target',
       relatedWork: 'Related work',
       clientProblem: 'Client problem',
       method: 'Method',
@@ -177,6 +186,9 @@ const dictionaries: Record<Locale, Dictionary> = {
       deliverables: 'Entregables',
       outcome: 'Resultado',
       metrics: 'Métricas verificadas',
+      metricsMixed: 'Métricas',
+      metricEstimate: 'Estimación',
+      metricTarget: 'Objetivo',
       relatedWork: 'Proyectos relacionados',
       clientProblem: 'Problema del cliente',
       method: 'Método',

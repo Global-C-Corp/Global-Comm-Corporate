@@ -50,17 +50,13 @@ export function buildProvenance(
 }
 
 /**
- * CLAUDE.md §112 — AI must not overwrite current human work. An approved or
- * published document is off-limits until a human moves it back into a
- * drafting state.
+ * AI must not overwrite work that changed since it was read. Approved and
+ * published documents are editable by the AI editor (owner decision 2026-09-28).
  */
 export function detectConflict(
   doc: { reviewStatus?: string | null; _status?: string | null; updatedAt?: string | null },
   expectedUpdatedAt?: string,
 ): OperationResult<true> | null {
-  if (doc.reviewStatus === 'approved') {
-    return failure('conflict', 'Document is approved; AI may not modify it until a human requests revisions.')
-  }
   if (expectedUpdatedAt && doc.updatedAt && doc.updatedAt !== expectedUpdatedAt) {
     return failure('conflict', 'Document changed since it was read. Re-read the document and retry.')
   }
@@ -85,14 +81,19 @@ export function aiTranslationStatus(locale: Locale) {
 }
 
 /**
- * CLAUDE.md §36, §105 — a metric may only be written when it carries a
- * source. Unsupported values are dropped, never estimated.
+ * A measured metric may only be written when it carries a source.
+ * Estimates and targets are allowed because the page labels them.
  */
+type MetricInput = { kind?: 'measured' | 'estimate' | 'target'; value?: string; label: string; sourceNote?: string }
+
 export function filterEvidencedMetrics(
-  metrics: { value?: string; label: string; sourceNote?: string }[] | undefined,
-): { kept: { value?: string; label: string; sourceNote?: string }[]; dropped: number } {
+  metrics: MetricInput[] | undefined,
+): { kept: MetricInput[]; dropped: number } {
   if (!metrics) return { kept: [], dropped: 0 }
 
-  const kept = metrics.filter((metric) => !metric.value || Boolean(metric.sourceNote))
+  // Estimates and targets are kept: the page labels them as such.
+  const kept = metrics.filter(
+    (metric) => !metric.value || (metric.kind ?? 'measured') !== 'measured' || Boolean(metric.sourceNote),
+  )
   return { kept, dropped: metrics.length - kept.length }
 }

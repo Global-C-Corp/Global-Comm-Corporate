@@ -871,8 +871,9 @@ export interface Project {
     | null;
   metrics?:
     | {
+        kind: 'measured' | 'estimate' | 'target';
         /**
-         * Leave empty rather than estimating a plausible number (CLAUDE.md §36).
+         * A measured value needs a sourceNote. Otherwise mark it as an estimate or a target.
          */
         value?: string | null;
         label: string;
@@ -1270,6 +1271,10 @@ export interface PayloadMcpApiKey {
      * Move an AI draft or a revision-requested document to needs_review. Never approves or publishes.
      */
     submitForReview?: boolean | null;
+    /**
+     * Edit any content field of one document (optionally in one locale) and, with publish: true, approve and publish it. Metric values still need a sourceNote. Records provenance and an audit log entry.
+     */
+    updateContent?: boolean | null;
   };
   updatedAt: string;
   createdAt: string;
@@ -1850,6 +1855,7 @@ export interface ProjectsSelect<T extends boolean = true> {
   metrics?:
     | T
     | {
+        kind?: T;
         value?: T;
         label?: T;
         sourceNote?: T;
@@ -2145,6 +2151,7 @@ export interface PayloadMcpApiKeysSelect<T extends boolean = true> {
         prepareSEO?: T;
         auditContent?: T;
         submitForReview?: T;
+        updateContent?: T;
       };
   updatedAt?: T;
   createdAt?: T;

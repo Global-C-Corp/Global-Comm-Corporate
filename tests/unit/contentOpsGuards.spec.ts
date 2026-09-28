@@ -37,6 +37,16 @@ describe('AI evidence policy', () => {
     expect(kept.some((metric) => metric.value === '+45%')).toBe(false)
   })
 
+  it('keeps an estimate or a target without a source (labelled on the page)', () => {
+    const { kept, dropped } = filterEvidencedMetrics([
+      { kind: 'estimate', value: '+20 %', label: 'Ventes' },
+      { kind: 'target', value: '10 000', label: 'Leads' },
+      { kind: 'measured', value: '+35 %', label: 'Trafic' },
+    ])
+    expect(kept.map((metric) => metric.kind)).toEqual(['estimate', 'target'])
+    expect(dropped).toBe(1)
+  })
+
   it('keeps a labelled metric with no value at all', () => {
     const { kept, dropped } = filterEvidencedMetrics([{ label: 'Pending measurement' }])
     expect(dropped).toBe(0)
@@ -45,9 +55,8 @@ describe('AI evidence policy', () => {
 })
 
 describe('concurrency guard', () => {
-  it('refuses to modify an approved document', () => {
-    const conflict = detectConflict({ reviewStatus: 'approved' })
-    expect(conflict?.ok).toBe(false)
+  it('allows AI to modify an approved document (owner decision 2026-09-28)', () => {
+    expect(detectConflict({ reviewStatus: 'approved' })).toBeNull()
   })
 
   it('refuses when the document changed since it was read', () => {

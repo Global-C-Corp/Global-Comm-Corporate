@@ -41,14 +41,6 @@ export function defaultReviewStatus(role: Role | undefined): ReviewStatus {
 
 type Transition = { from: ReviewStatus | undefined; to: ReviewStatus }
 
-const aiTransitions: Transition[] = [
-  { from: undefined, to: 'ai_draft' },
-  { from: 'ai_draft', to: 'ai_draft' },
-  { from: 'ai_draft', to: 'needs_review' },
-  { from: 'revision_requested', to: 'ai_draft' },
-  { from: 'revision_requested', to: 'needs_review' },
-]
-
 const editorTransitions: Transition[] = [
   { from: undefined, to: 'editorial_draft' },
   { from: 'editorial_draft', to: 'editorial_draft' },
@@ -69,6 +61,8 @@ const editorTransitions: Transition[] = [
  */
 const publisherTransitions: Transition[] = [
   { from: undefined, to: 'editorial_draft' },
+  { from: undefined, to: 'ai_draft' },
+  { from: 'revision_requested', to: 'ai_draft' },
   { from: 'editorial_draft', to: 'editorial_draft' },
   { from: 'editorial_draft', to: 'needs_review' },
   { from: 'editorial_draft', to: 'revision_requested' },
@@ -100,8 +94,11 @@ export function canTransitionReviewStatus(
   if (role === 'admin') return true
   if (from === to) return true
 
+  // Owner decision (2026-09-28): the AI editor has the same review and publish
+  // rights as a publisher. Its drafts still start as `ai_draft` and every AI
+  // write is stamped with provenance and an audit log.
   const table: Record<Exclude<Role, 'admin'>, Transition[]> = {
-    ai_editor: aiTransitions,
+    ai_editor: publisherTransitions,
     editor: editorTransitions,
     publisher: publisherTransitions,
   }
@@ -112,7 +109,7 @@ export function canTransitionReviewStatus(
   return allowed.some((transition) => transition.from === from && transition.to === to)
 }
 
-/** CLAUDE.md §27 — only publisher/admin may publish, and only once approved. */
+/** Publisher, admin and the AI editor may publish, and only once approved. */
 export function canPublish(role: Role | undefined): boolean {
-  return role === 'publisher' || role === 'admin'
+  return role === 'publisher' || role === 'admin' || role === 'ai_editor'
 }

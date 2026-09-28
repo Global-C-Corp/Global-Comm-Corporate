@@ -5,6 +5,7 @@ import * as migration_20260905_012312_service_pillars from './20260905_012312_se
 import * as migration_20260905_173054_home_page_sections from './20260905_173054_home_page_sections';
 import * as migration_20260906_163614_blob_storage_fields from './20260906_163614_blob_storage_fields';
 import * as migration_20260921_032959_services_page_composition from './20260921_032959_services_page_composition';
+import * as migration_20260928_011116_metric_kind from './20260928_011116_metric_kind';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20260921_032959_services_page_composition.up,
     down: migration_20260921_032959_services_page_composition.down,
-    name: '20260921_032959_services_page_composition'
+    name: '20260921_032959_services_page_composition',
+  },
+  {
+    up: migration_20260928_011116_metric_kind.up,
+    down: migration_20260928_011116_metric_kind.down,
+    name: '20260928_011116_metric_kind'
   },
 ];
